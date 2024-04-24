@@ -81,8 +81,8 @@ sections:
               * Designing information devices and Systems I
               * Introduction to Solid Mechanics
               * Introductory Physics II
-    #design:
-    #  columns: '2'
+    design:
+      columns: '2'
   - #block: accomplishments
     #content:
       # Note: `&shy;` is used to add a 'soft' hyphen in a long heading.
@@ -101,7 +101,7 @@ sections:
       title: Contact
       subtitle:
       text: |-
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mi diam, venenatis ut magna et, vehicula efficitur enim.
+        Feel free to contact me!
       # Contact (add or remove contact options as necessary)
       email: davidzhou718@gmail.com
       address:
