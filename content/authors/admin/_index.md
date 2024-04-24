@@ -103,7 +103,7 @@ social:
     link: https://github.com/ShuaiZhou302
   - icon: linkedin
     icon_pack: fab
-    link: www.linkedin.com/in/shuai-zhou-61096428b
+    link: http://linkedin.com/in/shuai-zhou-61096428b
   - icon: weixin
     icon_pack: fab
     link: uploads/wechat.jpg
