@@ -97,13 +97,13 @@ education:
 social:
   - icon: envelope
     icon_pack: fas
-    link: 'davidzhou718@gmail.com'
+    link: '#contact'
   - icon: github
     icon_pack: fab
-    link: https://twitter.com/GeorgeCushen
+    link: https://github.com/ShuaiZhou302
   - icon: linkedin
     icon_pack: fab
-    link: https://www.linkedin.com/shuai-zhou-61096428b
+    link: www.linkedin.com/in/shuai-zhou-61096428b
   - icon: weixin
     icon_pack: fab
     link: uploads/wechat.jpg

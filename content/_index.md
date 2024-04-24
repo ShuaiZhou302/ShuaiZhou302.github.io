@@ -55,7 +55,7 @@ sections:
       #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
       items:
         - title: Research Internship
-          company: RAP-LAB,UM-SJTU JI, SJTU
+          company: Shanghai Jiao Tong University - UM-SJTU JI - RAP-LAB
           company_url: 'https://www.ji.sjtu.edu.cn/'
           company_logo: UMSJTU
           location: Shanghai
@@ -81,15 +81,15 @@ sections:
               * Designing information devices and Systems I
               * Introduction to Solid Mechanics
               * Introductory Physics II
-    design:
-      columns: '2'
+    #design:
+    #  columns: '2'
   - #block: accomplishments
     #content:
       # Note: `&shy;` is used to add a 'soft' hyphen in a long heading.
       #title: 'Accomplish&shy;ments'
       #subtitle:
       # Date format: https://docs.hugoblox.com/customization/#date-format
-      #date_format: Jan 2006
+      date_format: Jan 2006
       # Accomplishments.
       #   Add/remove as many `item` blocks below as you like.
       #   `title`, `organization`, and `date_start` are the required parameters.
