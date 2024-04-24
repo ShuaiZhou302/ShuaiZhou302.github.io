@@ -21,7 +21,7 @@ marketing:
     description: 'A highly-customizable Hugo academic resume theme powered by Hugo Blox Builder.'
     twitter: 'GetResearchDev'
   analytics:
-    google_analytics: ''
+    google_analytics: 'G-11D77LWY4M'
     baidu_tongji: ''
     google_tag_manager: ''
     microsoft_clarity: ''
