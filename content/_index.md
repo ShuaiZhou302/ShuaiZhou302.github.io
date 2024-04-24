@@ -56,13 +56,13 @@ sections:
       items:
         - title: Research Internship
           company: Shanghai Jiao Tong University - UM-SJTU JI - RAP-LAB
-          company_url: 'https://www.ji.sjtu.edu.cn/'
+          company_url: 'https://en.sjtu.edu.cn/'
           company_logo: UMSJTU
           location: Shanghai
           date_start: '2024-04-11'
           date_end: ''
           description: |2-
-              Advised by Prof.[Zhongqiang Ren](https://rap-lab.github.io/team/zren/).
+              Advised by Prof.Zhongqiang Ren.
 
               Research in:
 
