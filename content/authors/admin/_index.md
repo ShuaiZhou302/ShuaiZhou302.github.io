@@ -1,12 +1,12 @@
 ---
 # Display name
-title: David Zhou
+title: Shuai Zhou (David)
 
 # Name pronunciation (optional)
 # name_pronunciation: 
 
 # Full name (for SEO)
-first_name: Shuai(David)
+first_name: Shuai
 last_name: Zhou
 
 # Status emoji
