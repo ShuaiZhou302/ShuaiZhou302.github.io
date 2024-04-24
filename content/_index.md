@@ -81,7 +81,6 @@ sections:
               * Designing information devices and Systems I
               * Introduction to Solid Mechanics
               * Introductory Physics II
-              * If you are undergraduate/graduate student interested in Berkeley visiting program, please referred to this [personal sharing](https://github.com/ksDreamer/flying.gzic.online/blob/main/chu-guo-shen-zao/ucb22-ji-ji-qi-ren-Shuai-Zhou.md) (The formal sharing will be updated later). If you are a part of SCUT community, I strongly recommend supporting this [project](https://github.com/ksDreamer/flying.gzic.online/tree/main) by sharing your experience.
     design:
       columns: '2'
   - #block: accomplishments
