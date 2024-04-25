@@ -118,5 +118,5 @@ social:
 highlight_name: true
 ---
 
-Hello there! I'm a sophomore student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. Currently, I am very fortunate to be advised by Prof. [Zhongqiang Ren]((https://rap-lab.github.io/team/zren/)) of [RAP-Lab](https://rap-lab.github.io/) from UM-SJTU Joint Institute, Shanghai Jiao Tong University.
+Hello there! I'm a sophomore student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. Currently, I am very fortunate to be advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from UM-SJTU Joint Institute, Shanghai Jiao Tong University.
 {style="text-align: justify;"}

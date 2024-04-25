@@ -90,10 +90,8 @@ sections:
     design:
       columns: '2'
   - block: contact
-    id: contact
     content:
       title: Contact
-      subtitle:
       text: |-
         Feel free to contact me
       # Contact (add or remove contact options as necessary)
