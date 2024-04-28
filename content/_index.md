@@ -110,11 +110,11 @@ sections:
       # Email form provider
       form:
          provider: netlify
-        formspree:
+         formspree:
           id:
          netlify:
           # Enable CAPTCHA challenge to reduce spam?
-           captcha: true
+           captcha: false
     design:
       columns: '2'
 ---
