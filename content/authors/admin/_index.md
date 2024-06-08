@@ -17,7 +17,7 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: Sophomore student of Robottics engineering
+role: Sophomore student of Robotics Engineering
 
 # Organizations/Affiliations to show in About widget
 organizations:
