@@ -119,6 +119,6 @@ highlight_name: true
 ---
 
 Hello there! I'm a junior student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am very fortunate to be advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from UM-SJTU Joint Institute, Shanghai Jiao Tong University. <br>
-At present, I am an remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on MAPF and its varients.  <br>
+At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on MAPF and its varients.  <br>
 
 {style="text-align: justify;"}
