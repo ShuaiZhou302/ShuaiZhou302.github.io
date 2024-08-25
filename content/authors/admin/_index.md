@@ -118,8 +118,7 @@ social:
 highlight_name: true
 ---
 
-Hello there! I'm a sophomore student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am very fortunate to be advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from UM-SJTU Joint Institute, Shanghai Jiao Tong University. <br>
-At present, I am an on-site Research intern in RAP-lab, UM-SJTU JI, SJTU.Working on MAPF questions.<br>
-I recently created a wechat group for 26Fall phd applicants to discuss and exchange information. If you are interested, please click the wechat button to add me. 
+Hello there! I'm a junior student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am very fortunate to be advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from UM-SJTU Joint Institute, Shanghai Jiao Tong University. <br>
+At present, I am an remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on MAPF and its varients.  <br>
 
 {style="text-align: justify;"}
