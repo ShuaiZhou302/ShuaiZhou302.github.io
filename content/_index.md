@@ -66,10 +66,8 @@ sections:
 
               Research in:
 
-              * Motion planning
-              * Multi agent system
-              * Robotics
-        - title: Visiting Student
+              * Multi agent path finding(MAPF)
+        - title: Semester Visiting Student
           company: University of California, Berkeley
           company_url: 'https://www.berkeley.edu/'
           company_logo: Berkeley
@@ -77,16 +75,15 @@ sections:
           date_start: '2023-08-16'
           date_end: '2023-12-31'
           description: |2-
+              Finished with a grade of 4.0/4.0
+
               Core curriculums:
 
               * Data Structure
               * Designing information devices and Systems I
-              * Introduction to Solid Mechanics
+              * Introduction to Solid Mechanics 
               * Introductory Physics II
   
-              Supplementary instruction:
-              
-              * If you are undergraduate/graduate student interested in Berkeley visiting program, please referred to this [personal sharing](https://github.com/ksDreamer/flying.gzic.online/blob/main/chu-guo-shen-zao/ucb22-ji-ji-qi-ren-Shuai-Zhou.md) (The formal sharing will be updated later). If you are a part of SCUT community, I strongly recommend supporting this [project](https://github.com/ksDreamer/flying.gzic.online/tree/main) by sharing your experience.
     design:
       columns: '2'
   - block: contact
