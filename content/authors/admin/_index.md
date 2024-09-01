@@ -17,7 +17,7 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: Sophomore student of Robotics Engineering
+role: Junior student of Robotics Engineering
 
 # Organizations/Affiliations to show in About widget
 organizations:
@@ -30,7 +30,7 @@ bio: My research interest include Multi agent planning, Motion planning.
 # Interests to show in About widget
 interests:
   - Robotics
-  - Multi agent/robot system
+  - Multi agent system
   - Motion Planning
   
 
@@ -40,7 +40,7 @@ education:
     - course: Undergraduate in Robotics Engineering
       institution: South China University of Technology
       year: 2022.09 - 2026.06(Expected)
-    - course: Visiting student 
+    - course: Semester Visiting Student 
       institution: University of California, Berkeley
       year: 2023.08 - 2023.12
     
