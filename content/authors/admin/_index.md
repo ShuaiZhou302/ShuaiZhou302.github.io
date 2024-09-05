@@ -40,7 +40,7 @@ education:
     - course: Undergraduate in Robotics Engineering
       institution: South China University of Technology
       year: 2022.09 - 2026.06(Expected)
-    - course: Semester Visiting Student 
+    - course: Semester Visiting Student in EECS
       institution: University of California, Berkeley
       year: 2023.08 - 2023.12
     
