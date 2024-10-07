@@ -62,7 +62,7 @@ sections:
           date_start: '2024-04-11'
           date_end: ''
           description: |2-
-              Advised by Prof.Zhongqiang Ren.
+              Advised by Prof.Zhongqiang Ren. One paper is under review.
 
               Research in:
 
