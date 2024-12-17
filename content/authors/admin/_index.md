@@ -192,6 +192,6 @@ languages:
 
 
 Hello there! I'm a junior student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am very fortunate to be advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from UM-SJTU Joint Institute, Shanghai Jiao Tong University. <br>
-At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
-In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br>
+<!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
+In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
 <font color="red">I am looking for a position for summer and autumn research in 2025!!</font>
