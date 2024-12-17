@@ -24,7 +24,7 @@ sections:
         color: black
         image:
           # Add your image background to `assets/media/`.
-          filename: stacked-peaks.svg
+          filename: background
           filters:
             brightness: 1.0
           size: cover
@@ -35,11 +35,7 @@ sections:
       title: '📚 My Research'
       subtitle: ''
       text: |-
-        Use this area to speak to your mission. I'm a research scientist in the Moonshot team at DeepMind. I blog about machine learning, deep learning, and moonshots.
-
-        I apply a range of qualitative and quantitative methods to comprehensively investigate the role of science and technology in the economy.
-        
-        Please reach out to collaborate 😃
+        My research is focused on the intersection of robotics and multi-agent systems. Currently, I am working on motion planning, specifically in the area of multi-agent path finding (MAPF), which is recognized as an NP-Hard problem in optimization. I have been playing with Gundam since I was three years old, dreaming about robots being involved in our daily lives and helping us explore the universe. I believe that robotics has infinite possibilities and I am always excited to delve deeper into it
     design:
       columns: '1'
   - block: collection

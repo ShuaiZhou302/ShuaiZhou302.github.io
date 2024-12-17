@@ -39,8 +39,8 @@ profiles:
     url: http://linkedin.com/in/shuai-zhou-61096428b
   - icon: brands/weixin
     url: uploads/wechat.jpg 
-  - icon: academicons/cv
-    url: uploads/resume.pdf   
+  # - icon: academicons/cv
+  #   url: uploads/resume.pdf   
   # - icon: academicons/google-scholar
   #   url: https://scholar.google.com/
   # - icon: academicons/orcid
@@ -63,6 +63,12 @@ education:
     summary: |
       GPA: 3.84/4.0 
       Rank: 3/56
+
+       Courses included:
+      - Artificial Intelligence Technology and Application
+      - Machine Vision and Sensing Systems
+      - Mechanic
+      - Introduction to Engineering
   - area: Semester Visiting Student in EECS and Meche
     institution: University of California, Berkeley
     date_start: 2023-08-16
@@ -70,10 +76,12 @@ education:
     summary: |
       GPA: 4.0/4.0
 
-      # Courses included:
-      # - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      # - lorem ipsum dolor sit amet, consectetur adipiscing elit
-      # - lorem ipsum dolor sit amet, consectetur adipiscing elit
+      Courses included:
+      - Data Structures
+      - Designing information devices and Systems I
+      - Introductory Physics II
+      - Introduction to Solid Mechanics
+
   # - area: BSc Artificial Intelligence
   #   institution: Massachusetts Institute of Technology
   #   date_start: 2016-01-01
