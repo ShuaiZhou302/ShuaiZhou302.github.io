@@ -69,7 +69,7 @@ education:
       - Machine Vision and Sensing Systems
       - Mechanic
       - Introduction to Engineering
-  - area: Semester Visiting Student in EECS and Meche
+  - area: Semester Visiting Student
     institution: University of California, Berkeley
     date_start: 2023-08-16
     date_end: 2023-12-30
