@@ -1,6 +1,6 @@
 ---
 title: 🎉 one paper is accepted by AAAI 2025!
-summary: My first, first-author paper is accepted to AAAI 2025！The top conference in our area 
+summary: My first, first-author paper is accepted by AAAI 2025！The top conference in our area 
 date: 2024-12-10
 
 # Featured image
