@@ -39,10 +39,10 @@ profiles:
     url: http://linkedin.com/in/shuai-zhou-61096428b
   - icon: brands/weixin
     url: uploads/wechat.jpg 
+  - icon: academicons/google-scholar
+    url: https://scholar.google.com/citations?user=ONn1TXAAAAAJ&hl=en&oi=sra   
   # - icon: academicons/cv
   #   url: uploads/resume.pdf   
-  # - icon: academicons/google-scholar
-  #   url: https://scholar.google.com/
   # - icon: academicons/orcid
   #   url: https://orcid.org/
   # - icon: brands/x
