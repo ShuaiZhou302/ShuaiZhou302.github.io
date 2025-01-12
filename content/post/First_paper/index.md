@@ -1,6 +1,6 @@
 ---
 title: 🎉 one paper is accepted by AAAI 2025!
-summary: My first, first-author paper is accepted by AAAI 2025！The top conference in our area 
+summary: My first, first-author paper is accepted by AAAI 2025！
 date: 2024-12-10
 
 # Featured image
@@ -28,7 +28,7 @@ Welcome 👋
 2. The template can be modified and customised to suit your needs. It's a good platform for anyone looking to take control of their data and online identity whilst having the convenience to start off with a **no-code solution (write in Markdown and customize with YAML parameters)** and having **flexibility to later add even deeper personalization with HTML and CSS**
 3. You can work with all your favourite tools and apps with hundreds of plugins and integrations to speed up your workflows, interact with your readers, and much more -->
 
-1. A rule-based planner named LSRP was proposed to quickly find feasible solutions for MAPFAA which is variant of MAPF, utilizing preset rules to achieve scalability that is an order of magnitude higher than
+1. A rule-based planner named LSRP was proposed to quickly find feasible solutions for MAPF-AA which is variant of MAPF, utilizing preset rules to achieve scalability that is an order of magnitude higher than
 existing algorithms.
 2. In traditional MAPF, both time and space are discrete, but as the number of agents increases, the
 dimensionality curse arises. By transforming the NP-hard MAPF into MAPF-AA, where free time becomes continuous

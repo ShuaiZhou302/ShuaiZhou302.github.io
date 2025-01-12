@@ -61,8 +61,8 @@ education:
     date_start: 2022-09-01
     date_end: 2026-06-30
     summary: |
-      GPA: 3.84/4.0 
-      Rank: 3/56
+      GPA: 3.86/4.0 
+      Rank: 2/56
 
        Courses included:
       - Artificial Intelligence Technology and Application
@@ -101,7 +101,7 @@ work:
     date_start: 2024-04-15
     date_end: ''
     summary: |
-      Working on Multi agent path finding, robotics. Supervised by [Prof Zhongqiang Ren](https://rap-lab.github.io/team/zren/). One paper is accepted by AAAI 2025 (Top conference in heuristic search)
+      Working on Multi agent path finding, robotics. Supervised by [Prof Zhongqiang Ren](https://rap-lab.github.io/team/zren/). One paper is accepted by AAAI 2025 
   # - position: Backend Software Engineer
   #   company_name: X
   #   company_url: ''
