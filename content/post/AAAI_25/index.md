@@ -1,7 +1,7 @@
 ---
 title: At Philadelphia！Attending AAAI and MAPF Workshop
 summary: Present my poster at AAAI conference！
-date: 2024-2-22
+date: 2025-02-22
 
 # Featured image
 # Place an image named `featured.jpg/png` in this page's folder and customize its options here.
@@ -35,7 +35,7 @@ Bro finally make it to Philly！😄 After 21 hours of flying, bro literally pas
 3. Chinatown！It is always felling both strange and moving to see people looks familiar passing by you when you are a stranger wandering in a foreign land. Ok don't be too sensitive, remember our theme is tired.
 
 
-## AAAI
+## AAAI MAIN CONFERENCE
 
 1. Open reception: meet rishi and keisuke in person! Still suprised to have somebody understanding what my research is about! But the food sucks 😔
 2. Open ceremony: Bro fell asleep because of jet lag 😟
@@ -44,10 +44,10 @@ Bro finally make it to Philly！😄 After 21 hours of flying, bro literally pas
 5. Workshop: The industry's needs and opinions on MAPF ​​are thought-provoking. What level of work is sufficient? What is a fake problem? How to extend MAPF to real-world application? Bro still get lots of question but that's ok, hopefully he figures all out during his phd (If there is one).
 
 
-<!-- ## Short trip at Princeton and Chicago
+## Short trip at Princeton and Chicago
 
 1. so there are short trips, what do you expect to see here hhh. 
-2. Somehow I can calls this campus visit?  -->
+2. Somehow I can calls this campus visit? 
 
 
 <!-- [//]: # ([![The template is mobile first with a responsive design to ensure that your site looks stunning on every device.]&#40;https://raw.githubusercontent.com/wowchemy/wowchemy-hugo-modules/main/starters/academic/preview.png&#41;]&#40;https://hugoblox.com&#41;)
