@@ -44,7 +44,7 @@ Bro finally make it to Philly！😄 After 21 hours of flying, bro literally pas
 5. Workshop: The industry's needs and opinions on MAPF ​​are thought-provoking. What level of work is sufficient? What is a fake problem? How to extend MAPF to real-world application? Bro still get lots of question but that's ok, hopefully he figures all out during his phd (If there is one).
 
 
-### Short trip at Princeton and Chicago
+## Short trip at Princeton and Chicago
 
 1. so there are short trips, what do you expect to see here hhh. 
 2. Somehow I can calls this campus visit? 
