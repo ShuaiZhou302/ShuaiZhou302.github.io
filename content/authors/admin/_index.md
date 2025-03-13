@@ -95,24 +95,21 @@ education:
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
 work:
   - position: Research Intern
+    company_name: ARCS LAB, Robotics Institute, CMU
+    company_url: 'https://jiaoyangli.me/people/'
+    company_logo: '\uploads\CMU.png'
+    date_start: 2025-07-01
+    date_end: ''
+    summary: |
+      Working on Multi-Agent Path Finding. Topics TBD. Supervised by [Prof Jiaoyang Li](https://jiaoyangli.me/).
+  - position: Research Intern
     company_name: RAP-LAB, UM-SJTU JI, SJTU
     company_url: 'https://rap-lab.github.io/'
-    company_logo: ''
+    company_logo: '\uploads\SJTU.png'
     date_start: 2024-04-15
     date_end: ''
     summary: |
-      Working on Multi agent path finding, robotics. Supervised by [Prof Zhongqiang Ren](https://rap-lab.github.io/team/zren/). One paper is accepted by AAAI 2025 
-  # - position: Backend Software Engineer
-  #   company_name: X
-  #   company_url: ''
-  #   company_logo: ''
-  #   date_start: 2016-01-01
-  #   date_end: 2020-12-31
-  #   summary: |
-  #     Responsibilities include:
-  #     - Migrated infrastructure to a new data center
-  #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
-  #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
+      Working on Multi-Agent Path Finding, Robotics. Supervised by [Prof Zhongqiang Ren](https://rap-lab.github.io/team/zren/). One paper is accepted by AAAI 2025 
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
@@ -191,8 +188,8 @@ languages:
 ## About Me
 
 
-Hello there! I'm a junior undergraduate student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from Shanghai Jiao Tong University since April 2024. I will visit [ARCS-Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) at the Robotics Institute of Carnegie Mellon University since July 2025, advised by Prof [Jiaoyang Li](https://jiaoyangli.me/). <br>
-I am looking for a Phd position starting at 2026 Fall.
+Hello there! I'm a junior undergraduate student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from Shanghai Jiao Tong University. I am also an incoming visiting research intern at [ARCS-Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) of the Robotics Institute, Carnegie Mellon University, advised by Prof [Jiaoyang Li](https://jiaoyangli.me/). <br>
+I am seeking a Ph.D. position starting in Fall 2026 and plan to apply to programs in Robotics, Computer Science, Electrical Engineering, Mechanical Engineering, or Aerospace Engineering.
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
 <!-- <font color="red">I am looking for a position for summer and autumn research in 2025!!</font> -->

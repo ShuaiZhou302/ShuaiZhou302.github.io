@@ -18,7 +18,7 @@ tags:
   # - Markdown
 ---
 
-Welcome 👋 
+Welcome 👋  Please check the [Post](https://rap-lab.github.io/research/mapfaa) at RAP-LAB
 
 {{< toc mobile_only=true is_open=true >}}
 

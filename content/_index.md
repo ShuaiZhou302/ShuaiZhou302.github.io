@@ -35,7 +35,7 @@ sections:
       title: '📚 My Research'
       subtitle: ''
       text: |-
-        My research is focused on the intersection of robotics and multi-agent systems. Currently, I am working on motion planning, specifically in the area of multi-agent path finding (MAPF), which is recognized as an NP-Hard problem in optimization. I have been playing with Gundam since I was three years old, dreaming about robots being involved in our daily lives and helping us explore the universe. I believe that robotics has infinite possibilities and I am always excited to delve deeper into it
+        My research interests lie at the intersection of multi-agent systems and robotics. Currently, I focus on Multi-Agent Path Finding (MAPF) with asynchronous actions—an NP-hard problem that presents significant challenges due to the curse of dimensionality. I am open to collaborations in MAPF, as well as in extending MAPF techniques to other areas of robotics, such as multi-robot arm collaboration. While I appreciate the guarantees provided by search-based methods, I am also keen to explore the potential of learning-based approaches.
     design:
       columns: '1'
   # - block: collection
