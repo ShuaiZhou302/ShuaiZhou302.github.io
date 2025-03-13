@@ -29,19 +29,18 @@ Bro finally make it to Philly！😄 After 21 hours of flying, bro literally pas
 <!-- 1. The Hugo Blox website builder for Hugo, along with its starter templates, is designed for professional creators, educators, and teams/organizations - although it can be used to create any kind of site
 2. The template can be modified and customised to suit your needs. It's a good platform for anyone looking to take control of their data and online identity whilst having the convenience to start off with a **no-code solution (write in Markdown and customize with YAML parameters)** and having **flexibility to later add even deeper personalization with HTML and CSS**
 3. You can work with all your favourite tools and apps with hundreds of plugins and integrations to speed up your workflows, interact with your readers, and much more -->
-
-1. Visit Upenn! I learned my first course about research level planning knowledge from GRASP LAB,  glad to build my first milestone at where i begin!
-2. What a Biggggggggggg city! Bro 😩 is too broke to rant any car or scooter, luckily he get his foot 🏃‍. Walk to University city! Walk to museum of art! Walk to benjamin franklin bridge! So here is new jersey？So why you staring at me 🥧？ Bro got chased by random homeless but luckily he survived！Reminds me of my old days in Berkeley.
-3. Chinatown！It is always felling both strange and moving to see people looks familiar passing by you when you are a stranger wandering in a foreign land. Ok don't be too sensitive, remember our theme is tired.
+1. Visit UPenn! I took my first research-level planning course at GRASP LAB—glad to mark my first milestone at the place where it all began!
+2. What a biiiiig city! Bro 😩 is too broke to rent a car or scooter, so he got no choice but to rely on his feet 🏃‍. Walked to University City! Walked to the Museum of Art! Walked to the Benjamin Franklin Bridge! Wait, so this is New Jersey? And why are you staring at me 🥧? Bro even got chased by a random homeless person, but luckily, he survived! Reminds me of my old days in Berkeley.
+3. Chinatown! It always feels both strange and moving to see familiar-looking people passing by when you're just a stranger wandering in a foreign land. Okay, don’t be too sentimental—remember, our theme is tired.
 
 
 ## AAAI MAIN CONFERENCE
 
-1. Open reception: meet rishi and keisuke in person! Still suprised to have somebody understanding what my research is about! But the food sucks 😔
-2. Open ceremony: Bro fell asleep because of jet lag 😟
-3. Poster session: Lots of interesting works! Imeediate response is way much better than waiting for someone's reply in mail. And I meet a few members of ARCS Lab + my future advisor. Very nice people! Can't wait to meet them again in july! Hopefully everything will work out fine.
-4. Oral presentation: "Ok so let's spend some quality time together" Eh... what's that about? Anyway you should go to the oral session, amazing slides and animation is most interesting way to understand others' works.
-5. Workshop: The industry's needs and opinions on MAPF ​​are thought-provoking. What level of work is sufficient? What is a fake problem? How to extend MAPF to real-world application? Bro still get lots of question but that's ok, hopefully he figures all out during his phd (If there is one).
+1. Open Reception: Met Rishi and Keisuke in person! Still surprised to find someone who actually understands what my research is about! But the food sucks. 😔
+2. Opening Ceremony: Bro fell asleep because of jet lag. 😟
+3. Poster Session: Lots of interesting work! Immediate responses are way better than waiting for someone's reply over email. Also met a few members of ARCS Lab + my future advisor—very nice people! Can't wait to see them again in July. Hopefully, everything will work out fine.
+4. Oral Presentation: "Okay, so let's spend some quality time together." Eh… what's that about? Anyway, you should definitely go to the oral sessions—amazing slides and animations make understanding others' work way more interesting.
+5. Workshop: The industry's needs and perspectives on MAPF are really thought-provoking. What level of work is good enough? What counts as a fake problem? How can MAPF be extended to real-world applications? Bro still has tons of questions, but that’s okay—hopefully, he figures it all out during his PhD (if there is one).
 
 
 ## Short trip at Princeton and Chicago
