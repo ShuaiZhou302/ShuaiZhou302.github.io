@@ -32,10 +32,12 @@ sections:
           parallax: false
   - block: markdown
     content:
-      title: '📚 My Research'
+      title: '🤖 My Research'
       subtitle: ''
       text: |-
         My research interests lie at the intersection of multi-agent systems and robotics. Currently, I focus on Multi-Agent Path Finding (MAPF) with asynchronous actions—an NP-hard problem that presents significant challenges due to the curse of dimensionality. I am open to collaborations in MAPF, as well as in extending MAPF techniques to other areas of robotics, such as multi-robot arm collaboration. While I appreciate the guarantees provided by search-based methods, I am also keen to explore the potential of learning-based approaches.
+         
+        My previsous and ongoing projects are about search based method. At the moment, I'm still rapidly getting up to speed with multi-agent motion planning and multi-robot arm motion planning, as well as delving into reinforcement learning, imitation learning, and diffusion models. I'm thinking about whether search-based MAPF approaches, could spark some fresh ideas in these related areas. I am open to discuss。 
     design:
       columns: '1'
   # - block: collection
@@ -80,7 +82,7 @@ sections:
         padding: [0, 0, 0, 0]
   - block: collection
     content:
-      title: Recent Publications
+      title: Publications
       text: ""
       filters:
         folders:

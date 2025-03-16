@@ -62,11 +62,11 @@ education:
     date_end: 2026-06-30
     summary: |
       GPA: 3.86/4.0 
-      Rank: 2/56
+      Rank: 5/56
 
        Courses included:
       - Artificial Intelligence Technology and Application
-      - Machine Vision and Sensing Systems
+      - Robotics
       - Mechanic
       - Introduction to Engineering
   - area: Semester Visiting Student
@@ -188,7 +188,7 @@ languages:
 ## About Me
 
 
-Hello there! I'm a junior undergraduate student at SHIEN-MING WU School of Intelligent Engineering, South China University of Technology. Majoring in Robotics Engineering. I am advised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) of [RAP-Lab](https://rap-lab.github.io/) from Shanghai Jiao Tong University. I am also an incoming visiting research intern at [ARCS-Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) of the Robotics Institute, Carnegie Mellon University, advised by Prof [Jiaoyang Li](https://jiaoyangli.me/). <br>
+Hello there! I'm a junior undergraduate student at South China University of Technology. Majoring in Robotics Engineering. I am working on Multi-agent Path Finding(MAPF) with Dr. [Shizhe Zhao](https://eggeek.github.io/), and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at [RAP-Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University. I will also join [ARCS-Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) of the Robotics Institute, Carnegie Mellon University as a research intern, working with Prof [Jiaoyang Li](https://jiaoyangli.me/). <br>
 I am seeking a Ph.D. position starting in Fall 2026 and plan to apply to programs in Robotics, Computer Science, Electrical Engineering, Mechanical Engineering, or Aerospace Engineering.
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
