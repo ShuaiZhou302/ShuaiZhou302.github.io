@@ -1,7 +1,7 @@
 ---
 title: 🎇 Summer and Fall Research Intern offer from CMU RI!
 summary: Hopefully see u in Pittsburgh！Stay ther for 7 month！
-date: 2024-02-13
+date: 2025-02-24
 
 # Featured image
 # Place an image named `featured.jpg/png` in this page's folder and customize its options here.
