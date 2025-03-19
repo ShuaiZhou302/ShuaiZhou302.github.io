@@ -1,6 +1,6 @@
 ---
 title: 🎇 Summer and Fall Research Intern offer from CMU RI!
-summary: Hopefully see u in Pittsburgh！Stay for 7 month！
+summary: Hopefully see u in Pittsburgh！Stay for 7 months！
 date: 2025-02-24
 
 # Featured image
@@ -18,7 +18,7 @@ tags:
   # - Markdown
 ---
 
-Good to hear from CMU! See u in Pittsburgh！
+Good to hear from CMU! See u in Pittsburgh! 
 
 This page is to record my summer research application, it may be helpful to friends who apply for summer research in the future.
 
