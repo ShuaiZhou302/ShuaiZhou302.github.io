@@ -38,6 +38,8 @@ sections:
         My research interests lie at the intersection of multi-agent systems and robotics. Currently, I focus on Multi-Agent Path Finding (MAPF) with asynchronous actions—an NP-hard problem that presents significant challenges due to the curse of dimensionality. I am open to collaborations in MAPF, as well as in extending MAPF techniques to other areas of robotics, such as multi-robot arm collaboration. While I appreciate the guarantees provided by search-based methods, I am also keen to explore the potential of learning-based approaches.
          
         My previsous and ongoing projects are about search based method. At the moment, I'm still rapidly getting up to speed with multi-agent motion planning and multi-robot arm motion planning, as well as delving into reinforcement learning, imitation learning, and diffusion models. I'm thinking about whether search-based MAPF approaches, could spark some fresh ideas in these related areas. I am open to discuss。 
+
+        I am seeking a Ph.D. position starting in Fall 2026 and plan to apply to programs in Robotics, Computer Science, Electrical Engineering, Mechanical Engineering, or Aerospace Engineering.
     design:
       columns: '1'
   - block: collection
