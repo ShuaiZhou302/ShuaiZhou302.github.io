@@ -145,10 +145,10 @@ work:
 #         percent: 80
 #         icon: camera
 
-Services:
-  - name: Conferece
-    items :
-      - name: IROS2025
+# Services:
+#   - name: Conferece
+#     items :
+#       - name: IROS2025
 
 
 languages:

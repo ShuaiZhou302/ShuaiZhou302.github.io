@@ -28,10 +28,10 @@ sections:
   #   content:
   #     title: Awards
   #     username: admin
-  - block: resume-service
-    content:
-      title: Service
-      username: admin
+  # - block: resume-service
+  #   content:
+  #     title: Service
+  #     username: admin
   - block: resume-languages
     content:
       title: Languages

@@ -40,17 +40,17 @@ sections:
         My previsous and ongoing projects are about search based method. At the moment, I'm still rapidly getting up to speed with multi-agent motion planning and multi-robot arm motion planning, as well as delving into reinforcement learning, imitation learning, and diffusion models. I'm thinking about whether search-based MAPF approaches, could spark some fresh ideas in these related areas. I am open to discuss。 
     design:
       columns: '1'
-  # - block: collection
-  #   id: papers
-  #   content:
-  #     title: Featured Publications
-  #     filters:
-  #       folders:
-  #         - publication
-  #       featured_only: true
-  #   design:
-  #     view: article-grid
-  #     columns: 2
+  - block: collection
+    id: papers
+    content:
+      title: Featured Publications
+      filters:
+        folders:
+          - publication
+        featured_only: true
+    design:
+      view: article-grid
+      columns: 2
   - block: collection
     id: news
     content:
