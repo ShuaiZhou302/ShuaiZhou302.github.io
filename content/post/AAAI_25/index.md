@@ -18,7 +18,7 @@ tags:
   # - Markdown
 ---
 
-Check out everybody at MAPF workshop! Thanks to Keisuke and Rishi for the amazing one day experience!
+Check out everybody at MAPF workshop! Thanks to Keisuke, Rishi and Mike and the rest of committee for the amazing one day experience at [6th WoMAPF](https://womapf.github.io/aaai-25/)!
 
 Bro finally make it to Philly！😄 After 21 hours of flying, bro literally passed out the moment he arrives~
 
