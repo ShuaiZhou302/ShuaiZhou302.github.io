@@ -205,7 +205,7 @@ awards:
 ## About Me
 
 
-I am a junior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My research focuses on [Multi-agent Path Finding(MAPF)](https://mapf.info/index.php/Main/Tutorials), and I am currently working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University. Our team is collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine.
+I am a junior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My research focuses on [Multi-Agent Path Finding (MAPF)](https://mapf.info/index.php/Main/Tutorials), and I am currently working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University. Our team is collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine.
 Additionally, I am remotely working with Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) of the Robotics Institute, Carnegie Mellon University. <br>
 I am seeking a Ph.D. position starting in Fall 2026.
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
