@@ -57,7 +57,7 @@ interests:
 
 education:
   - area: Undergraduate
-    institution: South China University of Technology
+    institution: South China University of Technology, China
     date_start: 2022-09-01
     date_end: 2026-06-30
     summary: |
@@ -70,7 +70,7 @@ education:
       - Mechanic
       - Introduction to Engineering
   - area: Semester Visiting Student
-    institution: University of California, Berkeley
+    institution: University of California, Berkeley, CHN
     date_start: 2023-08-16
     date_end: 2023-12-30
     summary: |
@@ -95,15 +95,23 @@ education:
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
 work:
   - position: Research Intern
-    company_name: ARCS LAB, Robotics Institute, CMU
+    company_name: ARCS Lab, Robotics Institute, Carnegie Mellon University, USA
     company_url: 'https://jiaoyangli.me/people/'
     company_logo: '\uploads\CMU.png'
-    date_start: 2025-07-01
+    date_start: 2025-04-01
     date_end: ''
     summary: |
-      Working on Multi-Agent Path Finding. Topics TBD. Supervised by [Prof Jiaoyang Li](https://jiaoyangli.me/).
+      Working on Multi-Agent Path Finding. Supervised by [Prof Jiaoyang Li](https://jiaoyangli.me/).
+  - position: Research Collaboration
+    company_name: IDM Lab, Donald Bren School of Information and Computer Science, University of California, Irvine, USA
+    company_url: 'https://idm-lab.org/'
+    company_logo: '\uploads\CMU.png'
+    date_start: 2025-03-01
+    date_end: ''
+    summary: |
+      Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with [Prof Sven Koenig](https://idm-lab.org/) via RAP Lab.    
   - position: Research Intern
-    company_name: RAP-LAB, UM-SJTU JI, SJTU
+    company_name: RAP Lab, University of Michigan-Shanghai Jiao Tong University Joint Institut, Shanghai Jiao Tong University
     company_url: 'https://rap-lab.github.io/'
     company_logo: '\uploads\SJTU.png'
     date_start: 2024-04-15
@@ -197,9 +205,8 @@ awards:
 ## About Me
 
 
-Hello there! I'm a junior undergraduate student at South China University of Technology. Majoring in Robotics Engineering. I am working on Multi-agent Path Finding(MAPF) with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at [RAP-Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University.
-<!-- , and Prof. [Sven Koenig](https://idm-lab.org/) from University of California, Irvine.  -->
-I will join [ARCS-Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) of the Robotics Institute, Carnegie Mellon University as a research intern, working with Prof [Jiaoyang Li](https://jiaoyangli.me/). <br>
+I am a junior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My research focuses on [Multi-agent Path Finding(MAPF)](https://mapf.info/index.php/Main/Tutorials), and I am currently working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University. Our team is collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine.
+Additionally, I am remotely working with Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://www.ri.cmu.edu/robotics-groups/arcs-lab/) of the Robotics Institute, Carnegie Mellon University. <br>
 I am seeking a Ph.D. position starting in Fall 2026.
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
