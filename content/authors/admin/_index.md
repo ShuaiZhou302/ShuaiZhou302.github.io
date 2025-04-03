@@ -57,7 +57,7 @@ interests:
 
 education:
   - area: Undergraduate
-    institution: South China University of Technology, China
+    institution: South China University of Technology, CHN
     date_start: 2022-09-01
     date_end: 2026-06-30
     summary: |
@@ -70,7 +70,7 @@ education:
       - Mechanic
       - Introduction to Engineering
   - area: Semester Visiting Student
-    institution: University of California, Berkeley, CHN
+    institution: University of California, Berkeley, USA
     date_start: 2023-08-16
     date_end: 2023-12-30
     summary: |
@@ -101,7 +101,7 @@ work:
     date_start: 2025-04-01
     date_end: ''
     summary: |
-      Working on Multi-Agent Path Finding. Supervised by [Prof Jiaoyang Li](https://jiaoyangli.me/).
+      Working on Multi-Agent Path Finding. Supervised by Prof. [Jiaoyang Li](https://jiaoyangli.me/).
   - position: Research Collaboration
     company_name: IDM Lab, Donald Bren School of Information and Computer Science, University of California, Irvine, USA
     company_url: 'https://idm-lab.org/'
@@ -109,7 +109,7 @@ work:
     date_start: 2025-03-01
     date_end: ''
     summary: |
-      Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with [Prof Sven Koenig](https://idm-lab.org/) via RAP Lab.    
+      Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with Prof. [Sven Koenig](https://idm-lab.org/) via RAP Lab.    
   - position: Research Intern
     company_name: RAP Lab, University of Michigan-Shanghai Jiao Tong University Joint Institut, Shanghai Jiao Tong University
     company_url: 'https://rap-lab.github.io/'
@@ -117,7 +117,7 @@ work:
     date_start: 2024-04-15
     date_end: ''
     summary: |
-      Working on Multi-Agent Path Finding, Robotics. Supervised by [Prof Zhongqiang Ren](https://rap-lab.github.io/team/zren/). One paper is accepted by AAAI 2025 
+      Working on Multi-Agent Path Finding, Robotics. Supervised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/). One paper is accepted by AAAI 2025 
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
