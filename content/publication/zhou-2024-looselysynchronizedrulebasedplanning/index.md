@@ -27,7 +27,7 @@ links:
 - name: Post
   url: https://rap-lab.github.io/research/mapfaa 
 
-url_pdf: 'https://rap-lab.github.io/documents/publications/2025_AAAI_LSRP_ShuaiZhou.pdf'
+url_pdf: 'https://doi.org/10.1609/aaai.v39i14.33618'
 url_code: 'https://github.com/rap-lab-org/public_LSRP'
 url_poster: 'uploads/AAAI_POSTER.pdf'
 
