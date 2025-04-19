@@ -17,7 +17,7 @@ marketing:
     description: 'The highly-customizable Hugo Academic theme powered by Hugo Blox Builder. Easily create your personal academic website.'
     twitter: 'GetResearchDev'
   analytics:
-    google_analytics: ''
+    google_analytics: 'G-11D77LWY4M'
     baidu_tongji: ''
     plausible: ''
     fathom: ''
@@ -40,7 +40,7 @@ header:
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Me. This work is licensed under {license}'
+    notice: '© {year} Shuai Zhou. This work is licensed under {license}'
     license:
       enable: true
       allow_derivatives: false
