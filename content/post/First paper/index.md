@@ -31,9 +31,9 @@ Welcome 👋  Please check the [Post](https://rap-lab.github.io/research/mapfaa)
 1. A rule-based planner named LSRP was proposed to quickly find feasible solutions for MAPF-AA which is variant of MAPF, utilizing preset rules to achieve scalability that is an order of magnitude higher than
 existing algorithms.
 2. In traditional MAPF, both time and space are discrete, but as the number of agents increases, the
-dimensionality curse arises. By transforming the NP-hard MAPF into MAPF-AA, where free time becomes continuous
-and the search dimension doubles, LSRP effectively addresses these challenges
-3. Check out our preprint version at my homepage -> Recent publications! The work is done during my internship at RAP-LAB, University of Michigan-Shanghai Jiao Tong University Joint Insitute. Supervised by Professor Zhongqiang Ren and Dr.Shizhe Zhao.
+dimensionality curse arises. Some approaches have been developed for large scale MAPF. When time becomes continuous
+and the search dimension doubles, it is even harder to find an feasible solution. LSRP effectively addresses these challenges
+3. Check out the full paper [here](https://doi.org/10.1609/aaai.v39i14.33618)! The work is done during my internship at RAP-LAB, University of Michigan-Shanghai Jiao Tong University Joint Insitute. Supervised by Professor Zhongqiang Ren and Dr.Shizhe Zhao.
 
 <!-- [//]: # ([![The template is mobile first with a responsive design to ensure that your site looks stunning on every device.]&#40;https://raw.githubusercontent.com/wowchemy/wowchemy-hugo-modules/main/starters/academic/preview.png&#41;]&#40;https://hugoblox.com&#41;)
 
