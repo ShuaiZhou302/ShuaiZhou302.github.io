@@ -26,7 +26,7 @@ sections:
           # Add your image background to `assets/media/`.
           filename: background.png
           filters:
-            brightness: 1.0
+            brightness: 0.5
           size: cover
           position: center
           parallax: false
@@ -35,11 +35,11 @@ sections:
       title: '🤖 My Research'
       subtitle: ''
       text: |-
-        My research interests lie at the intersection of multi-agent systems and robotics. Currently, I focus on Multi-Agent Path Finding (MAPF) with asynchronous actions—an NP-hard problem that presents significant challenges due to the curse of dimensionality. I am open to collaborations in MAPF, as well as in extending MAPF techniques to other areas of robotics, such as multi-robot arm collaboration. While I appreciate the guarantees provided by search-based methods, I am also keen to explore the potential of learning-based approaches.
-         
-        My previsous and ongoing projects are about search based method. At the moment, I'm still rapidly getting up to speed with multi-agent motion planning and multi-robot arm motion planning, as well as delving into reinforcement learning, imitation learning, and diffusion models. I'm thinking about whether search-based MAPF approaches, could spark some fresh ideas in these related areas. I am open to discuss。 
+        My research interests lie at the intersection of multi-agent systems and motion planning in robotics. During my undergraduate studies, I have focused primarily on Multi-Agent Path Finding (MAPF)—an NP-hard problem that poses significant challenges due to the curse of dimensionality. MAPF has important real-world applications, particularly in warehouse logistics systems such as those used by [Amazon](https://www.aboutamazon.com/news/tag/robotics) and [Symbotic](https://www.symbotic.com/). My work aims to bridge the gap between abstract planning and real-world execution by developing MAPF algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (MAPF with Asynchronous Actions), meeting time-sensitive requirements (MAPF with Deadlines), and incorporating kinematic constraints (Execution-Aware MAPF). I am open to collaborations in the MAPF domain, as well as in extending its techniques to other areas of robotics. 
 
-        I am seeking a Ph.D. position starting in Fall 2026 and plan to apply to programs in Robotics, Computer Science, Electrical Engineering, Mechanical Engineering, or Aerospace Engineering.
+        My previous and ongoing projects have all focused on search-based methods. While I value the theoretical guarantees and interpretability these approaches provide, I am also eager to explore the potential of learning-based methods. For instance, I am particularly interested in using learning techniques—such as reinforcement learning or imitation learning—as heuristics to guide decision-making in high dimension planning problems. At the same time, I am actively broadening my knowledge in areas such as multi-agent motion planning, multi-robot arm coordination, and emerging paradigms like diffusion models. I am curious whether insights from search-based MAPF methods could inspire new ideas or serve as strong priors in these related domains. I am always open to discussion and collaboration across these intersections.
+
+        I am seeking a Ph.D. position starting in Fall 2026 and plan to apply to programs in Robotics, Computer Science, Electrical Engineering, Mechanical Engineering, or Aerospace Engineering. Some of the above are questions I would like to explore during my PhD.
     design:
       columns: '1'
   - block: collection
