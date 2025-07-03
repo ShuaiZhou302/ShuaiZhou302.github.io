@@ -1,6 +1,6 @@
 ---
 # Display name
-title: Shuai Zhou (David)
+title: Shuai (David) Zhou
 
 # Name pronunciation (optional)
 # name_pronunciation: Chien Shiung Wu
@@ -20,7 +20,7 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Junior undergraduate student
+role: Senior undergraduate student
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
@@ -37,8 +37,8 @@ profiles:
     url: https://github.com/ShuaiZhou302
   - icon: brands/linkedin
     url: http://linkedin.com/in/shuai-zhou-61096428b
-  - icon: brands/weixin
-    url: uploads/wechat.jpg 
+  # - icon: brands/weixin
+  #   url: uploads/wechat.jpg 
   - icon: academicons/google-scholar
     url: https://scholar.google.com/citations?user=ONn1TXAAAAAJ&hl=en&oi=sra   
   # - icon: academicons/cv
@@ -205,7 +205,7 @@ awards:
 ## About Me
 
 
-I am a junior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My research focuses on [Multi-Agent Path Finding (MAPF)](https://mapf.info/index.php/Main/Tutorials) (Equivalently, Multi-Robot Path Planning (MPP)), and I am working with [Jingtian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://arcs-group.github.io/) of the Robotics Institute, Carnegie Mellon University. Additionally, I am also working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University, collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine and University of Southern California. <br>
+I am a rising senior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My research focuses on [Multi-Agent Path Finding (MAPF)](https://mapf.info/index.php/Main/Tutorials) (Equivalently, Multi-Robot Path Planning (MPP)), and I am working with [Jingtian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://arcs-group.github.io/) of the Robotics Institute, Carnegie Mellon University. Additionally, I am also working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University, collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine and University of Southern California. <br>
 I am seeking a Ph.D. position starting in Fall 2026.
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
