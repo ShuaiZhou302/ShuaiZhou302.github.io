@@ -21,13 +21,11 @@ tags:
 
 featured: true
 
-links:
-- name: Short Version
-  url: https://shuaizhou302.github.io/uploads/SOCS25_LSRPSTAR.pdf
+url_pdf: 'https://doi.org/10.1609/socs.v18i1.36016'
 
 
 image:
-  caption: 'Search frame'
+  caption: 'Search tree'
   focal_point: ''
   preview_only: false  
 
