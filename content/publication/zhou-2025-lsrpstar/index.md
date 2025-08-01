@@ -22,6 +22,7 @@ tags:
 featured: true
 
 url_pdf: 'https://doi.org/10.1609/socs.v18i1.36016'
+url_poster: 'https://drive.google.com/file/d/12uBf5DxsSL3Yo5pITBcm4GZrfgPRJ4OG/view?usp=sharing'
 
 
 image:
