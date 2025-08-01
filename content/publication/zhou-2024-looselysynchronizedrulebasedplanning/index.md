@@ -29,7 +29,7 @@ links:
 
 url_pdf: 'https://doi.org/10.1609/aaai.v39i14.33618'
 url_code: 'https://github.com/rap-lab-org/public_LSRP'
-url_poster: 'uploads/AAAI_POSTER.pdf'
+url_poster: 'https://drive.google.com/file/d/1-gxuRvtTx6Nygspj91f4_VbNmsnvPaUO/view?usp=sharing'
 
 
 image:
