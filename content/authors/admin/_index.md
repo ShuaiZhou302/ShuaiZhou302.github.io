@@ -69,7 +69,7 @@ education:
       - Robotics
       - Mechanic
       - Introduction to Engineering
-  - area: Semester Visiting Student
+  - area: Exchange Student
     institution: University of California, Berkeley, USA
     date_start: 2023-08-16
     date_end: 2023-12-30
@@ -107,7 +107,7 @@ work:
     company_url: 'https://idm-lab.org/'
     company_logo: '\uploads\CMU.png'
     date_start: 2025-03-01
-    date_end: ''
+    date_end: 2025-07-01
     summary: |
       Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with Prof. [Sven Koenig](https://idm-lab.org/) via RAP Lab.    
   - position: Research Intern
@@ -205,8 +205,8 @@ awards:
 ## About Me
 
 
-I am a rising senior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My research focuses on [Multi-Agent Path Finding (MAPF)](https://mapf.info/index.php/Main/Tutorials) (Equivalently, Multi-Robot Path Planning (MPP)), and I am working with [Jingtian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://arcs-group.github.io/) of the Robotics Institute, Carnegie Mellon University. Additionally, I am also working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University, collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine and University of Southern California. <br>
-I am seeking a Ph.D. position starting in Fall 2026.
+I am a rising senior undergraduate student at South China University of Technology, majoring in Robotics Engineering. My previous and ongoing research focuses on Multi-Robot Path Planning, and I am working with [Jingtian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://arcs-group.github.io/) of the Robotics Institute, Carnegie Mellon University. Additionally, I am also working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University, collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine and University of Southern California. <br>
+I am seeking a Ph.D. position or Researcg-based Master position starting in Fall 2026.
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
 <!-- <font color="red">I am looking for a position for summer and autumn research in 2025!!</font> -->

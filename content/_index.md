@@ -16,7 +16,7 @@ sections:
       text: ""
       # Show a call-to-action button under your biography? (optional)
       button:
-        text: Download CV
+        text: CV
         url: uploads/resume.pdf
     design:
       css_class: dark
@@ -32,14 +32,16 @@ sections:
           parallax: false
   - block: markdown
     content:
-      title: '🤖 My Research'
+      title: '🤖 Short summary of my previous and ongoing Research'
       subtitle: ''
       text: |-
-        My research interests lie at the intersection of multi-agent systems and motion planning in robotics. During my undergraduate studies, I have focused primarily on Multi-Agent Path Finding (MAPF)—an NP-hard problem that poses significant challenges due to the curse of dimensionality. MAPF has important real-world applications, particularly in warehouse logistics systems such as those used by [Amazon](https://www.aboutamazon.com/news/tag/robotics) and [Symbotic](https://www.symbotic.com/). My work aims to bridge the gap between abstract planning and real-world execution by developing MAPF algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (MAPF with Asynchronous Actions), meeting time-sensitive requirements (MAPF with Deadlines), and incorporating kinematic constraints (Execution-Aware MAPF). I am open to collaborations in the MAPF domain, as well as in extending its techniques to other areas of robotics. 
+        My previous and ongoing projects have all focused on search-based planning methods, aiming to bridge the gap between abstract planning and real-world execution by developing algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (AAAI 2025, SoCS 2025), meeting time-sensitive requirements, and incorporating kinematic constraints (Under Review).
+        
+        Besides planning, for subsequent research, I want to explore more, as I believe research is motivated by both passion and consistency. There are some potential topics I'd like to explore now:
+        (1) Real robot systems, which include humanoid robots and robot dogs. I want to know how to make them robustly perform tasks that we humans find simple but hard for them. Simply put, it's pure curiosity.
+        (2) Extending ideas of heuristic search to other related topics (a good example would be MMD, CBS with diffusion models as low-level single agent planners), especially in topics concerning high-dimensional configuration spaces. Design methods that avoid the dimensionality curse caused by enumeration, for example, using patterns learned through machine learning to guide heuristic search planning 
 
-        My previous and ongoing projects have all focused on search-based methods. While I value the theoretical guarantees and interpretability these approaches provide, I am also eager to explore the potential of learning-based methods. For instance, I am particularly interested in using learning techniques—such as reinforcement learning or imitation learning—as heuristics to guide decision-making in high dimension planning problems. At the same time, I am actively broadening my knowledge in areas such as multi-agent motion planning, multi-robot arm coordination, and emerging paradigms like diffusion models. I am curious whether insights from search-based MAPF methods could inspire new ideas or serve as strong priors in these related domains. I am always open to discussion and collaboration across these intersections.
 
-        I am seeking a Ph.D. position starting in Fall 2026 and plan to apply to programs in Robotics, Computer Science, Electrical Engineering, Mechanical Engineering, or Aerospace Engineering. Some of the above are questions I would like to explore during my PhD.
     design:
       columns: '1'
   - block: collection
