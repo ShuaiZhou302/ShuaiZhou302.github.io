@@ -32,14 +32,14 @@ sections:
           parallax: false
   - block: markdown
     content:
-      title: '🤖 Short summary of my previous and ongoing Research'
+      title: 'Short summary of my 🤖 research'
       subtitle: ''
       text: |-
-        My previous and ongoing projects have all focused on search-based planning methods, aiming to bridge the gap between abstract planning and real-world execution by developing algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (AAAI 2025, SoCS 2025), meeting time-sensitive requirements, and incorporating kinematic constraints (Under Review).
+        My research vision is to build multi-robot systems that can efficiently collaborate across various robot forms. This requires developing efficient multi-robot planning algorithms (both decentralized and centralized) at the high level for coordination, as well as robust capabilities and policies at the low level for individual robot execution. Therefore, my research is structured into two interconnected components: Cross-Embodiment Robot Learning (Ongoing) and Scalable Multi-Robot Coordination (Ongoing and Previous).
+
+        My ongoing projects respectively focus on learning generalizable policies across diverse robotic embodiments and designing efficient multi-robot Task and Motion Planning (TAMP) algorithms with diffusion models. My previous projects focused on search-based multi-robot planning methods, bridging the gap between planning and real-world execution by developing algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (AAAI 2025, SoCS 2025), meeting time-sensitive requirements, and incorporating kinematic constraints (Under Review).
         
-        Besides planning, for subsequent research, I want to explore more, as I believe research is motivated by both passion and consistency. There are some potential topics I'd like to explore now:
-        (1) Real robot systems, which include humanoid robots and robot dogs. I want to know how to make them robustly perform tasks that we humans find simple but hard for them. Simply put, it's pure curiosity.
-        (2) Extending ideas of heuristic search to other related topics (a good example would be MMD, CBS with diffusion models as low-level single agent planners), especially in topics concerning high-dimensional configuration spaces. Design methods that avoid the dimensionality curse caused by enumeration, for example, using patterns learned through machine learning to guide heuristic search planning 
+        For future work, I want to continue following my research vision and explore new possibilities to achieve it. There are some projects I'd like to investigate, such as multi-robot teams with different forms collaborating to build houses together. These may not be limited to traditional research projects, I'm genuinely curious to see if and how these ideas work in practice. Please drop me an email if you are interested, we could totally bake some cool stuff together.
 
 
     design:

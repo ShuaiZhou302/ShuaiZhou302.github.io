@@ -1,6 +1,6 @@
 ---
 # Display name
-title: <span class="author-name-chinese">周 帅</span>
+title: 周 帅
 
 # Name pronunciation (optional)
 name_pronunciation: Shuai Zhou
@@ -52,8 +52,8 @@ profiles:
 
 interests:
   - Robotics
-  # - Multi agent system
-  # - Motion Planning
+  - Multi agent system
+  - Planning
 
 education:
   - area: Undergraduate
@@ -215,7 +215,7 @@ awards:
 I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Research Intern affiliated with [Robotics Institute](https://www.ri.cmu.edu/). <br>
 I am working on Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Multi-Robot Motion Planning at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). I also work at the [SJTU RAP Lab](https://rap-lab.github.io/) with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/), where we did projects in Multi-Agent Path Finding and collaborated with the [UCI&USC IDM Lab](https://idm-lab.org/news.html) under Prof. [Sven Koenig](https://idm-lab.org/l). <br>
 <!-- I am working on Robot learning with My previous and ongoing research focuses on Multi-Robot Motion Planning, and I am working with [Yorai Shaoul](https://yoraish.com/), [Jingtian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://arcs-group.github.io/) of the Robotics Institute, Carnegie Mellon University. Additionally, I am also working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University, collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine and University of Southern California. <br> -->
-<font color="red"> I am seeking a Ph.D. position starting in Fall 2026.=!!</font> <br>
+<font color="red"> I am seeking a Ph.D. position starting in Fall 2026!!</font> <br>
 <!-- I am currently a visiting researcher at CMU's Pittsburgh campus. If you have any research ideas or ongoing work in multi-agent coordination/cooperation and are interested in potential collaboration, please feel free to reach out, I'd be happy to discuss opportunities to work together! -->
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->
