@@ -1,6 +1,6 @@
 ---
 # Display name
-title: 周帅
+title: <span class="author-name-chinese">周 帅</span>
 
 # Name pronunciation (optional)
 name_pronunciation: Shuai Zhou
