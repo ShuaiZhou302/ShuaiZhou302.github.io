@@ -1,9 +1,9 @@
 ---
 # Display name
-title: 周 帅
+title: <span class="chinese-font">周 帅</span>
 
 # Name pronunciation (optional)
-name_pronunciation: Shuai Zhou
+name_pronunciation: Zhou Shuai
 
 # Full name (for SEO)
 first_name: Shuai

@@ -4,48 +4,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
 
 <style>
-  /* 使用 Zhi Mang Xing 字体为你的中文名字 - 通用选择器 */
-  .biography-block h1,
-  .hero-title,
-  .resume-biography h1,
-  .biography h1,
-  h1:contains("周"),
-  [data-page-type="authors"] h1,
-  /* 更通用的选择器 */
-  h1,
-  .page-header h1,
-  .author h1,
-  .profile h1 {
-    font-family: 'Zhi Mang Xing', cursive !important;
-    font-size: 3.5rem !important;
-    font-weight: 400 !important;
-    letter-spacing: 0.1em;
-    line-height: 1.2;
-  }
-  
-  /* 确保只有包含中文的标题使用这个字体 */
-  h1:not(:lang(en)):not([lang="en"]) {
+  /* 简单的字体样式 */
+  .chinese-font {
     font-family: 'Zhi Mang Xing', cursive !important;
   }
 </style>
-
-<script>
-  // 确保页面加载后应用字体到包含中文的标题
-  document.addEventListener('DOMContentLoaded', function() {
-    // 查找所有包含"周 帅"或中文字符的h1元素
-    const h1Elements = document.querySelectorAll('h1');
-    h1Elements.forEach(function(h1) {
-      if (h1.textContent.includes('周') || h1.textContent.includes('帅')) {
-        h1.style.fontFamily = "'Zhi Mang Xing', cursive";
-        h1.style.fontSize = '3.5rem';
-        h1.style.fontWeight = '400';
-        h1.style.letterSpacing = '0.1em';
-        h1.style.lineHeight = '1.2';
-        console.log('Applied Zhi Mang Xing font to:', h1.textContent);
-      }
-    });
-  });
-</script>
 
 <script>
   if (window.location.hostname === "shuai-zhou.com") {
