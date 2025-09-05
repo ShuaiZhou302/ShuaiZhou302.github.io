@@ -1,0 +1,16 @@
+/* Hugo Blox自定义CSS - 按照官方文档方式 */
+
+/* 导入Zhi Mang Xing字体 */
+@import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap');
+
+/* 应用字体到作者传记页面的标题 */
+.resume-biography-3 h1,
+.biography h1,
+.author-biography h1,
+h1 {
+  font-family: 'Zhi Mang Xing', cursive !important;
+  font-size: 3.5rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}

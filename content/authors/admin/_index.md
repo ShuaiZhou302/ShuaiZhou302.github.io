@@ -1,6 +1,6 @@
 ---
 # Display name
-title: <span class="chinese-font">周 帅</span>
+title: 周 帅
 
 # Name pronunciation (optional)
 name_pronunciation: Zhou Shuai
