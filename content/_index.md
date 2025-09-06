@@ -134,10 +134,16 @@ sections:
   #     spacing:
   #       padding: [0, 0, 0, 0]
   - block: markdown
-    content: |
-        <a href="https://mapmyvisitors.com/web/1bz6a" title="Visit tracker"><img src="https://mapmyvisitors.com/map.png?cl=ffffff&w=a&t=tt&d=ogNlizHBKR3qP5XFYl7x9CxhF9oZW8XuAaqkdd80ahE&co=4eadef&ct=ffffff" /></a>
+    content:
+      title: '🌏 Visitor Guide'
+      text: |-
+        <div style="text-align: center; margin: 20px auto;">
+          <a href="https://mapmyvisitors.com/web/1bz6a" title="Visit tracker">
+            <img src="https://mapmyvisitors.com/map.png?cl=ffffff&w=a&t=tt&d=ogNlizHBKR3qP5XFYl7x9CxhF9oZW8XuAaqkdd80ahE&co=4eadef&ct=ffffff" alt="Visitor Map" />
+          </a>
+        </div>
     design:
-      columns: '1'  
+      columns: '1'
   - block: cta-card
     demo: true # Only display this section in the Hugo Blox Builder demo site
     content:

@@ -3,7 +3,7 @@
 title: 周 帅
 
 # Name pronunciation (optional)
-name_pronunciation: Zhou Shuai
+name_pronunciation: Zhou  Shuai
 
 # Full name (for SEO)
 first_name: Shuai
