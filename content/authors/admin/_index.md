@@ -94,7 +94,7 @@ education:
   #     - lorem ipsum dolor sit amet, consectetur adipiscing elit
 work:
   - position: Research Intern (On-Site)
-    company_name: CMU Safr AI Lab, Department of Mechanical Enginerring, Carnegie Mellon University, USA
+    company_name: Safe AI Lab, Department of Mechanical Enginerring, Carnegie Mellon University, USA
     company_url: 'https://safeai-lab.github.io/'
     company_logo: '\uploads\CMU.png'
     date_start: 2025-08-01
