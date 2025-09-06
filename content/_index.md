@@ -133,16 +133,12 @@ sections:
   #     # Reduce spacing
   #     spacing:
   #       padding: [0, 0, 0, 0]
-  - block: markdown
-    content:
-      title: "🌍 Visitor Globe"
-      subtitle: ""
-      text: |
-        <div style="text-align: center; margin: 20px auto; max-width: 420px;">
-          <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=ogNlizHBKR3qP5XFYl7x9CxhF9oZW8XuAaqkdd80ahE&cl=ffffff&w=a"></script>
-        </div>
-    design:
-      columns: '1'  
+  - block: html
+    content: |
+      <div style="text-align: center; margin: 40px auto; max-width: 100%;">
+        <h2 style="margin-bottom: 20px;">🌍 Visitor Globe</h2>
+        <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=ogNlizHBKR3qP5XFYl7x9CxhF9oZW8XuAaqkdd80ahE&cl=ffffff&w=a"></script>
+      </div>  
   - block: cta-card
     demo: true # Only display this section in the Hugo Blox Builder demo site
     content:
