@@ -3,7 +3,7 @@
 title: 周 帅
 
 # Name pronunciation (optional)
-name_pronunciation: Zhou  Shuai
+name_pronunciation: Zhou   Shuai
 
 # Full name (for SEO)
 first_name: Shuai
@@ -20,7 +20,7 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Senior Undergraduate
+role: Senior undergraduate
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
@@ -45,15 +45,15 @@ profiles:
   #   url: uploads/resume.pdf   
   # - icon: academicons/orcid
   #   url: https://orcid.org/
-  # - icon: brands/x
-  #   url: https://twitter.com/GetResearchDev  
-  # - icon: brands/instagram
-  #   url: https://www.instagram.com/      
+  - icon: brands/x
+    url: https://x.com/ShuaiZhou234190  
+  - icon: brands/instagram
+    url: https://www.instagram.com/shuaizhou302/     
 
 interests:
   - Robotics
-  - Multi-Agent Systems
   - Planning
+  - Multi-Robot Systems
 
 education:
   - area: Undergraduate
@@ -100,7 +100,7 @@ work:
     date_start: 2025-08-01
     date_end: ''
     summary: |
-      Working on Cross-Embodiment Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Supervised by Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
+      Working on Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Supervised by Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
   - position: Research Intern (On-Site)
     company_name: ARCS Lab, Robotics Institute, Carnegie Mellon University, USA
     company_url: 'https://arcs-group.github.io/'
@@ -108,7 +108,7 @@ work:
     date_start: 2025-04-01
     date_end: ''
     summary: |
-      Working on Multi-Robot Motion Planning. Mentored by [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Supervised by Prof. [Jiaoyang Li](https://jiaoyangli.me/).
+      Working on Multi-Robot Planning. Mentored by [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Supervised by Prof. [Jiaoyang Li](https://jiaoyangli.me/).
   - position: Research Collaboration (Remote)
     company_name: IDM Lab, Donald Bren School of Information and Computer Science, University of California, Irvine, USA
     company_url: 'https://idm-lab.org/'
@@ -122,7 +122,7 @@ work:
     company_url: 'https://rap-lab.github.io/'
     company_logo: '\uploads\SJTU.png'
     date_start: 2024-04-15
-    date_end: ''
+    date_end: 2025-09-01
     summary: |
       Working on Multi-Robot Path Planning. Supervised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/).
 
@@ -213,9 +213,9 @@ awards:
 
 
 I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Research Intern affiliated with [Robotics Institute](https://www.ri.cmu.edu/). <br>
-I am working on Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Multi-Robot Motion Planning at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). I also work at the [SJTU RAP Lab](https://rap-lab.github.io/) with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/), where we did projects in Multi-Agent Path Finding and collaborated with the [UCI&USC IDM Lab](https://idm-lab.org/news.html) under Prof. [Sven Koenig](https://idm-lab.org/). <br>
+I am working on Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Multi-Robot Planning at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br>
 <!-- I am working on Robot learning with My previous and ongoing research focuses on Multi-Robot Motion Planning, and I am working with [Yorai Shaoul](https://yoraish.com/), [Jingtian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/) at the [ARCS Lab](https://arcs-group.github.io/) of the Robotics Institute, Carnegie Mellon University. Additionally, I am also working with Dr. [Shizhe Zhao](https://eggeek.github.io/) and Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [RAP Lab](https://rap-lab.github.io/) of Shanghai Jiao Tong University, collaborating with Prof. [Sven Koenig](https://idm-lab.org/index.html) at the [IDM Lab](https://idm-lab.org/) of University of California, Irvine and University of Southern California. <br> -->
-<font color="red"> I am seeking a Ph.D. position starting in Fall 2026!!</font> <br>
+<font color="red"> I am actively seeking a Ph.D. position beginning in Fall 2026 !! Please find below a summary of my research interests. Feel free to email me if you are interested. </font> <br>
 <!-- I am currently a visiting researcher at CMU's Pittsburgh campus. If you have any research ideas or ongoing work in multi-agent coordination/cooperation and are interested in potential collaboration, please feel free to reach out, I'd be happy to discuss opportunities to work together! -->
 <!-- At present, I am a remote Research intern in RAP-lab, UM-SJTU JI, SJTU. Working on Multi agent path finding(MAPF) and its varients.  <br>
 In addition to MAPF and Planning, I am also interested in other areas of Multi Agent System, Operations research, Optimization, Robotics. I believe that only by extensive study can my research horizons are not restricted. If you are willing to discuss with me about any topic related to robotics, please contact me directly.<br> -->

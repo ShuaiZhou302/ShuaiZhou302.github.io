@@ -32,12 +32,12 @@ sections:
           parallax: false
   - block: markdown
     content:
-      title: 'Short summary of my 🤖 research'
+      title: 'Summary of My 🤖 Research'
       subtitle: ''
       text: |-
-        My research vision is to build multi-robot systems that can efficiently collaborate across various robot forms. This requires developing efficient multi-robot planning algorithms (both decentralized and centralized) at the high level for coordination, as well as robust capabilities and policies at the low level for individual robot execution. Therefore, my research is structured into two interconnected components: Cross-Embodiment Robot Learning (Ongoing) and Scalable Multi-Robot Coordination (Ongoing and Previous).
+        My research goal is to build general robot systems that can efficiently collaborate across various robotic embodiments, plan based on world understanding, and robustly execute long-horizon and lifelong tasks. This requires developing efficient multi-robot planning at the high level for coordination and task assignment, robust capabilities and policies at the low level for individual robot execution, and world understanding capabilities for robots to perform their tasks effectively. Therefore, my research is structured into two interconnected components: Cross-Embodiment Robot Learning (Ongoing) and Scalable Multi-Robot planning (Ongoing and Previous).
 
-        My ongoing projects respectively focus on learning generalizable policies across diverse robotic embodiments and designing efficient multi-robot Task and Motion Planning (TAMP) algorithms with diffusion models. My previous projects focused on search-based multi-robot planning methods, bridging the gap between planning and real-world execution by developing algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (AAAI 2025, SoCS 2025), meeting time-sensitive requirements, and incorporating kinematic constraints (Under Review).
+        My ongoing projects respectively focus on learning generalizable policies across diverse robotic embodiments and designing efficient multi-robot Task and Motion Planning (TAMP) methods. My previous projects focused on search-based multi-robot planning methods, bridging the gap between planning and real-world execution by developing algorithms that account for practical constraints. These include handling agents with heterogeneous speeds (AAAI 2025, SoCS 2025), meeting time-sensitive requirements, and incorporating kinematic constraints (Under Review).
         
         For future work, I want to continue following my research vision and explore new possibilities to achieve it. There are some projects I'd like to investigate, such as multi-robot teams with different forms collaborating to build houses together. These may not be limited to traditional research projects, I'm genuinely curious to see if and how these ideas work in practice. Please drop me an email if you are interested, we could totally bake some cool stuff together.
 
@@ -138,7 +138,7 @@ sections:
       title: '🌏 Visitor'
       text: |-
         <div style="text-align: center; margin: 20px auto;">
-          <a href="https://mapmyvisitors.com/web/1bz6a" title="Visit tracker"><img src="https://mapmyvisitors.com/map.png?cl=ffffff&w=500&t=tt&d=ogNlizHBKR3qP5XFYl7x9CxhF9oZW8XuAaqkdd80ahE&co=2d78ad&ct=ffffff" /></a>
+          <a href='https://mapmyvisitors.com/web/1bzb0'  title='Visit tracker'><img src='https://mapmyvisitors.com/map.png?cl=ffffff&w=700&t=n&d=jEyvvqm1eWV6idAob6M-aeDUa6ZHwAnLqN4NssoxRsQ&co=65a9d8'/></a>
         </div>
     design:
       columns: '1'
