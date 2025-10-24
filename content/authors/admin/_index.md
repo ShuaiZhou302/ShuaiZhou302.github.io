@@ -20,7 +20,7 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Senior undergraduate
+role: Senior Undergraduate
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
@@ -36,23 +36,23 @@ profiles:
   - icon: brands/github
     url: https://github.com/ShuaiZhou302
   - icon: brands/linkedin
-    url: http://linkedin.com/in/shuai-zhou-61096428b
-  # - icon: brands/weixin
-  #   url: uploads/wechat.jpg 
+    url: http://linkedin.com/in/shuai-zhou-61096428b 
   - icon: academicons/google-scholar
     url: https://scholar.google.com/citations?user=ONn1TXAAAAAJ&hl=en&oi=sra   
-  # - icon: academicons/cv
-  #   url: uploads/resume.pdf   
-  # - icon: academicons/orcid
-  #   url: https://orcid.org/
   - icon: brands/x
     url: https://x.com/ShuaiZhou234190  
   - icon: brands/instagram
-    url: https://www.instagram.com/shuaizhou302/     
+    url: https://www.instagram.com/shuaizhou302/
+  # - icon: brands/weixin
+  #   url: uploads/wechat.jpg   
+  # - icon: academicons/cv
+  #   url: uploads/resume.pdf   
+  # - icon: academicons/orcid
+  #   url: https://orcid.org/  
 
 interests:
   - Robotics
-  - Planning
+  - Planning & Learning
   - Multi-Robot Systems
 
 education:
@@ -118,7 +118,7 @@ work:
     summary: |
       Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with Prof. [Sven Koenig](https://idm-lab.org/) via RAP Lab.    
   - position: Research Intern (Hybrid)
-    company_name: RAP Lab, University of Michigan-Shanghai Jiao Tong University Joint Institut, Shanghai Jiao Tong University, CHN
+    company_name: RAP Lab, University of Michigan-Shanghai Jiao Tong University Joint Institute, Shanghai Jiao Tong University, CHN
     company_url: 'https://rap-lab.github.io/'
     company_logo: '\uploads\SJTU.png'
     date_start: 2024-04-15
