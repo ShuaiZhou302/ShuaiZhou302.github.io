@@ -35,11 +35,17 @@ sections:
       title: '🤖 Research'
       subtitle: ''
       text: |-
-        <div style="text-align: center; margin: 18px 0;">
+        <figure style="text-align: center; margin: 18px 0;">
           <img src="uploads/Planning.png" alt="Planning diagram" style="max-width:100%;height:auto;display:inline-block;box-shadow:0 6px 18px rgba(0,0,0,0.25);border-radius:6px;" />
-        </div>
+          <figcaption style="margin-top:8px;font-size:0.9rem;color:var(--text-muted,#9aa0a6);">Credit: Keisuke Okumura (twitter)</figcaption>
+        </figure>
 
         My goal is to systematically develop next-generation decision-making framework that allows robots to unifies planning and abstractions learned from the environment, and further enable multi-robot collaboration, safe human-robot interaction. This vision was gradually formed during my undergraduate research, which involved four projects that I led or co-led at four labs. Roughly, they are structured into three components: Planning, Robot Learning and Multi-Robot Systems. 
+
+        <figure style="text-align: center; margin: 18px 0;">
+          <img src="uploads/Planning.png" alt="Planning diagram" style="max-width:100%;height:auto;display:inline-block;box-shadow:0 6px 18px rgba(0,0,0,0.25);border-radius:6px;" />
+          <figcaption style="margin-top:8px;font-size:0.9rem;color:var(--text-muted,#9aa0a6);">Credit: [来源/Source]</figcaption>
+        </figure>
 
         To be more specific, my ongoing projects respectively focus on learning generalizable policies across diverse robotic embodiments (CMU Safe AI Lab) and designing collaborative multi-robot Task and Motion Planning (TAMP) methods (CMU ARCS Lab). My previous projects focused on search-based multi-robot motion planning (SJTU RAP Lab & UCI IDM Lab), bridging the gap between planning and real-world execution with algorithms that account for practical constraints (CMU ARCS Lab). Some of my works on handling agents with heterogeneous speeds are published (AAAI 2025, SoCS 2025), while others on solving time-sensitive tasks with kinematic constraints are under review. I enjoy how planning explores the state space with human-prior intelligence, as well as the learning strategies for their efficiency in indescribable modeling. However, they respectively fail in certain scenarios, such as handling unknown worlds, long-term exploration and reasoning, and collaboration across embodiments. 
         
