@@ -36,7 +36,7 @@ sections:
       subtitle: ''
       text: |-
         <div style="text-align: center; margin: 18px 0;">
-          <img src="uploads/planning.png" alt="Planning diagram" style="max-width:100%;height:auto;display:inline-block;box-shadow:0 6px 18px rgba(0,0,0,0.25);border-radius:6px;" />
+          <img src="uploads/Planning.png" alt="Planning diagram" style="max-width:100%;height:auto;display:inline-block;box-shadow:0 6px 18px rgba(0,0,0,0.25);border-radius:6px;" />
         </div>
 
         My goal is to systematically develop next-generation decision-making framework that allows robots to unifies planning and abstractions learned from the environment, and further enable multi-robot collaboration, safe human-robot interaction. This vision was gradually formed during my undergraduate research, which involved four projects that I led or co-led at four labs. Roughly, they are structured into three components: Planning, Robot Learning and Multi-Robot Systems. 
