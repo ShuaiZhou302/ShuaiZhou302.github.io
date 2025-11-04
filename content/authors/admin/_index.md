@@ -68,6 +68,13 @@ education:
       - Robotics
       - Mechanic
       - Introduction to Engineering
+  - area: Visiting Student
+    institution: Carnegie Mellon University, USA
+    date_start: 2025-06-27
+    date_end: 2026-02-27
+    summary: |
+      Visiting Scholar at Robotics Institute
+      Host by Prof. Jiaoyang Li
   - area: Exchange Student
     institution: University of California, Berkeley, USA
     date_start: 2023-08-16
