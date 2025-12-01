@@ -2,7 +2,7 @@
 title: 'Bridging Planning and Execution: Multi-Agent Path Finding Under Real-World
   Deadlines'
 authors:
-- [Jingtian Yan*](https://jingtianyan.github.io/)
+- Jingtian Yan*
 - Shuai Zhou*
 - Stephen F. Smith
 - Jiaoyang Li
