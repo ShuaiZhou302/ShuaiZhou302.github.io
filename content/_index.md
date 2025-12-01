@@ -91,7 +91,7 @@ sections:
         padding: [0, 0, 0, 0]
   - block: collection
     content:
-      title: Publications
+      title: Publications (* equal contribution)
       text: ""
       filters:
         folders:
