@@ -125,12 +125,6 @@ work:
     date_end: 2025-09-01
     summary: |
       Working on Multi-Robot Path Planning. Supervised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/).
-    button:
-       text: 'Read the paper published at AAAI 2025'
-       url: 'https://doi.org/10.1609/aaai.v39i14.33618'
-    button:
-       text: 'Read the paper published at SoCS 2025'
-       url: 'https://doi.org/10.1609/socs.v18i1.36016'
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
