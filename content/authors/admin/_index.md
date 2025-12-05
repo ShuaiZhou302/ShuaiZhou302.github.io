@@ -84,7 +84,7 @@ education:
       Specialized in electrical engineering and computer science.
 
   - area: BEng Robotics Engineering
-    institution: South China University of Technology, CHN
+    institution: South China University of Technology
     date_start: 2022-09-01
     date_end: 2026-06-30
     summary: |
