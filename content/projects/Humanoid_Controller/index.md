@@ -1,9 +1,9 @@
 ---
 title: G1 Humanoid Whole-Body Controller
 date: 2025-10-26
-links:
-  - type: site
-    url: https://human2bots.github.io/egox/
+# links:
+#   - type: site
+#     url: https://human2bots.github.io/egox/
 tags:
   - Robotics
   - Control
@@ -38,64 +38,78 @@ This project implements a comprehensive learning pipeline for humanoid robot loc
 
 ## Technical Details
 
-### 1. Teacher Training (Reinforcement Learning)
+### Two-Stage Training Pipeline
 
-**Input:**
-- **Proprioceptive observations** (Proprio_t):
-  - Angular velocity (3), projected gravity (3)
-  - Joint positions (29), joint velocities (29)
-  - Last actions (29)
-- **Command** (Comd_t): Linear velocity (x, y), angular velocity (z), height, body orientation (roll, pitch, yaw)
-- **Privileged information** (Priv_t):
-  - Feet contact (2), linear velocity (3)
-  - Height scan from ray casting
+This project uses a two-stage approach:
+1. **Teacher Policy**: Trained with privileged information in simulation (RL)
+2. **Student Policy**: Distilled from teacher using only proprioceptive observations (IL)
 
-**Output:**
-- Lower-body actions (a_t^tea): Target joint positions for 29 DOF (legs + waist + arms)
+---
+
+### Stage 1: Teacher Training (Reinforcement Learning)
+
+**Observations (60-dim):**
+- **Angular velocity** (3): IMU gyroscope data
+- **Projected gravity** (3): IMU accelerometer projected to body frame
+- **Command** (7): 
+  - Linear velocity (x, y)
+  - Angular velocity (z)
+  - Target height
+  - Body orientation (roll, pitch, yaw)
+- **Joint positions** (15): Legs + waist joint angles
+- **Joint velocities** (15): Legs + waist joint speeds
+- **Last actions** (15): Previous target positions
+- **Privileged information** (2): Feet contact states (left, right)
+
+**Actions (15-dim):**
+- Target joint positions for legs + waist
 
 **Training:**
-- Algorithm: PPO (Proximal Policy Optimization)
-- Environment: Isaac Sim with terrain curriculum
-- Reward: Track AMASS upper-body motions while maintaining stable locomotion
+- **Algorithm**: PPO (Proximal Policy Optimization)
+- **Environment**: Isaac Sim with terrain curriculum
+- **Upper-body control**: Retargeted AMASS motions (offline, not part of policy output)
+- **Lower-body control**: Learned by teacher policy
+- **Reward**: Track commands while maintaining stability
 
-### 2. Upper-body Motion Retargeting
+---
 
-**AMASS Dataset:**
-- Human motion capture data retargeted to robot skeleton
-- Provides natural upper-body movements (q_t^upper)
+### Stage 2: Student Training (Imitation Learning)
 
-**Integration:**
-- Teacher policy controls lower-body (legs + waist)
-- AMASS motions control upper-body (arms)
-- Combined for realistic humanoid behavior
+**Observations (116-dim):**
+- **Current observation** (58-dim):
+  - Angular velocity (3), projected gravity (3)
+  - Command (7)
+  - Joint positions (15), joint velocities (15)
+  - Last actions (15)
+  - *Note: No privileged information (feet contact)*
+- **Previous observation** (58-dim): Same structure, one timestep earlier
+- **Total**: 116-dim with temporal history
 
-### 3. Student Training (Imitation Learning)
+**Actions (15-dim):**
+- Target joint positions for legs + waist (same as teacher)
 
-**Input:**
-- Current observation (O_t): Same as teacher (without privileged info)
-- History (O_{t-1}): Previous observation for temporal context
-- Total input: 116 dims (2 × 58)
-
-**Output:**
-- Lower-body actions (a_t^stu): Target joint positions for 15 DOF (legs + waist only)
-
-**Training Methods:**
-- BC (Behavioral Cloning): Supervised learning from teacher demonstrations
-- DAgger: Interactive learning with teacher corrections
+**Training:**
+- **Methods**: Behavioral Cloning (BC) or DAgger
+- **Data source**: Demonstrations from teacher policy in simulation
+- **Objective**: Match teacher's actions using only proprioceptive feedback
 
 **Architecture:**
 - MLP: 116 → 512 → 256 → 128 → 15
 - Activation: ELU
 
-### 4. Deployment Pipeline
+---
 
-**Real Robot Communication:**
-1. **State feedback**: Robot publishes joint positions, velocities, IMU data via SDK2
-2. **Observation construction**: Build 58-dim proprioceptive state + command
-3. **Student inference**: Run JIT-compiled policy (20ms control loop)
-4. **Command execution**: Send target positions with PD gains (kp/kd) to motors
+### Deployment Pipeline
+
+**Real Robot Control Loop (20ms):**
+
+1. **State Feedback**: Robot SDK2 publishes joint states and IMU data
+2. **Observation Construction**: Build 58-dim current observation from sensor data + command
+3. **History Update**: Maintain 2-step observation buffer (current + previous)
+4. **Policy Inference**: Student policy outputs 15-dim target joint positions
+5. **Command Execution**: Send targets to motors with PD gains (kp/kd)
 
 **Key Features:**
-- History buffer: 2 steps for temporal awareness
-- JIT compilation: Fast inference on robot
-- PD control: Position tracking with tuned gains
+- Temporal awareness via observation history (2 steps)
+- JIT-compiled policy for fast inference
+- PD control for robust position tracking
