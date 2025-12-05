@@ -116,7 +116,7 @@ hugoblox:
   # ────────────────────────────────────────────────────────────────────────────
   copyright:
     # Copyright notice - supports {year}, {name}, {license} placeholders
-    notice: "© {year} {name}. This work is licensed under {license}"
+    notice: "© {year} Shuai Zhou. This work is licensed under CC"
     license:
       type: cc                          # cc | all_rights | custom
       allow_derivatives: false

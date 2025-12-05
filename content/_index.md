@@ -23,17 +23,21 @@ sections:
         education: ''
         interests: ''
     design:
-      css_class: dark
+    # Use the new Gradient Mesh which automatically adapts to the selected theme colors
       background:
-        color: black
-        image:
-          # Add your image background to `assets/media/`.
-          filename: background.png
-          filters:
-            brightness: 0.1
-          size: cover
-          position: center
-          parallax: false
+        gradient_mesh:
+          enable: true
+      # css_class: dark
+      # background:
+      #   color: black
+      #   image:
+      #     # Add your image background to `assets/media/`.
+      #     filename: background.png
+      #     filters:
+      #       brightness: 0.1
+      #     size: cover
+      #     position: center
+      #     parallax: false
       avatar:                
         size: medium
         shape: circle

@@ -209,9 +209,6 @@ awards:
        Awarded to outstanding students for overseas exchange, receiving 40,000 CNY (5512 USD)
 ---
 
-## About Me
-
-
 I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Research Intern affiliated with [Robotics Institute](https://www.ri.cmu.edu/). <br>
 I am working on Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Multi-Robot Planning at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br>
 
