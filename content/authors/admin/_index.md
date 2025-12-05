@@ -1,9 +1,9 @@
 ---
 # Display name
-title: 周 帅
+title: Zhou, Shuai
 
 # Name pronunciation (optional)
-name_pronunciation: Zhou   Shuai
+name_pronunciation: Chow  Shu-ai
 
 # Full name (for SEO)
 first_name: Shuai
