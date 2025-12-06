@@ -126,39 +126,37 @@ work:
     summary: |
       Working on Multi-Robot Path Planning. Supervised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/).
 
-# Skills
-# Add your own SVG icons to `assets/media/icons/`
-# skills:
-#   - name: Technical Skills
-#     items:
-#       - name: Python & PyTorch
-#         description: ''
-#         percent: 95
-#         icon: 🤖
-#       - name: Machine Learning
-#         description: ''
-#         percent: 100
-#         icon: chart-bar
-#       - name: Cloud Computing (AWS/GCP)
-#         description: ''
-#         percent: 85
-#         icon: cloud
-#   - name: Hobbies
-#     color: '#eeac02'
-#     color_border: '#f0bf23'
-#     items:
-#       - name: Hiking in the Rockies
-#         description: ''
-#         percent: 80
-#         icon: person-simple-walk
-#       - name: Building Custom PCs
-#         description: ''
-#         percent: 90
-#         icon: cpu-chip
-#       - name: Sci-Fi Reading
-#         description: ''
-#         percent: 70
-#         icon: book-open
+skills:
+  - name: Technical Skills
+    items:
+      - name: Programming Languages
+        description: 'Python, C++, MATLAB, Java'
+        percent: 90
+        icon: brands/python
+      - name: Robot Platforms
+        description: 'Unitree G1, Go1, UFACTORY X-ARM 7'
+        percent: 85
+        icon: 🤖
+      - name: Robot Simulation
+        description: 'IsaacSym, MuJoCo, PyBullet'
+        percent: 90
+        icon: hero/computer-desktop
+      - name: Deep (Reinforcement) Learning
+        description: 'PyTorch, Isaaclab'
+        percent: 85
+        icon: hero/academic-cap
+  - name: Hobbies
+    color: '#eeac02'
+    color_border: '#f0bf23'
+    items:
+      - name: Model Kits
+        description: 'Gundam, warhammer'
+        percent: 100
+        icon: 🔧
+      - name: Badminton
+        description: 'Used to play competitions'
+        percent: 90
+        icon: 🏸
 
 # Services:
 #   - name: Conferece
