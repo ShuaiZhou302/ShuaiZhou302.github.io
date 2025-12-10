@@ -59,17 +59,17 @@ interests:
   - Robotics
   - Planning & Learning
   - Multi-Robot Systems
-  - Human-Robot Interection
+  - Human-Robot Interaction
 
 education:
-  - area: Visiting Student Researcher
+  - area: Visiting Researcher
     institution: Carnegie Mellon University
     icon: ""
     date_start: 2025-06-27
     date_end: 2026-02-27
     summary: |
-      Visiting Robotics Researcher at the Robotics Institute
-      Host by Prof. Jiaoyang Li
+      Visiting Student Researcher at the Robotics Institute
+      Hosted by Prof. Jiaoyang Li
     # button:
     #   text: 'Advisors'
     #   url: 'https://example.com/thesis.pdf'
@@ -83,24 +83,25 @@ education:
 
       Specialized in electrical engineering and computer science.
 
-  - area: BEng Robotics Engineering
+  - area: Undergraduate Student
     institution: South China University of Technology
     date_start: 2022-09-01
     date_end: 2026-06-30
     summary: |
+      Major: Robotics Engineering. 
       GPA: 3.84/4.0 
 
       Core courses: Theory and Technology of Robotics (A); Artificial Intelligence (A); Data Analysis and Modeling (A); Data Structures (A); Designing Information Devices and Systems(A); Modeling, Analysis, and Control of Dynamic Systems (A); Design and Manufacturing I, II (A); Linear Algebra and Analytic Geometry (A); Probability and Statistics (A); Calculus (A);
 
 work:
   - position: Robotics Research Intern (On-Site)
-    company_name: Safe AI Lab, Department of Mechanical Enginerring, Carnegie Mellon University, USA
+    company_name: Safe AI Lab, Department of Mechanical Engineering, Carnegie Mellon University, USA
     company_url: 'https://safeai-lab.github.io/'
     company_logo: '\uploads\CMU.png'
     date_start: 2025-08-01
     date_end: ''
     summary: |
-      Working on Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Supervised by Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
+      Working on Cross-Embodiment Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Supervised by Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
   - position: Robotics Research Intern (On-Site)
     company_name: ARCS Lab, Robotics Institute, Carnegie Mellon University, USA
     company_url: 'https://arcs-group.github.io/'
@@ -108,7 +109,7 @@ work:
     date_start: 2025-04-01
     date_end: ''
     summary: |
-      Working on Multi-Robot Planning. Mentored by [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Supervised by Prof. [Jiaoyang Li](https://jiaoyangli.me/).
+      Working on Task and Motion Planning, Multi-Robot Coordination. Mentored by [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Supervised by Prof. [Jiaoyang Li](https://jiaoyangli.me/).
   - position: Robotics Research Intern (Remote)
     company_name: IDM Lab, Donald Bren School of Information and Computer Science, University of California, Irvine, USA
     company_url: 'https://idm-lab.org/'
@@ -135,13 +136,13 @@ skills:
         icon: brands/python
       - name: Robot Platforms
         description: 'Unitree G1, Go1, UFACTORY X-ARM 7'
-        percent: 85
+        percent: 90
         icon: 🤖
       - name: Robot Simulation
         description: 'IsaacSym, MuJoCo, PyBullet'
         percent: 90
         icon: hero/computer-desktop
-      - name: Deep (Reinforcement) Learning
+      - name: Deep (Reinforcement) Learning Tools
         description: 'PyTorch, Isaaclab'
         percent: 85
         icon: hero/academic-cap
@@ -149,17 +150,17 @@ skills:
     color: '#eeac02'
     color_border: '#f0bf23'
     items:
-      - name: Model Kits
-        description: 'Gundam, warhammer'
+      - name: Plastic Model Kits
+        description: 'Gundam (Since 2010)'
         percent: 100
         icon: 🔧
       - name: Badminton
         description: 'Used to play competitions'
-        percent: 90
+        percent: 100
         icon: 🏸
 
 # Services:
-#   - name: Conferece
+#   - name: Conference
 #     items :
 #       - name: IROS2025
 
@@ -169,8 +170,8 @@ languages:
     percent: 100
   - name: Chinese
     percent: 100
-  # - name: Portuguese
-  #   percent: 25
+  - name: Teochew
+    percent: 80
 
 # Awards.
 #   Add/remove as many awards below as you like.
@@ -207,9 +208,9 @@ awards:
        Awarded to outstanding students for overseas exchange, receiving 40,000 CNY (5512 USD)
 ---
 
-I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Research Intern affiliated with [Robotics Institute](https://www.ri.cmu.edu/). <br>
-I am working on Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Multi-Robot Planning at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br>
+I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Robotics Researcher affiliated with the [Robotics Institute](https://www.ri.cmu.edu/). <br>
+I am working on Cross-Embodiment Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Planning and Multi-Robot Coordination at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br>
 
-<font color="red"> I am actively seeking a Ph.D. position beginning in Fall 2026 !! Please find below a summary of my research interests. Feel free to email me if you are interested. </font> <br>
+<font color="red"> I am actively seeking a Ph.D. position beginning in Fall 2026 !! Please find below a short summary of my research interests. Feel free to email me if you are interested. </font> <br>
 
 
