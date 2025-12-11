@@ -19,9 +19,9 @@ main:
   - name: Experience
     url: experience/
     weight: 20
-  - name: Projects
-    url: projects/
-    weight: 30
+  # - name: Projects
+  #   url: projects/
+  #   weight: 30
   # - name: Courses
   #   url: courses/
   #   weight: 40

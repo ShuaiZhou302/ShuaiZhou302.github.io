@@ -87,7 +87,7 @@ sections:
   - block: collection
     id: projects
     content:
-      title: Some Robotics Projects
+      title: Projects
       subtitle: 'I had some fun doing them.'
       filters:
         folders:
