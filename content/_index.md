@@ -85,6 +85,17 @@ sections:
       view: article-grid
       columns: 2
   - block: collection
+    id: projects
+    content:
+      title: Some Robotics Projects
+      subtitle: 'I had some fun doing them.'
+      filters:
+        folders:
+          - projects
+    design:
+      view: article-grid
+      columns: 2
+  - block: collection
     content:
       title: Publications (* equal contribution)
       text: ""
