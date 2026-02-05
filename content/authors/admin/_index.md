@@ -23,12 +23,12 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Robotics Researcher 
+role: Nobody
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
-  - name: Carnegie Mellon University
-    url: https://www.ri.cmu.edu/
+  # - name: Carnegie Mellon University
+  #   url: https://www.ri.cmu.edu/
   - name: South China University of Technology
     url: https://www.scut.edu.cn/en/
 
@@ -40,14 +40,14 @@ profiles:
     label: E-mail Me
   - icon: brands/github
     url: https://github.com/ShuaiZhou302
-  - icon: brands/linkedin
-    url: http://linkedin.com/in/shuai-zhou-61096428b 
+  # - icon: brands/linkedin
+  #   url: http://linkedin.com/in/shuai-zhou-61096428b 
   - icon: academicons/google-scholar
     url: https://scholar.google.com/citations?user=ONn1TXAAAAAJ&hl=en&oi=sra   
-  - icon: brands/x
-    url: https://x.com/ShuaiZhou234190  
-  - icon: brands/instagram
-    url: https://www.instagram.com/shuaizhou302/
+  # - icon: brands/x
+  #   url: https://x.com/ShuaiZhou234190  
+  # - icon: brands/instagram
+  #   url: https://www.instagram.com/shuaizhou302/
   # - icon: brands/weixin
   #   url: uploads/wechat.jpg   
   # - icon: academicons/cv
@@ -56,19 +56,19 @@ profiles:
   #   url: https://orcid.org/  
 
 interests:
-  - Robotics
+  # - Robotics
   - Planning & Learning
-  - Multi-Robot Systems
-  - Human-Robot Interaction
+  # - Multi-Robot Systems
+  # - Human-Robot Interaction
 
 education:
-  - area: Visiting Researcher
+  - area: Visiting Intern
     institution: Carnegie Mellon University
     icon: ""
     date_start: 2025-06-27
     date_end: 2026-02-27
     summary: |
-      Visiting Student Researcher at the Robotics Institute
+      Visiting Research intern
       Hosted by Prof. Jiaoyang Li
     # button:
     #   text: 'Advisors'
@@ -81,7 +81,7 @@ education:
     summary: |
       GPA: 4.0/4.0
 
-      Specialized in electrical engineering and computer science.
+      Specialized in Electrical Engineering and Computer Science.
 
   - area: Undergraduate Student
     institution: South China University of Technology
@@ -91,8 +91,6 @@ education:
       Major: Robotics Engineering. 
       GPA: 3.84/4.0 
 
-      Core courses: Theory and Technology of Robotics (A); Artificial Intelligence (A); Data Analysis and Modeling (A); Data Structures (A); Designing Information Devices and Systems(A); Modeling, Analysis, and Control of Dynamic Systems (A); Design and Manufacturing I, II (A); Linear Algebra and Analytic Geometry (A); Probability and Statistics (A); Calculus (A);
-
 work:
   - position: Robotics Research Intern (On-Site)
     company_name: Safe AI Lab, Department of Mechanical Engineering, Carnegie Mellon University, USA
@@ -101,7 +99,7 @@ work:
     date_start: 2025-08-01
     date_end: ''
     summary: |
-      Working on Cross-Embodiment Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Supervised by Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
+      Cross-Embodiment Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
   - position: Robotics Research Intern (On-Site)
     company_name: ARCS Lab, Robotics Institute, Carnegie Mellon University, USA
     company_url: 'https://arcs-group.github.io/'
@@ -109,15 +107,15 @@ work:
     date_start: 2025-04-01
     date_end: ''
     summary: |
-      Working on Task and Motion Planning, Multi-Robot Coordination. Mentored by [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Supervised by Prof. [Jiaoyang Li](https://jiaoyangli.me/).
-  - position: Robotics Research Intern (Remote)
-    company_name: IDM Lab, Donald Bren School of Information and Computer Science, University of California, Irvine, USA
-    company_url: 'https://idm-lab.org/'
-    company_logo: '\uploads\CMU.png'
-    date_start: 2025-03-01
-    date_end: 2025-07-01
-    summary: |
-      Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with Prof. [Sven Koenig](https://idm-lab.org/) via RAP Lab.    
+     Task and Motion Planning, Multi-Robot Coordination. Mentored by [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/).
+  # - position: Robotics Research Intern (Remote)
+  #   company_name: IDM Lab, Donald Bren School of Information and Computer Science, University of California, Irvine, USA
+  #   company_url: 'https://idm-lab.org/'
+  #   company_logo: '\uploads\CMU.png'
+  #   date_start: 2025-03-01
+  #   date_end: 2025-07-01
+  #   summary: |
+  #     Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with Prof. [Sven Koenig](https://idm-lab.org/) via RAP Lab.    
   - position: Robotics Research Intern (Hybrid)
     company_name: RAP Lab, University of Michigan-Shanghai Jiao Tong University Joint Institute, Shanghai Jiao Tong University, CHN
     company_url: 'https://rap-lab.github.io/'
@@ -125,7 +123,7 @@ work:
     date_start: 2024-04-15
     date_end: 2025-09-01
     summary: |
-      Working on Multi-Robot Path Planning. Supervised by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/).
+      Multi-Robot Path Planning. Mentored by Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/).
 
 skills:
   - name: Technical Skills
@@ -170,8 +168,8 @@ languages:
     percent: 100
   - name: Chinese
     percent: 100
-  - name: Teochew
-    percent: 80
+  # - name: Teochew
+  #   percent: 80
 
 # Awards.
 #   Add/remove as many awards below as you like.
@@ -208,9 +206,11 @@ awards:
        Awarded to outstanding students for overseas exchange, receiving 40,000 CNY (5512 USD)
 ---
 
-I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Robotics Researcher affiliated with the [Robotics Institute](https://www.ri.cmu.edu/). <br>
-I am working on Cross-Embodiment Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Planning and Multi-Robot Coordination at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br>
+<!-- I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Robotics Researcher affiliated with the [Robotics Institute](https://www.ri.cmu.edu/). <br>
+I am working on Cross-Embodiment Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Planning and Multi-Robot Coordination at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br> -->
 
-<font color="red"> I am actively seeking a Ph.D. position beginning in Fall 2026 !! Please find below a short summary of my research interests. Feel free to email me if you are interested. </font> <br>
+I am a senior undergraduate student in Robotics and currently visiting [CMU Robotics Institute](https://www.ri.cmu.edu/). <br>
+
+<!-- <font color="red"> I am actively seeking a Ph.D. position beginning in Fall 2026 !! Please find below a short summary of my research interests. Feel free to email me if you are interested. </font> <br> -->
 
 
