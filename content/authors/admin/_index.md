@@ -3,14 +3,14 @@
 title: Zhou, Shuai
 
 # Name pronunciation (optional)
-name_pronunciation: Chow  Shu-ai
+# name_pronunciation: Chow  Shu-ai
 
 # Full name (for SEO)
 first_name: Shuai
 last_name: Zhou
 
 # Pronouns (optional)
-pronouns: he/him
+# pronouns: he/him
 
 # Status emoji
 status: 
@@ -23,7 +23,7 @@ superuser: true
 highlight_name: true
 
 # Role/position/tagline
-role: Nobody
+role: Jedi
 
 # Organizations/Affiliations to display in Biography blox
 organizations:
@@ -68,8 +68,7 @@ education:
     date_start: 2025-06-27
     date_end: 2026-02-27
     summary: |
-      Visiting Research intern
-      Hosted by Prof. Jiaoyang Li
+      Visiting Researcher at the Robotics Institute
     # button:
     #   text: 'Advisors'
     #   url: 'https://example.com/thesis.pdf'
@@ -92,7 +91,7 @@ education:
       GPA: 3.84/4.0 
 
 work:
-  - position: Robotics Research Intern (On-Site)
+  - position: Research Intern (On-Site)
     company_name: Safe AI Lab, Department of Mechanical Engineering, Carnegie Mellon University, USA
     company_url: 'https://safeai-lab.github.io/'
     company_logo: '\uploads\CMU.png'
@@ -100,7 +99,7 @@ work:
     date_end: ''
     summary: |
       Cross-Embodiment Robot learning. Mentored by [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html).
-  - position: Robotics Research Intern (On-Site)
+  - position: Research Intern (On-Site)
     company_name: ARCS Lab, Robotics Institute, Carnegie Mellon University, USA
     company_url: 'https://arcs-group.github.io/'
     company_logo: '\uploads\CMU.png'
@@ -116,7 +115,7 @@ work:
   #   date_end: 2025-07-01
   #   summary: |
   #     Working on Multi-Agent Path Finding with Asynchronous Actions. Collaborating with Prof. [Sven Koenig](https://idm-lab.org/) via RAP Lab.    
-  - position: Robotics Research Intern (Hybrid)
+  - position: Research Intern (Hybrid)
     company_name: RAP Lab, University of Michigan-Shanghai Jiao Tong University Joint Institute, Shanghai Jiao Tong University, CHN
     company_url: 'https://rap-lab.github.io/'
     company_logo: '\uploads\SJTU.png'
@@ -209,7 +208,9 @@ awards:
 <!-- I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Robotics Researcher affiliated with the [Robotics Institute](https://www.ri.cmu.edu/). <br>
 I am working on Cross-Embodiment Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Planning and Multi-Robot Coordination at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br> -->
 
-I am a senior undergraduate student in Robotics and currently visiting [CMU Robotics Institute](https://www.ri.cmu.edu/). <br>
+I am a fianl-year undergraduate student in Robotics and currently visiting [CMU Robotics Institute](https://www.ri.cmu.edu/). <br> 
+
+Pls reach out so we can go to a jazz concert, comic-con, or watch a movie together for no reason. In return, I happen to have a secret little alien friend who is doing organic robot learning on human-cat interaction and you are allowed to make it harder.
 
 <!-- <font color="red"> I am actively seeking a Ph.D. position beginning in Fall 2026 !! Please find below a short summary of my research interests. Feel free to email me if you are interested. </font> <br> -->
 
