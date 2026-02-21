@@ -208,7 +208,7 @@ awards:
 <!-- I am a senior undergraduate student at [South China University of Technology](https://www.scut.edu.cn/en/), majoring in Robotics Engineering. I am currently visiting [Carnegie Mellon University](https://www.cmu.edu/) as a Robotics Researcher affiliated with the [Robotics Institute](https://www.ri.cmu.edu/). <br>
 I am working on Cross-Embodiment Robot learning at the [CMU Safe AI Lab](https://safeai-lab.github.io/) with [Yaru Niu](https://yaruniu.com/) and Prof. [Ding Zhao](https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html), Planning and Multi-Robot Coordination at the [CMU ARCS Lab](https://arcs-group.github.io/) with [Yorai Shaoul](https://yoraish.com/), [Jintian Yan](https://jingtianyan.github.io/) and Prof. [Jiaoyang Li](https://jiaoyangli.me/). Previously, I worked with Prof. [Zhongqiang Ren](https://rap-lab.github.io/team/zren/) at the [SJTU RAP Lab](https://rap-lab.github.io/), where we did projects in Multi-Robot Path Planning and collaborated with Prof. [Sven Koenig](https://idm-lab.org/) at the [UCI & USC IDM Lab](https://idm-lab.org/news.html). <br> -->
 
-I am a fianl-year undergraduate student in Robotics and currently visiting [CMU Robotics Institute](https://www.ri.cmu.edu/). <br> 
+I am a fianl-year undergraduate student in Robotics and currently visiting [CMU Robotics Institute](https://www.ri.cmu.edu/), and may spend another two years as MSR at RI. <br> 
 
 Pls reach out so we can go to a jazz concert, comic-con, or watch a movie together for no reason. In return, I happen to have a secret little alien friend who is doing organic robot learning on human-cat interaction and you are allowed to make it harder.
 
