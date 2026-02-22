@@ -62,13 +62,14 @@ interests:
   # - Human-Robot Interaction
 
 education:
-  - area: Incoming Master Student
-      institution: Carnegie Mellon University
-      icon: ""
-      date_start: 2026-08-27
-      date_end: 2028-06-27
-      summary: |
-        Master of Science of Robotics, in Robotics Institute
+  - area: Master Student
+    institution: Carnegie Mellon University
+    icon: ""
+    date_start: 2026-08-27
+    date_end: 2028-06-27
+    summary: |
+      Incoming Master of Science in Robotics
+
   - area: Visiting Intern
     institution: Carnegie Mellon University
     icon: ""
@@ -85,16 +86,15 @@ education:
     date_start: 2023-08-16
     date_end: 2023-12-30
     summary: |
-      GPA: 4.0/4.0
-
       Specialized in Electrical Engineering and Computer Science.
+      GPA: 4.0/4.0
 
   - area: Undergraduate Student
     institution: South China University of Technology
     date_start: 2022-09-01
     date_end: 2026-06-30
     summary: |
-      Major: Robotics Engineering. 
+      Bachelor of Robotics Engineering. 
       GPA: 3.84/4.0 
 
 work:
