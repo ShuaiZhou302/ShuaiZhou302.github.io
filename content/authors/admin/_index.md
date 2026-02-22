@@ -65,8 +65,8 @@ education:
   - area: Incoming Master Student
       institution: Carnegie Mellon University
       icon: ""
-      date_start: 2026-06-27
-      date_end: 2028-02-27
+      date_start: 2026-08-27
+      date_end: 2028-06-27
       summary: |
         Master of Science of Robotics, in Robotics Institute
   - area: Visiting Intern
