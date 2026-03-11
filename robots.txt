@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ShuaiZhou302.github.io/sitemap.xml
