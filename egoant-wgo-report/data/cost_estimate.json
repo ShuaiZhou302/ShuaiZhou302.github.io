@@ -1,14 +1,11 @@
 {
-  "kind": "estimate_plus_production_rollout",
-  "note": "WGO raw/selector tokens: original engineering estimate (397B remote temporarily down; cannot remasure on original stack). API call counts: artifact-counted from label JSON. Production HomER-25 tokens: MEASURED rollout from LFT work/*/token_usage.json.",
+  "kind": "public_engineering_estimate",
+  "note": "WGO raw/selector tokens are engineering estimates. API call counts are artifact-counted from report outputs. Internal machines, paths, and service-state details are intentionally omitted from the public report.",
   "eval_subset": "HomER 25 episodes",
   "sources": {
-    "labels_dir": "e2e_0.1517_homer25_labels/labels",
-    "lft_host": "lft-4090-2",
-    "lft_production_usage": "data/lft_usage/homer25_production_token_usage.json",
+    "labels": "public report artifacts",
     "wgo_exp_usage_files": 0,
-    "collaborator_397b_status": "temporarily_closed",
-    "optional_27b_remeasure_archive": "data/lft_usage/wgo_*_27b*.json"
+    "internal_usage_sources": "omitted"
   },
   "video": {
     "n_episodes": 25,
@@ -61,7 +58,7 @@
     "img_tokens_per_image": [900, 1600],
     "text_tokens_per_call": 600,
     "judge_text_tokens": 400,
-    "status": "engineering_estimate_397b_unavailable"
+    "status": "public_engineering_estimate"
   },
   "recipes": {
     "raw_only": {
@@ -138,9 +135,9 @@
     }
   },
   "production_measured": {
-    "label": "EgoVid Annotate 生产默认管线（HaWoR 腕速切段 + caption + merge）",
-    "kind": "measured",
-    "source": "WGO_Bench_HomER/work/homer_*/token_usage.json",
+    "label": "EgoANT production default path (HaWoR wrist-speed cuts + caption + merge)",
+    "kind": "aggregate_estimate",
+    "source": "internal aggregate, paths omitted",
     "n_episodes": 25,
     "api_calls_total": 2574,
     "prompt_tokens": 8039348,
@@ -178,7 +175,7 @@
         "latency_sec": 1660.459
       }
     },
-    "e2e_f1_note": "生产 one-pass E2E≈0.0656（与 WGO selector 0.1517 不是同一路径）"
+    "e2e_f1_note": "production one-pass E2E≈0.0656; not the same path as WGO selector E2E 0.1517"
   },
   "default_display": "both"
 }

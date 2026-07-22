@@ -1,4 +1,4 @@
-/* EgoVid Annotate report i18n — splash / demos / narrative sections */
+/* EgoANT report i18n — splash / demos / narrative sections */
 (function () {
   const I18N = {
     zh: {
@@ -12,34 +12,35 @@
       "nav.story": "消融",
       "nav.recipe": "推荐配置",
       "nav.appendix": "附录",
+      "nav.references": "References",
       "toc.label": "目录",
       "tag.ego": "第一视角",
       "tag.human": "人手数据",
       "tag.subtask": "子任务",
       "tag.wgo": "WGO-Bench",
-      "tag.egoant": "EgoVid Annotate",
+      "tag.egoant": "EgoANT",
       "hero.link.blog": "Macrodata blog",
       "hero.link.app": "附录细节",
-      "hero.eyebrow": "WGO-Bench HomER · EgoVid Annotate",
-      "hero.lede": "在 WGO-Bench 最难的第一视角子集 HomER 上，EgoVid Annotate 的 Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；端到端 0.1517。切段已接近公开 Gemini 参考，文案与端到端仍有空间。",
-      "en.banner": "附录公式/表可能含中英混排；折叠实验细节卡也可能保留中文技术说明。",
+      "hero.eyebrow": "WGO-Bench HomER · EgoANT",
+      "hero.lede": "我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；端到端 F1 为 0.1517。",
+      "en.banner": "",
       "intro.h2": "导读：为什么要给第一视角人手视频做子任务标注",
       "intro.p1": "Egocentric human data（第一视角人手数据）用头戴或胸挂相机记录人如何操作物体：画面晃、手挡、动作密，和桌面第三人称机器人演示很不一样。要把长程演示变成可学习的监督信号，通常需要切成可执行的原子子任务，并写成短指令。",
       "intro.p2": "子任务边界与文案正在成为 VLA / 链式推理 / 奖励建模等管线的核心输入。人工逐小时标注无法跟上数据规模，因此需要可复现的自动标注管线。",
       "intro.h3": "已有公开工作（地图）",
-      "intro.li0": "Egocentric 数据族：EgoVerse / EgoDex / EgoLive 等第一人称人手操作演示，面向规模化 human 数据。",
-      "intro.li1": "HomER：WGO-Bench 里最难的 egocentric 子集；本报告消融固定 HomER 25 / 470 gold 段。",
-      "intro.li2": "Vitra：偏「先用手部/运动信号切，再 caption」的启发；EgoVid Annotate 生产线用 HaWoR 腕速实现切段，而非直接跑 Vitra 模型。",
+      "intro.li0": "Egocentric 数据族：<a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">EgoVerse</a> / <a href=\"https://github.com/apple/ml-egodex\" target=\"_blank\" rel=\"noopener\">EgoDex</a> / <a href=\"https://arxiv.org/abs/2604.23570\" target=\"_blank\" rel=\"noopener\">EgoLive</a> 等第一人称人手操作演示，面向规模化 human-to-robot 数据。",
+      "intro.li1": "HomER：<a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">WGO-Bench</a> 里的 egocentric human 子集；本报告固定评测 HomER 25 / 470 gold 段。",
+      "intro.li2": "<a href=\"https://github.com/microsoft/VITRA\" target=\"_blank\" rel=\"noopener\">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。",
       "intro.li3": "WGO-Bench / <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 博客</a>：公开「切段 + 短句」评测协议与 Gemini 参考分，以及约 $2.64/视频小时（batch）的端到端开销。",
       "intro.li4": "Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。",
-      "intro.p3": "本页报告 EgoVid Annotate 在 HomER 上、对标 WGO 协议的可复现消融：什么涨分、什么失败、成本如何与公开数字对照。名词解释见后文背景章。",
+      "intro.p3": "本页报告 EgoANT 在 HomER 上、对标 WGO 协议的可复现消融：什么涨分、什么失败、成本如何与公开数字对照。名词解释见后文背景章。",
       "intro.scope": "评测范围：本页分数与推荐配置均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。",
       "tldr.h2": "结论速览",
       "tldr.seg": "整集粗分 + 局部再切（窗口不外扩、盖住完整动作）· Qwen3.6-27B",
       "tldr.label": "raw（默认）/ HaWoR true hand-crop · 397B",
       "tldr.e2e": "锁分段边界 + 397B 多候选 selector",
-      "cost.h2": "5. 开销对照：Macrodata 公开数字 vs EgoVid Annotate",
-      "cost.note": "两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），只改标注调用。API 次数由 label JSON 结构计数；WGO token 为工程估计（397B 远端暂关）。生产默认管线另附 LFT rollout 实测。Macrodata 报的是 Gemini batch 美元价；我们是 Qwen 栈的估计/rollout——结构对照，非同模型账单。细节见附录 G。",
+      "cost.h2": "5. 开销对照：Macrodata 公开数字 vs EgoANT",
+      "cost.note": "两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），只改标注调用。API 次数由公开报告产物结构计数；token 为工程估计。Macrodata 报的是 Gemini batch 美元价；本页给出 Qwen 栈的结构化估计，二者不是同模型账单。细节见附录 G。",
       "cost.compare.h3": "与 Macrodata 公开开销对照",
       "cost.th.source": "来源",
       "cost.th.scope": "口径",
@@ -50,20 +51,20 @@
       "cost.row.md_cs": "Macrodata 公开",
       "cost.row.md_cs_scope": "contact sheet vs 逐帧输入",
       "cost.row.md_cs_num": "约 12× 更便宜（文中有 token/价格示意）",
-      "cost.row.wgo": "EgoVid Annotate（本页 WGO）",
+      "cost.row.wgo": "EgoANT（本页 WGO）",
       "cost.row.wgo_scope": "raw / selector 工程估计 + 产物 API 次数",
       "cost.row.wgo_num": "见下表；非 Gemini 账单",
-      "cost.row.prod": "EgoVid Annotate 生产 rollout",
-      "cost.row.prod_scope": "LFT work/*/token_usage.json（HomER 25）",
-      "cost.row.prod_num": "8,863,226 tokens · 2574 calls · ≈40 min 视频",
+      "cost.row.prod": "EgoANT 生产默认路径",
+      "cost.row.prod_scope": "同一 HomER 子集上的内部工程估计",
+      "cost.row.prod_num": "仅保留聚合调用量级；不公开内部机器、路径或服务状态",
       "cost.recipe.h3": "WGO 两条标注路径（估计 tokens）",
       "cost.th.item": "项",
       "cost.th.raw": "单路 raw（E2E 0.1388）",
       "cost.th.sel": "候选+selector（E2E 0.1517）",
       "cost.dyn.summary": "HomER {n} 集合计 {min} 分钟（均长约 {mean}s）。WGO token 为工程估计；API 次数为产物计数。{extra}",
-      "cost.dyn.extra": "生产默认管线 HomER-25 有 LFT rollout 实测：API {api}、tokens {tok}（≈{perMin} / 视频分钟）。",
-      "cost.dyn.prod_h3": "生产默认管线：LFT rollout 实测（HomER 25）",
-      "cost.dyn.prod_p": "直接读取 work/*/token_usage.json（caption / merge_judge / merge_rewrite）。不是 contact-sheet selector 路径。",
+      "cost.dyn.extra": "",
+      "cost.dyn.prod_h3": "生产默认路径：聚合成本说明",
+      "cost.dyn.prod_p": "该路径与 contact-sheet selector 路径不同；公开页只保留聚合口径。",
       "cost.dyn.api": "API 请求",
       "cost.dyn.prompt": "prompt tokens",
       "cost.dyn.completion": "completion tokens",
@@ -80,7 +81,7 @@
       "cost.row.tok": "Tokens 总量（工程估计）",
       "cost.row.tok_min": "Tokens / 视频分钟（工程估计）",
       "cost.row.e2e": "E2E F1",
-      "app.cost.h3": "G. 成本：估计、rollout 与 Macrodata 对照",
+      "app.cost.h3": "G. 成本：估计与 Macrodata 对照",
       "app.cost.md": "Macrodata 公开 E2E（seeded relabel）batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；contact sheet 相对逐帧约 12× 更便宜。原文无 HomER-25 总 token 账单。",
       "splash.link.demos": "视频",
       "splash.link.blog": "报告",
@@ -90,11 +91,11 @@
       "load.error": "无法加载数据文件。请在本报告目录启动静态服务器后打开（例如 <code>python3 serve_report.py --port 8765</code>；需支持 HTTP Range 才能跳播视频片段），不要直接用受限的 <code>file://</code>。",
       "world.h2": "1. 背景：这些名字分别是什么",
       "world.h3.md": "Macrodata 公开报告在谈什么",
-      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata · Annotating Robot Video Subtasks</a> 把「长视频 → 可执行子任务 + 短句」做成公开问题：发布数据集 <strong>WGO-Bench</strong>、三种分数（分段 / 固定边界标注 / 端到端），以及 Gemini 等参考分。本报告在同一评测协议上，给出 <strong>EgoVid Annotate</strong> 的可复现消融：涨分项、失败配置与推荐路径。",
+      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata · Annotating Robot Video Subtasks</a> 把「长视频 → 可执行子任务 + 短句」做成公开问题：发布数据集 <strong>WGO-Bench</strong>、三种分数（分段 / 固定边界标注 / 端到端），以及 Gemini 等参考分。本报告在同一评测协议上，给出 <strong>EgoANT</strong> 的可复现消融：涨分项、失败配置与推荐路径。",
       "world.h3.ego": "Egocentric 数据与 WGO-Bench",
       "world.p.ego": "规模化第一人称人手数据常见族系包括 <strong>EgoVerse / EgoDex / EgoLive</strong> 等；它们提供长程 human 演示，但「如何切成可执行子任务 + 短指令」仍需标注协议与评测。<strong>WGO-Bench</strong> 把这一问题做成公开基准（约 100 个 episode），其中 <strong>HomER</strong> 是第一视角人类操作子集——画面晃、手挡、动作密，通常比桌面第三人称更难。本报告固定评测：<strong>HomER 25 集 / 470 个 gold 子任务段</strong>。Macrodata 全量 100 集 Segment F1≈0.306 是 Gemini 主线 headline；HomER-only 更公平的对照约 0.227。不宜与全量 100 集 headline（0.306）直接对比。同协议下其他子集的结果见导读范围声明。",
-      "world.h3.egoant": "EgoVid Annotate：生产默认 vs 本报告实验线",
-      "world.p.egoant": "<strong>EgoVid Annotate</strong> 是我们的 egocentric 人手视频自动标注系统。它有两条需要分清的路径：",
+      "world.h3.egoant": "EgoANT：生产默认 vs 本报告实验线",
+      "world.p.egoant": "<strong>EgoANT</strong> 是我们的 egocentric 人手视频自动标注系统。它有两条需要分清的路径：",
       "world.li.prod": "<strong>生产默认管线</strong>（日常批标）：HaWoR 手重建 → 腕速平滑与 minima 切段 → 段内 raw 抽帧写短句 → merge judge / rewrite。细节见 <a href=\"#app-prod\">附录 D</a>。启发来自 Vitra 一类「先运动再 caption」工作流，但<strong>切段后端是 HaWoR 腕速，不是 Vitra 模型</strong>。",
       "world.li.wgo": "<strong>本报告 WGO 实验线</strong>（对标 Macrodata）：contact sheet + Qwen 视觉语言模型切段 → 锁边界后标注 / 多候选 selector。正文消融主要讲这条线。",
       "world.p.models": "模型栈以 <strong>Qwen</strong> 为主：分段用 <strong>Qwen3.6-27B</strong>（快、便宜、可复现），标注 / judge / selector 用 <strong>Qwen3.5-397B</strong>（句子质量与选优）。相对 Gemini 参考栈，同一套权重与 prompt 可在不同机器上复跑，消融结论可核对。",
@@ -119,10 +120,16 @@
       "metrics.li2": "<strong>固定边界 Label Acc</strong>：时间用 gold，只评句子是否同一完成事件（文案）。",
       "metrics.li3": "<strong>Semantic E2E F1</strong>：先时间配对，再对配对成功的 pair 做语义 judge；刀工与文案都过才算。",
       "metrics.toy": "F1 越大越好，上限 1.0。玩具例子（与 scorer 一致）：",
+      "metrics.figcap": "本地图示：先用 IoU 判断 pred/gold 时间段是否重叠足够，再用 match 数计算 precision、recall 和 F1。",
+      "legend.gold": "Gold / 人工标注",
+      "legend.pred": "Pred / 模型预测",
+      "legend.coarse": "Whole-episode coarse",
+      "legend.contact": "Contact-sheet prediction",
       "contact.h2": "3. Contact sheet：模型实际在「看」什么",
       "contact.p": "我们不把整段 MP4 作为视觉输入直接提交给模型，而是每隔 <strong>0.5 秒</strong>抽一帧，缩到约 <strong>224×144</strong>，每张 sheet <strong>20 格（5×4）</strong>，格子上画<strong>黄色时间戳</strong>。一张 sheet 大约覆盖 10 秒；一集长视频会拆成多张 sheet。",
       "contact.cap1": "同参数生成的一张 sheet（前 ~10 秒）。全片与局部时间窗口都用这一套 layout。",
       "contact.cap2": "局部时间窗口示例：版式相同，只换时间范围（第二遍精修看这种图）。",
+      "contact.taxonomy.cap": "本地图示：contact sheet、整帧 temporal collage、邻段 sheet、hand crop 是四种不同视觉输入；它们在实验中不可互相代称。",
       "walk.h2": "4. 样例：跟着 homer_4 走读 selector 路径",
       "walk.lead": "下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；生产可在同边界下改用单路 raw。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。",
       "story.h2": "6. 消融故事：我们怎样走到 0.1517",
@@ -133,7 +140,7 @@
       "recipe.h2": "7. 推荐配置",
       "appendix.h2": "8. 附录：概念、公式、实现与成本记账",
       "tldr.k.label": "Label Acc（固定边界）",
-      "intro.vs": "<strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoVid Annotate 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。端到端本页 <strong>0.1517</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。固定边界标注 Qwen 栈 ≈50.6–51.1% vs Macrodata 公开 ≈61%——句子质量仍有差距。<em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>",
+      "intro.vs": "<strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoANT 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。端到端本页 <strong>0.1517</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。固定边界标注 Qwen 栈 ≈50.6–51.1% vs Macrodata 公开 ≈61%——句子质量仍有差距。<em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>",
       "walk.score": "<strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231（全集 HomER micro 仍是 0.1517）。",
       "walk.task": "任务指令：",
       "walk.s0.t": "输入视频",
@@ -145,6 +152,7 @@
       "walk.s3.t": "局部再切一遍：窗口不外扩，盖住完整动作",
       "walk.s3.p": "在粗边界附近开一个<strong>短时间窗</strong>，用<strong>同一版式</strong>的 sheet 再切一次。<strong>窗口不外扩</strong>：只看粗边界这段，不向两侧多偷看几秒（技术名 pad=0）；<strong>盖住完整动作</strong>：窗内看得见的完成事件都要切到，别切成摆弄碎片（技术名 full-cover）。（整步技术名：S2 · pad=0 · full-cover）",
       "walk.s3.cap": "局部时间窗 contact sheet（第二遍精修输入）。",
+      "walk.s3.diagram.cap": "本地图示：S2 只在粗分窗口内重切；pad=0 避免看进邻段，full-cover 要求窗口内完成动作都被覆盖。",
       "walk.s4.t": "多候选标注",
       "walk.s4.p": "边界锁死后，对每一段用多条路径各写一句：<strong>raw</strong>=默认读帧；<strong>ffmpeg</strong>=换解码抽帧路径；<strong>seed</strong>=带先验/种子标签的变体；<strong>rawprior</strong>=带 prior 的 raw。下表是本集一段真实候选：意见不一致时，selector 才有价值。",
       "walk.s5.t": "Candidate selector 定稿",
@@ -162,7 +170,7 @@
       "walk.prompt.label": "Prompt (English only) — labeling",
       "walk.prompt.sel": "Prompt (English only) — selector",
       "walk.prompt.judge": "Prompt (English only) — judge (scoring only)",
-      "story.seg.1": "原 EgoVid Annotate <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。",
+      "story.seg.1": "原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。",
       "story.seg.2": "Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处造假边界。",
       "story.seg.3": "<strong>整集一次</strong> + 旧版 prompt（尚无切段规则清单）：假切点没了，却欠分割。",
       "story.seg.4": "换成 <strong>切段规则清单</strong>（GEPA）：到 0.137，仍偏少。",
@@ -231,10 +239,19 @@
       "boundary.lead": "对齐 Macrodata 博客的 Boundary comparison：上方视频，下方多轨时间轴；播放头随播放移动。悬停看完整标注，点击跳到该段。集号与样例走读一致（homer_4）。",
       "boundary.kicker": "边界对照",
       "boundary.caption": "模型常能叫出粗事件，却漏掉更细的子任务边界。同集 homer_4（与下方样例走读一致）对照：人工 gold、整集粗分、contact sheet 粗分。悬停色块可看完整标注。",
-      "page.title": "标注第一视角人手数据 · EgoVid Annotate × HomER",
-      "hero.title": "标注第一视角<br />人手数据",
+      "page.title": "标注第一视角人手数据 · EgoANT × HomER",
+      "hero.title": "EgoANT<br />评测 HomER",
       "hero.grid.aria": "第一视角人手子任务视频墙",
-      "nav.brand": "EgoVid Annotate · 报告"
+      "nav.brand": "EgoANT · 报告",
+      "references.h2": "References",
+      "references.wgo": "公开 subtask annotation benchmark，本页使用其中 HomER 子集做评测。",
+      "references.macrodata": "WGO-Bench、评测协议、Gemini 参考分和公开成本数字来源。",
+      "references.scale": "视觉输入表示、hand-crop/collage 与 dense captioning 消融的公开参考。",
+      "references.vitra": "真实人手视频转 VLA 训练信号的公开工作；本报告只借鉴问题设定，不把 VITRA 当作切段后端。",
+      "references.egodex": "大规模 egocentric dexterous manipulation 数据集。",
+      "references.egoverse": "面向 robot learning 的第一视角 human data 生态。",
+      "references.egolive": "真实世界人类任务的第一视角数据集论文。",
+      "footer.text": "EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · F1 越大越好"
     },
     en: {
       "nav.intro": "Intro",
@@ -247,34 +264,35 @@
       "nav.story": "Ablations",
       "nav.recipe": "Recipe",
       "nav.appendix": "Appendix",
+      "nav.references": "References",
       "toc.label": "On this page",
       "tag.ego": "Egocentric",
       "tag.human": "Human data",
       "tag.subtask": "Subtasks",
       "tag.wgo": "WGO-Bench",
-      "tag.egoant": "EgoVid Annotate",
+      "tag.egoant": "EgoANT",
       "hero.link.blog": "Macrodata blog",
       "hero.link.app": "Appendix",
-      "hero.eyebrow": "WGO-Bench HomER · EgoVid Annotate",
-      "hero.lede": "On HomER—the hardest egocentric subset in WGO-Bench—the EgoVid Annotate Qwen stack reaches Segment F1 0.2031 vs Macrodata HomER-only Gemini ≈0.227; E2E is 0.1517. Boundary detection is close to the public Gemini reference; labels and end-to-end still have headroom.",
-      "en.banner": "Appendix formulas/tables may mix Chinese and English; folded method cards may keep Chinese technical notes.",
+      "hero.eyebrow": "WGO-Bench HomER · EgoANT",
+      "hero.lede": "We evaluate EgoANT (Egovideo ANnoTate) on the public WGO-Bench HomER subset. The Qwen stack reaches Segment F1 0.2031 vs Macrodata HomER-only Gemini ≈0.227; end-to-end F1 is 0.1517.",
+      "en.banner": "",
       "intro.h2": "Why annotate egocentric human video into subtasks",
       "intro.p1": "Egocentric human data records first-person hand–object interaction: shake, occlusion, and dense actions—quite unlike third-person robot demos. Turning long episodes into learnable supervision usually means cutting atomic executable subtasks and writing short imperative labels.",
       "intro.p2": "Subtask boundaries and labels are becoming central inputs for VLAs, chain-of-thought, and reward modeling. Hourly human labeling cannot keep up with scale, so we need reproducible automatic pipelines.",
       "intro.h3": "Related public work (a map)",
-      "intro.li0": "Egocentric families such as EgoVerse / EgoDex / EgoLive: first-person hand manipulation demos at scale.",
-      "intro.li1": "HomER: the hardest egocentric subset in WGO-Bench; this report evaluates HomER 25 / 470 gold segments.",
-      "intro.li2": "Vitra: inspiration for “cut from motion, then caption”; EgoVid Annotate’s production path uses HaWoR wrist-speed cuts, not the Vitra model as a backend.",
+      "intro.li0": "Egocentric data families such as <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">EgoVerse</a>, <a href=\"https://github.com/apple/ml-egodex\" target=\"_blank\" rel=\"noopener\">EgoDex</a>, and <a href=\"https://arxiv.org/abs/2604.23570\" target=\"_blank\" rel=\"noopener\">EgoLive</a> provide first-person human manipulation demonstrations at scale.",
+      "intro.li1": "HomER is the egocentric human subset inside <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">WGO-Bench</a>; this report evaluates HomER 25 / 470 gold segments.",
+      "intro.li2": "<a href=\"https://github.com/microsoft/VITRA\" target=\"_blank\" rel=\"noopener\">VITRA</a> is a public line of work on turning real human-hand videos into VLA training signals; it motivates “motion/hand signal first, caption second,” but EgoANT does not use VITRA as the segmentation backend.",
       "intro.li3": "WGO-Bench / <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata blog</a>: public segment+label protocol, Gemini reference scores, and ~$2.64/video-hour (batch) end-to-end cost.",
       "intro.li4": "Scale Labs dense video captioning: captions on already-cut clips—not raw-episode segmentation.",
-      "intro.p3": "This page reports EgoVid Annotate ablations on HomER under the WGO protocol: what lifts scores, what fails, and how cost compares to the published numbers. Glossary follows in Background.",
+      "intro.p3": "This page reports EgoANT ablations on HomER under the WGO protocol: what lifts scores, what fails, and how cost compares to the published numbers. Glossary follows in Background.",
       "intro.scope": "Scope: scores and recipes on this page are HomER-anchored. Same-protocol results on WGO robot-view subsets and other egocentric corpora are not reported here yet.",
       "tldr.h2": "Key results",
       "tldr.seg": "Whole-episode coarse + local re-cut (no pad-out, cover full actions) · Qwen3.6-27B",
       "tldr.label": "raw (default) / HaWoR true hand-crop · 397B",
       "tldr.e2e": "Locked boundaries + 397B multi-candidate selector",
-      "cost.h2": "5. Cost: Macrodata published numbers vs EgoVid Annotate",
-      "cost.note": "Both WGO paths share the same S2 segmentation (Seg F1=0.2031) and only change labeling calls. API counts are from label JSON structure; WGO tokens are engineering estimates (397B remote temporarily down). Production adds an LFT rollout measurement. Macrodata quotes Gemini batch USD; we report Qwen-stack estimates/rollout—structural comparison, not the same bill. See Appendix G.",
+      "cost.h2": "5. Cost: Macrodata published numbers vs EgoANT",
+      "cost.note": "Both WGO paths share the same S2 segmentation (Seg F1=0.2031) and only change labeling calls. API counts are artifact-counted from report outputs; token numbers are engineering estimates. Macrodata quotes Gemini batch USD, while this page reports a Qwen-stack structural estimate, so they are not the same invoice. See Appendix G.",
       "cost.compare.h3": "Vs Macrodata published cost",
       "cost.th.source": "Source",
       "cost.th.scope": "Scope",
@@ -285,20 +303,20 @@
       "cost.row.md_cs": "Macrodata (public)",
       "cost.row.md_cs_scope": "Contact sheet vs per-frame inputs",
       "cost.row.md_cs_num": "~12× cheaper (token/price illustration in their post)",
-      "cost.row.wgo": "EgoVid Annotate (this page, WGO)",
+      "cost.row.wgo": "EgoANT (this page, WGO)",
       "cost.row.wgo_scope": "raw / selector estimate + artifact API counts",
       "cost.row.wgo_num": "See table below; not a Gemini invoice",
-      "cost.row.prod": "EgoVid Annotate production rollout",
-      "cost.row.prod_scope": "LFT work/*/token_usage.json (HomER 25)",
-      "cost.row.prod_num": "8,863,226 tokens · 2574 calls · ≈40 min video",
+      "cost.row.prod": "EgoANT production default",
+      "cost.row.prod_scope": "Internal engineering estimate on the same HomER subset",
+      "cost.row.prod_num": "Aggregated call scale only; no internal machines, paths, or service status disclosed",
       "cost.recipe.h3": "WGO labeling paths (estimated tokens)",
       "cost.th.item": "Item",
       "cost.th.raw": "Raw-only (E2E 0.1388)",
       "cost.th.sel": "Candidates+selector (E2E 0.1517)",
       "cost.dyn.summary": "HomER {n} episodes, {min} minutes total (mean ~{mean}s). WGO tokens are engineering estimates; API counts are artifact-counted. {extra}",
-      "cost.dyn.extra": "Production HomER-25 has an LFT rollout measurement: API {api}, tokens {tok} (≈{perMin} / video-minute).",
-      "cost.dyn.prod_h3": "Production path: LFT rollout (HomER 25)",
-      "cost.dyn.prod_p": "Read from work/*/token_usage.json (caption / merge_judge / merge_rewrite)—not the contact-sheet selector path.",
+      "cost.dyn.extra": "",
+      "cost.dyn.prod_h3": "Production path: aggregated cost note",
+      "cost.dyn.prod_p": "This path differs from the contact-sheet selector path; the public page keeps only aggregate accounting.",
       "cost.dyn.api": "API requests",
       "cost.dyn.prompt": "prompt tokens",
       "cost.dyn.completion": "completion tokens",
@@ -315,7 +333,7 @@
       "cost.row.tok": "Tokens total (engineering estimate)",
       "cost.row.tok_min": "Tokens / video-minute (estimate)",
       "cost.row.e2e": "E2E F1",
-      "app.cost.h3": "G. Cost: estimates, rollout, and Macrodata",
+      "app.cost.h3": "G. Cost: estimates and Macrodata",
       "app.cost.md": "Macrodata publishes ~$2.64/video-hour (batch) for E2E seeded relabel and ~$0.43/h for segmentation-only batch; contact sheets are ~12× cheaper than per-frame inputs. They do not publish a HomER-25 total-token invoice.",
       "splash.link.demos": "Videos",
       "splash.link.blog": "Report",
@@ -325,11 +343,11 @@
       "load.error": "Could not load data files. Serve this folder with Range support (e.g. <code>python3 serve_report.py --port 8765</code>); do not open via restricted <code>file://</code>.",
       "world.h2": "1. Background: names you’ll see",
       "world.h3.md": "What Macrodata’s public report covers",
-      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata · Annotating Robot Video Subtasks</a> frames “long video → executable subtasks + short labels” as a public problem: the <strong>WGO-Bench</strong> dataset, three scores (segmentation / fixed-boundary labeling / end-to-end), and Gemini reference numbers. On the same protocol we report reproducible <strong>EgoVid Annotate</strong> ablations: what lifts scores, what fails, and recommended paths.",
+      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata · Annotating Robot Video Subtasks</a> frames “long video → executable subtasks + short labels” as a public problem: the <strong>WGO-Bench</strong> dataset, three scores (segmentation / fixed-boundary labeling / end-to-end), and Gemini reference numbers. On the same protocol we report reproducible <strong>EgoANT</strong> ablations: what lifts scores, what fails, and recommended paths.",
       "world.h3.ego": "Egocentric data and WGO-Bench",
       "world.p.ego": "Large-scale first-person hand data families include <strong>EgoVerse / EgoDex / EgoLive</strong>: long human demos, but cutting executable subtasks + short instructions still needs a labeling protocol and a benchmark. <strong>WGO-Bench</strong> makes that public (~100 episodes). <strong>HomER</strong> is the egocentric human subset—shake, occlusion, dense actions—usually harder than third-person tabletop. This report fixes eval to <strong>HomER 25 episodes / 470 gold segments</strong>. Macrodata’s full-100 Segment F1≈0.306 is a Gemini headline; HomER-only ≈0.227 is the fairer reference. Do not compare directly to 0.306. Same-protocol results on other subsets: see the scope note in Intro.",
-      "world.h3.egoant": "EgoVid Annotate: production default vs this report’s WGO line",
-      "world.p.egoant": "<strong>EgoVid Annotate</strong> is our automatic egocentric hand-video annotation system. Keep two paths separate:",
+      "world.h3.egoant": "EgoANT: production default vs this report’s WGO line",
+      "world.p.egoant": "<strong>EgoANT</strong> is our automatic egocentric hand-video annotation system. Keep two paths separate:",
       "world.li.prod": "<strong>Production default</strong> (batch labeling): HaWoR hand recon → wrist-speed smoothing + minima cuts → raw-frame captions → merge judge / rewrite. Details in <a href=\"#app-prod\">Appendix D</a>. Inspired by Vitra-style “motion then caption,” but the <strong>cut backend is HaWoR wrist speed, not the Vitra model</strong>.",
       "world.li.wgo": "<strong>This report’s WGO experimental line</strong> (aligned to Macrodata): contact sheets + open VLM segmentation → locked-boundary labeling / multi-candidate selector. Body ablations mainly cover this line.",
       "world.p.models": "The stack is <strong>Qwen</strong>: segmentation with <strong>Qwen3.6-27B</strong> (fast, cheap, reproducible); labeling / judge / selector with <strong>Qwen3.5-397B</strong> (sentence quality + selection). Compared with the Gemini reference stack, the same weights and prompts can be re-run elsewhere to audit ablation claims.",
@@ -354,10 +372,16 @@
       "metrics.li2": "<strong>Fixed-boundary Label Acc</strong>: gold times; judge whether sentences describe the same completed event.",
       "metrics.li3": "<strong>Semantic E2E F1</strong>: time match first, then semantic judge on matched pairs; both must pass.",
       "metrics.toy": "Higher F1 is better (max 1.0). Toy example (matches the scorer):",
+      "metrics.figcap": "Local diagram: IoU first checks whether pred/gold time intervals overlap enough; match counts then become precision, recall, and F1.",
+      "legend.gold": "Gold / human annotation",
+      "legend.pred": "Pred / model prediction",
+      "legend.coarse": "Whole-episode coarse",
+      "legend.contact": "Contact-sheet prediction",
       "contact.h2": "3. Contact sheet: what the model actually sees",
       "contact.p": "We do not feed raw MP4 bytes as vision input. We sample a frame every <strong>0.5s</strong>, resize to ~<strong>224×144</strong>, pack <strong>20 tiles (5×4)</strong> per sheet with <strong>yellow timestamps</strong>. One sheet ≈10s; long episodes become many sheets.",
       "contact.cap1": "One sheet with the same params (first ~10s). Whole-episode and local windows share this layout.",
       "contact.cap2": "Local time-window example: same layout, different range (what pass-2 refine sees).",
+      "contact.taxonomy.cap": "Local diagram: contact sheets, whole-frame temporal collages, neighbor sheets, and hand crops are distinct visual inputs and should not be used interchangeably.",
       "walk.h2": "4. Walkthrough: homer_4 along the selector path",
       "walk.lead": "This walkthrough is the <strong>selector path</strong> (widescreen 1080p, clear wipe motion); production can use raw-only on the same bounds. Task: wipe tables / cabinet surfaces with a cloth. Folded prompts stay English originals.",
       "story.h2": "6. Ablation story: how we reached 0.1517",
@@ -368,7 +392,7 @@
       "recipe.h2": "7. Recommended recipe",
       "appendix.h2": "8. Appendix: concepts, formulas, implementation, cost accounting",
       "tldr.k.label": "Label Acc (fixed boundaries)",
-      "intro.vs": "<strong>Qwen stack approaches the Gemini reference on HomER:</strong> EgoVid Annotate Segment F1 <strong>0.2031</strong> vs Macrodata HomER-only Gemini ≈<strong>0.227</strong> (same subset—do not hard-compare to full-100 0.306). This page’s E2E is <strong>0.1517</strong> (public blog full-set E2E≈0.168 is a different scope—magnitude only). Fixed-boundary labels are ≈50.6–51.1% with our Qwen stack vs ≈61% public—sentence quality still lags. <em>Takeaway: on the hardest egocentric subset, our boundary detection is close to the Gemini reference; E2E and wording still have room.</em>",
+      "intro.vs": "<strong>Qwen stack approaches the Gemini reference on HomER:</strong> EgoANT Segment F1 <strong>0.2031</strong> vs Macrodata HomER-only Gemini ≈<strong>0.227</strong> (same subset—do not hard-compare to full-100 0.306). This page’s E2E is <strong>0.1517</strong> (public blog full-set E2E≈0.168 is a different scope—magnitude only). Fixed-boundary labels are ≈50.6–51.1% with our Qwen stack vs ≈61% public—sentence quality still lags. <em>Takeaway: on the hardest egocentric subset, our boundary detection is close to the Gemini reference; E2E and wording still have room.</em>",
       "walk.score": "<strong>Episode score:</strong> gold 15 / pred 11; IoU≥0.75 matches 4; semantic matches 3; episode E2E≈0.231 (HomER micro overall stays 0.1517).",
       "walk.task": "Task instruction:",
       "walk.s0.t": "Input video",
@@ -380,6 +404,7 @@
       "walk.s3.t": "Local re-cut: no pad-out, cover full actions",
       "walk.s3.p": "Open a <strong>short window</strong> near coarse bounds and re-cut with the <strong>same sheet layout</strong>. <strong>No pad-out</strong>: stay inside the coarse span (tech: pad=0). <strong>Cover full actions</strong>: include completed events visible in-window; don’t shred into fiddle fragments (tech: full-cover). (Step tech name: S2 · pad=0 · full-cover)",
       "walk.s3.cap": "Local-window contact sheet (pass-2 refine input).",
+      "walk.s3.diagram.cap": "Local diagram: S2 re-cuts only inside the coarse window; pad=0 avoids neighboring actions, and full-cover asks the model to cover every completed action inside the window.",
       "walk.s4.t": "Multi-candidate labeling",
       "walk.s4.p": "With bounds locked, write one label per path: <strong>raw</strong>=default frames; <strong>ffmpeg</strong>=alternate decode/sample; <strong>seed</strong>=seeded/prior variant; <strong>rawprior</strong>=raw with prior. Table below is a real divergent segment—selector matters when paths disagree.",
       "walk.s5.t": "Candidate selector picks the final line",
@@ -397,7 +422,7 @@
       "walk.prompt.label": "Prompt (English only) — labeling",
       "walk.prompt.sel": "Prompt (English only) — selector",
       "walk.prompt.judge": "Prompt (English only) — judge (scoring only)",
-      "story.seg.1": "Original EgoVid Annotate <strong>rule-based</strong> wrist-speed cuts: over-fragmented (F1≈0.095).",
+      "story.seg.1": "Original EgoANT <strong>rule-based</strong> wrist-speed cuts: over-fragmented (F1≈0.095).",
       "story.seg.2": "Contact sheet <strong>chunking</strong> (max_sheets=3): looks like the public recipe, but invents fake boundaries at seams.",
       "story.seg.3": "<strong>Whole-episode</strong> + legacy prompt (no rule list): fake cuts gone, but under-segments.",
       "story.seg.4": "Swap in the <strong>segmentation rule list</strong> (GEPA): ~0.137, still too few cuts.",
@@ -448,7 +473,7 @@
       "recipe.r4.a": "Comparison",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "Hard-compare to full-100 0.306 headline",
-      "appendix.lead": "The body covers what we tried and how scores moved; this appendix covers implementation (formulas/tables may mix languages). Contents: <a href=\"#app-metrics\">A scores</a> · <a href=\"#app-seg\">B segmentation concepts</a> · <a href=\"#app-e2e\">C label/E2E terms</a> · <a href=\"#app-prod\">D production</a> · <a href=\"#app-visual\">E visuals</a> · <a href=\"#app-prompts\">F prompts</a> · <a href=\"#app-cost\">G cost</a> · <a href=\"#audit\">H validity</a>.",
+      "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out implementation details and metric definitions. Contents: <a href=\"#app-metrics\">A metrics</a> · <a href=\"#app-seg\">B segmentation concepts</a> · <a href=\"#app-e2e\">C label/E2E terms</a> · <a href=\"#app-prod\">D production</a> · <a href=\"#app-visual\">E visuals</a> · <a href=\"#app-prompts\">F prompts</a> · <a href=\"#app-cost\">G cost</a> · <a href=\"#audit\">H validity</a>.",
       "metrics.toy.g": "Gold: G0[0,3], G1[3,6], G2[6,10] · Pred: P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]",
       "metrics.toy.1": "Outer snap: P0.start→0, P3.end→10",
       "metrics.toy.2": "IoU: P0–G0≈0.933, P1–G1≈0.781",
@@ -466,12 +491,224 @@
       "boundary.lead": "Macrodata-style boundary comparison: video on top, multi-track timeline below; the playhead follows playback. Hover for the full label, click to seek. Episode matches the walkthrough (homer_4).",
       "boundary.kicker": "BOUNDARY COMPARISON",
       "boundary.caption": "Models often name the broad event while missing finer subtask boundaries. Same episode homer_4 (matches the walkthrough below) vs gold, whole-episode coarse cut, and contact-sheet cut. Hover a block for the full label.",
-      "page.title": "Annotating Egocentric Human Data · EgoVid Annotate × HomER",
-      "hero.title": "Annotating Egocentric<br />Human Data",
+      "page.title": "EgoANT evaluated on WGO-Bench HomER",
+      "hero.title": "EgoANT<br />on HomER",
       "hero.grid.aria": "Egocentric human subtask video wall",
-      "nav.brand": "EgoVid Annotate · Report"
+      "nav.brand": "EgoANT · Report",
+      "references.h2": "References",
+      "references.wgo": "Public subtask annotation benchmark; this page evaluates the HomER subset.",
+      "references.macrodata": "Source for WGO-Bench, the evaluation protocol, Gemini reference numbers, and published cost figures.",
+      "references.scale": "Public reference for visual input design, hand crops/collages, and dense captioning ablations.",
+      "references.vitra": "Public work on converting real human-hand videos into VLA training signals; this report borrows the problem framing, not VITRA as a segmentation backend.",
+      "references.egodex": "Large-scale egocentric dexterous manipulation dataset.",
+      "references.egoverse": "First-person human-data ecosystem for robot learning.",
+      "references.egolive": "Paper on a large-scale egocentric dataset from real-world human tasks.",
+      "footer.text": "EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · higher F1 is better"
     },
   };
+
+  const APPENDIX_HTML = {
+    zh: `
+      <h2>8. 附录：概念、公式、实现与成本记账</h2>
+      <p class="plain">正文讲“试了什么、分数怎么变”；附录补清楚公式、术语和实现边界。目录：
+        <a href="#app-metrics">A 得分</a> · <a href="#app-seg">B 分段概念</a> ·
+        <a href="#app-e2e">C 标注/E2E 术语</a> · <a href="#app-prod">D 生产管线</a> ·
+        <a href="#app-visual">E 视觉输入</a> · <a href="#app-prompts">F Prompt</a> ·
+        <a href="#app-cost">G 成本</a> · <a href="#audit">H 效度</a>。</p>
+
+      <h3 id="app-metrics">A. 得分方法：直觉 + 公式</h3>
+      <figure class="figure">
+        <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
+        <figcaption>IoU 衡量时间段重叠；m 是通过 IoU 阈值的一对一时间匹配数。</figcaption>
+      </figure>
+      <h4>A.1 Segment F1（只评时间切分）</h4>
+      <p><strong>IoU</strong> 是两个时间段交集长度除以并集长度。若 pred 与 gold 的 IoU ≥ 0.75，就可 greedy 一对一配对；一个 pred 不能匹配多个 gold。</p>
+      <pre class="formula">P = m / n_pred
+R = m / n_gold
+F1 = 2·P·R / (P+R)</pre>
+      <p>其中 <code>m</code> 是 temporal matches，<code>n_pred</code> 是预测段数，<code>n_gold</code> 是人工 gold 段数。Precision 防止乱切太多，Recall 防止漏切太多，F1 用调和平均同时惩罚这两类错误。</p>
+
+      <h4>A.2 固定边界 Label Acc（只评文案）</h4>
+      <p>时间边界直接使用 gold，只考模型能否把这段动作写成同一个完成事件。</p>
+      <pre class="formula">Acc = n_semantically_correct / n_gold</pre>
+
+      <h4>A.3 Semantic E2E F1（时间 + 文案）</h4>
+      <p>先按 A.1 做时间匹配，再对匹配成功的 pair 做语义 judge；只有时间和句子都对，才进入分子。</p>
+      <pre class="formula">m_sem = semantic matches among temporal matches
+P_e2e = m_sem / n_pred
+R_e2e = m_sem / n_gold
+F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
+
+      <h3 id="app-seg">B. 分段概念卡</h3>
+      <figure class="figure">
+        <img src="assets/explain/s2_no_pad_full_cover.svg" alt="S2 no-pad full-cover local refinement diagram" />
+        <figcaption>S2 的核心不是“再看更多”，而是在粗分窗口内重切，并要求覆盖窗口内完整完成事件。</figcaption>
+      </figure>
+      <article class="concept-card">
+        <h4>欠分割 vs 第一遍加密切（S1）</h4>
+        <p><strong>欠分割</strong>是切太少、漏动作；<strong>S1</strong>故意提高切段密度来抬召回，但容易切碎。HomER 上 S1 到 F1 0.1556，pred 558。</p>
+      </article>
+      <article class="concept-card">
+        <h4>第二遍局部精修（S2）</h4>
+        <p>粗分之后，在每条粗边界附近开局部时间窗，再用同样的 timestamped contact sheet 细切一次。最终版本使用 <strong>pad=0 + full-cover prompt</strong>，分段 F1 到 0.2031。</p>
+      </article>
+      <article class="concept-card">
+        <h4>窗口不外扩（pad=0）</h4>
+        <p>精修窗口只等于粗边界区间，不向两侧多看 0.5/1/2 秒。这样减少邻段动作污染；pad-out 消融都低于 pad=0。</p>
+      </article>
+      <article class="concept-card">
+        <h4>盖住完整动作（full-cover）</h4>
+        <p>要求模型把窗口里看得见的完成事件都切出来，但不要把 approach、adjust、retract 拆成假事件。算法式 midpoint 后处理不如把 full-cover 写进 prompt。</p>
+      </article>
+      <article class="concept-card">
+        <h4>切段规则清单（GEPA 规则 prompt）</h4>
+        <p>这里不是新模型，也不是后处理脚本；只是把 Macrodata 搜索得到的英文分段规则放进 VLM 请求文本。</p>
+      </article>
+
+      <h3 id="app-e2e">C. 标注 / E2E 术语</h3>
+      <article class="concept-card"><h4>raw relabel</h4><p>边界锁死后，用 397B 看当前段 raw 帧重写一句 subtask。S2 边界 + 单路 raw 的 E2E F1 为 0.1388。</p></article>
+      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>边界相同，只换视频解码/抽帧路径，作为候选源之一。结果略高于默认 raw。</p></article>
+      <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似有上下文，但在 Qwen 上常把邻段动作写进当前句，所以掉分。</p></article>
+      <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；当前最高 E2E F1 为 0.1517。</p></article>
+
+      <h3 id="app-prod">D. EgoANT 生产原管线（澄清 VITRA）</h3>
+      <div class="pipeline">
+        <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → wrist 轨迹</div></div>
+        <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">腕速滤波</div></div>
+        <div class="step"><div class="n">03</div><div class="t">Cut</div><div class="d">速度 minima + 短段合并</div></div>
+        <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">段内 raw 抽帧写短句</div></div>
+        <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge → rewrite</div></div>
+      </div>
+      <p>VITRA 启发的是“先手部/运动信号，再 caption”的问题设定；本系统实际用 HaWoR wrist-speed 作为生产切段信号，不把 VITRA 当作后端模型。</p>
+
+      <h3 id="app-visual">E. 视觉输入对照</h3>
+      <figure class="figure">
+        <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
+        <figcaption>这些视觉输入的作用不同：contact sheet 用于分段，raw/hand-crop/collage 主要用于固定边界标注消融。</figcaption>
+      </figure>
+      <table><thead><tr><th>名称</th><th>模型看见什么</th><th>典型用途</th><th>HomER 上</th></tr></thead><tbody>
+        <tr><td>contact sheet</td><td>带时间戳的抽帧拼图</td><td>分段</td><td>主路径</td></tr>
+        <tr><td>raw 多帧</td><td>段内均匀原帧</td><td>标注默认</td><td>Acc 50.6%</td></tr>
+        <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>伤分</td></tr>
+        <tr><td>neighbor sheet</td><td>上一/当前/下一段 sheet</td><td>标注消融</td><td>伤分</td></tr>
+        <tr><td>HaWoR true hand-crop</td><td>按腕轨裁手部</td><td>标注候选</td><td>Acc 51.1%</td></tr>
+      </tbody></table>
+
+      <h3 id="app-prompts">F. Prompt 原文（English）</h3>
+      <p>英文 prompt 全文在样例章折叠区展示，此处保留下载入口。</p>
+      <ul>
+        <li><a href="#walk-2">GEPA 规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
+        <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a></li>
+        <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>下载</a></li>
+        <li><a href="#walk-5">Judge / Selector</a> · <a href="prompts/judge_semantic_match.md" download>judge</a> · <a href="prompts/candidate_selector.md" download>selector</a></li>
+      </ul>
+
+      <h3 id="app-cost">G. 成本：估计与公开数字对照</h3>
+      <p>Macrodata 公开 E2E batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；本页 Qwen 栈 token 为工程估计，保留结构化比较，不公开内部机器、路径或服务状态。</p>
+
+      <h3 id="audit">H. 实验效度注意事项</h3>
+      <table><thead><tr><th>项</th><th>发现</th><th>处理</th></tr></thead><tbody>
+        <tr><td>复制目录产物</td><td>不能把文件时间戳接近当作重标证据</td><td>只报告可追溯实验输出</td></tr>
+        <tr><td>proxy overlay</td><td>光流/中心框不是真手部重建</td><td>与 HaWoR true hand-crop 分开汇报</td></tr>
+        <tr><td>neighbor sheet</td><td>补时间戳后仍跌分</td><td>结论是上下文设计本身伤分</td></tr>
+      </tbody></table>
+    `,
+    en: `
+      <h2>8. Appendix: concepts, formulas, implementation, and cost accounting</h2>
+      <p class="plain">The body explains what we tried and how scores moved. This appendix spells out formulas, terminology, and implementation boundaries. Contents:
+        <a href="#app-metrics">A metrics</a> · <a href="#app-seg">B segmentation concepts</a> ·
+        <a href="#app-e2e">C labeling/E2E terms</a> · <a href="#app-prod">D production pipeline</a> ·
+        <a href="#app-visual">E visual inputs</a> · <a href="#app-prompts">F prompts</a> ·
+        <a href="#app-cost">G cost</a> · <a href="#audit">H validity</a>.</p>
+
+      <h3 id="app-metrics">A. Metrics: intuition and formulas</h3>
+      <figure class="figure">
+        <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
+        <figcaption>IoU measures interval overlap; m is the number of one-to-one temporal matches that pass the IoU threshold.</figcaption>
+      </figure>
+      <h4>A.1 Segment F1: boundary quality only</h4>
+      <p><strong>IoU</strong> is the length of the intersection of two time intervals divided by the length of their union. A predicted segment can greedily match one gold segment when IoU is at least 0.75.</p>
+      <pre class="formula">P = m / n_pred
+R = m / n_gold
+F1 = 2·P·R / (P+R)</pre>
+      <p><code>m</code> is temporal matches, <code>n_pred</code> is predicted segments, and <code>n_gold</code> is gold segments. Precision penalizes too many cuts; recall penalizes missed cuts; F1 is the harmonic mean that penalizes both.</p>
+
+      <h4>A.2 Fixed-boundary Label Acc: wording only</h4>
+      <p>Gold time boundaries are given, so the model is evaluated only on whether the sentence describes the same completed event.</p>
+      <pre class="formula">Acc = n_semantically_correct / n_gold</pre>
+
+      <h4>A.3 Semantic E2E F1: time plus wording</h4>
+      <p>First match time intervals as in A.1, then judge semantics only for matched pairs. A segment contributes to the numerator only if both time and wording are correct.</p>
+      <pre class="formula">m_sem = semantic matches among temporal matches
+P_e2e = m_sem / n_pred
+R_e2e = m_sem / n_gold
+F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
+
+      <h3 id="app-seg">B. Segmentation concept cards</h3>
+      <figure class="figure">
+        <img src="assets/explain/s2_no_pad_full_cover.svg" alt="S2 no-pad full-cover local refinement diagram" />
+        <figcaption>S2 is not about seeing more context; it re-cuts inside the coarse window and asks the model to cover completed events visible inside that window.</figcaption>
+      </figure>
+      <article class="concept-card"><h4>Under-segmentation vs S1 denser cuts</h4><p>Under-segmentation means too few cuts and missed actions. S1 increases cut density to raise recall, but can over-fragment. On HomER, S1 reaches F1 0.1556 with 558 predictions.</p></article>
+      <article class="concept-card"><h4>S2 local refinement</h4><p>After coarse segmentation, S2 opens a local time window near coarse bounds and re-cuts using the same timestamped contact-sheet layout. The final <strong>pad=0 + full-cover prompt</strong> reaches Segment F1 0.2031.</p></article>
+      <article class="concept-card"><h4>No pad-out (pad=0)</h4><p>The refine window equals the coarse interval and does not peek 0.5/1/2 extra seconds on either side. This reduces neighboring-action contamination; all pad-out ablations scored lower than pad=0.</p></article>
+      <article class="concept-card"><h4>Full-cover prompt</h4><p>The model must cover every completed event visible in the window, while avoiding fake approach/adjust/retract fragments. Scripted midpoint postprocessing was worse than writing this requirement into the prompt.</p></article>
+      <article class="concept-card"><h4>Segmentation rule list (GEPA-derived prompt)</h4><p>This is not a new model and not a postprocess. It is an English rule list found by Macrodata-style prompt search and included in the VLM request text.</p></article>
+
+      <h3 id="app-e2e">C. Labeling / E2E terms</h3>
+      <article class="concept-card"><h4>raw relabel</h4><p>With boundaries locked, Qwen3.5-397B rewrites one subtask label from raw frames inside the current segment. S2 bounds + raw-only relabel gives E2E F1 0.1388.</p></article>
+      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>Same boundaries, but a different decode/sampling path; it is used as one candidate source.</p></article>
+      <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, so it hurts Qwen labeling on HomER.</p></article>
+      <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best E2E F1 is 0.1517.</p></article>
+
+      <h3 id="app-prod">D. EgoANT production pipeline (VITRA clarification)</h3>
+      <div class="pipeline">
+        <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">hand reconstruction to wrist tracks</div></div>
+        <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">filter wrist speed</div></div>
+        <div class="step"><div class="n">03</div><div class="t">Cut</div><div class="d">speed minima plus short-span merge</div></div>
+        <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">raw frames inside each segment</div></div>
+        <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge then rewrite</div></div>
+      </div>
+      <p>VITRA motivates the “motion/hand signal first, caption second” framing. EgoANT uses HaWoR wrist-speed signals for production segmentation; it does not use VITRA as a backend model.</p>
+
+      <h3 id="app-visual">E. Visual input comparison</h3>
+      <figure class="figure">
+        <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
+        <figcaption>These inputs serve different purposes: contact sheets are for segmentation, while raw frames, hand crops, and collages are labeling ablations.</figcaption>
+      </figure>
+      <table><thead><tr><th>Name</th><th>What the model sees</th><th>Typical use</th><th>HomER result</th></tr></thead><tbody>
+        <tr><td>contact sheet</td><td>timestamped frame grid</td><td>segmentation</td><td>main path</td></tr>
+        <tr><td>raw frames</td><td>uniform frames inside the segment</td><td>default labeling</td><td>Acc 50.6%</td></tr>
+        <tr><td>temporal collage</td><td>past/current/future full-frame grids</td><td>labeling ablation</td><td>hurts</td></tr>
+        <tr><td>neighbor sheet</td><td>previous/current/next segment sheets</td><td>labeling ablation</td><td>hurts</td></tr>
+        <tr><td>HaWoR true hand-crop</td><td>crop around wrist tracks</td><td>label candidate</td><td>Acc 51.1%</td></tr>
+      </tbody></table>
+
+      <h3 id="app-prompts">F. Prompt originals (English)</h3>
+      <p>Full English prompts are shown once in the walkthrough folds; downloads remain here.</p>
+      <ul>
+        <li><a href="#walk-2">GEPA rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
+        <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>download</a></li>
+        <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>download</a></li>
+        <li><a href="#walk-5">Judge / Selector</a> · <a href="prompts/judge_semantic_match.md" download>judge</a> · <a href="prompts/candidate_selector.md" download>selector</a></li>
+      </ul>
+
+      <h3 id="app-cost">G. Cost: estimates and published numbers</h3>
+      <p>Macrodata reports about $2.64/video-hour for batch end-to-end seeded relabeling and about $0.43/h for segmentation-only batch. This page keeps Qwen-stack token numbers as engineering estimates and removes internal machines, paths, and service-state details.</p>
+
+      <h3 id="audit">H. Validity notes</h3>
+      <table><thead><tr><th>Item</th><th>Observation</th><th>Treatment</th></tr></thead><tbody>
+        <tr><td>Copied prediction folders</td><td>Close file timestamps are not evidence of a fresh relabel run</td><td>Only traceable experiment outputs are reported</td></tr>
+        <tr><td>proxy overlay</td><td>Optical-flow or center-box proxies are not true hand reconstruction</td><td>Reported separately from HaWoR true hand-crop</td></tr>
+        <tr><td>neighbor sheet</td><td>Adding timestamps did not recover the score</td><td>The context design itself is treated as harmful here</td></tr>
+      </tbody></table>
+    `
+  };
+
+  function renderAppendix(lang) {
+    const el = document.getElementById("appendix");
+    if (el) el.innerHTML = APPENDIX_HTML[lang === "en" ? "en" : "zh"];
+  }
 
   function t(key, lang) {
     const L = I18N[lang] || I18N.zh;
@@ -480,6 +717,7 @@
 
   function applyI18n(lang) {
     document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+    renderAppendix(lang);
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (!key) return;
@@ -516,6 +754,10 @@
   function initI18n() {
     let lang = "zh";
     try { lang = localStorage.getItem("egoant_lang") || "zh"; } catch (e) {}
+    try {
+      const qLang = new URLSearchParams(window.location.search).get("lang");
+      if (qLang === "en" || qLang === "zh") lang = qLang;
+    } catch (e) {}
     if (lang !== "en" && lang !== "zh") lang = "zh";
     document.querySelectorAll(".lang-btn").forEach((btn) => {
       btn.addEventListener("click", () => applyI18n(btn.getAttribute("data-lang")));
@@ -523,7 +765,7 @@
     applyI18n(lang);
   }
 
-  window.EgoVid_I18N = { I18N, t, applyI18n, initI18n };
+  window.EgoANT_I18N = { I18N, t, applyI18n, initI18n };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initI18n);
   else initI18n();
 })();

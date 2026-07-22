@@ -1,4 +1,4 @@
-/* EgoVid Annotate HomER blog report renderer */
+/* EgoANT HomER blog report renderer */
 (function () {
   // Decision path only; pad ablations go to #seg-pad-tbody
   const MAIN_SEG_IDS = new Set([
@@ -13,12 +13,12 @@
   const ABLATION_I18N = {
     "egovid_baseline": {
       "zh": {
-        "name": "EgoVid Annotate 原管线：腕速规则切段 + merge",
+        "name": "EgoANT 原管线：腕速规则切段 + merge",
         "note": "过分割：预测段远多于 gold",
         "model": "rule-based（腕速 minima + merge）"
       },
       "en": {
-        "name": "EgoVid Annotate baseline: wrist-speed rule cuts + merge",
+        "name": "EgoANT baseline: wrist-speed rule cuts + merge",
         "note": "Over-segmentation: far more preds than gold",
         "model": "rule-based (wrist minima + merge)"
       }
@@ -325,12 +325,12 @@
     },
     "egovid_e2e": {
       "zh": {
-        "name": "EgoVid Annotate one-pass",
+        "name": "EgoANT one-pass",
         "note": "切+标一体弱",
         "model": null
       },
       "en": {
-        "name": "EgoVid Annotate one-pass",
+        "name": "EgoANT one-pass",
         "note": "Joint cut+label is weak",
         "model": null
       }
@@ -409,6 +409,42 @@
     }
   };
 
+  const METHOD_I18N = {
+    egovid_baseline: { en: { goal: "Use wrist-speed valleys as automatic subtask cuts.", how: "HaWoR/wrist speed minima, short-span rules, then merge judge.", input: "video plus hand reconstruction", result: "F1 0.0953, 810 predictions vs 470 gold", verdict: "Over-fragmented heuristic baseline." } },
+    cs_max3_397b: { en: { goal: "Approximate the public contact-sheet recipe with chunked sheets.", how: "Legacy prompt; at most three sheets per API call.", input: "chunked contact sheets", result: "F1 0.0952", verdict: "Artificial chunk seams become fake event boundaries." } },
+    cs_max3_27b: { en: { goal: "Repeat chunked contact sheets with the smaller model.", how: "Same max_sheets=3 legacy setup.", input: "chunked contact sheets", result: "F1 0.1278", verdict: "Model size alone does not fix a flawed chunking recipe." } },
+    whole_legacy_27b: { en: { goal: "Remove fake chunk seams.", how: "Send whole-episode sheets in one request with the legacy prompt.", input: "whole-episode contact sheets", result: "F1 0.1230, only 148 predictions", verdict: "Seam artifacts vanish, but the model under-segments." } },
+    aligned_gepa_27b: { en: { goal: "Align the prompt with completed-event and duration-prior rules.", how: "Use a GEPA-derived rule list: completed actions, roughly 2–10 second events.", input: "whole-episode sheets plus rule list", result: "F1 0.1369", verdict: "The rule list helps, but recall remains low." } },
+    s1_full25_397b: { en: { goal: "Counter under-segmentation by increasing cut density.", how: "Shorter duration prior and denser-cut instruction over all 25 HomER episodes.", input: "whole-episode sheets plus denser-cut prompt", result: "F1 0.1556, 558 predictions", verdict: "Recall improves, but over-segmentation returns." } },
+    s2_full25_397b: { en: { goal: "Re-cut locally after a coarse pass.", how: "Coarse bounds to local contact-sheet windows; early setup used about one second of pad-out.", input: "local sheets plus coarse-bound hints", result: "F1 0.1674", verdict: "Right direction, but not the final full-cover recipe." } },
+    s2_pad0_plain_27b: { en: { goal: "Ablate local-window padding.", how: "Local refine with pad_sec=0, before adding the full-cover instruction.", input: "local sheets", result: "F1 0.1711, 582 predictions", verdict: "No pad-out is best among pad widths, but still too fragmented." } },
+    s2_pad05_27b: { en: { goal: "Test whether a little extra context helps.", how: "Local refine with 0.5 seconds of pad-out.", input: "local sheets", result: "F1 0.1444", verdict: "Worse than no pad-out." } },
+    s2_pad1_27b: { en: { goal: "Test a larger local context window.", how: "Local refine with 1.0 second of pad-out.", input: "local sheets", result: "F1 0.1485", verdict: "Worse than no pad-out." } },
+    s2_pad2_27b: { en: { goal: "Test an even wider local context window.", how: "Local refine with 2.0 seconds of pad-out.", input: "local sheets", result: "F1 0.1436", verdict: "Extra neighboring context hurts." } },
+    s2_midpoint_post: { en: { goal: "Cover the time window using scripted postprocessing.", how: "Apply midpoint full-cover postprocess after pad=0 predictions.", input: "predicted boundaries", result: "F1 0.1635", verdict: "Scripted cover is worse than putting full-cover into the prompt." } },
+    s2_fullcover_qwen36: { en: { goal: "Re-cut locally while covering all completed actions in the window.", how: "Coarse GEPA pass, local timestamped sheets, pad=0, and full-cover prompt.", input: "local contact sheet plus coarse-bound hint", result: "F1 0.2031, 308 predictions", verdict: "Main segmentation gain in the Qwen stack." } },
+    merge_exact: { en: { goal: "Make the timeline cleaner by merging adjacent identical labels.", how: "Rule-based merge when adjacent labels are exactly identical.", input: "S2 full-cover predictions", result: "F1 0.1987", verdict: "Looks cleaner but lowers F1; do not enable by default." } },
+    merge_verb: { en: { goal: "Merge adjacent segments with similar verb/object.", how: "Parse approximate verb/object matches and merge adjacent spans.", input: "S2 full-cover predictions", result: "F1 0.1947", verdict: "More aggressive merge lowers F1 further." } },
+    merge_bridge: { en: { goal: "Bridge short gaps between likely-similar spans.", how: "Allow short temporal gaps before merging.", input: "S2 full-cover predictions", result: "F1 0.1883", verdict: "Largest drop among merge rules." } },
+    raw_397b: { en: { goal: "Evaluate label quality with fixed gold boundaries.", how: "Uniformly sample about five raw frames per segment, caption with 397B, and judge separately.", input: "raw frames", result: "Accuracy 50.6%", verdict: "Most stable default labeling input." } },
+    overlay_proxy: { en: { goal: "Show the model an approximate hand location.", how: "Use optical-flow centroid proxy overlay because true hand reconstruction was not available for this ablation.", input: "proxy overlay frames", result: "Accuracy 48.3%", verdict: "Hurts score; do not present it as true hand overlay." } },
+    temporal_collage: { en: { goal: "Add whole-frame past/current/future context.", how: "Create separate full-frame grids from past, current, and future windows.", input: "whole-frame collage", result: "Accuracy 42.1%", verdict: "Context noise outweighs the benefit." } },
+    raw_27b: { en: { goal: "Test whether the smaller model can label fixed segments.", how: "Same raw-frame input as the default labeler, but with Qwen3.6-27B.", input: "raw frames", result: "Accuracy 46.0%", verdict: "Labeling still benefits from the larger model." } },
+    l1_neighbor: { en: { goal: "Use previous/current/next segment context.", how: "Feed PREV/CUR/NEXT contact sheets together to the labeler.", input: "neighbor contact sheets", result: "Accuracy 36.8%", verdict: "The model loses track of which action is current." } },
+    l1_ts_rerun: { en: { goal: "Check whether missing timestamps caused the neighbor-sheet drop.", how: "Re-run neighbor sheets after adding second-level yellow timestamps.", input: "timestamped neighbor sheets", result: "Accuracy 35.5%", verdict: "The recipe itself hurts; timestamps were not the issue." } },
+    l2_yolo_proxy: { en: { goal: "Focus visual attention on hand-object regions.", how: "Use YOLO/person or center-proxy crops because HomER has no native hand asset in this benchmark.", input: "approximate hand collage", result: "Accuracy 40.6%", verdict: "Approximate crops hurt and are not true hand crops." } },
+    l2_hawor: { en: { goal: "Use real wrist tracks for hand crops.", how: "Run HaWoR, build wrist tracks, and crop around hand points; 411/470 segments had full crop coverage.", input: "true hand crops plus raw fallback", result: "Accuracy 51.1%", verdict: "Small positive gain, but expensive; use when reliable hand assets exist." } },
+    l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Reports must keep the judge fixed." } },
+    l2_proxy_27b: { en: { goal: "Combine small model and approximate hand collage.", how: "Same proxy-crop input, but with Qwen3.6-27B.", input: "approximate hand collage", result: "Accuracy 31.7%", verdict: "Both the input and the smaller labeler hurt." } },
+    egovid_e2e: { en: { goal: "Measure the original one-pass cut-and-label path.", how: "Rule-based wrist cuts followed by per-segment captions.", input: "production-style baseline output", result: "E2E F1 0.0656", verdict: "Weak end-to-end baseline under the WGO protocol." } },
+    s2_self: { en: { goal: "Keep the best boundaries but let the segmentation model self-label.", how: "Use S2 full-cover boundaries and Qwen3.6-27B labels.", input: "S2 predicted segments", result: "E2E F1 0.1017", verdict: "Better boundaries alone are not enough; labels remain weak." } },
+    raw397: { en: { goal: "Lock boundaries and upgrade the labeler.", how: "Use the same S2 boundaries, then let 397B caption raw frames.", input: "raw frames within S2 segments", result: "E2E F1 0.1388", verdict: "Most gain comes from the larger labeler." } },
+    ffmpeg397: { en: { goal: "Test sensitivity to decode and sampling path.", how: "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.", input: "ffmpeg-sampled raw frames", result: "E2E F1 0.1414", verdict: "Slightly better than the default raw path; useful as a candidate." } },
+    nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1080", verdict: "Context pollution hurts semantics while boundaries stay fixed." } },
+    nb397: { en: { goal: "Try neighbor context with a stronger raw prior.", how: "Feed previous/current/next frames plus a 397B raw prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1440", verdict: "Better than the 27B-prior neighbor path, still below selector." } },
+    selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "E2E F1 0.1517", verdict: "Best current end-to-end result; higher call count." } }
+  };
+
   function lang() {
     return (window.__LANG__ === "en") ? "en" : "zh";
   }
@@ -420,6 +456,10 @@
       note: pack.note != null ? pack.note : r.note,
       model: pack.model != null ? pack.model : r.model,
     };
+  }
+  function locMethod(row) {
+    const pack = (METHOD_I18N[row.id] || {})[lang()];
+    return pack || row.method || {};
   }
 
   function fmtF1(n) {
@@ -488,7 +528,7 @@
     if (!el) return;
     el.innerHTML = rows.map((row) => {
       const r = locRow(row);
-      const m = row.method || {};
+      const m = locMethod(row);
       const score = kind === "label" ? pct(r.acc) : kind === "e2e" ? fmtF1(r.e2e_f1) : fmtF1(r.f1);
       const cls = isWinMethod(row, kind) ? "win" : (isFailMethod(row, kind) ? "fail" : "");
       const fig = row.figure || "";
@@ -584,8 +624,8 @@
 
   function i18n(key, vars) {
     const lang = window.__LANG__ || "zh";
-    let s = (window.EgoVid_I18N && window.EgoVid_I18N.t)
-      ? window.EgoVid_I18N.t(key, lang)
+    let s = (window.EgoANT_I18N && window.EgoANT_I18N.t)
+      ? window.EgoANT_I18N.t(key, lang)
       : key;
     if (vars) {
       Object.keys(vars).forEach((k) => {
@@ -715,7 +755,7 @@
 
   function renderWalk(walk) {
     if (!walk) return;
-    const t = (k) => (window.EgoVid_I18N && window.EgoVid_I18N.t) ? window.EgoVid_I18N.t(k, lang()) : k;
+    const t = (k) => (window.EgoANT_I18N && window.EgoANT_I18N.t) ? window.EgoANT_I18N.t(k, lang()) : k;
     const instr = document.querySelector("#walk-instruction");
     if (instr) {
       instr.innerHTML = `<strong>${t("walk.task")}</strong> ${esc(walk.instruction)} · ≈${Number(walk.duration_sec).toFixed(1)}s · pred ${walk.scores_episode.n_pred} / gold ${walk.scores_episode.n_gold}`;
@@ -1134,7 +1174,7 @@
 
   window.__RESULTS__ = {
   "meta": {
-    "title": "EgoVid Annotate × WGO-Bench HomER 标注消融长报告",
+    "title": "EgoANT × WGO-Bench HomER 标注消融长报告",
     "eval_subset": "HomER 25 episodes / 470 gold segments",
     "metric_seg": "Segment F1@0.75 micro + outer snap",
     "metric_label": "LLM-judge accuracy on gold boundaries",
@@ -1214,7 +1254,7 @@
   "segmentation": [
     {
       "id": "egovid_baseline",
-      "name": "EgoVid Annotate 原管线：rule-based 腕速切段 + merge",
+      "name": "EgoANT 原管线：rule-based 腕速切段 + merge",
       "f1": 0.0953,
       "p": null,
       "r": null,
@@ -1720,7 +1760,7 @@
   "e2e": [
     {
       "id": "egovid_e2e",
-      "name": "EgoVid Annotate one-pass",
+      "name": "EgoANT one-pass",
       "seg_f1": 0.0953,
       "e2e_f1": 0.0656,
       "pred_gold": "810/470",

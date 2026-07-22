@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n="page.title">标注第一视角人手数据 · EgoVid Annotate × HomER</title>
+  <title data-i18n="page.title">EgoANT 在 WGO-Bench HomER 上的评测报告</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
@@ -15,21 +15,21 @@
     <div class="splash-scrim" aria-hidden="true"></div>
     <div class="splash-ui">
       <div class="splash-bar">
-        <a class="brand splash-brand" href="#top">EgoVid Annotate</a>
+        <a class="brand splash-brand" href="#top">EgoANT</a>
         <div class="splash-bar-right">
           <a class="splash-link" href="#blog" data-i18n="splash.link.blog">报告</a>
           <a class="splash-link" href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">WGO-Bench</a>
           <div class="lang-switch" role="group" aria-label="Language">
-            <button type="button" class="lang-btn active" data-lang="zh">中文</button>
+            <button type="button" class="lang-btn active" data-lang="zh">ZH</button>
             <button type="button" class="lang-btn" data-lang="en">EN</button>
           </div>
         </div>
       </div>
       <div class="splash-center">
-        <h1 data-i18n-html data-i18n="hero.title">标注第一视角<br />人手数据</h1>
-        <p class="splash-kicker" data-i18n="hero.eyebrow">WGO-Bench HomER · EgoVid Annotate</p>
+        <h1 data-i18n-html data-i18n="hero.title">EgoANT<br />评测 HomER</h1>
+        <p class="splash-kicker" data-i18n="hero.eyebrow">WGO-Bench HomER · EgoANT</p>
         <p class="splash-lede" data-i18n="hero.lede">
-          在 WGO-Bench 最难的第一视角子集 HomER 上，EgoVid Annotate 的 Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；端到端 0.1517。切段已接近公开 Gemini 参考，文案与端到端仍有空间。
+          我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；端到端 F1 为 0.1517。
         
         </p>
         <div class="tag-pills">
@@ -37,7 +37,7 @@
           <span class="tag-pill" data-i18n="tag.human">人手数据</span>
           <span class="tag-pill" data-i18n="tag.subtask">子任务</span>
           <span class="tag-pill" data-i18n="tag.wgo">WGO-Bench</span>
-          <span class="tag-pill" data-i18n="tag.egoant">EgoVid Annotate</span>
+          <span class="tag-pill" data-i18n="tag.egoant">EgoANT</span>
         </div>
         <a class="splash-cta" href="#blog" data-i18n="splash.cta">进入报告</a>
       </div>
@@ -46,7 +46,7 @@
 
   <nav class="topnav blog-nav">
     <div class="topnav-inner">
-      <a class="brand" href="#blog" data-i18n="nav.brand">EgoVid Annotate · 报告</a>
+      <a class="brand" href="#blog" data-i18n="nav.brand">EgoANT · 报告</a>
       <div class="topnav-links">
         <a href="#intro" data-i18n="nav.intro">导读</a>
         <a href="#tldr" data-i18n="nav.tldr">结论</a>
@@ -59,9 +59,10 @@
         <a href="#story" data-i18n="nav.story">消融</a>
         <a href="#recipe" data-i18n="nav.recipe">推荐配置</a>
         <a href="#appendix" data-i18n="nav.appendix">附录</a>
+        <a href="#references" data-i18n="nav.references">References</a>
       </div>
       <div class="lang-switch" role="group" aria-label="Language">
-        <button type="button" class="lang-btn active" data-lang="zh">中文</button>
+        <button type="button" class="lang-btn active" data-lang="zh">ZH</button>
         <button type="button" class="lang-btn" data-lang="en">EN</button>
       </div>
     </div>
@@ -82,6 +83,7 @@
     <a href="#story" data-toc="story" data-i18n="nav.story">消融</a>
     <a href="#recipe" data-toc="recipe" data-i18n="nav.recipe">推荐配置</a>
     <a href="#appendix" data-toc="appendix" data-i18n="nav.appendix">附录</a>
+    <a href="#references" data-toc="references" data-i18n="nav.references">References</a>
   </aside>
 
   <main class="wrap">
@@ -101,20 +103,20 @@
       </p>
       <h3 data-i18n="intro.h3">已有公开工作（地图）</h3>
       <ul>
-        <li data-i18n="intro.li0">Egocentric 数据族：EgoVerse / EgoDex / EgoLive 等第一人称人手操作演示，面向规模化 human 数据。</li>
-        <li data-i18n="intro.li1">HomER：WGO-Bench 里最难的 egocentric 子集；本报告消融固定 HomER 25 / 470 gold 段。</li>
-        <li data-i18n="intro.li2">Vitra：偏「先用手部/运动信号切，再 caption」的启发；EgoVid Annotate 生产线用 HaWoR 腕速实现切段，而非直接跑 Vitra 模型。</li>
+        <li data-i18n-html data-i18n="intro.li0">Egocentric 数据族：<a href="https://egoverse.ai/" target="_blank" rel="noopener">EgoVerse</a> / <a href="https://github.com/apple/ml-egodex" target="_blank" rel="noopener">EgoDex</a> / <a href="https://arxiv.org/abs/2604.23570" target="_blank" rel="noopener">EgoLive</a> 等第一人称人手操作演示，面向规模化 human-to-robot 数据。</li>
+        <li data-i18n-html data-i18n="intro.li1">HomER：<a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 里的 egocentric human 子集；本报告固定评测 HomER 25 / 470 gold 段。</li>
+        <li data-i18n-html data-i18n="intro.li2"><a href="https://github.com/microsoft/VITRA" target="_blank" rel="noopener">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。</li>
         <li data-i18n="intro.li3" data-i18n-html>WGO-Bench / <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata blog</a>：公开「切段 + 短句」评测协议与 Gemini 参考分，以及约 $2.64/视频小时（batch）的端到端开销。</li>
         <li data-i18n="intro.li4">Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。</li>
       </ul>
       <p data-i18n="intro.p3">
-        本页报告 EgoVid Annotate 在 HomER 上、对标 WGO 协议的可复现消融：什么涨分、什么失败、成本如何与公开数字对照。名词解释见后文背景章。
+        本页报告 EgoANT 在 HomER 上、对标 WGO 协议的可复现消融：什么涨分、什么失败、成本如何与公开数字对照。名词解释见后文背景章。
       </p>
       <div id="scope" class="callout" data-i18n="intro.scope">
         评测范围：本页分数与推荐配置均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。
       </div>
       <div class="callout good" data-i18n-html data-i18n="intro.vs">
-        <strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoVid Annotate 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。
+        <strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoANT 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。
         端到端本页 <strong>0.1517</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。
         固定边界标注 Qwen 栈 ≈50.6–51.1% vs Macrodata 公开 ≈61%——句子质量仍有差距。
         <em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>
@@ -150,7 +152,7 @@
         <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata · Annotating Robot Video Subtasks</a>
         把「长视频 → 可执行子任务 + 短句」做成公开问题：发布数据集
         <strong>WGO-Bench</strong>、三种分数（分段 / 固定边界标注 / 端到端），以及 Gemini 等参考分。
-        本报告在同一评测协议上，给出 <strong>EgoVid Annotate</strong> 的可复现消融：涨分项、失败配置与推荐路径。
+        本报告在同一评测协议上，给出 <strong>EgoANT</strong> 的可复现消融：涨分项、失败配置与推荐路径。
       </p>
 
       <h3 data-i18n="world.h3.ego">Egocentric 数据与 WGO-Bench</h3>
@@ -162,9 +164,9 @@
         不宜与全量 100 集 headline（0.306）直接对比。同协议下其他子集的结果见导读范围声明。
       </p>
 
-      <h3 data-i18n="world.h3.egoant">EgoVid Annotate：生产默认 vs 本报告实验线</h3>
+      <h3 data-i18n="world.h3.egoant">EgoANT：生产默认 vs 本报告实验线</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
-        <strong>EgoVid Annotate</strong> 是我们的 egocentric 人手视频自动标注系统。它有两条需要分清的路径：
+        <strong>EgoANT</strong> 是我们的 egocentric 人手视频自动标注系统。它有两条需要分清的路径：
       </p>
       <ul>
         <li data-i18n-html data-i18n="world.li.prod"><strong>生产默认管线</strong>（日常批标）：HaWoR 手重建 → 腕速平滑与 minima 切段 → 段内 raw 抽帧写短句 → merge judge / rewrite。
@@ -215,6 +217,10 @@
         <li data-i18n-html data-i18n="metrics.li3"><strong>Semantic E2E F1</strong>：先时间配对，再对配对成功的 pair 做语义 judge；刀工与文案都过才算。</li>
       </ol>
       <p data-i18n="metrics.toy">F1 越大越好，上限 1.0。玩具例子（与 scorer 一致）：</p>
+      <figure class="figure">
+        <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
+        <figcaption data-i18n="metrics.figcap">本地图示：先用 IoU 判断 pred/gold 时间段是否重叠足够，再用 match 数计算 precision、recall 和 F1。</figcaption>
+      </figure>
       <p data-i18n="metrics.toy.g">Gold：G0[0,3], G1[3,6], G2[6,10] · Pred：P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]</p>
       <ol>
         <li data-i18n="metrics.toy.1">Outer snap：P0.start→0，P3.end→10</li>
@@ -222,6 +228,10 @@
         <li data-i18n="metrics.toy.3">n_match=2 → P=0.50，R≈0.67，F1≈0.571</li>
       </ol>
       <div id="toy-timeline" class="timeline"></div>
+      <div class="legend-row" aria-label="Metric colors">
+        <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
+        <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.pred">Pred / 模型预测</span></span>
+      </div>
     </section>
 
     <section id="contact">
@@ -241,6 +251,10 @@
           <figcaption data-i18n="contact.cap2">局部时间窗口示例：版式相同，只换时间范围（第二遍精修看这种图）。</figcaption>
         </figure>
       </div>
+      <figure class="figure">
+        <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy comparing contact sheets, temporal collages, neighbor sheets, and hand crops" />
+        <figcaption data-i18n="contact.taxonomy.cap">本地图示：contact sheet、整帧 temporal collage、邻段 sheet、hand crop 是四种不同视觉输入；它们在实验中不可互相代称。</figcaption>
+      </figure>
     </section>
 
     <section id="boundary">
@@ -264,6 +278,11 @@
           <div class="bc-playhead" id="bc-playhead"></div>
           <div id="bc-lanes"></div>
           <div class="bc-axis" id="bc-axis"></div>
+        </div>
+        <div class="legend-row" aria-label="Boundary color legend">
+          <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
+          <span class="legend-key"><span class="legend-swatch coarse"></span><span data-i18n="legend.coarse">Whole-episode coarse</span></span>
+          <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.contact">Contact-sheet prediction</span></span>
         </div>
         <div class="bc-tip" id="bc-tip" hidden></div>
         <p class="bc-caption" id="bc-caption" data-i18n="boundary.caption">
@@ -326,6 +345,10 @@
           <figure class="figure">
             <img src="assets/homer4/contact_window_sample.jpg" alt="step03 local sheet" />
             <figcaption data-i18n="walk.s3.cap">局部时间窗 contact sheet（第二遍精修输入）。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="assets/explain/s2_no_pad_full_cover.svg" alt="S2 no-pad full-cover local refinement diagram" />
+            <figcaption data-i18n="walk.s3.diagram.cap">本地图示：S2 只在粗分窗口内重切；pad=0 避免看进邻段，full-cover 要求窗口内完成动作都被覆盖。</figcaption>
           </figure>
           <details class="prompt-fold">
             <summary data-i18n="walk.prompt.s2">Prompt (English only)</summary>
@@ -396,10 +419,10 @@
     </section>
 
     <section id="cost">
-      <h2 data-i18n="cost.h2">5. 开销对照：Macrodata 公开数字 vs EgoVid Annotate</h2>
+      <h2 data-i18n="cost.h2">5. 开销对照：Macrodata 公开数字 vs EgoANT</h2>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），只改标注调用。API 次数由 label JSON 结构计数；WGO token 为工程估计（397B 远端暂关）。生产默认管线另附 LFT rollout 实测。Macrodata 报的是 Gemini batch 美元价；我们是 Qwen 栈的估计/rollout——结构对照，非同模型账单。细节见附录 G。
+        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），只改标注调用。API 次数由公开报告产物结构计数；token 为工程估计。Macrodata 报的是 Gemini batch 美元价；本页给出 Qwen 栈的结构化估计，二者不是同模型账单。细节见附录 G。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
@@ -422,14 +445,14 @@
             <td data-i18n="cost.row.md_cs_num">约 12× 更便宜（文中有 token/价格示意）</td>
           </tr>
           <tr>
-            <td data-i18n="cost.row.wgo">EgoVid Annotate（本页 WGO）</td>
+            <td data-i18n="cost.row.wgo">EgoANT（本页 WGO）</td>
             <td data-i18n="cost.row.wgo_scope">raw / selector 工程估计 + 产物 API 次数</td>
             <td data-i18n="cost.row.wgo_num">见下表；非 Gemini 账单</td>
           </tr>
           <tr>
-            <td data-i18n="cost.row.prod">EgoVid Annotate 生产 rollout</td>
-            <td data-i18n="cost.row.prod_scope">LFT work/*/token_usage.json（HomER 25）</td>
-            <td data-i18n="cost.row.prod_num">8,863,226 tokens · 2574 calls · ≈40 min 视频</td>
+            <td data-i18n="cost.row.prod">EgoANT 生产默认路径</td>
+            <td data-i18n="cost.row.prod_scope">同一 HomER 子集上的内部工程估计</td>
+            <td data-i18n="cost.row.prod_num">仅保留聚合调用量级；不公开内部机器、路径或服务状态</td>
           </tr>
         </tbody>
       </table>
@@ -444,7 +467,6 @@
         </thead>
         <tbody id="cost-tbody"></tbody>
       </table>
-      <div id="cost-production"></div>
     </section>
 
     <section id="story">
@@ -453,7 +475,7 @@
 
       <h3 data-i18n="story.h3.seg">6.1 分段：从假切点到「盖住完整动作」</h3>
       <ol>
-        <li data-i18n-html data-i18n="story.seg.1">原 EgoVid Annotate <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
+        <li data-i18n-html data-i18n="story.seg.1">原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
         <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处造假边界。</li>
         <li data-i18n-html data-i18n="story.seg.3"><strong>整集一次</strong> + legacy prompt（尚无切段规则清单）：假切点没了，却欠分割。</li>
         <li data-i18n-html data-i18n="story.seg.4">换成 <strong>切段规则清单</strong>（GEPA）：到 0.137，仍偏少。</li>
@@ -590,192 +612,26 @@
       </table>
     </section>
 
-    <section id="appendix">
-      <h2 data-i18n="appendix.h2">8. 附录：概念、公式、实现与成本记账</h2>
-      <p class="plain" data-i18n-html data-i18n="appendix.lead">
-        正文讲「试了什么、分数怎么变」；本附录讲实现细节（公式/表可能中英混排）。
-        目录：
-        <a href="#app-metrics">A 得分</a> ·
-        <a href="#app-seg">B 分段概念</a> ·
-        <a href="#app-e2e">C 标注/E2E 术语</a> ·
-        <a href="#app-prod">D 生产管线</a> ·
-        <a href="#app-visual">E 视觉输入</a> ·
-        <a href="#app-prompts">F Prompt</a> ·
-        <a href="#app-cost">G 成本记账</a> ·
-        <a href="#audit">H 效度</a>。
-      </p>
+    <section id="appendix"></section>
 
-      <h3 id="app-metrics">A. 得分方法：直觉 + 公式</h3>
-      <h4>A.1 Segment F1（只评刀工）</h4>
-      <p><strong>直觉：</strong>不管句子写得好不好，只看时间段有没有切对。像用剪刀剪录像：剪对了就算。</p>
-      <ol>
-        <li>Outer snap：每个 episode 的第一条预测起点、最后一条预测终点对齐到视频起止。</li>
-        <li>若 pred 与 gold 的时间 IoU ≥ 0.75，可一对一 greedy 配对（一个 pred 不能配多个 gold）。</li>
-        <li>全集 micro：</li>
+    <section id="references">
+      <h2 data-i18n="references.h2">References</h2>
+      <ol class="ref-list">
+        <li><a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench on Hugging Face</a><span class="ref-note" data-i18n="references.wgo">公开 subtask annotation benchmark，本页使用其中 HomER 子集做评测。</span></li>
+        <li><a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata Labs: Segmenting Robot Video into Actionable Subtasks</a><span class="ref-note" data-i18n="references.macrodata">WGO-Bench、评测协议、Gemini 参考分和公开成本数字来源。</span></li>
+        <li><a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">Scale Labs: The Path to Large Scale Dense Video Captioning</a><span class="ref-note" data-i18n="references.scale">视觉输入表示、hand-crop/collage 与 dense captioning 消融的公开参考。</span></li>
+        <li><a href="https://github.com/microsoft/VITRA" target="_blank" rel="noopener">VITRA</a><span class="ref-note" data-i18n="references.vitra">真实人手视频转 VLA 训练信号的公开工作；本报告只借鉴问题设定，不把 VITRA 当作切段后端。</span></li>
+        <li><a href="https://github.com/apple/ml-egodex" target="_blank" rel="noopener">EgoDex</a><span class="ref-note" data-i18n="references.egodex">大规模 egocentric dexterous manipulation 数据集。</span></li>
+        <li><a href="https://egoverse.ai/" target="_blank" rel="noopener">EgoVerse</a><span class="ref-note" data-i18n="references.egoverse">面向 robot learning 的第一视角 human data 生态。</span></li>
+        <li><a href="https://arxiv.org/abs/2604.23570" target="_blank" rel="noopener">EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</a><span class="ref-note" data-i18n="references.egolive">真实世界人类任务的第一视角数据集论文。</span></li>
       </ol>
-      <pre class="formula">P = m / n_pred
-R = m / n_gold
-F1 = 2·P·R / (P+R)
-其中 m = temporal matches，本子集 n_gold = 470</pre>
-      <p>玩具例（§2）：m=2，n_pred=4，n_gold=3 → P=0.50，R≈0.667，F1≈0.571。</p>
-
-      <h4>A.2 固定边界 Label Acc（只评文案）</h4>
-      <p><strong>直觉：</strong>时间边界用 gold「作弊」给定，只考模型会不会把这段动作写成对的短句。</p>
-      <pre class="formula">Acc = n_semantically_correct / n_gold
-（由 LLM judge 判定 predicted label 与 gold 是否同一完成事件）</pre>
-
-      <h4>A.3 Semantic E2E F1（刀工 + 文案）</h4>
-      <p><strong>直觉：</strong>先要时间配对成功，再对配对成功的 pair 做语义 judge；两边都过才进分子。</p>
-      <pre class="formula">先按 A.1 得到 temporal matches
-再对每个 match pair 做语义 judge → m_sem
-P_e2e = m_sem / n_pred
-R_e2e = m_sem / n_gold
-F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
-      <p>因此：分段 F1=0.2031 时，即使标签全对，E2E 也会被时间匹配 ceiling 卡住。邻段重标掉到 0.108 时，IoU match 仍是 79，掉的是语义 match。</p>
-
-      <h3 id="app-seg">B. 分段概念卡</h3>
-      <article class="concept-card">
-        <h4>欠分割 vs 第一遍加密切（S1）</h4>
-        <p><strong>直觉：</strong>欠分割=切太少（漏动作）；第一遍加密切=故意催模型多切，抬召回，但容易切碎。</p>
-        <p><strong>输入/输出：</strong>整集 contact sheet + 偏短段的 duration prior → 更多、更短的时间段。</p>
-        <p><strong>实现：</strong>改分段 prompt 的时长先验 / 加密切指令；全量 25 集。消融表行：<em>第一遍加密切（S1）</em>（F1 0.1556，pred 558）。</p>
-      </article>
-      <article class="concept-card">
-        <h4>第二遍局部精修早期版（S2，尚未盖住完整动作）</h4>
-        <p><strong>直觉：</strong>粗分之后，在每条粗边界附近开局部时间窗，再看一张「短片联系表」细切一次。</p>
-        <p><strong>输入/输出：</strong>局部时间窗口 contact sheet（同 0.5s / 5×4 layout）→ 精修后的边界列表。</p>
-        <p><strong>实现：</strong>早期常用窗外扩≈1 秒（pad≈1），prompt 尚未要求盖住完整动作。消融表行：<em>第二遍局部精修早期版</em>（F1 0.1674）。</p>
-      </article>
-      <article class="concept-card">
-        <h4>窗口不外扩（pad=0）</h4>
-        <p><strong>直觉：</strong>精修窗口不要向外「多看几秒」，避免把邻段动作带进当前窗。</p>
-        <p><strong>实现：</strong>局部窗 = 粗边界区间，外扩秒数=0。窗口外扩消融见折叠表（0.5/1/2）。</p>
-      </article>
-      <article class="concept-card">
-        <h4>盖住完整动作（full-cover local prompt）</h4>
-        <p><strong>直觉：</strong>告诉模型：这个短窗口里<strong>看得见的完成事件都要盖住</strong>，但不要切成「调整/摆弄」碎片。</p>
-        <p><strong>输入/输出：</strong>窗口不外扩的局部 sheet + full-cover 英文规则 → 本报告最强分段 0.2031。</p>
-        <p><strong>实现：</strong>prompt 文件 <code>s2_fullcover_refine.md</code>（样例 Step 03 折叠区）。对比：用算法做 midpoint 补覆盖 <em>后处理</em> 只有 0.1635——把约束写进 prompt 更有效。消融表行：<em>局部再切：窗口不外扩 + 盖住完整动作</em>。</p>
-      </article>
-      <article class="concept-card">
-        <h4>切段规则清单（GEPA 规则 prompt）</h4>
-        <p><strong>直觉：</strong>不是新模型；是 Macrodata 搜索得到的一组英文硬规则，贴进分段请求。</p>
-        <p><strong>实现：</strong><code>completed_events_duration_prior_v1</code>；样例 Step 02。消融表：整集 + 切段规则清单 → 0.1369。</p>
-      </article>
-      <article class="concept-card">
-        <h4>规则 merge（三种）</h4>
-        <p><strong>直觉：</strong>在已有预测上用脚本合并相邻段，时间轴更好看，但 F1 全掉——不要默认开。</p>
-        <p><strong>实现：</strong>完全相同文案 / 同动词物体 / 短间隙桥接；均为规则后处理，不再调 LLM。</p>
-      </article>
-
-      <h3 id="app-e2e">C. 标注 / E2E 术语（含「为何 neighbor 掉分」）</h3>
-      <article class="concept-card">
-        <h4>raw relabel（397B 单路 raw 重标）</h4>
-        <p><strong>直觉：</strong>分段边界已经锁死，只换「谁来写句子」：用 397B 看该段若干 raw 帧重写 subtask。</p>
-        <p><strong>实现：</strong>同一批 S2 边界（308 pred）；每段约 5 帧、最长边约 1120px。E2E <strong>0.1388</strong>（语义 match 从自标的 41 提到 54）。</p>
-      </article>
-      <article class="concept-card">
-        <h4>ffmpeg raw relabel</h4>
-        <p><strong>直觉：</strong>边界相同，只换视频解码/抽帧路径，检验标注是否对读帧实现过敏。</p>
-        <p><strong>结果：</strong>E2E 0.1414，略好于默认 raw，常作为 selector 候选源之一。</p>
-      </article>
-      <article class="concept-card">
-        <h4>neighbor relabel（邻段重标）</h4>
-        <p><strong>直觉：</strong>标当前段时，把<strong>上一 / 当前 / 下一段</strong>各抽少量帧一起给模型，希望「有上下文更准」。在 Qwen 上经常变成<strong>邻段上下文干扰</strong>：模型把邻段动作写进当前句。</p>
-        <p><strong>实现：</strong>PREV/CUR/NEXT ≤5 帧，可带 seed prior（小模型或 397B raw 先验）。</p>
-        <p><strong>为何 27B-prior neighbor → 0.108：</strong>分段仍锁在 0.2031，IoU match 仍是 79；语义 match 掉回约 42（接近自标）。
-          所以条形图上「突然降分」不是分段坏了，而是<strong>标注路径伤了句子</strong>。raw397-prior neighbor 可到 0.144，仍低于 selector。</p>
-      </article>
-      <article class="concept-card">
-        <h4>candidate selector</h4>
-        <p><strong>直觉：</strong>每段先生成多条候选（raw / rawprior / seed / ffmpeg 等），再让 397B 选一句最像「完成操作」的短指令。</p>
-        <p><strong>结果：</strong>E2E <strong>0.1517</strong>（语义 match 59）。生产若要省调用，可同边界改用单路 raw（0.1388）。</p>
-      </article>
-
-      <h3 id="app-prod">D. EgoVid Annotate 生产原管线（澄清 Vitra）</h3>
-      <p>
-        日常批标默认路径（与本报告 contact-sheet 实验线并行）大致为：
-      </p>
-      <div class="pipeline">
-        <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → wrist 轨迹</div></div>
-        <div class="step"><div class="n">02</div><div class="t">平滑</div><div class="d">腕速高斯滤波</div></div>
-        <div class="step"><div class="n">03</div><div class="t">切段</div><div class="d">速度 minima + 短段合并</div></div>
-        <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">段内 raw 抽帧写短句</div></div>
-        <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">窗口 judge → rewrite</div></div>
-      </div>
-      <p>
-        <strong>与 Vitra 的关系：</strong>Vitra 等工作启发了「先用手部/运动信号切，再写 caption」的流程；
-        EgoVid Annotate <strong>实现上</strong>用手重建（HaWoR）腕速做切段，而不是把 Vitra 当作切段模型。
-        本报告后续涨分主要来自 WGO 实验线（contact sheet + VLM + selector），不要与生产默认混为一谈。
-      </p>
-
-      <h3 id="app-visual">E. 视觉输入对照</h3>
-      <table>
-        <thead><tr><th>名称</th><th>模型看见什么</th><th>典型用途</th><th>HomER 上</th></tr></thead>
-        <tbody>
-          <tr><td>contact sheet</td><td>带时间戳的抽帧拼图</td><td>分段（粗分 / S2）</td><td>主路径</td></tr>
-          <tr><td>raw 多帧</td><td>段内均匀原帧</td><td>标注默认</td><td>固定边界 Acc 50.6%</td></tr>
-          <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>伤分</td></tr>
-          <tr><td>L1 邻段 sheet</td><td>上/当前/下一段 sheet</td><td>标注消融</td><td>伤分</td></tr>
-          <tr><td>L2 YOLO / center-proxy</td><td>启发式或检测框 crop（上图三栏）</td><td>早期无 recon 时的 proxy</td><td>伤分</td></tr>
-          <tr><td>HaWoR true hand-crop</td><td>按腕轨裁手部</td><td>标注消融</td><td>51.1%（微涨，贵）</td></tr>
-        </tbody>
-      </table>
-
-      <h3 id="app-prompts">F. Prompt 原文（English）</h3>
-      <p>英文全文只在样例章折叠区展示一次；此处为锚点与下载。</p>
-      <ul>
-        <li><a href="#walk-2">GEPA 规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
-        <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a></li>
-        <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>下载</a></li>
-        <li><a href="#walk-5">Judge / Selector</a> ·
-          <a href="prompts/judge_semantic_match.md" download>judge</a> ·
-          <a href="prompts/candidate_selector.md" download>selector</a></li>
-      </ul>
-
-      <h3 id="app-cost" data-i18n="app.cost.h3">G. 成本：估计、rollout 与 Macrodata 对照</h3>
-      <p data-i18n="app.cost.md">
-        Macrodata 公开 E2E（seeded relabel）batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；contact sheet 相对逐帧约 12× 更便宜。原文无 HomER-25 总 token 账单。
-      </p>
-      <p>
-        <strong>API 次数（WGO 实验，产物结构计数）：</strong>n_pred=308，n_sheets=256，n_s2_windows=155，IoU match=79。
-        单路 raw 总计 567；selector 路径 1799。
-      </p>
-      <p>
-        <strong>WGO raw / selector tokens：</strong>按 recipe 元数据做工程估计
-        （约 5 帧/段、图像最长边≈1120、图 token 900–1600）。
-        397B collaborator 远端暂时关闭，无法按原栈重测；表中仍展示此前估计区间。
-        Macrodata 报的是 Gemini batch <strong>美元</strong>；本页是 Qwen 栈的估计/rollout——结构对照，非同模型账单。
-      </p>
-      <p>
-        <strong>生产默认管线（LFT 已读到的 rollout 实测）：</strong>
-        <code>work/*/token_usage.json</code> 25/25 齐全——
-        API <strong>2574</strong>，prompt <strong>8,039,348</strong>，completion <strong>823,878</strong>，
-        total <strong>8,863,226</strong> tokens（≈221k / 视频分钟；caption / merge_judge / merge_rewrite）。
-        与 contact-sheet selector 不是同一路径。
-      </p>
-
-      <h3 id="audit">H. 实验效度注意事项</h3>
-      <table>
-        <thead><tr><th>项</th><th>发现</th><th>处理</th></tr></thead>
-        <tbody>
-          <tr><td>整目录复制 predictions</td><td>文件时间戳几乎同一秒，像「秒标完」</td><td>不以复制目录当重标证据</td></tr>
-          <tr><td>optical-flow overlay</td><td>HomER 当时没有 hand 重建，叠的是光流近似</td><td>标明非真 hand overlay</td></tr>
-          <tr><td>L1 邻段 sheet 缺秒级时间戳</td><td>补戳后全量重跑仍跌分</td><td>结论：该配置本身伤分，不是缺戳</td></tr>
-          <tr><td>早期 hand collage</td><td>YOLO / 画面中心 proxy，不是 HaWoR</td><td>与后来的 true hand-crop 51.1% 分列汇报</td></tr>
-        </tbody>
-      </table>
-      <p class="plain">
-        公开对照：
-        <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata · Annotating Robot Video Subtasks</a>。
-      </p>
     </section>
   </main>
   </div><!-- /.page-body -->
   </div><!-- /#blog -->
 
   <footer>
-    EgoVid Annotate × WGO HomER · blog-style ablation note · HomER 25/470 · F1 越大越好
+    <span data-i18n="footer.text">EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · higher F1 is better</span>
   </footer>
 
   <script src="js/i18n.js"></script>

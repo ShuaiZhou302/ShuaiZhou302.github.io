@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 430" role="img" aria-labelledby="title desc">
+  <title id="title">S2 no-pad full-cover local refinement</title>
+  <desc id="desc">A diagram explaining coarse windows, pad-out, no pad-out, and full-cover local refinement.</desc>
+  <defs>
+    <style>
+      .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}.coarse{fill:#9aa0a6}
+      .pad{fill:#e8d4bf}.local{fill:#2f6f66}.event{fill:#f0c94d}.bad{fill:#c45c26}.box{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}
+      .txt{font:16px "IBM Plex Sans",Arial,sans-serif}.mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}
+    </style>
+  </defs>
+  <rect width="980" height="430" rx="18" class="bg"/>
+  <text x="36" y="46" class="txt label ink">S2 local refinement: stay inside the coarse window, then cover completed actions</text>
+  <text x="36" y="76" class="txt muted">The second pass is not allowed to peek into neighboring actions when pad=0.</text>
+  <line x1="110" y1="130" x2="900" y2="130" class="axis"/>
+  <text x="36" y="136" class="txt label ink">Coarse</text>
+  <rect x="265" y="112" width="390" height="36" rx="7" class="coarse"/>
+  <text x="405" y="136" class="mono" fill="#fff">coarse window</text>
+  <rect x="170" y="185" width="580" height="48" rx="9" class="pad"/>
+  <rect x="265" y="191" width="390" height="36" rx="7" class="local"/>
+  <text x="36" y="215" class="txt label ink">Pad-out</text>
+  <text x="285" y="215" class="mono" fill="#fff">pad=0 region</text>
+  <text x="176" y="178" class="txt small muted">extra past</text>
+  <text x="675" y="178" class="txt small muted">extra future</text>
+  <text x="36" y="290" class="txt label ink">Full-cover</text>
+  <line x1="110" y1="285" x2="900" y2="285" class="axis"/>
+  <rect x="290" y="267" width="108" height="36" rx="7" class="event"/><text x="318" y="291" class="mono ink">E1</text>
+  <rect x="420" y="267" width="144" height="36" rx="7" class="event"/><text x="468" y="291" class="mono ink">E2</text>
+  <rect x="585" y="267" width="54" height="36" rx="7" class="event"/><text x="600" y="291" class="mono ink">E3</text>
+  <path d="M265 252v74M655 252v74" stroke="#2f6f66" stroke-width="4"/>
+  <text x="276" y="338" class="txt small ink">All completed events visible inside the local window must be covered.</text>
+  <rect x="48" y="358" width="884" height="48" rx="12" class="box"/>
+  <text x="72" y="389" class="txt ink">Why it helped: no pad-out reduces neighbor contamination; full-cover prevents the model from cutting only fragments.</text>
+</svg>

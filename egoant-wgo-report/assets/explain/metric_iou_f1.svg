@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 420" role="img" aria-labelledby="title desc">
+  <title id="title">Temporal IoU and F1 scoring diagram</title>
+  <desc id="desc">A toy timeline showing gold segments, predicted segments, overlap, union, temporal matches, precision, recall, and F1.</desc>
+  <defs>
+    <style>
+      .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}
+      .gold{fill:#f0c94d}.pred{fill:#2f6f66}.overlap{fill:#c45c26}.miss{fill:#bfc7ca}
+      .box{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}.txt{font:16px "IBM Plex Sans",Arial,sans-serif}.mono{font:15px "IBM Plex Mono",monospace}
+      .small{font-size:13px}.label{font-weight:700}
+    </style>
+  </defs>
+  <rect width="980" height="420" rx="18" class="bg"/>
+  <text x="36" y="46" class="txt label ink">Toy segment scoring: match time first, then count precision and recall</text>
+  <text x="36" y="76" class="txt muted">IoU = overlap / union. A pred can match one gold segment if IoU >= 0.75.</text>
+  <line x1="120" y1="130" x2="900" y2="130" class="axis"/>
+  <line x1="120" y1="220" x2="900" y2="220" class="axis"/>
+  <text x="42" y="136" class="txt label ink">Gold</text>
+  <text x="42" y="226" class="txt label ink">Pred</text>
+  <g class="mono small muted">
+    <text x="116" y="112">0s</text><text x="350" y="112">3s</text><text x="584" y="112">6s</text><text x="895" y="112">10s</text>
+  </g>
+  <rect x="120" y="112" width="234" height="36" rx="7" class="gold"/><text x="212" y="136" class="mono ink">G0</text>
+  <rect x="354" y="112" width="234" height="36" rx="7" class="gold"/><text x="446" y="136" class="mono ink">G1</text>
+  <rect x="588" y="112" width="312" height="36" rx="7" class="gold"/><text x="728" y="136" class="mono ink">G2</text>
+  <rect x="120" y="202" width="218" height="36" rx="7" class="pred"/><text x="207" y="226" class="mono" fill="#fff">P0</text>
+  <rect x="338" y="202" width="211" height="36" rx="7" class="pred"/><text x="421" y="226" class="mono" fill="#fff">P1</text>
+  <rect x="549" y="202" width="195" height="36" rx="7" class="miss"/><text x="625" y="226" class="mono ink">P2</text>
+  <rect x="744" y="202" width="156" height="36" rx="7" class="miss"/><text x="801" y="226" class="mono ink">P3</text>
+  <path d="M120 154v33M338 154v33" stroke="#c45c26" stroke-width="4"/>
+  <path d="M354 154v33M549 154v33" stroke="#c45c26" stroke-width="4"/>
+  <text x="142" y="180" class="txt small ink">P0 vs G0 IoU approx 0.93 -> match</text>
+  <text x="374" y="180" class="txt small ink">P1 vs G1 IoU approx 0.78 -> match</text>
+  <rect x="48" y="285" width="884" height="92" rx="14" class="box"/>
+  <text x="72" y="320" class="mono ink">m = 2 temporal matches</text>
+  <text x="72" y="348" class="mono ink">n_pred = 4, n_gold = 3</text>
+  <text x="380" y="320" class="mono ink">Precision = m / n_pred = 0.50</text>
+  <text x="380" y="348" class="mono ink">Recall = m / n_gold = 0.67</text>
+  <text x="680" y="334" class="mono label ink">F1 = 2PR/(P+R) = 0.571</text>
+</svg>

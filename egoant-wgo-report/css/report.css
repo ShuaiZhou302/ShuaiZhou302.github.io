@@ -7,6 +7,11 @@
   --card: #fffdf8;
   --accent: #0f6b5c;
   --accent2: #c45c26;
+  --gold-track: #f0c94d;
+  --pred-track: #2f6f66;
+  --coarse-track: #9aa0a6;
+  --contact-track: #2f6f66;
+  --selector-track: #c45c26;
   --good: #1f7a3f;
   --bad: #a33b2b;
   --warn: #9a6b12;
@@ -433,8 +438,8 @@ tr.best td { background: #eaf5ee; font-weight: 600; }
   transition: filter 0.12s ease, transform 0.12s ease;
 }
 .seg:hover, .seg.active { filter: brightness(1.08); transform: translateY(-1px); outline: 2px solid var(--ink); outline-offset: 1px; }
-.seg.gold { background: #0f6b5c; }
-.seg.pred { background: #c45c26; opacity: 0.92; }
+.seg.gold { background: var(--gold-track); color: #1a1510; }
+.seg.pred { background: var(--pred-track); opacity: 0.94; }
 .seg.match { box-shadow: inset 0 0 0 2px #f5d76e; }
 
 .figure {
@@ -617,6 +622,45 @@ pre.formula {
   line-height: 1.55;
 }
 .concept-card p strong { color: var(--ink); }
+
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  margin: 0.75rem 0 1rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.legend-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.legend-swatch {
+  width: 1rem;
+  height: 0.68rem;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+.legend-swatch.gold { background: var(--gold-track); }
+.legend-swatch.pred { background: var(--pred-track); }
+.legend-swatch.coarse { background: var(--coarse-track); }
+.legend-swatch.selector { background: var(--selector-track); }
+
+.ref-list {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+}
+.ref-list li { padding-left: 0.2rem; }
+.ref-list .ref-note {
+  display: block;
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin-top: 0.1rem;
+}
 
 /* method cards */
 .method-grid {
@@ -841,9 +885,9 @@ pre.formula {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.bc-seg.color-gold { background: #f0c94d; }
-.bc-seg.color-frame { background: #9aa0a6; color: #111; }
-.bc-seg.color-contact { background: #2f6f66; color: #f5fffc; }
+.bc-seg.color-gold { background: var(--gold-track); color: #1a1510; }
+.bc-seg.color-frame { background: var(--coarse-track); color: #111; }
+.bc-seg.color-contact { background: var(--contact-track); color: #f5fffc; }
 .bc-playhead {
   position: absolute;
   top: 0.55rem;

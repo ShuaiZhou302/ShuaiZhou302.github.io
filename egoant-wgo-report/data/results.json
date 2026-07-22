@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "EgoVid Annotate × WGO-Bench HomER 标注消融长报告",
+    "title": "EgoANT × WGO-Bench HomER 标注消融长报告",
     "eval_subset": "HomER 25 episodes / 470 gold segments",
     "metric_seg": "Segment F1@0.75 micro + outer snap",
     "metric_label": "LLM-judge accuracy on gold boundaries",
@@ -80,7 +80,7 @@
   "segmentation": [
     {
       "id": "egovid_baseline",
-      "name": "EgoVid Annotate 原管线：rule-based 腕速切段 + merge",
+      "name": "EgoANT 原管线：rule-based 腕速切段 + merge",
       "f1": 0.0953,
       "p": null,
       "r": null,
@@ -586,7 +586,7 @@
   "e2e": [
     {
       "id": "egovid_e2e",
-      "name": "EgoVid Annotate 生产 one-pass",
+      "name": "EgoANT 生产 one-pass",
       "seg_f1": 0.0953,
       "e2e_f1": 0.0656,
       "pred_gold": "810/470",
