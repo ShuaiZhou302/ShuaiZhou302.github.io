@@ -1,0 +1,152 @@
+{
+  "id": "homer_2",
+  "title": "Boundary comparison",
+  "instruction": "wash the dishes in the sink",
+  "duration_sec": 42.0,
+  "video": "assets/boundary_homer2/homer_2_clip45_seek.mp4",
+  "window_note_zh": "截取前 42 秒窗口。",
+  "window_note_en": "First 42s window.",
+  "caption_zh": "模型常能叫出粗事件，却漏掉更细的子任务边界。同集对照：人工 gold、整集粗分、contact sheet 粗分。",
+  "caption_en": "Models often name the broad event while missing finer subtask boundaries. Same HomER clip vs gold, whole-episode coarse cut, and contact-sheet cut.",
+  "tracks": [
+    {
+      "id": "gold",
+      "label_zh": "Gold",
+      "label_en": "Gold",
+      "color": "gold",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 3.981,
+          "subtask": "turn on the kitchen faucet"
+        },
+        {
+          "start_sec": 3.981,
+          "end_sec": 6.717,
+          "subtask": "wet the yellow sponge under the running water"
+        },
+        {
+          "start_sec": 6.717,
+          "end_sec": 11.151,
+          "subtask": "put a dish soap on the dish sponge"
+        },
+        {
+          "start_sec": 11.151,
+          "end_sec": 19.269,
+          "subtask": "wet and squeeze the yellow sponge under the running water"
+        },
+        {
+          "start_sec": 19.269,
+          "end_sec": 21.116,
+          "subtask": "pick up the silver spoon from glass mug with cofee"
+        },
+        {
+          "start_sec": 21.116,
+          "end_sec": 28.83,
+          "subtask": "wash the silver spoon with a sponge under running water"
+        },
+        {
+          "start_sec": 28.83,
+          "end_sec": 30.91,
+          "subtask": "place the silver spoon on the kitchen towel and the above the black up"
+        },
+        {
+          "start_sec": 30.91,
+          "end_sec": 31.75,
+          "subtask": "pick up the glass mug from the sink"
+        },
+        {
+          "start_sec": 31.75,
+          "end_sec": 42.0,
+          "subtask": "wash the glass mug with a sponge under running water"
+        }
+      ]
+    },
+    {
+      "id": "whole",
+      "label_zh": "Whole-episode",
+      "label_en": "Whole-episode",
+      "color": "frame",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 12.0,
+          "subtask": "wash black mug"
+        },
+        {
+          "start_sec": 12.0,
+          "end_sec": 32.0,
+          "subtask": "wash black bowl"
+        },
+        {
+          "start_sec": 32.0,
+          "end_sec": 42.0,
+          "subtask": "wash glass"
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "label_zh": "Contact sheet",
+      "label_en": "Contact sheet",
+      "color": "contact",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 1.5,
+          "subtask": "pick up sponge"
+        },
+        {
+          "start_sec": 1.5,
+          "end_sec": 2.5,
+          "subtask": "turn on faucet"
+        },
+        {
+          "start_sec": 2.5,
+          "end_sec": 12.0,
+          "subtask": "wash sponge"
+        },
+        {
+          "start_sec": 12.0,
+          "end_sec": 13.0,
+          "subtask": "turn off faucet"
+        },
+        {
+          "start_sec": 13.0,
+          "end_sec": 14.0,
+          "subtask": "turn on faucet"
+        },
+        {
+          "start_sec": 14.0,
+          "end_sec": 22.0,
+          "subtask": "wash black bowl"
+        },
+        {
+          "start_sec": 22.0,
+          "end_sec": 23.0,
+          "subtask": "turn off faucet"
+        },
+        {
+          "start_sec": 23.0,
+          "end_sec": 24.0,
+          "subtask": "turn on faucet"
+        },
+        {
+          "start_sec": 24.0,
+          "end_sec": 29.5,
+          "subtask": "wash black bowl"
+        },
+        {
+          "start_sec": 30.0,
+          "end_sec": 33.5,
+          "subtask": "wash spoon"
+        },
+        {
+          "start_sec": 34.0,
+          "end_sec": 42.0,
+          "subtask": "wash glass"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "homer_1",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "method": "contact_sheet_vlm",
+  "sample_sec": 0.5,
+  "tiles_per_sheet": 20,
+  "tile_px": 224,
+  "cols": 5,
+  "n_sheets": 17,
+  "duration_sec": 161.18333333333334,
+  "max_sheets_per_call_arg": 0,
+  "sheets_per_call_effective": 7,
+  "whole_episode": false,
+  "context_fallback_used": true,
+  "prompt_variant": "gepa_duration_prior_v1",
+  "prompt_source": "blog_original_completed_events_duration_prior_v1",
+  "n_empty_calls": 2,
+  "call_info": {
+    "sheets_per_call_effective": 7,
+    "whole_episode": false,
+    "context_fallback_used": true,
+    "n_sheets": 17,
+    "n_calls": 3,
+    "empty_ratio": 0.6666666666666666
+  },
+  "segments": [
+    {
+      "start_sec": 141.0,
+      "end_sec": 149.0,
+      "subtask": "pour water into tall glass"
+    },
+    {
+      "start_sec": 151.0,
+      "end_sec": 158.0,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 159.0,
+      "end_sec": 161.0,
+      "subtask": "place pitcher"
+    }
+  ]
+}

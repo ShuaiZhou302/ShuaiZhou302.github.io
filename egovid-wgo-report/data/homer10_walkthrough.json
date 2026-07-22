@@ -1,0 +1,154 @@
+{
+  "id": "homer_10",
+  "instruction": "clean the countertop and stovetop with a cloth",
+  "duration_sec": 120.83333333333333,
+  "video": "assets/homer10/homer_10.mp4",
+  "gold_path": "assets/homer10/gold_homer_10.json",
+  "pred_path": "assets/homer10/pred_homer_10_candidate_selector.json",
+  "assets": {
+    "contact_sheet_example": "assets/homer10/contact_sheet_example.jpg",
+    "contact_window": "assets/homer10/contact_window_sample.jpg"
+  },
+  "pipeline_meta": {
+    "n_sheets": 13,
+    "prompt_variant": "refine_local_v1",
+    "n_windows_refined": 3,
+    "contact_params": "sample_sec=0.5, tile_px=224, ~20 tiles/sheet, yellow timestamps"
+  },
+  "scores_episode": {
+    "n_gold": 10,
+    "n_pred": 3,
+    "temporal_iou075": 2,
+    "semantic_match": 2,
+    "e2e_f1_episode": 0.308,
+    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1517",
+    "note_en": "Episode score; HomER micro E2E F1 = 0.1517 overall"
+  },
+  "candidate_demo_segment": {
+    "start_sec": 17.5,
+    "end_sec": 109.5,
+    "subtask": "wipe the countertop with a cloth",
+    "candidate_select_source": "A",
+    "candidate_labels": {
+      "raw": "wipe the countertop with a cloth",
+      "rawprior": "wipe the countertop with a cloth",
+      "seed": "wipe the dining table surface",
+      "ffmpeg": "Wipe the table with the cloth"
+    },
+    "candidate_select_meta": {
+      "fps": 30.0,
+      "nframes": 3625,
+      "frames_per_sheet": 5,
+      "image_max_side": 1120
+    },
+    "index": 1
+  },
+  "gold_segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 1.334,
+      "subtask": "unfold the yellow cloth"
+    },
+    {
+      "start_sec": 1.334,
+      "end_sec": 19.357,
+      "subtask": "wipe the wooden countertop with a yellow cloth"
+    },
+    {
+      "start_sec": 19.357,
+      "end_sec": 42.314,
+      "subtask": "wipe the dining table with a yellow cloth"
+    },
+    {
+      "start_sec": 42.314,
+      "end_sec": 46.664,
+      "subtask": "pick up the round brown placemat from the table and clean under it"
+    },
+    {
+      "start_sec": 46.664,
+      "end_sec": 65.749,
+      "subtask": "wipe the wooden dinning table with a yellow cloth"
+    },
+    {
+      "start_sec": 65.749,
+      "end_sec": 71.02,
+      "subtask": "pick up the round brown placemats from the wooden table and move to the right"
+    },
+    {
+      "start_sec": 71.02,
+      "end_sec": 81.991,
+      "subtask": "wipe the wooden countertop with a yellow cloth"
+    },
+    {
+      "start_sec": 81.991,
+      "end_sec": 87.154,
+      "subtask": "move the round brown placemats closer to you and place it exactly to the left of the other one on the table"
+    },
+    {
+      "start_sec": 87.154,
+      "end_sec": 108.365,
+      "subtask": "wipe the wooden kitchen table with a yellow cloth"
+    },
+    {
+      "start_sec": 108.365,
+      "end_sec": 120.83,
+      "subtask": "wipe the black glass stovetop with a yellow cloth"
+    }
+  ],
+  "pred_segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 17.5,
+      "subtask": "Wipe the countertop with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the countertop with the cloth",
+        "rawprior": "Wipe the countertop with the cloth",
+        "seed": "wipe the countertop",
+        "ffmpeg": "Wipe the countertop with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3625,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      }
+    },
+    {
+      "start_sec": 17.5,
+      "end_sec": 109.5,
+      "subtask": "wipe the countertop with a cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "wipe the countertop with a cloth",
+        "rawprior": "wipe the countertop with a cloth",
+        "seed": "wipe the dining table surface",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3625,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      }
+    },
+    {
+      "start_sec": 109.5,
+      "end_sec": 120.83,
+      "subtask": "Wipe the stovetop with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the stovetop with the cloth",
+        "rawprior": "Wipe the stovetop with the cloth",
+        "seed": "wipe the stovetop",
+        "ffmpeg": "Wipe the stovetop with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3625,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      }
+    }
+  ]
+}

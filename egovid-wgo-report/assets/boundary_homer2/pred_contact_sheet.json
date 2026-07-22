@@ -1,0 +1,152 @@
+{
+  "id": "homer_2",
+  "instruction": "wash the dishes in the sink",
+  "method": "contact_sheet_vlm",
+  "sample_sec": 0.5,
+  "tiles_per_sheet": 20,
+  "tile_px": 224,
+  "n_sheets": 16,
+  "duration_sec": 154.2,
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 1.5,
+      "subtask": "pick up sponge"
+    },
+    {
+      "start_sec": 1.5,
+      "end_sec": 2.5,
+      "subtask": "turn on faucet"
+    },
+    {
+      "start_sec": 2.5,
+      "end_sec": 12.0,
+      "subtask": "wash sponge"
+    },
+    {
+      "start_sec": 12.0,
+      "end_sec": 13.0,
+      "subtask": "turn off faucet"
+    },
+    {
+      "start_sec": 13.0,
+      "end_sec": 14.0,
+      "subtask": "turn on faucet"
+    },
+    {
+      "start_sec": 14.0,
+      "end_sec": 22.0,
+      "subtask": "wash black bowl"
+    },
+    {
+      "start_sec": 22.0,
+      "end_sec": 23.0,
+      "subtask": "turn off faucet"
+    },
+    {
+      "start_sec": 23.0,
+      "end_sec": 24.0,
+      "subtask": "turn on faucet"
+    },
+    {
+      "start_sec": 24.0,
+      "end_sec": 29.5,
+      "subtask": "wash black bowl"
+    },
+    {
+      "start_sec": 30.0,
+      "end_sec": 33.5,
+      "subtask": "wash spoon"
+    },
+    {
+      "start_sec": 34.0,
+      "end_sec": 44.5,
+      "subtask": "wash glass"
+    },
+    {
+      "start_sec": 45.0,
+      "end_sec": 47.0,
+      "subtask": "place glass on drying rack"
+    },
+    {
+      "start_sec": 47.5,
+      "end_sec": 59.5,
+      "subtask": "wash mug"
+    },
+    {
+      "start_sec": 60.0,
+      "end_sec": 62.0,
+      "subtask": "rinse black cup"
+    },
+    {
+      "start_sec": 62.0,
+      "end_sec": 65.0,
+      "subtask": "wash brown bowl"
+    },
+    {
+      "start_sec": 65.0,
+      "end_sec": 69.5,
+      "subtask": "wash orange sponge"
+    },
+    {
+      "start_sec": 69.5,
+      "end_sec": 81.0,
+      "subtask": "wash glass jar"
+    },
+    {
+      "start_sec": 81.0,
+      "end_sec": 89.5,
+      "subtask": "wash brown bowl"
+    },
+    {
+      "start_sec": 90.0,
+      "end_sec": 98.5,
+      "subtask": "wash the white bowl"
+    },
+    {
+      "start_sec": 98.5,
+      "end_sec": 115.5,
+      "subtask": "wash the glass bowl"
+    },
+    {
+      "start_sec": 115.5,
+      "end_sec": 119.5,
+      "subtask": "scrub the sink"
+    },
+    {
+      "start_sec": 120.0,
+      "end_sec": 123.5,
+      "subtask": "wash the orange object"
+    },
+    {
+      "start_sec": 124.0,
+      "end_sec": 133.5,
+      "subtask": "wash the white ladle"
+    },
+    {
+      "start_sec": 134.0,
+      "end_sec": 134.5,
+      "subtask": "wash the orange object"
+    },
+    {
+      "start_sec": 135.0,
+      "end_sec": 135.5,
+      "subtask": "wash hands"
+    },
+    {
+      "start_sec": 136.0,
+      "end_sec": 149.5,
+      "subtask": "wash the small bowl"
+    },
+    {
+      "start_sec": 150.0,
+      "end_sec": 152.0,
+      "subtask": "rinse the utensil"
+    },
+    {
+      "start_sec": 152.0,
+      "end_sec": 154.2,
+      "subtask": "wash the utensil"
+    }
+  ]
+}

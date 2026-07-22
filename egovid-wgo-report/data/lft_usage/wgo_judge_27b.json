@@ -1,0 +1,24 @@
+{
+  "requests": 79,
+  "successful_requests": 79,
+  "failed_requests": 0,
+  "usage_reported_requests": 79,
+  "prompt_tokens": 5056,
+  "completion_tokens": 474,
+  "total_tokens": 5530,
+  "error_counts": {},
+  "stages": {
+    "e2e_judge": {
+      "requests": 79,
+      "successful_requests": 79,
+      "failed_requests": 0,
+      "usage_reported_requests": 79,
+      "prompt_tokens": 5056,
+      "completion_tokens": 474,
+      "total_tokens": 5530,
+      "latency_sec": 12.042,
+      "error_counts": {},
+      "mean_latency_sec": 0.152
+    }
+  }
+}

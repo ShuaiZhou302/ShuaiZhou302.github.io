@@ -1,0 +1,350 @@
+{
+  "id": "homer_4",
+  "instruction": "Clean tables, desks, or shelves with a cloth",
+  "duration_sec": 130.03333333333333,
+  "video": "assets/homer4/homer_4_seek.mp4",
+  "gold_path": "assets/homer4/gold_homer_4.json",
+  "pred_path": "assets/homer4/pred_homer_4_candidate_selector.json",
+  "assets": {
+    "contact_sheet_example": "assets/homer4/contact_sheet_example.jpg",
+    "contact_window": "assets/homer4/contact_window_sample.jpg",
+    "video_seek": "assets/homer4/homer_4_seek.mp4"
+  },
+  "pipeline_meta": {
+    "n_sheets": 14,
+    "prompt_variant": "refine_local_v1",
+    "n_windows_refined": 8,
+    "contact_params": "sample_sec=0.5, tile_px=224, ~20 tiles/sheet, yellow timestamps"
+  },
+  "scores_episode": {
+    "n_gold": 15,
+    "n_pred": 11,
+    "temporal_iou075": 4,
+    "semantic_match": 3,
+    "e2e_f1_episode": 0.231,
+    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1517",
+    "note_en": "Episode score; HomER micro E2E F1 = 0.1517 overall"
+  },
+  "candidate_demo_segment": {
+    "start_sec": 26.5,
+    "end_sec": 45.0,
+    "subtask": "Wipe the drawer interior with a cloth",
+    "candidate_labels": {
+      "raw": "Wipe the table with a cloth",
+      "rawprior": "Wipe the drawer interior with a cloth",
+      "seed": "Wipe the interior of the open drawer",
+      "ffmpeg": "Wipe the drawer with a cloth"
+    },
+    "candidate_select_source": "B",
+    "candidate_select_meta": {
+      "fps": 30.0,
+      "nframes": 3901,
+      "frames_per_sheet": 5,
+      "image_max_side": 1120
+    },
+    "index": 3
+  },
+  "gold_segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 9.69,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_00.mp4"
+    },
+    {
+      "start_sec": 9.69,
+      "end_sec": 22.898,
+      "subtask": "wipe the front surface and drawer of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_01.mp4"
+    },
+    {
+      "start_sec": 22.898,
+      "end_sec": 26.785,
+      "subtask": "open the nightstand drawer",
+      "clip": "assets/homer4/clips/gold_02.mp4"
+    },
+    {
+      "start_sec": 26.785,
+      "end_sec": 44.345,
+      "subtask": "wipe the inside of the nightstand drawer with a cloth",
+      "clip": "assets/homer4/clips/gold_03.mp4"
+    },
+    {
+      "start_sec": 44.345,
+      "end_sec": 47.292,
+      "subtask": "close the nightstand drawer",
+      "clip": "assets/homer4/clips/gold_04.mp4"
+    },
+    {
+      "start_sec": 47.292,
+      "end_sec": 53.789,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_05.mp4"
+    },
+    {
+      "start_sec": 53.789,
+      "end_sec": 60.341,
+      "subtask": "fold the cloth",
+      "clip": "assets/homer4/clips/gold_06.mp4"
+    },
+    {
+      "start_sec": 60.341,
+      "end_sec": 66.365,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_07.mp4"
+    },
+    {
+      "start_sec": 66.365,
+      "end_sec": 77.904,
+      "subtask": "wipe the front of wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_08.mp4"
+    },
+    {
+      "start_sec": 77.904,
+      "end_sec": 86.989,
+      "subtask": "wipe the drawer handle of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_09.mp4"
+    },
+    {
+      "start_sec": 86.989,
+      "end_sec": 96.318,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_10.mp4"
+    },
+    {
+      "start_sec": 96.318,
+      "end_sec": 97.709,
+      "subtask": "fold the cloth",
+      "clip": "assets/homer4/clips/gold_11.mp4"
+    },
+    {
+      "start_sec": 97.709,
+      "end_sec": 114.862,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_12.mp4"
+    },
+    {
+      "start_sec": 114.862,
+      "end_sec": 120.034,
+      "subtask": "wipe the front drawer of the wooden nightstand with a white cloth",
+      "clip": "assets/homer4/clips/gold_13.mp4"
+    },
+    {
+      "start_sec": 120.034,
+      "end_sec": 130.03,
+      "subtask": "wipe the top surface of the wooden table with a white cloth",
+      "clip": "assets/homer4/clips/gold_14.mp4"
+    }
+  ],
+  "pred_segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 23.5,
+      "subtask": "Wipe the table with a cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the table with a cloth",
+        "seed": "Wipe the top surface and exterior sides of the wooden cabinet",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_00.mp4"
+    },
+    {
+      "start_sec": 23.5,
+      "end_sec": 24.5,
+      "subtask": "Open the drawer",
+      "candidate_labels": {
+        "raw": "Open the drawer",
+        "rawprior": "Open the drawer",
+        "seed": "Open the top drawer of the cabinet",
+        "ffmpeg": "Open the drawer"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_01.mp4"
+    },
+    {
+      "start_sec": 24.5,
+      "end_sec": 26.5,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the inside of the drawer",
+        "ffmpeg": "Wipe the table with a cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_02.mp4"
+    },
+    {
+      "start_sec": 26.5,
+      "end_sec": 45.0,
+      "subtask": "Wipe the drawer interior with a cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the drawer interior with a cloth",
+        "seed": "Wipe the interior of the open drawer",
+        "ffmpeg": "Wipe the drawer with a cloth"
+      },
+      "candidate_select_source": "B",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_03.mp4"
+    },
+    {
+      "start_sec": 45.0,
+      "end_sec": 46.5,
+      "subtask": "Wipe the table with a cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the table with a cloth",
+        "seed": "Wipe the top of the table",
+        "ffmpeg": "Wipe the table with a cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_04.mp4"
+    },
+    {
+      "start_sec": 46.5,
+      "end_sec": 54.5,
+      "subtask": "Wipe the table with a cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the table with a cloth",
+        "seed": "Wipe the top surface of the cabinet",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_05.mp4"
+    },
+    {
+      "start_sec": 54.5,
+      "end_sec": 59.5,
+      "subtask": "Unfold the cloth",
+      "candidate_labels": {
+        "raw": "Fold the cloth",
+        "rawprior": "Fold the cloth",
+        "seed": "Unfold and adjust the cleaning cloth",
+        "ffmpeg": "Unfold the cloth"
+      },
+      "candidate_select_source": "D",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_06.mp4"
+    },
+    {
+      "start_sec": 59.5,
+      "end_sec": 79.5,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the top surface and front exterior of the cabinet",
+        "ffmpeg": "Wipe the nightstand with a cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_07.mp4"
+    },
+    {
+      "start_sec": 79.5,
+      "end_sec": 87.5,
+      "subtask": "Wipe the drawer handle with a cloth",
+      "candidate_labels": {
+        "raw": "Wipe the drawer with a cloth",
+        "rawprior": "Wipe the drawer with a cloth",
+        "seed": "Open the middle drawer of the cabinet",
+        "ffmpeg": "Wipe the drawer handle with a cloth"
+      },
+      "candidate_select_source": "D",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_08.mp4"
+    },
+    {
+      "start_sec": 87.5,
+      "end_sec": 89.5,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the table with the cloth",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_09.mp4"
+    },
+    {
+      "start_sec": 89.5,
+      "end_sec": 130.03,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the top surface of the cabinet thoroughly",
+        "ffmpeg": "Wipe the table with a cloth"
+      },
+      "candidate_select_source": "A",
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "clip": "assets/homer4/clips/pred_10.mp4"
+    }
+  ]
+}

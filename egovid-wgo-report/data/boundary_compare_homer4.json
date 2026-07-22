@@ -1,0 +1,90 @@
+{
+  "id": "homer_4",
+  "title": "Boundary comparison",
+  "instruction": "Clean tables, desks, or shelves with a cloth",
+  "duration_sec": 42.0,
+  "video": "assets/boundary_homer4/homer_4_clip45_seek.mp4",
+  "caption_zh": "模型常能叫出粗事件，却漏掉更细的子任务边界。同集（homer_4，与样例走读一致）对照：人工 gold、整集粗分、contact sheet 粗分。",
+  "caption_en": "Models often name the broad event while missing finer subtask boundaries. Same episode (homer_4, matches the walkthrough) vs gold, whole-episode coarse cut, and contact-sheet cut.",
+  "tracks": [
+    {
+      "id": "gold",
+      "label_zh": "Gold",
+      "label_en": "Gold",
+      "color": "gold",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 9.69,
+          "subtask": "wipe the top surface of the wooden nightstand with a white cloth"
+        },
+        {
+          "start_sec": 9.69,
+          "end_sec": 22.898,
+          "subtask": "wipe the front surface and drawer of the wooden nightstand with a white cloth"
+        },
+        {
+          "start_sec": 22.898,
+          "end_sec": 26.785,
+          "subtask": "open the nightstand drawer"
+        },
+        {
+          "start_sec": 26.785,
+          "end_sec": 42.0,
+          "subtask": "wipe the inside of the nightstand drawer with a cloth"
+        }
+      ]
+    },
+    {
+      "id": "whole",
+      "label_zh": "Whole-episode",
+      "label_en": "Whole-episode",
+      "color": "frame",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 23.5,
+          "subtask": "wipe table surface"
+        },
+        {
+          "start_sec": 23.5,
+          "end_sec": 26.0,
+          "subtask": "open drawer"
+        },
+        {
+          "start_sec": 26.0,
+          "end_sec": 42.0,
+          "subtask": "wipe inside drawer"
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "label_zh": "Contact sheet",
+      "label_en": "Contact sheet",
+      "color": "contact",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 22.5,
+          "subtask": "wipe table surface"
+        },
+        {
+          "start_sec": 23.0,
+          "end_sec": 25.0,
+          "subtask": "open drawer"
+        },
+        {
+          "start_sec": 25.5,
+          "end_sec": 29.5,
+          "subtask": "wipe inside drawer"
+        },
+        {
+          "start_sec": 30.0,
+          "end_sec": 42.0,
+          "subtask": "wipe inside of drawer"
+        }
+      ]
+    }
+  ]
+}

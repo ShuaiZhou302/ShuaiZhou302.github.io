@@ -1,0 +1,184 @@
+{
+  "kind": "estimate_plus_production_rollout",
+  "note": "WGO raw/selector tokens: original engineering estimate (397B remote temporarily down; cannot remasure on original stack). API call counts: artifact-counted from label JSON. Production HomER-25 tokens: MEASURED rollout from LFT work/*/token_usage.json.",
+  "eval_subset": "HomER 25 episodes",
+  "sources": {
+    "labels_dir": "e2e_0.1517_homer25_labels/labels",
+    "lft_host": "lft-4090-2",
+    "lft_production_usage": "data/lft_usage/homer25_production_token_usage.json",
+    "wgo_exp_usage_files": 0,
+    "collaborator_397b_status": "temporarily_closed",
+    "optional_27b_remeasure_archive": "data/lft_usage/wgo_*_27b*.json"
+  },
+  "video": {
+    "n_episodes": 25,
+    "total_sec": 2402.4,
+    "total_min": 40.04,
+    "mean_sec": 96.1,
+    "duration_source": "ffprobe_on_local_mp4",
+    "per_episode_sec": {
+      "homer_1": 161.2,
+      "homer_10": 120.8,
+      "homer_11": 131.7,
+      "homer_12": 124.7,
+      "homer_15": 132.3,
+      "homer_2": 154.2,
+      "homer_29": 84.9,
+      "homer_3": 137.5,
+      "homer_33": 72.2,
+      "homer_37": 66.1,
+      "homer_38": 90.8,
+      "homer_39": 61.1,
+      "homer_4": 130.0,
+      "homer_40": 61.5,
+      "homer_41": 54.3,
+      "homer_48": 56.0,
+      "homer_5": 129.5,
+      "homer_50": 46.5,
+      "homer_52": 38.0,
+      "homer_53": 47.1,
+      "homer_56": 55.2,
+      "homer_59": 60.7,
+      "homer_60": 71.2,
+      "homer_7": 143.8,
+      "homer_9": 171.1
+    }
+  },
+  "recipe_counts": {
+    "kind": "artifact_counted",
+    "n_pred_segments": 308,
+    "n_sheets_total": 256,
+    "n_s2_windows_total": 155,
+    "n_iou_match_judge": 79,
+    "mean_sheets_per_ep": 10.24,
+    "mean_pred_per_ep": 12.32,
+    "mean_s2_windows_per_ep": 6.2
+  },
+  "assumptions_tokens": {
+    "label_frames_per_segment": 5,
+    "image_max_side": 1120,
+    "candidate_paths": 4,
+    "img_tokens_per_image": [900, 1600],
+    "text_tokens_per_call": 600,
+    "judge_text_tokens": 400,
+    "status": "engineering_estimate_397b_unavailable"
+  },
+  "recipes": {
+    "raw_only": {
+      "label": "S2 边界 + 单路 raw 标注",
+      "e2e_f1": 0.1388,
+      "api_calls": {
+        "kind": "artifact_counted",
+        "segmentation_whole_episode": 25,
+        "segmentation_s2_refine": 155,
+        "labeling": 308,
+        "candidate_selector": 0,
+        "e2e_judge_text_only": 79,
+        "total": 567
+      },
+      "api_calls_estimate": {
+        "kind": "artifact_counted",
+        "segmentation_whole_episode": 25,
+        "segmentation_s2_refine": 155,
+        "labeling": 308,
+        "candidate_selector": 0,
+        "e2e_judge_text_only": 79,
+        "total": 567
+      },
+      "tokens": {
+        "kind": "engineering_estimate",
+        "total_low": 2080300,
+        "total_high": 3446000,
+        "per_video_minute_low": 51956,
+        "per_video_minute_high": 86064
+      },
+      "tokens_estimate": {
+        "kind": "engineering_estimate",
+        "total_low": 2080300,
+        "total_high": 3446000,
+        "per_video_minute_low": 51956,
+        "per_video_minute_high": 86064
+      }
+    },
+    "selector": {
+      "label": "S2 边界 + 4 路候选 + selector",
+      "e2e_f1": 0.1517,
+      "api_calls": {
+        "kind": "artifact_counted",
+        "segmentation_whole_episode": 25,
+        "segmentation_s2_refine": 155,
+        "labeling": 1232,
+        "candidate_selector": 308,
+        "e2e_judge_text_only": 79,
+        "total": 1799
+      },
+      "api_calls_estimate": {
+        "kind": "artifact_counted",
+        "segmentation_whole_episode": 25,
+        "segmentation_s2_refine": 155,
+        "labeling": 1232,
+        "candidate_selector": 308,
+        "e2e_judge_text_only": 79,
+        "total": 1799
+      },
+      "tokens": {
+        "kind": "engineering_estimate",
+        "total_low": 6977500,
+        "total_high": 11577200,
+        "per_video_minute_low": 174263,
+        "per_video_minute_high": 289141
+      },
+      "tokens_estimate": {
+        "kind": "engineering_estimate",
+        "total_low": 6977500,
+        "total_high": 11577200,
+        "per_video_minute_low": 174263,
+        "per_video_minute_high": 289141
+      }
+    }
+  },
+  "production_measured": {
+    "label": "EgoVid Annotate 生产默认管线（HaWoR 腕速切段 + caption + merge）",
+    "kind": "measured",
+    "source": "WGO_Bench_HomER/work/homer_*/token_usage.json",
+    "n_episodes": 25,
+    "api_calls_total": 2574,
+    "prompt_tokens": 8039348,
+    "completion_tokens": 823878,
+    "total_tokens": 8863226,
+    "per_video_minute_tokens": 221359,
+    "per_episode_mean_tokens": 354529,
+    "stages": {
+      "caption": {
+        "requests": 1882,
+        "prompt_tokens": 5756442,
+        "completion_tokens": 481952,
+        "total_tokens": 6238394,
+        "latency_sec": 12411.453
+      },
+      "episode_summary": {
+        "requests": 25,
+        "prompt_tokens": 32544,
+        "completion_tokens": 369,
+        "total_tokens": 32913,
+        "latency_sec": 10.493
+      },
+      "merge_judge": {
+        "requests": 299,
+        "prompt_tokens": 1312672,
+        "completion_tokens": 202621,
+        "total_tokens": 1515293,
+        "latency_sec": 2477.988
+      },
+      "merge_rewrite": {
+        "requests": 368,
+        "prompt_tokens": 937690,
+        "completion_tokens": 138936,
+        "total_tokens": 1076626,
+        "latency_sec": 1660.459
+      }
+    },
+    "e2e_f1_note": "生产 one-pass E2E≈0.0656（与 WGO selector 0.1517 不是同一路径）"
+  },
+  "default_display": "both"
+}

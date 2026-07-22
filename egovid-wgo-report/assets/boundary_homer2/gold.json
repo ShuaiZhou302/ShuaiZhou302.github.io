@@ -1,0 +1,166 @@
+{
+  "id": "homer_2",
+  "instruction": "wash the dishes in the sink",
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 3.981,
+      "subtask": "turn on the kitchen faucet"
+    },
+    {
+      "start_sec": 3.981,
+      "end_sec": 6.717,
+      "subtask": "wet the yellow sponge under the running water"
+    },
+    {
+      "start_sec": 6.717,
+      "end_sec": 11.151,
+      "subtask": "put a dish soap on the dish sponge"
+    },
+    {
+      "start_sec": 11.151,
+      "end_sec": 19.269,
+      "subtask": "wet and squeeze the yellow sponge under the running water"
+    },
+    {
+      "start_sec": 19.269,
+      "end_sec": 21.116,
+      "subtask": "pick up the silver spoon from glass mug with cofee"
+    },
+    {
+      "start_sec": 21.116,
+      "end_sec": 28.83,
+      "subtask": "wash the silver spoon with a sponge under running water"
+    },
+    {
+      "start_sec": 28.83,
+      "end_sec": 30.91,
+      "subtask": "place the silver spoon on the kitchen towel and the above the black up"
+    },
+    {
+      "start_sec": 30.91,
+      "end_sec": 31.75,
+      "subtask": "pick up the glass mug from the sink"
+    },
+    {
+      "start_sec": 31.75,
+      "end_sec": 43.735,
+      "subtask": "wash the glass mug with a sponge under running water"
+    },
+    {
+      "start_sec": 43.735,
+      "end_sec": 46.979,
+      "subtask": "place the glass mug on the kitchen towel and above the right most plate"
+    },
+    {
+      "start_sec": 46.979,
+      "end_sec": 49.714,
+      "subtask": "pick up the yellow sponge from the sink"
+    },
+    {
+      "start_sec": 49.714,
+      "end_sec": 52.377,
+      "subtask": "pick up the black mug from the sink"
+    },
+    {
+      "start_sec": 52.377,
+      "end_sec": 59.439,
+      "subtask": "scrub the black mug with a sponge under running water in the sink"
+    },
+    {
+      "start_sec": 59.439,
+      "end_sec": 62.175,
+      "subtask": "place the black mug on the kitchen towel and to the left of the glass mug"
+    },
+    {
+      "start_sec": 62.175,
+      "end_sec": 63.36,
+      "subtask": "pick up the yellow sponge"
+    },
+    {
+      "start_sec": 63.36,
+      "end_sec": 65.845,
+      "subtask": "pick up the clear glass from the sink"
+    },
+    {
+      "start_sec": 65.845,
+      "end_sec": 80.872,
+      "subtask": "scrub and rinse a clear glass under running water in the sink"
+    },
+    {
+      "start_sec": 80.872,
+      "end_sec": 82.09,
+      "subtask": "place the clear glass on top of the right most plate"
+    },
+    {
+      "start_sec": 82.09,
+      "end_sec": 84.287,
+      "subtask": "pick up the yellow sponge"
+    },
+    {
+      "start_sec": 84.287,
+      "end_sec": 89.636,
+      "subtask": "pick up the white saucer from the sink"
+    },
+    {
+      "start_sec": 89.636,
+      "end_sec": 98.315,
+      "subtask": "scrub the white saucer with a sponge under running water in the sink"
+    },
+    {
+      "start_sec": 98.315,
+      "end_sec": 99.826,
+      "subtask": "place the white saucer on top of the black cup"
+    },
+    {
+      "start_sec": 99.826,
+      "end_sec": 103.358,
+      "subtask": "pick up the clear glass bowl from the sink"
+    },
+    {
+      "start_sec": 103.358,
+      "end_sec": 114.467,
+      "subtask": "scrub and rinse a clear glass bowl with a sponge under running water in the sink"
+    },
+    {
+      "start_sec": 114.467,
+      "end_sec": 116.115,
+      "subtask": "place the clear glass bowl on top of the black cup"
+    },
+    {
+      "start_sec": 116.115,
+      "end_sec": 123.573,
+      "subtask": "pick up the white spatula from the sink"
+    },
+    {
+      "start_sec": 123.573,
+      "end_sec": 134.741,
+      "subtask": "rinse the white spatula under running water in the sink"
+    },
+    {
+      "start_sec": 134.741,
+      "end_sec": 140.618,
+      "subtask": "clean the sink with sponge"
+    },
+    {
+      "start_sec": 140.618,
+      "end_sec": 149.256,
+      "subtask": "rinse and squeeze the sponge under running water in the sink and wash your hands"
+    },
+    {
+      "start_sec": 149.256,
+      "end_sec": 151.542,
+      "subtask": "turn off the kitchen faucet"
+    }
+  ],
+  "metadata": {
+    "local_reannotation_line": 63,
+    "local_reannotation_saved_at_unix": 1782483513.340191,
+    "num_segments": 30,
+    "source_artifact": "/Users/hynky/Projects/carton_marketing/datasets/wasup_homer_gold/wasup_homer_gold.parquet",
+    "source_dataset": "toloka/HomER",
+    "source_family": "homer",
+    "source_video_url": "https://prodtlkcsafiles.blob.core.windows.net/ego-centric/21_Washing%20dishes%20by%20hand_222.mp4",
+    "updated_from_local_reannotations": true
+  }
+}

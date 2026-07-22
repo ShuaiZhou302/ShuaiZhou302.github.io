@@ -1,0 +1,1913 @@
+{
+  "recipe": "selector",
+  "n_episodes": 25,
+  "totals": {
+    "requests": 1540,
+    "prompt_tokens": 3425155,
+    "completion_tokens": 14704,
+    "total_tokens": 3439859,
+    "usage_reported_requests": 1540
+  },
+  "episodes": [
+    {
+      "episode": "homer_1",
+      "n_segments": 17,
+      "summary": {
+        "requests": 85,
+        "successful_requests": 85,
+        "failed_requests": 0,
+        "usage_reported_requests": 85,
+        "prompt_tokens": 141645,
+        "completion_tokens": 804,
+        "total_tokens": 142449,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 2177,
+            "completion_tokens": 310,
+            "total_tokens": 2487,
+            "latency_sec": 5.771,
+            "error_counts": {},
+            "mean_latency_sec": 0.339
+          },
+          "labeling_ffmpeg": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 34867,
+            "completion_tokens": 123,
+            "total_tokens": 34990,
+            "latency_sec": 16.949,
+            "error_counts": {},
+            "mean_latency_sec": 0.997
+          },
+          "labeling_raw": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 34867,
+            "completion_tokens": 123,
+            "total_tokens": 34990,
+            "latency_sec": 19.799,
+            "error_counts": {},
+            "mean_latency_sec": 1.165
+          },
+          "labeling_rawprior": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 34867,
+            "completion_tokens": 125,
+            "total_tokens": 34992,
+            "latency_sec": 16.713,
+            "error_counts": {},
+            "mean_latency_sec": 0.983
+          },
+          "labeling_seed": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 34867,
+            "completion_tokens": 123,
+            "total_tokens": 34990,
+            "latency_sec": 15.708,
+            "error_counts": {},
+            "mean_latency_sec": 0.924
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_10",
+      "n_segments": 3,
+      "summary": {
+        "requests": 15,
+        "successful_requests": 15,
+        "failed_requests": 0,
+        "usage_reported_requests": 15,
+        "prompt_tokens": 25040,
+        "completion_tokens": 178,
+        "total_tokens": 25218,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 416,
+            "completion_tokens": 62,
+            "total_tokens": 478,
+            "latency_sec": 1.067,
+            "error_counts": {},
+            "mean_latency_sec": 0.356
+          },
+          "labeling_ffmpeg": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 6156,
+            "completion_tokens": 29,
+            "total_tokens": 6185,
+            "latency_sec": 2.137,
+            "error_counts": {},
+            "mean_latency_sec": 0.712
+          },
+          "labeling_raw": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 6156,
+            "completion_tokens": 29,
+            "total_tokens": 6185,
+            "latency_sec": 2.683,
+            "error_counts": {},
+            "mean_latency_sec": 0.894
+          },
+          "labeling_rawprior": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 6156,
+            "completion_tokens": 29,
+            "total_tokens": 6185,
+            "latency_sec": 2.011,
+            "error_counts": {},
+            "mean_latency_sec": 0.67
+          },
+          "labeling_seed": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 6156,
+            "completion_tokens": 29,
+            "total_tokens": 6185,
+            "latency_sec": 1.971,
+            "error_counts": {},
+            "mean_latency_sec": 0.657
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_11",
+      "n_segments": 33,
+      "summary": {
+        "requests": 165,
+        "successful_requests": 165,
+        "failed_requests": 0,
+        "usage_reported_requests": 165,
+        "prompt_tokens": 275706,
+        "completion_tokens": 1677,
+        "total_tokens": 277383,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 33,
+            "successful_requests": 33,
+            "failed_requests": 0,
+            "usage_reported_requests": 33,
+            "prompt_tokens": 4446,
+            "completion_tokens": 626,
+            "total_tokens": 5072,
+            "latency_sec": 14.911,
+            "error_counts": {},
+            "mean_latency_sec": 0.452
+          },
+          "labeling_ffmpeg": {
+            "requests": 33,
+            "successful_requests": 33,
+            "failed_requests": 0,
+            "usage_reported_requests": 33,
+            "prompt_tokens": 67815,
+            "completion_tokens": 263,
+            "total_tokens": 68078,
+            "latency_sec": 30.342,
+            "error_counts": {},
+            "mean_latency_sec": 0.919
+          },
+          "labeling_raw": {
+            "requests": 33,
+            "successful_requests": 33,
+            "failed_requests": 0,
+            "usage_reported_requests": 33,
+            "prompt_tokens": 67815,
+            "completion_tokens": 266,
+            "total_tokens": 68081,
+            "latency_sec": 34.647,
+            "error_counts": {},
+            "mean_latency_sec": 1.05
+          },
+          "labeling_rawprior": {
+            "requests": 33,
+            "successful_requests": 33,
+            "failed_requests": 0,
+            "usage_reported_requests": 33,
+            "prompt_tokens": 67815,
+            "completion_tokens": 258,
+            "total_tokens": 68073,
+            "latency_sec": 31.382,
+            "error_counts": {},
+            "mean_latency_sec": 0.951
+          },
+          "labeling_seed": {
+            "requests": 33,
+            "successful_requests": 33,
+            "failed_requests": 0,
+            "usage_reported_requests": 33,
+            "prompt_tokens": 67815,
+            "completion_tokens": 264,
+            "total_tokens": 68079,
+            "latency_sec": 32.941,
+            "error_counts": {},
+            "mean_latency_sec": 0.998
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_12",
+      "n_segments": 39,
+      "summary": {
+        "requests": 195,
+        "successful_requests": 195,
+        "failed_requests": 0,
+        "usage_reported_requests": 195,
+        "prompt_tokens": 325674,
+        "completion_tokens": 1772,
+        "total_tokens": 327446,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 39,
+            "successful_requests": 39,
+            "failed_requests": 0,
+            "usage_reported_requests": 39,
+            "prompt_tokens": 5094,
+            "completion_tokens": 703,
+            "total_tokens": 5797,
+            "latency_sec": 16.461,
+            "error_counts": {},
+            "mean_latency_sec": 0.422
+          },
+          "labeling_ffmpeg": {
+            "requests": 39,
+            "successful_requests": 39,
+            "failed_requests": 0,
+            "usage_reported_requests": 39,
+            "prompt_tokens": 80145,
+            "completion_tokens": 268,
+            "total_tokens": 80413,
+            "latency_sec": 33.72,
+            "error_counts": {},
+            "mean_latency_sec": 0.865
+          },
+          "labeling_raw": {
+            "requests": 39,
+            "successful_requests": 39,
+            "failed_requests": 0,
+            "usage_reported_requests": 39,
+            "prompt_tokens": 80145,
+            "completion_tokens": 275,
+            "total_tokens": 80420,
+            "latency_sec": 36.296,
+            "error_counts": {},
+            "mean_latency_sec": 0.931
+          },
+          "labeling_rawprior": {
+            "requests": 39,
+            "successful_requests": 39,
+            "failed_requests": 0,
+            "usage_reported_requests": 39,
+            "prompt_tokens": 80145,
+            "completion_tokens": 269,
+            "total_tokens": 80414,
+            "latency_sec": 35.699,
+            "error_counts": {},
+            "mean_latency_sec": 0.915
+          },
+          "labeling_seed": {
+            "requests": 39,
+            "successful_requests": 39,
+            "failed_requests": 0,
+            "usage_reported_requests": 39,
+            "prompt_tokens": 80145,
+            "completion_tokens": 257,
+            "total_tokens": 80402,
+            "latency_sec": 36.391,
+            "error_counts": {},
+            "mean_latency_sec": 0.933
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_15",
+      "n_segments": 9,
+      "summary": {
+        "requests": 45,
+        "successful_requests": 45,
+        "failed_requests": 0,
+        "usage_reported_requests": 45,
+        "prompt_tokens": 74718,
+        "completion_tokens": 425,
+        "total_tokens": 75143,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 1098,
+            "completion_tokens": 164,
+            "total_tokens": 1262,
+            "latency_sec": 3.736,
+            "error_counts": {},
+            "mean_latency_sec": 0.415
+          },
+          "labeling_ffmpeg": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18405,
+            "completion_tokens": 70,
+            "total_tokens": 18475,
+            "latency_sec": 7.599,
+            "error_counts": {},
+            "mean_latency_sec": 0.844
+          },
+          "labeling_raw": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18405,
+            "completion_tokens": 65,
+            "total_tokens": 18470,
+            "latency_sec": 9.306,
+            "error_counts": {},
+            "mean_latency_sec": 1.034
+          },
+          "labeling_rawprior": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18405,
+            "completion_tokens": 63,
+            "total_tokens": 18468,
+            "latency_sec": 8.441,
+            "error_counts": {},
+            "mean_latency_sec": 0.938
+          },
+          "labeling_seed": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18405,
+            "completion_tokens": 63,
+            "total_tokens": 18468,
+            "latency_sec": 8.233,
+            "error_counts": {},
+            "mean_latency_sec": 0.915
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_2",
+      "n_segments": 28,
+      "summary": {
+        "requests": 140,
+        "successful_requests": 140,
+        "failed_requests": 0,
+        "usage_reported_requests": 140,
+        "prompt_tokens": 336718,
+        "completion_tokens": 1326,
+        "total_tokens": 338044,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 28,
+            "successful_requests": 28,
+            "failed_requests": 0,
+            "usage_reported_requests": 28,
+            "prompt_tokens": 3406,
+            "completion_tokens": 512,
+            "total_tokens": 3918,
+            "latency_sec": 19.665,
+            "error_counts": {},
+            "mean_latency_sec": 0.702
+          },
+          "labeling_ffmpeg": {
+            "requests": 28,
+            "successful_requests": 28,
+            "failed_requests": 0,
+            "usage_reported_requests": 28,
+            "prompt_tokens": 83328,
+            "completion_tokens": 201,
+            "total_tokens": 83529,
+            "latency_sec": 35.051,
+            "error_counts": {},
+            "mean_latency_sec": 1.252
+          },
+          "labeling_raw": {
+            "requests": 28,
+            "successful_requests": 28,
+            "failed_requests": 0,
+            "usage_reported_requests": 28,
+            "prompt_tokens": 83328,
+            "completion_tokens": 204,
+            "total_tokens": 83532,
+            "latency_sec": 37.353,
+            "error_counts": {},
+            "mean_latency_sec": 1.334
+          },
+          "labeling_rawprior": {
+            "requests": 28,
+            "successful_requests": 28,
+            "failed_requests": 0,
+            "usage_reported_requests": 28,
+            "prompt_tokens": 83328,
+            "completion_tokens": 204,
+            "total_tokens": 83532,
+            "latency_sec": 27.992,
+            "error_counts": {},
+            "mean_latency_sec": 1.0
+          },
+          "labeling_seed": {
+            "requests": 28,
+            "successful_requests": 28,
+            "failed_requests": 0,
+            "usage_reported_requests": 28,
+            "prompt_tokens": 83328,
+            "completion_tokens": 205,
+            "total_tokens": 83533,
+            "latency_sec": 30.65,
+            "error_counts": {},
+            "mean_latency_sec": 1.095
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_29",
+      "n_segments": 9,
+      "summary": {
+        "requests": 45,
+        "successful_requests": 45,
+        "failed_requests": 0,
+        "usage_reported_requests": 45,
+        "prompt_tokens": 74591,
+        "completion_tokens": 394,
+        "total_tokens": 74985,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 1043,
+            "completion_tokens": 158,
+            "total_tokens": 1201,
+            "latency_sec": 3.007,
+            "error_counts": {},
+            "mean_latency_sec": 0.334
+          },
+          "labeling_ffmpeg": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18387,
+            "completion_tokens": 59,
+            "total_tokens": 18446,
+            "latency_sec": 8.824,
+            "error_counts": {},
+            "mean_latency_sec": 0.98
+          },
+          "labeling_raw": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18387,
+            "completion_tokens": 59,
+            "total_tokens": 18446,
+            "latency_sec": 10.35,
+            "error_counts": {},
+            "mean_latency_sec": 1.15
+          },
+          "labeling_rawprior": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18387,
+            "completion_tokens": 59,
+            "total_tokens": 18446,
+            "latency_sec": 7.771,
+            "error_counts": {},
+            "mean_latency_sec": 0.863
+          },
+          "labeling_seed": {
+            "requests": 9,
+            "successful_requests": 9,
+            "failed_requests": 0,
+            "usage_reported_requests": 9,
+            "prompt_tokens": 18387,
+            "completion_tokens": 59,
+            "total_tokens": 18446,
+            "latency_sec": 8.12,
+            "error_counts": {},
+            "mean_latency_sec": 0.902
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_3",
+      "n_segments": 3,
+      "summary": {
+        "requests": 15,
+        "successful_requests": 15,
+        "failed_requests": 0,
+        "usage_reported_requests": 15,
+        "prompt_tokens": 18739,
+        "completion_tokens": 163,
+        "total_tokens": 18902,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 391,
+            "completion_tokens": 59,
+            "total_tokens": 450,
+            "latency_sec": 1.068,
+            "error_counts": {},
+            "mean_latency_sec": 0.356
+          },
+          "labeling_ffmpeg": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 4587,
+            "completion_tokens": 26,
+            "total_tokens": 4613,
+            "latency_sec": 1.506,
+            "error_counts": {},
+            "mean_latency_sec": 0.502
+          },
+          "labeling_raw": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 4587,
+            "completion_tokens": 26,
+            "total_tokens": 4613,
+            "latency_sec": 1.845,
+            "error_counts": {},
+            "mean_latency_sec": 0.615
+          },
+          "labeling_rawprior": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 4587,
+            "completion_tokens": 26,
+            "total_tokens": 4613,
+            "latency_sec": 1.689,
+            "error_counts": {},
+            "mean_latency_sec": 0.563
+          },
+          "labeling_seed": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 4587,
+            "completion_tokens": 26,
+            "total_tokens": 4613,
+            "latency_sec": 1.627,
+            "error_counts": {},
+            "mean_latency_sec": 0.542
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_33",
+      "n_segments": 5,
+      "summary": {
+        "requests": 25,
+        "successful_requests": 25,
+        "failed_requests": 0,
+        "usage_reported_requests": 25,
+        "prompt_tokens": 72510,
+        "completion_tokens": 210,
+        "total_tokens": 72720,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 590,
+            "completion_tokens": 86,
+            "total_tokens": 676,
+            "latency_sec": 1.63,
+            "error_counts": {},
+            "mean_latency_sec": 0.326
+          },
+          "labeling_ffmpeg": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 17980,
+            "completion_tokens": 31,
+            "total_tokens": 18011,
+            "latency_sec": 6.054,
+            "error_counts": {},
+            "mean_latency_sec": 1.211
+          },
+          "labeling_raw": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 17980,
+            "completion_tokens": 31,
+            "total_tokens": 18011,
+            "latency_sec": 7.76,
+            "error_counts": {},
+            "mean_latency_sec": 1.552
+          },
+          "labeling_rawprior": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 17980,
+            "completion_tokens": 31,
+            "total_tokens": 18011,
+            "latency_sec": 7.045,
+            "error_counts": {},
+            "mean_latency_sec": 1.409
+          },
+          "labeling_seed": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 17980,
+            "completion_tokens": 31,
+            "total_tokens": 18011,
+            "latency_sec": 5.896,
+            "error_counts": {},
+            "mean_latency_sec": 1.179
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_37",
+      "n_segments": 6,
+      "summary": {
+        "requests": 30,
+        "successful_requests": 30,
+        "failed_requests": 0,
+        "usage_reported_requests": 30,
+        "prompt_tokens": 87146,
+        "completion_tokens": 226,
+        "total_tokens": 87372,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 722,
+            "completion_tokens": 98,
+            "total_tokens": 820,
+            "latency_sec": 2.725,
+            "error_counts": {},
+            "mean_latency_sec": 0.454
+          },
+          "labeling_ffmpeg": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21606,
+            "completion_tokens": 32,
+            "total_tokens": 21638,
+            "latency_sec": 8.416,
+            "error_counts": {},
+            "mean_latency_sec": 1.403
+          },
+          "labeling_raw": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21606,
+            "completion_tokens": 32,
+            "total_tokens": 21638,
+            "latency_sec": 10.639,
+            "error_counts": {},
+            "mean_latency_sec": 1.773
+          },
+          "labeling_rawprior": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21606,
+            "completion_tokens": 32,
+            "total_tokens": 21638,
+            "latency_sec": 9.33,
+            "error_counts": {},
+            "mean_latency_sec": 1.555
+          },
+          "labeling_seed": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21606,
+            "completion_tokens": 32,
+            "total_tokens": 21638,
+            "latency_sec": 10.017,
+            "error_counts": {},
+            "mean_latency_sec": 1.669
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_38",
+      "n_segments": 12,
+      "summary": {
+        "requests": 60,
+        "successful_requests": 60,
+        "failed_requests": 0,
+        "usage_reported_requests": 60,
+        "prompt_tokens": 173888,
+        "completion_tokens": 552,
+        "total_tokens": 174440,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 12,
+            "successful_requests": 12,
+            "failed_requests": 0,
+            "usage_reported_requests": 12,
+            "prompt_tokens": 1424,
+            "completion_tokens": 216,
+            "total_tokens": 1640,
+            "latency_sec": 5.847,
+            "error_counts": {},
+            "mean_latency_sec": 0.487
+          },
+          "labeling_ffmpeg": {
+            "requests": 12,
+            "successful_requests": 12,
+            "failed_requests": 0,
+            "usage_reported_requests": 12,
+            "prompt_tokens": 43116,
+            "completion_tokens": 84,
+            "total_tokens": 43200,
+            "latency_sec": 18.946,
+            "error_counts": {},
+            "mean_latency_sec": 1.579
+          },
+          "labeling_raw": {
+            "requests": 12,
+            "successful_requests": 12,
+            "failed_requests": 0,
+            "usage_reported_requests": 12,
+            "prompt_tokens": 43116,
+            "completion_tokens": 84,
+            "total_tokens": 43200,
+            "latency_sec": 24.731,
+            "error_counts": {},
+            "mean_latency_sec": 2.061
+          },
+          "labeling_rawprior": {
+            "requests": 12,
+            "successful_requests": 12,
+            "failed_requests": 0,
+            "usage_reported_requests": 12,
+            "prompt_tokens": 43116,
+            "completion_tokens": 84,
+            "total_tokens": 43200,
+            "latency_sec": 16.227,
+            "error_counts": {},
+            "mean_latency_sec": 1.352
+          },
+          "labeling_seed": {
+            "requests": 12,
+            "successful_requests": 12,
+            "failed_requests": 0,
+            "usage_reported_requests": 12,
+            "prompt_tokens": 43116,
+            "completion_tokens": 84,
+            "total_tokens": 43200,
+            "latency_sec": 17.576,
+            "error_counts": {},
+            "mean_latency_sec": 1.465
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_39",
+      "n_segments": 22,
+      "summary": {
+        "requests": 110,
+        "successful_requests": 110,
+        "failed_requests": 0,
+        "usage_reported_requests": 110,
+        "prompt_tokens": 320052,
+        "completion_tokens": 925,
+        "total_tokens": 320977,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 22,
+            "successful_requests": 22,
+            "failed_requests": 0,
+            "usage_reported_requests": 22,
+            "prompt_tokens": 2812,
+            "completion_tokens": 379,
+            "total_tokens": 3191,
+            "latency_sec": 13.145,
+            "error_counts": {},
+            "mean_latency_sec": 0.598
+          },
+          "labeling_ffmpeg": {
+            "requests": 22,
+            "successful_requests": 22,
+            "failed_requests": 0,
+            "usage_reported_requests": 22,
+            "prompt_tokens": 79310,
+            "completion_tokens": 136,
+            "total_tokens": 79446,
+            "latency_sec": 31.69,
+            "error_counts": {},
+            "mean_latency_sec": 1.44
+          },
+          "labeling_raw": {
+            "requests": 22,
+            "successful_requests": 22,
+            "failed_requests": 0,
+            "usage_reported_requests": 22,
+            "prompt_tokens": 79310,
+            "completion_tokens": 137,
+            "total_tokens": 79447,
+            "latency_sec": 40.957,
+            "error_counts": {},
+            "mean_latency_sec": 1.862
+          },
+          "labeling_rawprior": {
+            "requests": 22,
+            "successful_requests": 22,
+            "failed_requests": 0,
+            "usage_reported_requests": 22,
+            "prompt_tokens": 79310,
+            "completion_tokens": 132,
+            "total_tokens": 79442,
+            "latency_sec": 32.575,
+            "error_counts": {},
+            "mean_latency_sec": 1.481
+          },
+          "labeling_seed": {
+            "requests": 22,
+            "successful_requests": 22,
+            "failed_requests": 0,
+            "usage_reported_requests": 22,
+            "prompt_tokens": 79310,
+            "completion_tokens": 141,
+            "total_tokens": 79451,
+            "latency_sec": 35.059,
+            "error_counts": {},
+            "mean_latency_sec": 1.594
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_4",
+      "n_segments": 11,
+      "summary": {
+        "requests": 55,
+        "successful_requests": 55,
+        "failed_requests": 0,
+        "usage_reported_requests": 55,
+        "prompt_tokens": 159838,
+        "completion_tokens": 571,
+        "total_tokens": 160409,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 1438,
+            "completion_tokens": 211,
+            "total_tokens": 1649,
+            "latency_sec": 6.035,
+            "error_counts": {},
+            "mean_latency_sec": 0.549
+          },
+          "labeling_ffmpeg": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 39600,
+            "completion_tokens": 90,
+            "total_tokens": 39690,
+            "latency_sec": 15.623,
+            "error_counts": {},
+            "mean_latency_sec": 1.42
+          },
+          "labeling_raw": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 39600,
+            "completion_tokens": 90,
+            "total_tokens": 39690,
+            "latency_sec": 19.242,
+            "error_counts": {},
+            "mean_latency_sec": 1.749
+          },
+          "labeling_rawprior": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 39600,
+            "completion_tokens": 90,
+            "total_tokens": 39690,
+            "latency_sec": 15.806,
+            "error_counts": {},
+            "mean_latency_sec": 1.437
+          },
+          "labeling_seed": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 39600,
+            "completion_tokens": 90,
+            "total_tokens": 39690,
+            "latency_sec": 15.784,
+            "error_counts": {},
+            "mean_latency_sec": 1.435
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_40",
+      "n_segments": 3,
+      "summary": {
+        "requests": 15,
+        "successful_requests": 15,
+        "failed_requests": 0,
+        "usage_reported_requests": 15,
+        "prompt_tokens": 43648,
+        "completion_tokens": 137,
+        "total_tokens": 43785,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 388,
+            "completion_tokens": 54,
+            "total_tokens": 442,
+            "latency_sec": 1.372,
+            "error_counts": {},
+            "mean_latency_sec": 0.457
+          },
+          "labeling_ffmpeg": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 10815,
+            "completion_tokens": 21,
+            "total_tokens": 10836,
+            "latency_sec": 2.485,
+            "error_counts": {},
+            "mean_latency_sec": 0.828
+          },
+          "labeling_raw": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 10815,
+            "completion_tokens": 21,
+            "total_tokens": 10836,
+            "latency_sec": 3.509,
+            "error_counts": {},
+            "mean_latency_sec": 1.17
+          },
+          "labeling_rawprior": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 10815,
+            "completion_tokens": 21,
+            "total_tokens": 10836,
+            "latency_sec": 3.182,
+            "error_counts": {},
+            "mean_latency_sec": 1.061
+          },
+          "labeling_seed": {
+            "requests": 3,
+            "successful_requests": 3,
+            "failed_requests": 0,
+            "usage_reported_requests": 3,
+            "prompt_tokens": 10815,
+            "completion_tokens": 20,
+            "total_tokens": 10835,
+            "latency_sec": 2.73,
+            "error_counts": {},
+            "mean_latency_sec": 0.91
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_41",
+      "n_segments": 6,
+      "summary": {
+        "requests": 30,
+        "successful_requests": 30,
+        "failed_requests": 0,
+        "usage_reported_requests": 30,
+        "prompt_tokens": 86866,
+        "completion_tokens": 288,
+        "total_tokens": 87154,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 706,
+            "completion_tokens": 110,
+            "total_tokens": 816,
+            "latency_sec": 1.986,
+            "error_counts": {},
+            "mean_latency_sec": 0.331
+          },
+          "labeling_ffmpeg": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21540,
+            "completion_tokens": 44,
+            "total_tokens": 21584,
+            "latency_sec": 9.375,
+            "error_counts": {},
+            "mean_latency_sec": 1.562
+          },
+          "labeling_raw": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21540,
+            "completion_tokens": 44,
+            "total_tokens": 21584,
+            "latency_sec": 13.464,
+            "error_counts": {},
+            "mean_latency_sec": 2.244
+          },
+          "labeling_rawprior": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21540,
+            "completion_tokens": 45,
+            "total_tokens": 21585,
+            "latency_sec": 10.332,
+            "error_counts": {},
+            "mean_latency_sec": 1.722
+          },
+          "labeling_seed": {
+            "requests": 6,
+            "successful_requests": 6,
+            "failed_requests": 0,
+            "usage_reported_requests": 6,
+            "prompt_tokens": 21540,
+            "completion_tokens": 45,
+            "total_tokens": 21585,
+            "latency_sec": 10.398,
+            "error_counts": {},
+            "mean_latency_sec": 1.733
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_48",
+      "n_segments": 17,
+      "summary": {
+        "requests": 85,
+        "successful_requests": 85,
+        "failed_requests": 0,
+        "usage_reported_requests": 85,
+        "prompt_tokens": 246113,
+        "completion_tokens": 806,
+        "total_tokens": 246919,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 1993,
+            "completion_tokens": 309,
+            "total_tokens": 2302,
+            "latency_sec": 8.285,
+            "error_counts": {},
+            "mean_latency_sec": 0.487
+          },
+          "labeling_ffmpeg": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61030,
+            "completion_tokens": 125,
+            "total_tokens": 61155,
+            "latency_sec": 26.99,
+            "error_counts": {},
+            "mean_latency_sec": 1.588
+          },
+          "labeling_raw": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61030,
+            "completion_tokens": 122,
+            "total_tokens": 61152,
+            "latency_sec": 27.623,
+            "error_counts": {},
+            "mean_latency_sec": 1.625
+          },
+          "labeling_rawprior": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61030,
+            "completion_tokens": 125,
+            "total_tokens": 61155,
+            "latency_sec": 24.467,
+            "error_counts": {},
+            "mean_latency_sec": 1.439
+          },
+          "labeling_seed": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61030,
+            "completion_tokens": 125,
+            "total_tokens": 61155,
+            "latency_sec": 25.03,
+            "error_counts": {},
+            "mean_latency_sec": 1.472
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_5",
+      "n_segments": 5,
+      "summary": {
+        "requests": 25,
+        "successful_requests": 25,
+        "failed_requests": 0,
+        "usage_reported_requests": 25,
+        "prompt_tokens": 38969,
+        "completion_tokens": 267,
+        "total_tokens": 39236,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 629,
+            "completion_tokens": 97,
+            "total_tokens": 726,
+            "latency_sec": 1.746,
+            "error_counts": {},
+            "mean_latency_sec": 0.349
+          },
+          "labeling_ffmpeg": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 9585,
+            "completion_tokens": 42,
+            "total_tokens": 9627,
+            "latency_sec": 4.499,
+            "error_counts": {},
+            "mean_latency_sec": 0.9
+          },
+          "labeling_raw": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 9585,
+            "completion_tokens": 42,
+            "total_tokens": 9627,
+            "latency_sec": 4.966,
+            "error_counts": {},
+            "mean_latency_sec": 0.993
+          },
+          "labeling_rawprior": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 9585,
+            "completion_tokens": 43,
+            "total_tokens": 9628,
+            "latency_sec": 4.768,
+            "error_counts": {},
+            "mean_latency_sec": 0.954
+          },
+          "labeling_seed": {
+            "requests": 5,
+            "successful_requests": 5,
+            "failed_requests": 0,
+            "usage_reported_requests": 5,
+            "prompt_tokens": 9585,
+            "completion_tokens": 43,
+            "total_tokens": 9628,
+            "latency_sec": 4.53,
+            "error_counts": {},
+            "mean_latency_sec": 0.906
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_50",
+      "n_segments": 11,
+      "summary": {
+        "requests": 55,
+        "successful_requests": 55,
+        "failed_requests": 0,
+        "usage_reported_requests": 55,
+        "prompt_tokens": 91152,
+        "completion_tokens": 666,
+        "total_tokens": 91818,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 1392,
+            "completion_tokens": 230,
+            "total_tokens": 1622,
+            "latency_sec": 5.032,
+            "error_counts": {},
+            "mean_latency_sec": 0.457
+          },
+          "labeling_ffmpeg": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 22440,
+            "completion_tokens": 109,
+            "total_tokens": 22549,
+            "latency_sec": 10.146,
+            "error_counts": {},
+            "mean_latency_sec": 0.922
+          },
+          "labeling_raw": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 22440,
+            "completion_tokens": 109,
+            "total_tokens": 22549,
+            "latency_sec": 10.464,
+            "error_counts": {},
+            "mean_latency_sec": 0.951
+          },
+          "labeling_rawprior": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 22440,
+            "completion_tokens": 109,
+            "total_tokens": 22549,
+            "latency_sec": 11.604,
+            "error_counts": {},
+            "mean_latency_sec": 1.055
+          },
+          "labeling_seed": {
+            "requests": 11,
+            "successful_requests": 11,
+            "failed_requests": 0,
+            "usage_reported_requests": 11,
+            "prompt_tokens": 22440,
+            "completion_tokens": 109,
+            "total_tokens": 22549,
+            "latency_sec": 10.91,
+            "error_counts": {},
+            "mean_latency_sec": 0.992
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_52",
+      "n_segments": 2,
+      "summary": {
+        "requests": 10,
+        "successful_requests": 10,
+        "failed_requests": 0,
+        "usage_reported_requests": 10,
+        "prompt_tokens": 28932,
+        "completion_tokens": 72,
+        "total_tokens": 29004,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 212,
+            "completion_tokens": 32,
+            "total_tokens": 244,
+            "latency_sec": 0.55,
+            "error_counts": {},
+            "mean_latency_sec": 0.275
+          },
+          "labeling_ffmpeg": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 10,
+            "total_tokens": 7190,
+            "latency_sec": 1.473,
+            "error_counts": {},
+            "mean_latency_sec": 0.737
+          },
+          "labeling_raw": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 10,
+            "total_tokens": 7190,
+            "latency_sec": 2.239,
+            "error_counts": {},
+            "mean_latency_sec": 1.119
+          },
+          "labeling_rawprior": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 10,
+            "total_tokens": 7190,
+            "latency_sec": 1.471,
+            "error_counts": {},
+            "mean_latency_sec": 0.736
+          },
+          "labeling_seed": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 10,
+            "total_tokens": 7190,
+            "latency_sec": 1.49,
+            "error_counts": {},
+            "mean_latency_sec": 0.745
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_53",
+      "n_segments": 2,
+      "summary": {
+        "requests": 10,
+        "successful_requests": 10,
+        "failed_requests": 0,
+        "usage_reported_requests": 10,
+        "prompt_tokens": 28936,
+        "completion_tokens": 82,
+        "total_tokens": 29018,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 216,
+            "completion_tokens": 34,
+            "total_tokens": 250,
+            "latency_sec": 0.596,
+            "error_counts": {},
+            "mean_latency_sec": 0.298
+          },
+          "labeling_ffmpeg": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 12,
+            "total_tokens": 7192,
+            "latency_sec": 1.528,
+            "error_counts": {},
+            "mean_latency_sec": 0.764
+          },
+          "labeling_raw": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 12,
+            "total_tokens": 7192,
+            "latency_sec": 2.186,
+            "error_counts": {},
+            "mean_latency_sec": 1.093
+          },
+          "labeling_rawprior": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 12,
+            "total_tokens": 7192,
+            "latency_sec": 1.659,
+            "error_counts": {},
+            "mean_latency_sec": 0.83
+          },
+          "labeling_seed": {
+            "requests": 2,
+            "successful_requests": 2,
+            "failed_requests": 0,
+            "usage_reported_requests": 2,
+            "prompt_tokens": 7180,
+            "completion_tokens": 12,
+            "total_tokens": 7192,
+            "latency_sec": 1.555,
+            "error_counts": {},
+            "mean_latency_sec": 0.777
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_56",
+      "n_segments": 7,
+      "summary": {
+        "requests": 35,
+        "successful_requests": 35,
+        "failed_requests": 0,
+        "usage_reported_requests": 35,
+        "prompt_tokens": 57932,
+        "completion_tokens": 322,
+        "total_tokens": 58254,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 7,
+            "successful_requests": 7,
+            "failed_requests": 0,
+            "usage_reported_requests": 7,
+            "prompt_tokens": 812,
+            "completion_tokens": 126,
+            "total_tokens": 938,
+            "latency_sec": 2.36,
+            "error_counts": {},
+            "mean_latency_sec": 0.337
+          },
+          "labeling_ffmpeg": {
+            "requests": 7,
+            "successful_requests": 7,
+            "failed_requests": 0,
+            "usage_reported_requests": 7,
+            "prompt_tokens": 14280,
+            "completion_tokens": 49,
+            "total_tokens": 14329,
+            "latency_sec": 6.434,
+            "error_counts": {},
+            "mean_latency_sec": 0.919
+          },
+          "labeling_raw": {
+            "requests": 7,
+            "successful_requests": 7,
+            "failed_requests": 0,
+            "usage_reported_requests": 7,
+            "prompt_tokens": 14280,
+            "completion_tokens": 49,
+            "total_tokens": 14329,
+            "latency_sec": 8.592,
+            "error_counts": {},
+            "mean_latency_sec": 1.227
+          },
+          "labeling_rawprior": {
+            "requests": 7,
+            "successful_requests": 7,
+            "failed_requests": 0,
+            "usage_reported_requests": 7,
+            "prompt_tokens": 14280,
+            "completion_tokens": 49,
+            "total_tokens": 14329,
+            "latency_sec": 6.312,
+            "error_counts": {},
+            "mean_latency_sec": 0.902
+          },
+          "labeling_seed": {
+            "requests": 7,
+            "successful_requests": 7,
+            "failed_requests": 0,
+            "usage_reported_requests": 7,
+            "prompt_tokens": 14280,
+            "completion_tokens": 49,
+            "total_tokens": 14329,
+            "latency_sec": 6.592,
+            "error_counts": {},
+            "mean_latency_sec": 0.942
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_59",
+      "n_segments": 21,
+      "summary": {
+        "requests": 105,
+        "successful_requests": 105,
+        "failed_requests": 0,
+        "usage_reported_requests": 105,
+        "prompt_tokens": 307224,
+        "completion_tokens": 1063,
+        "total_tokens": 308287,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 21,
+            "successful_requests": 21,
+            "failed_requests": 0,
+            "usage_reported_requests": 21,
+            "prompt_tokens": 3144,
+            "completion_tokens": 397,
+            "total_tokens": 3541,
+            "latency_sec": 8.21,
+            "error_counts": {},
+            "mean_latency_sec": 0.391
+          },
+          "labeling_ffmpeg": {
+            "requests": 21,
+            "successful_requests": 21,
+            "failed_requests": 0,
+            "usage_reported_requests": 21,
+            "prompt_tokens": 76020,
+            "completion_tokens": 167,
+            "total_tokens": 76187,
+            "latency_sec": 33.51,
+            "error_counts": {},
+            "mean_latency_sec": 1.596
+          },
+          "labeling_raw": {
+            "requests": 21,
+            "successful_requests": 21,
+            "failed_requests": 0,
+            "usage_reported_requests": 21,
+            "prompt_tokens": 76020,
+            "completion_tokens": 166,
+            "total_tokens": 76186,
+            "latency_sec": 39.455,
+            "error_counts": {},
+            "mean_latency_sec": 1.879
+          },
+          "labeling_rawprior": {
+            "requests": 21,
+            "successful_requests": 21,
+            "failed_requests": 0,
+            "usage_reported_requests": 21,
+            "prompt_tokens": 76020,
+            "completion_tokens": 166,
+            "total_tokens": 76186,
+            "latency_sec": 36.034,
+            "error_counts": {},
+            "mean_latency_sec": 1.716
+          },
+          "labeling_seed": {
+            "requests": 21,
+            "successful_requests": 21,
+            "failed_requests": 0,
+            "usage_reported_requests": 21,
+            "prompt_tokens": 76020,
+            "completion_tokens": 167,
+            "total_tokens": 76187,
+            "latency_sec": 33.763,
+            "error_counts": {},
+            "mean_latency_sec": 1.608
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_60",
+      "n_segments": 17,
+      "summary": {
+        "requests": 85,
+        "successful_requests": 85,
+        "failed_requests": 0,
+        "usage_reported_requests": 85,
+        "prompt_tokens": 247966,
+        "completion_tokens": 787,
+        "total_tokens": 248753,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 2350,
+            "completion_tokens": 307,
+            "total_tokens": 2657,
+            "latency_sec": 7.266,
+            "error_counts": {},
+            "mean_latency_sec": 0.427
+          },
+          "labeling_ffmpeg": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61404,
+            "completion_tokens": 121,
+            "total_tokens": 61525,
+            "latency_sec": 24.874,
+            "error_counts": {},
+            "mean_latency_sec": 1.463
+          },
+          "labeling_raw": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61404,
+            "completion_tokens": 120,
+            "total_tokens": 61524,
+            "latency_sec": 32.345,
+            "error_counts": {},
+            "mean_latency_sec": 1.903
+          },
+          "labeling_rawprior": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61404,
+            "completion_tokens": 117,
+            "total_tokens": 61521,
+            "latency_sec": 23.677,
+            "error_counts": {},
+            "mean_latency_sec": 1.393
+          },
+          "labeling_seed": {
+            "requests": 17,
+            "successful_requests": 17,
+            "failed_requests": 0,
+            "usage_reported_requests": 17,
+            "prompt_tokens": 61404,
+            "completion_tokens": 122,
+            "total_tokens": 61526,
+            "latency_sec": 28.288,
+            "error_counts": {},
+            "mean_latency_sec": 1.664
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_7",
+      "n_segments": 10,
+      "summary": {
+        "requests": 50,
+        "successful_requests": 50,
+        "failed_requests": 0,
+        "usage_reported_requests": 50,
+        "prompt_tokens": 78014,
+        "completion_tokens": 465,
+        "total_tokens": 78479,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 1254,
+            "completion_tokens": 181,
+            "total_tokens": 1435,
+            "latency_sec": 3.267,
+            "error_counts": {},
+            "mean_latency_sec": 0.327
+          },
+          "labeling_ffmpeg": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 19190,
+            "completion_tokens": 71,
+            "total_tokens": 19261,
+            "latency_sec": 8.619,
+            "error_counts": {},
+            "mean_latency_sec": 0.862
+          },
+          "labeling_raw": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 19190,
+            "completion_tokens": 71,
+            "total_tokens": 19261,
+            "latency_sec": 10.202,
+            "error_counts": {},
+            "mean_latency_sec": 1.02
+          },
+          "labeling_rawprior": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 19190,
+            "completion_tokens": 71,
+            "total_tokens": 19261,
+            "latency_sec": 7.848,
+            "error_counts": {},
+            "mean_latency_sec": 0.785
+          },
+          "labeling_seed": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 19190,
+            "completion_tokens": 71,
+            "total_tokens": 19261,
+            "latency_sec": 8.229,
+            "error_counts": {},
+            "mean_latency_sec": 0.823
+          }
+        }
+      }
+    },
+    {
+      "episode": "homer_9",
+      "n_segments": 10,
+      "summary": {
+        "requests": 50,
+        "successful_requests": 50,
+        "failed_requests": 0,
+        "usage_reported_requests": 50,
+        "prompt_tokens": 83138,
+        "completion_tokens": 526,
+        "total_tokens": 83664,
+        "error_counts": {},
+        "stages": {
+          "candidate_selector": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 1258,
+            "completion_tokens": 195,
+            "total_tokens": 1453,
+            "latency_sec": 3.394,
+            "error_counts": {},
+            "mean_latency_sec": 0.339
+          },
+          "labeling_ffmpeg": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 20470,
+            "completion_tokens": 84,
+            "total_tokens": 20554,
+            "latency_sec": 9.073,
+            "error_counts": {},
+            "mean_latency_sec": 0.907
+          },
+          "labeling_raw": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 20470,
+            "completion_tokens": 85,
+            "total_tokens": 20555,
+            "latency_sec": 11.841,
+            "error_counts": {},
+            "mean_latency_sec": 1.184
+          },
+          "labeling_rawprior": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 20470,
+            "completion_tokens": 81,
+            "total_tokens": 20551,
+            "latency_sec": 8.657,
+            "error_counts": {},
+            "mean_latency_sec": 0.866
+          },
+          "labeling_seed": {
+            "requests": 10,
+            "successful_requests": 10,
+            "failed_requests": 0,
+            "usage_reported_requests": 10,
+            "prompt_tokens": 20470,
+            "completion_tokens": 81,
+            "total_tokens": 20551,
+            "latency_sec": 8.9,
+            "error_counts": {},
+            "mean_latency_sec": 0.89
+          }
+        }
+      }
+    }
+  ]
+}

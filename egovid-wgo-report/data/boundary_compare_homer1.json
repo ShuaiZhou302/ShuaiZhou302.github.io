@@ -1,0 +1,107 @@
+{
+  "id": "homer_1",
+  "title": "Boundary comparison",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "duration_sec": 42.0,
+  "video": "assets/boundary_homer1/homer_1_clip45_seek.mp4",
+  "window_note_zh": "截取前 42 秒窗口（对齐 Macrodata 博客 Figure 9 的同集示意区间）。",
+  "window_note_en": "First 42s window (same episode style as Macrodata Figure 9).",
+  "caption_zh": "模型常能叫出粗事件，却漏掉更细的子任务边界。同集对照：人工 gold、整集粗分、contact sheet 粗分。",
+  "caption_en": "Models often name the broad event while missing finer subtask boundaries. Same HomER clip vs gold, whole-episode coarse cut, and contact-sheet cut.",
+  "tracks": [
+    {
+      "id": "gold",
+      "label_zh": "Gold",
+      "label_en": "Gold",
+      "color": "gold",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 7.709,
+          "subtask": "twist open the pitcher lid"
+        },
+        {
+          "start_sec": 7.709,
+          "end_sec": 10.837,
+          "subtask": "pick up the pitcher"
+        },
+        {
+          "start_sec": 10.837,
+          "end_sec": 20.746,
+          "subtask": "pour water from the pitcher into the wine glass"
+        },
+        {
+          "start_sec": 20.746,
+          "end_sec": 21.712,
+          "subtask": "place the pitcher on the black board right next to wine glass"
+        },
+        {
+          "start_sec": 21.712,
+          "end_sec": 26.514,
+          "subtask": "twist the pitcher lid to close it"
+        },
+        {
+          "start_sec": 26.514,
+          "end_sec": 27.855,
+          "subtask": "pick up the pitcher"
+        },
+        {
+          "start_sec": 27.855,
+          "end_sec": 42.0,
+          "subtask": "pour water from the pitcher into the wine glass"
+        }
+      ]
+    },
+    {
+      "id": "whole",
+      "label_zh": "Whole-episode",
+      "label_en": "Whole-episode",
+      "color": "frame",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 10.5,
+          "subtask": "open pitcher lid"
+        },
+        {
+          "start_sec": 10.5,
+          "end_sec": 12.5,
+          "subtask": "pick up wine glass"
+        },
+        {
+          "start_sec": 12.5,
+          "end_sec": 42.0,
+          "subtask": "pour water into wine glass"
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "label_zh": "Contact sheet",
+      "label_en": "Contact sheet",
+      "color": "contact",
+      "segments": [
+        {
+          "start_sec": 0.0,
+          "end_sec": 9.5,
+          "subtask": "open pitcher lid"
+        },
+        {
+          "start_sec": 10.0,
+          "end_sec": 21.0,
+          "subtask": "pour water into wine glass"
+        },
+        {
+          "start_sec": 21.5,
+          "end_sec": 29.5,
+          "subtask": "close pitcher lid"
+        },
+        {
+          "start_sec": 30.0,
+          "end_sec": 42.0,
+          "subtask": "pour water into wine glass"
+        }
+      ]
+    }
+  ]
+}

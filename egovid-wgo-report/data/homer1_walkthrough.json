@@ -1,0 +1,356 @@
+{
+  "id": "homer_1",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "duration_sec": 161.18333333333334,
+  "video": "assets/homer1/homer_1.mp4",
+  "gold_path": "assets/homer1/gold_homer_1.json",
+  "pred_path": "assets/homer1/pred_homer_1_candidate_selector.json",
+  "assets": {
+    "contact_full": "assets/homer1/contact_full_uniform.jpg",
+    "contact_sheet_example": "assets/homer1/contact_sheet_example.jpg",
+    "contact_window": "assets/homer1/contact_window_84_94_uniform.jpg",
+    "handcrop_window": "assets/homer1/homer1_handcrop_sheet_84_94.jpg"
+  },
+  "pipeline_meta": {
+    "n_sheets": 17,
+    "prompt_variant": "refine_local_v1",
+    "n_windows_refined": 10,
+    "contact_params": "sample_sec=0.5, tile_px=224, ~20 tiles/sheet, yellow timestamps"
+  },
+  "scores_episode": {
+    "n_gold": 20,
+    "n_pred": 17,
+    "temporal_iou075": 8,
+    "semantic_match": 5,
+    "e2e_f1_episode": 0.27,
+    "note": "本集分数；全集 HomER micro E2E F1 = 0.1517"
+  },
+  "candidate_demo_segment": {
+    "index": 3,
+    "start_sec": 21.0,
+    "end_sec": 28.0,
+    "subtask": "close the pitcher lid",
+    "candidate_select_source": "B",
+    "candidate_labels": {
+      "raw": "pour water into wine glass",
+      "rawprior": "close the pitcher lid",
+      "seed": "place pitcher on table",
+      "ffmpeg": "pour water into wine glass"
+    },
+    "candidate_select_meta": {
+      "fps": 29.996897942301725,
+      "nframes": 4835,
+      "frames_per_sheet": 5,
+      "image_max_side": 1120
+    },
+    "raw_response": "{\"label\": \"close the pitcher lid\", \"source\": \"B\"}"
+  },
+  "gold_segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 7.709,
+      "subtask": "twist open the pitcher lid"
+    },
+    {
+      "start_sec": 7.709,
+      "end_sec": 10.837,
+      "subtask": "pick up the pitcher"
+    },
+    {
+      "start_sec": 10.837,
+      "end_sec": 20.746,
+      "subtask": "pour water from the pitcher into the wine glass"
+    },
+    {
+      "start_sec": 20.746,
+      "end_sec": 21.712,
+      "subtask": "place the pitcher on the black board right next to wine glass"
+    },
+    {
+      "start_sec": 21.712,
+      "end_sec": 26.514,
+      "subtask": "twist the pitcher lid to close it"
+    },
+    {
+      "start_sec": 26.514,
+      "end_sec": 27.855,
+      "subtask": "pick up the pitcher"
+    },
+    {
+      "start_sec": 27.855,
+      "end_sec": 62.588,
+      "subtask": "pour water from the pitcher into the wine glass"
+    },
+    {
+      "start_sec": 62.588,
+      "end_sec": 65.413,
+      "subtask": "move the tall glass closer to the wine glass"
+    },
+    {
+      "start_sec": 65.413,
+      "end_sec": 67.987,
+      "subtask": "place the pitcher on the black board right and below the wine glass"
+    },
+    {
+      "start_sec": 67.987,
+      "end_sec": 72.944,
+      "subtask": "twist the pitcher lid to open it slightly"
+    },
+    {
+      "start_sec": 72.944,
+      "end_sec": 74.356,
+      "subtask": "pick up the pitcher"
+    },
+    {
+      "start_sec": 74.356,
+      "end_sec": 79.969,
+      "subtask": "pour a bit of water from the pitcher into the tall glass"
+    },
+    {
+      "start_sec": 79.969,
+      "end_sec": 83.203,
+      "subtask": "move the glass wine 7cm to the left"
+    },
+    {
+      "start_sec": 83.203,
+      "end_sec": 134.022,
+      "subtask": "pour water from the pitcher into the tall glass until it's almost full"
+    },
+    {
+      "start_sec": 134.022,
+      "end_sec": 137.134,
+      "subtask": "pour water from the pitcher into the wine glass until it's full"
+    },
+    {
+      "start_sec": 137.134,
+      "end_sec": 140.219,
+      "subtask": "pour water from the pitcher into the tall glass until it's full"
+    },
+    {
+      "start_sec": 140.219,
+      "end_sec": 142.2,
+      "subtask": "place the pitcher on the table"
+    },
+    {
+      "start_sec": 142.2,
+      "end_sec": 147.534,
+      "subtask": "reposition the wine glass to the left center part of table"
+    },
+    {
+      "start_sec": 147.534,
+      "end_sec": 152.14,
+      "subtask": "move the tall glass to the right-center part of the table"
+    },
+    {
+      "start_sec": 152.14,
+      "end_sec": 161.18,
+      "subtask": "place the pitcher on the center part of the table between the two glasses"
+    }
+  ],
+  "pred_segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 10.0,
+      "subtask": "Close the pitcher lid",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Close the pitcher lid",
+        "rawprior": "Close the pitcher lid",
+        "seed": "open pitcher lid",
+        "ffmpeg": "Close the pitcher lid"
+      }
+    },
+    {
+      "start_sec": 10.0,
+      "end_sec": 13.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pick up wine glass",
+        "ffmpeg": "Pour water into the wine glass"
+      }
+    },
+    {
+      "start_sec": 13.0,
+      "end_sec": 21.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pour water into wine glass",
+        "ffmpeg": "Pour water into wine glass"
+      }
+    },
+    {
+      "start_sec": 21.0,
+      "end_sec": 28.0,
+      "subtask": "close the pitcher lid",
+      "candidate_select_source": "B",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "close the pitcher lid",
+        "seed": "place pitcher on table",
+        "ffmpeg": "pour water into wine glass"
+      }
+    },
+    {
+      "start_sec": 28.0,
+      "end_sec": 62.0,
+      "subtask": "Pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water into wine glass",
+        "rawprior": "Pour water into wine glass",
+        "seed": "pour water into wine glass",
+        "ffmpeg": "Pour water into wine glass"
+      }
+    },
+    {
+      "start_sec": 62.0,
+      "end_sec": 67.0,
+      "subtask": "Place the pitcher on the table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Place the pitcher on the table",
+        "rawprior": "Place the pitcher on the table",
+        "seed": "place pitcher on table",
+        "ffmpeg": "Pour water into the wine glass"
+      }
+    },
+    {
+      "start_sec": 67.0,
+      "end_sec": 73.0,
+      "subtask": "close pitcher lid",
+      "candidate_select_source": "C",
+      "candidate_labels": {
+        "raw": "place the pitcher on the table",
+        "rawprior": "place the pitcher on the table",
+        "seed": "close pitcher lid",
+        "ffmpeg": "open the pitcher lid"
+      }
+    },
+    {
+      "start_sec": 73.0,
+      "end_sec": 74.0,
+      "subtask": "move glass on table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "move glass on table",
+        "rawprior": "move glass on table",
+        "seed": "place pitcher on table",
+        "ffmpeg": "move the pitcher to the right"
+      }
+    },
+    {
+      "start_sec": 74.0,
+      "end_sec": 74.5,
+      "subtask": "Pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water into wine glass",
+        "rawprior": "Pour water into wine glass",
+        "seed": "lift pitcher",
+        "ffmpeg": "Pour water into the wine glass"
+      }
+    },
+    {
+      "start_sec": 74.5,
+      "end_sec": 75.0,
+      "subtask": "Pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water into wine glass",
+        "rawprior": "Pour water into wine glass",
+        "seed": "pour water into glass",
+        "ffmpeg": "Pour water into the wine glass"
+      }
+    },
+    {
+      "start_sec": 75.0,
+      "end_sec": 80.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pour water into tall glass",
+        "ffmpeg": "Pour water into the wine glass"
+      }
+    },
+    {
+      "start_sec": 80.0,
+      "end_sec": 84.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pour water into wine glass",
+        "ffmpeg": "Pour water into wine glass"
+      }
+    },
+    {
+      "start_sec": 84.0,
+      "end_sec": 139.5,
+      "subtask": "Pour water from pitcher into tall glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water from pitcher into tall glass",
+        "rawprior": "Pour water from pitcher into tall glass",
+        "seed": "pour water into tall glass",
+        "ffmpeg": "Pour water into the tall glass"
+      }
+    },
+    {
+      "start_sec": 139.5,
+      "end_sec": 141.0,
+      "subtask": "pour water into tall glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into tall glass",
+        "rawprior": "pour water into tall glass",
+        "seed": "place pitcher on table",
+        "ffmpeg": "pour water into tall glass"
+      }
+    },
+    {
+      "start_sec": 141.0,
+      "end_sec": 142.5,
+      "subtask": "place the pitcher on the table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "place the pitcher on the table",
+        "rawprior": "place the pitcher on the table",
+        "seed": "place pitcher on table",
+        "ffmpeg": "Place the pitcher on the table"
+      }
+    },
+    {
+      "start_sec": 142.5,
+      "end_sec": 152.5,
+      "subtask": "place the wine glass on the table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "place the wine glass on the table",
+        "rawprior": "place the wine glass on the table",
+        "seed": "place glass",
+        "ffmpeg": "place the wine glass on the table"
+      }
+    },
+    {
+      "start_sec": 152.5,
+      "end_sec": 161.18,
+      "subtask": "move pitcher to center of table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "move pitcher to center of table",
+        "rawprior": "move pitcher to center of table",
+        "seed": "close pitcher lid",
+        "ffmpeg": "move pitcher to center of table"
+      }
+    }
+  ]
+}

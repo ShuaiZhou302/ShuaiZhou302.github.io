@@ -1,0 +1,241 @@
+{
+  "kind": "human_homer_hero_grid",
+  "n": 25,
+  "layout": "5x5",
+  "note": "All HomER-25 episodes; high-motion clips; splash separate",
+  "splash": {
+    "src": "assets/hero_grid/splash_homer2.mp4",
+    "episode": "homer_2",
+    "start_sec": 99.0,
+    "end_sec": 113.0,
+    "caption_en": "Wash dishes in the sink",
+    "caption_zh": "在水槽洗碗"
+  },
+  "cells": [
+    {
+      "id": "cell_01",
+      "episode": "homer_1",
+      "src": "assets/hero_grid/cell_01_homer_1.mp4",
+      "start_sec": 21.0,
+      "end_sec": 27.5,
+      "caption_en": "close the pitcher lid",
+      "caption_zh": "盖上壶盖"
+    },
+    {
+      "id": "cell_02",
+      "episode": "homer_2",
+      "src": "assets/hero_grid/cell_02_homer_2.mp4",
+      "start_sec": 82.5,
+      "end_sec": 89.0,
+      "caption_en": "Rinse the bowl under running water",
+      "caption_zh": "冲洗碗"
+    },
+    {
+      "id": "cell_03",
+      "episode": "homer_3",
+      "src": "assets/hero_grid/cell_03_homer_3.mp4",
+      "start_sec": 2.5,
+      "end_sec": 9.0,
+      "caption_en": "pour powder from a green packet into the bowl",
+      "caption_zh": "把粉倒进碗里"
+    },
+    {
+      "id": "cell_04",
+      "episode": "homer_4",
+      "src": "assets/hero_grid/cell_04_homer_4.mp4",
+      "start_sec": 54.5,
+      "end_sec": 59.5,
+      "caption_en": "Unfold the cloth",
+      "caption_zh": "展开抹布"
+    },
+    {
+      "id": "cell_05",
+      "episode": "homer_5",
+      "src": "assets/hero_grid/cell_05_homer_5.mp4",
+      "start_sec": 0.0,
+      "end_sec": 6.0,
+      "caption_en": "dust the shelf",
+      "caption_zh": "擦拭架子"
+    },
+    {
+      "id": "cell_06",
+      "episode": "homer_7",
+      "src": "assets/hero_grid/cell_06_homer_7.mp4",
+      "start_sec": 20.0,
+      "end_sec": 26.5,
+      "caption_en": "draw a cloud on the paper",
+      "caption_zh": "在纸上画云"
+    },
+    {
+      "id": "cell_07",
+      "episode": "homer_9",
+      "src": "assets/hero_grid/cell_07_homer_9.mp4",
+      "start_sec": 44.0,
+      "end_sec": 50.0,
+      "caption_en": "wash the glass with the sponge",
+      "caption_zh": "用海绵洗杯子"
+    },
+    {
+      "id": "cell_08",
+      "episode": "homer_10",
+      "src": "assets/hero_grid/cell_08_homer_10.mp4",
+      "start_sec": 17.5,
+      "end_sec": 23.5,
+      "caption_en": "wipe the countertop with a cloth",
+      "caption_zh": "用布擦台面"
+    },
+    {
+      "id": "cell_09",
+      "episode": "homer_11",
+      "src": "assets/hero_grid/cell_09_homer_11.mp4",
+      "start_sec": 62.0,
+      "end_sec": 68.5,
+      "caption_en": "scoop contents from large jar",
+      "caption_zh": "从大罐舀出内容"
+    },
+    {
+      "id": "cell_10",
+      "episode": "homer_12",
+      "src": "assets/hero_grid/cell_10_homer_12.mp4",
+      "start_sec": 4.5,
+      "end_sec": 10.5,
+      "caption_en": "Close the blue container",
+      "caption_zh": "盖上蓝色容器"
+    },
+    {
+      "id": "cell_11",
+      "episode": "homer_15",
+      "src": "assets/hero_grid/cell_11_homer_15.mp4",
+      "start_sec": 87.5,
+      "end_sec": 92.0,
+      "caption_en": "fold the towel in half",
+      "caption_zh": "对折毛巾"
+    },
+    {
+      "id": "cell_12",
+      "episode": "homer_29",
+      "src": "assets/hero_grid/cell_12_homer_29.mp4",
+      "start_sec": 33.0,
+      "end_sec": 37.5,
+      "caption_en": "Dispose of onion peels in the trash bin",
+      "caption_zh": "把洋葱皮扔进垃圾桶"
+    },
+    {
+      "id": "cell_13",
+      "episode": "homer_33",
+      "src": "assets/hero_grid/cell_13_homer_33.mp4",
+      "start_sec": 42.0,
+      "end_sec": 48.5,
+      "caption_en": "cut onion in half",
+      "caption_zh": "把洋葱切成两半"
+    },
+    {
+      "id": "cell_14",
+      "episode": "homer_37",
+      "src": "assets/hero_grid/cell_14_homer_37.mp4",
+      "start_sec": 25.0,
+      "end_sec": 31.0,
+      "caption_en": "chop the left tomato into dices on the cuttin…",
+      "caption_zh": "把番茄切丁"
+    },
+    {
+      "id": "cell_15",
+      "episode": "homer_38",
+      "src": "assets/hero_grid/cell_15_homer_38.mp4",
+      "start_sec": 23.0,
+      "end_sec": 29.5,
+      "caption_en": "place glasses on table",
+      "caption_zh": "把杯子放到桌上"
+    },
+    {
+      "id": "cell_16",
+      "episode": "homer_39",
+      "src": "assets/hero_grid/cell_16_homer_39.mp4",
+      "start_sec": 56.0,
+      "end_sec": 61.12606666666667,
+      "caption_en": "Wipe the countertop with a cloth",
+      "caption_zh": "用布擦台面"
+    },
+    {
+      "id": "cell_17",
+      "episode": "homer_40",
+      "src": "assets/hero_grid/cell_17_homer_40.mp4",
+      "start_sec": 0.0,
+      "end_sec": 3.5,
+      "caption_en": "Spray and wipe table",
+      "caption_zh": "喷雾并擦桌子"
+    },
+    {
+      "id": "cell_18",
+      "episode": "homer_41",
+      "src": "assets/hero_grid/cell_18_homer_41.mp4",
+      "start_sec": 20.5,
+      "end_sec": 26.5,
+      "caption_en": "Place the water bottle on the stove",
+      "caption_zh": "把水瓶放到灶台"
+    },
+    {
+      "id": "cell_19",
+      "episode": "homer_48",
+      "src": "assets/hero_grid/cell_19_homer_48.mp4",
+      "start_sec": 34.0,
+      "end_sec": 39.5,
+      "caption_en": "stack the container",
+      "caption_zh": "叠放容器"
+    },
+    {
+      "id": "cell_20",
+      "episode": "homer_50",
+      "src": "assets/hero_grid/cell_20_homer_50.mp4",
+      "start_sec": 40.0,
+      "end_sec": 46.48,
+      "caption_en": "Tighten screw on toy truck wheel",
+      "caption_zh": "拧紧玩具车轮螺丝"
+    },
+    {
+      "id": "cell_21",
+      "episode": "homer_52",
+      "src": "assets/hero_grid/cell_21_homer_52.mp4",
+      "start_sec": 0.0,
+      "end_sec": 6.0,
+      "caption_en": "Tie shoelaces on sneaker",
+      "caption_zh": "系鞋带"
+    },
+    {
+      "id": "cell_22",
+      "episode": "homer_53",
+      "src": "assets/hero_grid/cell_22_homer_53.mp4",
+      "start_sec": 27.0,
+      "end_sec": 33.0,
+      "caption_en": "Tie the shoelaces of the shoes",
+      "caption_zh": "系鞋带"
+    },
+    {
+      "id": "cell_23",
+      "episode": "homer_56",
+      "src": "assets/hero_grid/cell_23_homer_56.mp4",
+      "start_sec": 17.5,
+      "end_sec": 22.0,
+      "caption_en": "fold the towel",
+      "caption_zh": "叠毛巾"
+    },
+    {
+      "id": "cell_24",
+      "episode": "homer_59",
+      "src": "assets/hero_grid/cell_24_homer_59.mp4",
+      "start_sec": 7.0,
+      "end_sec": 11.5,
+      "caption_en": "Place books on shelf",
+      "caption_zh": "把书放到架子上"
+    },
+    {
+      "id": "cell_25",
+      "episode": "homer_60",
+      "src": "assets/hero_grid/cell_25_homer_60.mp4",
+      "start_sec": 34.0,
+      "end_sec": 40.5,
+      "caption_en": "Place books on shelf",
+      "caption_zh": "把书放到架子上"
+    }
+  ]
+}

@@ -1,0 +1,757 @@
+{
+  "meta": {
+    "title": "EgoVid Annotate × WGO-Bench HomER 标注消融长报告",
+    "eval_subset": "HomER 25 episodes / 470 gold segments",
+    "metric_seg": "Segment F1@0.75 micro + outer snap",
+    "metric_label": "LLM-judge accuracy on gold boundaries",
+    "metric_e2e": "Semantic E2E F1 (IoU match then judge)",
+    "model_note": "文中「Qwen3.6-27B」与日志里的 28B endpoint 指同一小模型服务；大模型统一写 Qwen3.5-397B。",
+    "blog_refs": {
+      "full100_seg_f1": 0.306,
+      "full100_label_acc": 0.61,
+      "full100_e2e_f1": 0.168,
+      "homer_only_gemini_seg_f1": 0.227,
+      "same_recipe_non_gemini_seg": "0.11-0.14"
+    },
+    "best": {
+      "seg_f1": 0.2031,
+      "seg_config": "Qwen3.6-27B · S2 pad=0 + full-cover local prompt · contact sheet",
+      "label_acc": 0.511,
+      "label_config": "Qwen3.5-397B · HaWoR true hand-crop（raw 50.6%）",
+      "e2e_f1": 0.1517,
+      "e2e_config": "锁 S2 full-cover 边界 + Qwen3.5-397B candidate selector"
+    },
+    "generated_note": "分数对齐 V5.1 / wgo_bench_v5_1_results；HomER-only 除非注明。"
+  },
+  "glossary": [
+    {
+      "term": "contact sheet",
+      "def": "按固定间隔抽帧拼成的时间戳联系表，用于分段；默认 0.5s×约20格≈10s 窗。"
+    },
+    {
+      "term": "整帧 temporal collage",
+      "def": "把 past/current/future 的整帧格子拼在一起给标注模型；≠ contact sheet。"
+    },
+    {
+      "term": "L1 邻段 contact sheet",
+      "def": "把上一/当前/下一子任务的 sheet 一起喂给标注模型。"
+    },
+    {
+      "term": "L2 YOLO/proxy hand-collage",
+      "def": "HomER 无 hand asset 时用 YOLO 腕点或画面中心 proxy 裁手部拼图；失败线。"
+    },
+    {
+      "term": "HaWoR true hand-crop",
+      "def": "先跑 HaWoR 得 wrist track，再按手部点裁剪；固定边界标注微涨线。"
+    },
+    {
+      "term": "optical-flow proxy overlay",
+      "def": "用光流质心近似手部叠图；不是真 hand overlay。"
+    },
+    {
+      "term": "GEPA",
+      "def": "Macrodata 用自动搜索得到的英文分段 prompt 规则集（不是新模型）；推理时只是把这些规则贴进请求。"
+    },
+    {
+      "term": "S1 反欠分割",
+      "def": "提高切段密度以抬召回；易过分割。"
+    },
+    {
+      "term": "S2 pad=0 + full-cover local prompt",
+      "def": "粗分后再对局部时间窗口精修；pad=0 表示不外扩；full-cover 要求盖住该时间窗口内完成事件。"
+    },
+    {
+      "term": "candidate selector",
+      "def": "对同一边界生成多条候选标签，再由大模型选一条定稿。"
+    },
+    {
+      "term": "Qwen3.6-27B",
+      "def": "分段主模型；日志里有时写作 28B endpoint，本文统一 27B。"
+    },
+    {
+      "term": "Qwen3.5-397B",
+      "def": "标注 / judge / selector 用的大模型。"
+    },
+    {
+      "term": "HomER 25 / 470",
+      "def": "本报告评测子集：25 集第一视角 episode、470 个 gold 段。"
+    }
+  ],
+  "segmentation": [
+    {
+      "id": "egovid_baseline",
+      "name": "EgoVid Annotate 原管线：rule-based 腕速切段 + merge",
+      "f1": 0.0953,
+      "p": null,
+      "r": null,
+      "match": 61,
+      "pred": 810,
+      "gold": 470,
+      "model": "rule-based（腕速 minima + merge）",
+      "full25": true,
+      "note": "过分割：预测段远多于 gold",
+      "method": {
+        "goal": "用手腕速度谷值自动切子任务",
+        "how": "HaWoR/腕速找 minima → 短段策略 → merge judge",
+        "input": "视频 + hand recon",
+        "result": "F1 0.0953，pred 810（远超 470）",
+        "verdict": "启发式过碎，作基线"
+      }
+    },
+    {
+      "id": "cs_max3_397b",
+      "name": "Contact sheet 分片（max_sheets=3，每次最多 3 张）",
+      "f1": 0.0952,
+      "p": 0.132,
+      "r": 0.075,
+      "match": 35,
+      "pred": 265,
+      "gold": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "note": "分片接缝处出现假边界",
+      "method": {
+        "goal": "模仿 blog：把长视频切成多张 sheet 分次送模型",
+        "how": "legacy prompt；每集最多 3 张 sheet，分次 API",
+        "input": "contact sheet（分片）",
+        "result": "F1 0.0952",
+        "verdict": "人工切窗边界被当成事件边界"
+      }
+    },
+    {
+      "id": "cs_max3_27b",
+      "name": "Contact sheet 分片（max_sheets=3）",
+      "f1": 0.1278,
+      "p": 0.171,
+      "r": 0.102,
+      "match": 48,
+      "pred": 281,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "同设置下小模型优于大模型分片版",
+      "method": {
+        "goal": "同上，换小模型",
+        "how": "同 max3 + legacy",
+        "input": "contact sheet（分片）",
+        "result": "F1 0.1278",
+        "verdict": "更大模型≠自动更好；分片 recipe 本身有毒"
+      }
+    },
+    {
+      "id": "whole_legacy_27b",
+      "name": "整集一次 + legacy prompt（无 GEPA 规则）",
+      "f1": 0.123,
+      "p": 0.257,
+      "r": 0.081,
+      "match": 38,
+      "pred": 148,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "欠分割：预测段过少",
+      "method": {
+        "goal": "去掉分片接缝",
+        "how": "max_sheets=0，整集 sheet 一次作为视觉输入提交给 API",
+        "input": "整集 contact sheet",
+        "result": "F1 0.123，pred 仅 148",
+        "verdict": "假切点没了，但切太少"
+      }
+    },
+    {
+      "id": "aligned_gepa_27b",
+      "name": "整集一次 + GEPA 规则 prompt",
+      "f1": 0.1369,
+      "p": 0.228,
+      "r": 0.098,
+      "match": 46,
+      "pred": 202,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "仍欠分割，但比 legacy 略好",
+      "method": {
+        "goal": "用 completed-events + 时长先验对齐 blog 规则",
+        "how": "GEPA prompt：只标完成操作；偏好约 2–10s 段",
+        "input": "整集 contact sheet + GEPA",
+        "result": "F1 0.1369",
+        "verdict": "外形对齐有效，但仍欠分割"
+      }
+    },
+    {
+      "id": "s1_full25_397b",
+      "name": "S1：反欠分割（提高切段密度）",
+      "f1": 0.1556,
+      "p": 0.143,
+      "r": 0.17,
+      "match": 80,
+      "pred": 558,
+      "gold": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "note": "召回上升，但又切得过碎",
+      "method": {
+        "goal": "纠正 GEPA 后切太少",
+        "how": "改 duration prior / 提高切段密度；全量 25 集",
+        "input": "整集 sheet + 反欠分割 prompt",
+        "result": "F1 0.1556，pred 558",
+        "verdict": "召回上来，过分割回来"
+      }
+    },
+    {
+      "id": "s2_full25_397b",
+      "name": "S2 早期精修（pad≈1，无 full-cover）",
+      "f1": 0.1674,
+      "p": 0.163,
+      "r": 0.172,
+      "match": 81,
+      "pred": 498,
+      "gold": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "note": "早期二次精修，尚未用 full-cover",
+      "method": {
+        "goal": "粗分后再局部细切",
+        "how": "粗边界 → 局部时间窗口 contact sheet → 二次精修；early 配置 pad≈1.0",
+        "input": "局部 sheet + 粗段 hint",
+        "result": "F1 0.1674",
+        "verdict": "方向对，但不是最终 full-cover"
+      }
+    },
+    {
+      "id": "s2_pad0_plain_27b",
+      "name": "S2 精修 pad=0（尚无 full-cover）",
+      "f1": 0.1711,
+      "p": 0.1546,
+      "r": 0.1915,
+      "match": 90,
+      "pred": 582,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "pad=0 较好，但仍偏碎",
+      "method": {
+        "goal": "消融 pad 宽度",
+        "how": "局部精修，pad_sec=0，未加 full-cover 覆盖约束",
+        "input": "局部 sheet",
+        "result": "F1 0.1711，pred 582",
+        "verdict": "pad=0 优于 pad=0.5/1/2，但仍过碎"
+      }
+    },
+    {
+      "id": "s2_pad05_27b",
+      "name": "S2 精修 pad=0.5（时间窗口外扩）",
+      "f1": 0.1444,
+      "p": 0.1266,
+      "r": 0.1681,
+      "match": 79,
+      "pred": 624,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "把时间窗口外扩 0.5s，不如 pad=0",
+      "method": {
+        "goal": "给局部时间窗口前后多看一点",
+        "how": "pad_sec=0.5",
+        "input": "局部 sheet",
+        "result": "F1 0.1444",
+        "verdict": "不如 pad=0"
+      }
+    },
+    {
+      "id": "s2_pad1_27b",
+      "name": "S2 精修 pad=1.0",
+      "f1": 0.1485,
+      "p": 0.1259,
+      "r": 0.1809,
+      "match": 85,
+      "pred": 675,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "外扩 1s，不如 pad=0",
+      "method": {
+        "goal": "同上",
+        "how": "pad_sec=1.0",
+        "input": "局部 sheet",
+        "result": "F1 0.1485",
+        "verdict": "不如 pad=0"
+      }
+    },
+    {
+      "id": "s2_pad2_27b",
+      "name": "S2 精修 pad=2.0",
+      "f1": 0.1436,
+      "p": 0.122,
+      "r": 0.1745,
+      "match": 82,
+      "pred": 672,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "外扩 2s，不如 pad=0",
+      "method": {
+        "goal": "同上",
+        "how": "pad_sec=2.0",
+        "input": "局部 sheet",
+        "result": "F1 0.1436",
+        "verdict": "不如 pad=0"
+      }
+    },
+    {
+      "id": "s2_midpoint_post",
+      "name": "S2 pad=0 + midpoint full-cover 后处理（非 prompt）",
+      "f1": 0.1635,
+      "p": 0.1478,
+      "r": 0.183,
+      "match": 86,
+      "pred": 582,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "用算法补覆盖 ≠ 写进 prompt 的 full-cover",
+      "method": {
+        "goal": "用算法把预测盖满时间轴",
+        "how": "pad=0 预测后再做 midpoint full-cover postprocess",
+        "input": "预测边界",
+        "result": "F1 0.1635",
+        "verdict": "不如把 full-cover 写进 local prompt"
+      }
+    },
+    {
+      "id": "s2_fullcover_qwen36",
+      "name": "S2 pad=0 + full-cover local prompt",
+      "f1": 0.2031,
+      "p": 0.256,
+      "r": 0.168,
+      "match": 79,
+      "pred": 308,
+      "gold": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "note": "当前最强分段",
+      "method": {
+        "goal": "局部时间窗口内重切，并要求盖满该时间窗口、保持任务粒度",
+        "how": "粗分 GEPA → 滑动时间窗口/覆盖时间窗口 sheet（0.5s×20）→ pad=0 + full-cover prompt 只重切该时间窗口",
+        "input": "局部 timestamped contact sheet + 粗段 hint",
+        "result": "F1 0.2031，pred 308，P↑",
+        "verdict": "Qwen 栈主升力；勿与 early S2 0.1674 混称"
+      }
+    },
+    {
+      "id": "merge_exact",
+      "name": "后处理：在 0.2031 上合并相邻「文案完全相同」段",
+      "f1": 0.1987,
+      "p": null,
+      "r": null,
+      "match": 77,
+      "pred": 305,
+      "gold": 470,
+      "model": "规则后处理（非 LLM）",
+      "full25": true,
+      "note": "合并后 F1 下降",
+      "method": {
+        "goal": "合并相邻同文案碎片，让时间轴更干净",
+        "how": "相邻且 label 完全相同则合并",
+        "input": "S2 full-cover 预测",
+        "result": "F1 0.1987",
+        "verdict": "好看但掉分；勿默认 merge"
+      }
+    },
+    {
+      "id": "merge_verb",
+      "name": "后处理：在 0.2031 上按动词/物体合并相邻段",
+      "f1": 0.1947,
+      "p": null,
+      "r": null,
+      "match": 74,
+      "pred": 290,
+      "gold": 470,
+      "model": "规则后处理（非 LLM）",
+      "full25": true,
+      "note": "更激进合并，F1 再降",
+      "method": {
+        "goal": "同动词/物体就合并",
+        "how": "解析 verb/object 近似匹配后合并",
+        "input": "S2 full-cover 预测",
+        "result": "F1 0.1947",
+        "verdict": "继续掉分"
+      }
+    },
+    {
+      "id": "merge_bridge",
+      "name": "后处理：在 0.2031 上跨短间隙桥接合并",
+      "f1": 0.1883,
+      "p": null,
+      "r": null,
+      "match": 69,
+      "pred": 263,
+      "gold": 470,
+      "model": "规则后处理（非 LLM）",
+      "full25": true,
+      "note": "跨短间隙合并，掉分最多",
+      "method": {
+        "goal": "短间隙也桥接合并",
+        "how": "允许短时间桥接后合并",
+        "input": "S2 full-cover 预测",
+        "result": "F1 0.1883",
+        "verdict": "掉分最多"
+      }
+    }
+  ],
+  "labeling": [
+    {
+      "id": "raw_397b",
+      "name": "raw 原帧（默认基线）",
+      "acc": 0.506,
+      "n_match": 238,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": 0.0,
+      "note": "Track A",
+      "method": {
+        "goal": "给定 gold 边界，只评句子",
+        "how": "段内均匀抽约 5 帧原图 → 397B caption → 另一次 397B judge",
+        "input": "raw frames",
+        "result": "50.6%",
+        "verdict": "生产默认最稳"
+      }
+    },
+    {
+      "id": "overlay_proxy",
+      "name": "optical-flow proxy overlay",
+      "acc": 0.483,
+      "n_match": 227,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": -0.023,
+      "note": "非真 hand",
+      "method": {
+        "goal": "把「手在哪」叠到画面上帮模型",
+        "how": "HomER 无 hand_recon，用光流质心画 proxy overlay",
+        "input": "overlay frames",
+        "result": "48.3%",
+        "verdict": "伤分；不能冒充真 hand"
+      }
+    },
+    {
+      "id": "temporal_collage",
+      "name": "整帧 temporal collage（P/C/F）",
+      "acc": 0.421,
+      "n_match": 198,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": -0.085,
+      "note": "整帧≠hand",
+      "method": {
+        "goal": "给前后文整帧上下文",
+        "how": "past/current/future 各约 6 格整帧拼图，再 caption",
+        "input": "整帧 collage",
+        "result": "42.1%",
+        "verdict": "上下文噪音大，跌分"
+      }
+    },
+    {
+      "id": "raw_27b",
+      "name": "raw + Qwen3.6-27B",
+      "acc": 0.46,
+      "n_match": 216,
+      "n": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "delta_vs_raw": -0.046,
+      "note": "",
+      "method": {
+        "goal": "小模型能否扛标注",
+        "how": "同 raw 抽帧，换 27B",
+        "input": "raw",
+        "result": "46.0%",
+        "verdict": "标注仍需大模型"
+      }
+    },
+    {
+      "id": "l1_neighbor",
+      "name": "L1 邻段 contact sheet",
+      "acc": 0.368,
+      "n_match": 173,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": -0.138,
+      "note": "大跌",
+      "method": {
+        "goal": "对齐 WGO：看上一/当前/下一段",
+        "how": "PREV/CUR/NEXT 三段 sheet 一并送 labeler",
+        "input": "邻段 contact sheet",
+        "result": "36.8%",
+        "verdict": "模型搞不清「当前」是哪一步"
+      }
+    },
+    {
+      "id": "l1_ts_rerun",
+      "name": "L1 + 秒级时间戳重跑",
+      "acc": 0.355,
+      "n_match": 167,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": -0.151,
+      "note": "修时间戳仍跌",
+      "method": {
+        "goal": "怀疑跌分因 tile 缺秒戳",
+        "how": "补黄字秒级时间戳后全量重跑",
+        "input": "邻段 sheet（有戳）",
+        "result": "35.5%",
+        "verdict": "不是缺戳的问题，recipe 本身伤分"
+      }
+    },
+    {
+      "id": "l2_yolo_proxy",
+      "name": "L2 YOLO/proxy hand-collage",
+      "acc": 0.406,
+      "n_match": 191,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": -0.1,
+      "note": "失败线",
+      "method": {
+        "goal": "聚焦手部区域像 Scale/blog",
+        "how": "HomER 无 hand asset：用 YOLO 人/腕点或 center-proxy 裁剪拼 collage（非 HaWoR）",
+        "input": "hand-collage approx",
+        "result": "40.6%",
+        "verdict": "近似 crop 伤分；≠ true hand-crop"
+      },
+      "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
+    },
+    {
+      "id": "l2_hawor",
+      "name": "HaWoR true hand-crop",
+      "acc": 0.511,
+      "n_match": 240,
+      "n": 470,
+      "model": "Qwen3.5-397B",
+      "full25": true,
+      "delta_vs_raw": 0.005,
+      "note": "+0.4pp",
+      "method": {
+        "goal": "真手腕 track 后再 crop",
+        "how": "HaWoR → wrist track → 按手点裁；411/470 段 5/5 有效 crop",
+        "input": "true hand-crop (+raw)",
+        "result": "51.1%",
+        "verdict": "有正向但成本高；有 asset 才作候选"
+      },
+      "figure": "assets/homer1/homer1_handcrop_sheet_84_94.jpg"
+    },
+    {
+      "id": "l4_strict_judge",
+      "name": "L4 严 judge 重判 raw",
+      "acc": 0.43,
+      "n_match": 202,
+      "n": 470,
+      "model": "Qwen3.5-397B judge",
+      "full25": true,
+      "delta_vs_raw": -0.076,
+      "note": "尺子变了",
+      "method": {
+        "goal": "更严语义等价标准",
+        "how": "同一批 raw 预测，只换 judge rubric 重判",
+        "input": "不变的 pred captions",
+        "result": "43.0%",
+        "verdict": "汇报时必须固定 judge"
+      }
+    },
+    {
+      "id": "l2_proxy_27b",
+      "name": "L2 YOLO/proxy hand-collage · 27B",
+      "acc": 0.317,
+      "n_match": 149,
+      "n": 470,
+      "model": "Qwen3.6-27B",
+      "full25": true,
+      "delta_vs_raw": null,
+      "note": "更差",
+      "method": {
+        "goal": "小模型 + 糙 hand collage",
+        "how": "同 L2 近似 collage，换 27B",
+        "input": "hand-collage approx",
+        "result": "31.7%",
+        "verdict": "双重减分"
+      }
+    }
+  ],
+  "e2e": [
+    {
+      "id": "egovid_e2e",
+      "name": "EgoVid Annotate 生产 one-pass",
+      "seg_f1": 0.0953,
+      "e2e_f1": 0.0656,
+      "pred_gold": "810/470",
+      "note": "腕速切段 + 段内 caption；端到端弱",
+      "method": {
+        "goal": "原管线端到端",
+        "how": "腕速切 + 段内 caption",
+        "result": "E2E 0.0656",
+        "verdict": "基线"
+      }
+    },
+    {
+      "id": "s2_self",
+      "name": "S2 边界 + 分段模型自标",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.1054,
+      "pred_gold": "308/470",
+      "note": "边界已锁；句子仍弱",
+      "method": {
+        "goal": "边界用最强分段，标注仍用分段模型",
+        "how": "锁 Seg=0.2031，27B 自写 subtask",
+        "result": "E2E 0.1054",
+        "verdict": "边界好了，句子仍弱"
+      }
+    },
+    {
+      "id": "raw397",
+      "name": "397B 单路 raw 重标",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.1388,
+      "pred_gold": "308/470",
+      "note": "锁 0.2031 边界后只换大模型写句；E2E 0.1388",
+      "method": {
+        "goal": "锁边界换大模型标",
+        "how": "同一批 S2 边界，397B 看 raw 帧重写标签",
+        "result": "E2E 0.1388",
+        "verdict": "主涨分来自换大模型"
+      }
+    },
+    {
+      "id": "ffmpeg397",
+      "name": "397B ffmpeg-raw 重标",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.1414,
+      "pred_gold": "308/470",
+      "note": "换解码抽帧路径；略好于默认 raw",
+      "method": {
+        "goal": "换解码/抽帧路径是否改变标注",
+        "how": "ffmpeg 抽帧替代默认读帧，再 397B caption",
+        "result": "E2E 0.1414",
+        "verdict": "略好于默认 raw，作候选源"
+      }
+    },
+    {
+      "id": "nb28",
+      "name": "27B-prior 邻段重标（掉分）",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.108,
+      "pred_gold": "308/470",
+      "note": "IoU match 仍 79；语义 match 掉到约 42。见附录 C",
+      "method": {
+        "goal": "邻段（上一/当前/下一段）上下文 + 小模型 prior",
+        "how": "PREV/CUR/NEXT≤5 帧 + seed prior，再标当前段",
+        "result": "E2E 0.1080",
+        "verdict": "邻段（上一/当前/下一段）上下文在 Qwen 上易引入邻段上下文干扰"
+      }
+    },
+    {
+      "id": "nb397",
+      "name": "397B-prior 邻段重标",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.144,
+      "pred_gold": "308/470",
+      "note": "可用作候选，仍低于 selector",
+      "method": {
+        "goal": "邻段 + 大模型 prior",
+        "how": "同上，prior 来自 397B raw",
+        "result": "E2E 0.1440",
+        "verdict": "可用作候选，仍低于 selector"
+      }
+    },
+    {
+      "id": "selector397",
+      "name": "397B 多候选 selector",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.1517,
+      "pred_gold": "308/470",
+      "note": "同边界多候选选优；E2E 0.1517",
+      "method": {
+        "goal": "多候选选优",
+        "how": "对每段收集 raw / rawprior / seed / ffmpeg 等候选，397B selector 选一条",
+        "result": "E2E 0.1517（semantic 59）",
+        "verdict": "生产 E2E 推荐配置"
+      }
+    }
+  ],
+  "walkthrough_toy": {
+    "gold": [
+      {
+        "id": "G0",
+        "start": 0.0,
+        "end": 3.0
+      },
+      {
+        "id": "G1",
+        "start": 3.0,
+        "end": 6.0
+      },
+      {
+        "id": "G2",
+        "start": 6.0,
+        "end": 10.0
+      }
+    ],
+    "pred": [
+      {
+        "id": "P0",
+        "start": 0.5,
+        "end": 2.8
+      },
+      {
+        "id": "P1",
+        "start": 2.8,
+        "end": 5.5
+      },
+      {
+        "id": "P2",
+        "start": 5.5,
+        "end": 8.0
+      },
+      {
+        "id": "P3",
+        "start": 8.0,
+        "end": 9.5
+      }
+    ],
+    "after_snap": [
+      {
+        "id": "P0",
+        "start": 0.0,
+        "end": 2.8
+      },
+      {
+        "id": "P1",
+        "start": 2.8,
+        "end": 5.5
+      },
+      {
+        "id": "P2",
+        "start": 5.5,
+        "end": 8.0
+      },
+      {
+        "id": "P3",
+        "start": 8.0,
+        "end": 10.0
+      }
+    ],
+    "ious": {
+      "P0-G0": 0.933,
+      "P1-G1": 0.781
+    },
+    "n_match": 2,
+    "P": 0.5,
+    "R": 0.667,
+    "F1": 0.571
+  }
+}

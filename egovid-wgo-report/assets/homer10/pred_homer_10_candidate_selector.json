@@ -1,0 +1,73 @@
+{
+  "id": "homer_10",
+  "instruction": "clean the countertop and stovetop with a cloth",
+  "duration_sec": 120.83333333333333,
+  "n_sheets": 13,
+  "prompt_variant": "refine_local_v1",
+  "coarse_dir": "outputs/datasets/WGO_Bench_HomER/expB_recipe_aligned",
+  "n_windows_refined": 3,
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 17.5,
+      "subtask": "Wipe the countertop with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the countertop with the cloth",
+        "rawprior": "Wipe the countertop with the cloth",
+        "seed": "wipe the countertop",
+        "ffmpeg": "Wipe the countertop with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3625,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the countertop with the cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 17.5,
+      "end_sec": 109.5,
+      "subtask": "wipe the countertop with a cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "wipe the countertop with a cloth",
+        "rawprior": "wipe the countertop with a cloth",
+        "seed": "wipe the dining table surface",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3625,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"wipe the countertop with a cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 109.5,
+      "end_sec": 120.83,
+      "subtask": "Wipe the stovetop with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the stovetop with the cloth",
+        "rawprior": "Wipe the stovetop with the cloth",
+        "seed": "wipe the stovetop",
+        "ffmpeg": "Wipe the stovetop with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3625,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the stovetop with the cloth\", \"source\": \"A\"}"
+    }
+  ],
+  "candidate_select_recipe": {
+    "name": "raw_rawprior_seed_ffmpeg_neighbor_selector_397B",
+    "frames_per_sheet": 5,
+    "image_max_side": 1120
+  }
+}

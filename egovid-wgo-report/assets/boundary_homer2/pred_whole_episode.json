@@ -1,0 +1,78 @@
+{
+  "id": "homer_2",
+  "instruction": "wash the dishes in the sink",
+  "method": "contact_sheet_vlm",
+  "sample_sec": 0.5,
+  "tiles_per_sheet": 20,
+  "tile_px": 224,
+  "cols": 5,
+  "n_sheets": 16,
+  "duration_sec": 154.2,
+  "max_sheets_per_call_arg": 0,
+  "sheets_per_call_effective": 16,
+  "whole_episode": true,
+  "context_fallback_used": false,
+  "prompt_variant": "legacy",
+  "prompt_source": "local_legacy_track_b",
+  "n_empty_calls": 0,
+  "call_info": {
+    "sheets_per_call_effective": 16,
+    "whole_episode": true,
+    "context_fallback_used": false,
+    "n_sheets": 16,
+    "n_calls": 1,
+    "empty_ratio": 0.0
+  },
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 12.0,
+      "subtask": "wash black mug"
+    },
+    {
+      "start_sec": 12.0,
+      "end_sec": 32.0,
+      "subtask": "wash black bowl"
+    },
+    {
+      "start_sec": 32.0,
+      "end_sec": 46.0,
+      "subtask": "wash glass"
+    },
+    {
+      "start_sec": 46.0,
+      "end_sec": 61.0,
+      "subtask": "wash black mug"
+    },
+    {
+      "start_sec": 61.0,
+      "end_sec": 65.0,
+      "subtask": "wash spoon"
+    },
+    {
+      "start_sec": 65.0,
+      "end_sec": 81.0,
+      "subtask": "wash glass"
+    },
+    {
+      "start_sec": 81.0,
+      "end_sec": 99.0,
+      "subtask": "wash white bowl"
+    },
+    {
+      "start_sec": 99.0,
+      "end_sec": 115.0,
+      "subtask": "wash glass bowl"
+    },
+    {
+      "start_sec": 115.0,
+      "end_sec": 134.0,
+      "subtask": "wash white ladle"
+    },
+    {
+      "start_sec": 134.0,
+      "end_sec": 154.2,
+      "subtask": "wash small bowl"
+    }
+  ]
+}

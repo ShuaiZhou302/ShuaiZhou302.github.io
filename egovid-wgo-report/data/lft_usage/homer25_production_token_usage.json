@@ -1,0 +1,301 @@
+{
+  "kind": "measured",
+  "pipeline": "EgoVid Annotate production (HaWoR wrist-minima + caption + merge judge/rewrite)",
+  "source": "WGO_Bench_HomER/work/homer_*/token_usage.json",
+  "n_episodes": 25,
+  "video_min": 40.04,
+  "totals": {
+    "requests": 2574,
+    "successful_requests": 2574,
+    "failed_requests": 0,
+    "usage_reported_requests": 2574,
+    "prompt_tokens": 8039348,
+    "completion_tokens": 823878,
+    "total_tokens": 8863226
+  },
+  "stages": {
+    "caption": {
+      "requests": 1882,
+      "prompt_tokens": 5756442,
+      "completion_tokens": 481952,
+      "total_tokens": 6238394,
+      "latency_sec": 12411.453
+    },
+    "episode_summary": {
+      "requests": 25,
+      "prompt_tokens": 32544,
+      "completion_tokens": 369,
+      "total_tokens": 32913,
+      "latency_sec": 10.492999999999999
+    },
+    "merge_judge": {
+      "requests": 299,
+      "prompt_tokens": 1312672,
+      "completion_tokens": 202621,
+      "total_tokens": 1515293,
+      "latency_sec": 2477.9880000000003
+    },
+    "merge_rewrite": {
+      "requests": 368,
+      "prompt_tokens": 937690,
+      "completion_tokens": 138936,
+      "total_tokens": 1076626,
+      "latency_sec": 1660.4590000000003
+    }
+  },
+  "per_video_minute_tokens": 221359,
+  "per_episode_mean_tokens": 354529,
+  "episodes": [
+    {
+      "episode": "homer_1",
+      "requests": 173,
+      "successful_requests": 173,
+      "failed_requests": 0,
+      "usage_reported_requests": 173,
+      "prompt_tokens": 561855,
+      "completion_tokens": 55339,
+      "total_tokens": 617194
+    },
+    {
+      "episode": "homer_10",
+      "requests": 113,
+      "successful_requests": 113,
+      "failed_requests": 0,
+      "usage_reported_requests": 113,
+      "prompt_tokens": 361358,
+      "completion_tokens": 35765,
+      "total_tokens": 397123
+    },
+    {
+      "episode": "homer_11",
+      "requests": 136,
+      "successful_requests": 136,
+      "failed_requests": 0,
+      "usage_reported_requests": 136,
+      "prompt_tokens": 425046,
+      "completion_tokens": 45807,
+      "total_tokens": 470853
+    },
+    {
+      "episode": "homer_12",
+      "requests": 127,
+      "successful_requests": 127,
+      "failed_requests": 0,
+      "usage_reported_requests": 127,
+      "prompt_tokens": 381894,
+      "completion_tokens": 41932,
+      "total_tokens": 423826
+    },
+    {
+      "episode": "homer_15",
+      "requests": 131,
+      "successful_requests": 131,
+      "failed_requests": 0,
+      "usage_reported_requests": 131,
+      "prompt_tokens": 401969,
+      "completion_tokens": 42652,
+      "total_tokens": 444621
+    },
+    {
+      "episode": "homer_2",
+      "requests": 179,
+      "successful_requests": 179,
+      "failed_requests": 0,
+      "usage_reported_requests": 179,
+      "prompt_tokens": 568797,
+      "completion_tokens": 57741,
+      "total_tokens": 626538
+    },
+    {
+      "episode": "homer_29",
+      "requests": 84,
+      "successful_requests": 84,
+      "failed_requests": 0,
+      "usage_reported_requests": 84,
+      "prompt_tokens": 265664,
+      "completion_tokens": 26782,
+      "total_tokens": 292446
+    },
+    {
+      "episode": "homer_3",
+      "requests": 142,
+      "successful_requests": 142,
+      "failed_requests": 0,
+      "usage_reported_requests": 142,
+      "prompt_tokens": 410906,
+      "completion_tokens": 47477,
+      "total_tokens": 458383
+    },
+    {
+      "episode": "homer_33",
+      "requests": 73,
+      "successful_requests": 73,
+      "failed_requests": 0,
+      "usage_reported_requests": 73,
+      "prompt_tokens": 230117,
+      "completion_tokens": 22526,
+      "total_tokens": 252643
+    },
+    {
+      "episode": "homer_37",
+      "requests": 63,
+      "successful_requests": 63,
+      "failed_requests": 0,
+      "usage_reported_requests": 63,
+      "prompt_tokens": 203499,
+      "completion_tokens": 18656,
+      "total_tokens": 222155
+    },
+    {
+      "episode": "homer_38",
+      "requests": 98,
+      "successful_requests": 98,
+      "failed_requests": 0,
+      "usage_reported_requests": 98,
+      "prompt_tokens": 291356,
+      "completion_tokens": 30923,
+      "total_tokens": 322279
+    },
+    {
+      "episode": "homer_39",
+      "requests": 59,
+      "successful_requests": 59,
+      "failed_requests": 0,
+      "usage_reported_requests": 59,
+      "prompt_tokens": 186118,
+      "completion_tokens": 18395,
+      "total_tokens": 204513
+    },
+    {
+      "episode": "homer_4",
+      "requests": 129,
+      "successful_requests": 129,
+      "failed_requests": 0,
+      "usage_reported_requests": 129,
+      "prompt_tokens": 410651,
+      "completion_tokens": 41091,
+      "total_tokens": 451742
+    },
+    {
+      "episode": "homer_40",
+      "requests": 59,
+      "successful_requests": 59,
+      "failed_requests": 0,
+      "usage_reported_requests": 59,
+      "prompt_tokens": 192499,
+      "completion_tokens": 18956,
+      "total_tokens": 211455
+    },
+    {
+      "episode": "homer_41",
+      "requests": 54,
+      "successful_requests": 54,
+      "failed_requests": 0,
+      "usage_reported_requests": 54,
+      "prompt_tokens": 168571,
+      "completion_tokens": 16630,
+      "total_tokens": 185201
+    },
+    {
+      "episode": "homer_48",
+      "requests": 61,
+      "successful_requests": 61,
+      "failed_requests": 0,
+      "usage_reported_requests": 61,
+      "prompt_tokens": 178814,
+      "completion_tokens": 20090,
+      "total_tokens": 198904
+    },
+    {
+      "episode": "homer_5",
+      "requests": 230,
+      "successful_requests": 230,
+      "failed_requests": 0,
+      "usage_reported_requests": 230,
+      "prompt_tokens": 732462,
+      "completion_tokens": 66603,
+      "total_tokens": 799065
+    },
+    {
+      "episode": "homer_50",
+      "requests": 48,
+      "successful_requests": 48,
+      "failed_requests": 0,
+      "usage_reported_requests": 48,
+      "prompt_tokens": 149865,
+      "completion_tokens": 15909,
+      "total_tokens": 165774
+    },
+    {
+      "episode": "homer_52",
+      "requests": 41,
+      "successful_requests": 41,
+      "failed_requests": 0,
+      "usage_reported_requests": 41,
+      "prompt_tokens": 124862,
+      "completion_tokens": 12546,
+      "total_tokens": 137408
+    },
+    {
+      "episode": "homer_53",
+      "requests": 47,
+      "successful_requests": 47,
+      "failed_requests": 0,
+      "usage_reported_requests": 47,
+      "prompt_tokens": 153035,
+      "completion_tokens": 13839,
+      "total_tokens": 166874
+    },
+    {
+      "episode": "homer_56",
+      "requests": 64,
+      "successful_requests": 64,
+      "failed_requests": 0,
+      "usage_reported_requests": 64,
+      "prompt_tokens": 194637,
+      "completion_tokens": 19202,
+      "total_tokens": 213839
+    },
+    {
+      "episode": "homer_59",
+      "requests": 64,
+      "successful_requests": 64,
+      "failed_requests": 0,
+      "usage_reported_requests": 64,
+      "prompt_tokens": 191051,
+      "completion_tokens": 20456,
+      "total_tokens": 211507
+    },
+    {
+      "episode": "homer_60",
+      "requests": 74,
+      "successful_requests": 74,
+      "failed_requests": 0,
+      "usage_reported_requests": 74,
+      "prompt_tokens": 229579,
+      "completion_tokens": 22920,
+      "total_tokens": 252499
+    },
+    {
+      "episode": "homer_7",
+      "requests": 148,
+      "successful_requests": 148,
+      "failed_requests": 0,
+      "usage_reported_requests": 148,
+      "prompt_tokens": 463434,
+      "completion_tokens": 52320,
+      "total_tokens": 515754
+    },
+    {
+      "episode": "homer_9",
+      "requests": 177,
+      "successful_requests": 177,
+      "failed_requests": 0,
+      "usage_reported_requests": 177,
+      "prompt_tokens": 561309,
+      "completion_tokens": 59321,
+      "total_tokens": 620630
+    }
+  ],
+  "note": "NOT the WGO contact-sheet selector/raw-relabel recipes; those exp dirs have no api_usage/token_usage."
+}

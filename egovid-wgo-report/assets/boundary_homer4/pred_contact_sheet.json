@@ -1,0 +1,67 @@
+{
+  "id": "homer_4",
+  "instruction": "Clean tables, desks, or shelves with a cloth",
+  "method": "contact_sheet_vlm",
+  "sample_sec": 0.5,
+  "tiles_per_sheet": 20,
+  "tile_px": 224,
+  "n_sheets": 14,
+  "duration_sec": 130.03333333333333,
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 22.5,
+      "subtask": "wipe table surface"
+    },
+    {
+      "start_sec": 23.0,
+      "end_sec": 25.0,
+      "subtask": "open drawer"
+    },
+    {
+      "start_sec": 25.5,
+      "end_sec": 29.5,
+      "subtask": "wipe inside drawer"
+    },
+    {
+      "start_sec": 30.0,
+      "end_sec": 45.0,
+      "subtask": "wipe inside of drawer"
+    },
+    {
+      "start_sec": 45.0,
+      "end_sec": 54.5,
+      "subtask": "wipe top of table"
+    },
+    {
+      "start_sec": 54.5,
+      "end_sec": 59.5,
+      "subtask": "fold cloth"
+    },
+    {
+      "start_sec": 60.0,
+      "end_sec": 79.5,
+      "subtask": "wipe table surface with cloth"
+    },
+    {
+      "start_sec": 80.0,
+      "end_sec": 87.0,
+      "subtask": "wipe drawer handles with cloth"
+    },
+    {
+      "start_sec": 87.5,
+      "end_sec": 89.5,
+      "subtask": "wipe table surface with cloth"
+    },
+    {
+      "start_sec": 90.0,
+      "end_sec": 119.5,
+      "subtask": "wipe table with cloth"
+    },
+    {
+      "start_sec": 120.0,
+      "end_sec": 130.03,
+      "subtask": "wipe table with cloth"
+    }
+  ]
+}

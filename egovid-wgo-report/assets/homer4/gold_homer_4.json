@@ -1,0 +1,91 @@
+{
+  "id": "homer_4",
+  "instruction": "Clean tables, desks, or shelves with a cloth",
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 9.69,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 9.69,
+      "end_sec": 22.898,
+      "subtask": "wipe the front surface and drawer of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 22.898,
+      "end_sec": 26.785,
+      "subtask": "open the nightstand drawer"
+    },
+    {
+      "start_sec": 26.785,
+      "end_sec": 44.345,
+      "subtask": "wipe the inside of the nightstand drawer with a cloth"
+    },
+    {
+      "start_sec": 44.345,
+      "end_sec": 47.292,
+      "subtask": "close the nightstand drawer"
+    },
+    {
+      "start_sec": 47.292,
+      "end_sec": 53.789,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 53.789,
+      "end_sec": 60.341,
+      "subtask": "fold the cloth"
+    },
+    {
+      "start_sec": 60.341,
+      "end_sec": 66.365,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 66.365,
+      "end_sec": 77.904,
+      "subtask": "wipe the front of wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 77.904,
+      "end_sec": 86.989,
+      "subtask": "wipe the drawer handle of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 86.989,
+      "end_sec": 96.318,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 96.318,
+      "end_sec": 97.709,
+      "subtask": "fold the cloth"
+    },
+    {
+      "start_sec": 97.709,
+      "end_sec": 114.862,
+      "subtask": "wipe the top surface of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 114.862,
+      "end_sec": 120.034,
+      "subtask": "wipe the front drawer of the wooden nightstand with a white cloth"
+    },
+    {
+      "start_sec": 120.034,
+      "end_sec": 130.03,
+      "subtask": "wipe the top surface of the wooden table with a white cloth"
+    }
+  ],
+  "metadata": {
+    "local_reannotation_line": 66,
+    "local_reannotation_saved_at_unix": 1782483781.602892,
+    "num_segments": 15,
+    "source_artifact": "/Users/hynky/Projects/carton_marketing/datasets/wasup_homer_gold/wasup_homer_gold.parquet",
+    "source_dataset": "toloka/HomER",
+    "source_family": "homer",
+    "source_video_url": "https://prodtlkcsafiles.blob.core.windows.net/ego-centric/79_Wiping%20and%20cleaning%20surfaces_VID_20260303_225021%20%281%29%20%281%29.mp4",
+    "updated_from_local_reannotations": true
+  }
+}

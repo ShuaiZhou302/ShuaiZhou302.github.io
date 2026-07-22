@@ -1,0 +1,95 @@
+{
+  "id": "homer_1",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 10.0,
+      "subtask": "open pitcher lid"
+    },
+    {
+      "start_sec": 10.0,
+      "end_sec": 13.0,
+      "subtask": "pick up wine glass"
+    },
+    {
+      "start_sec": 13.0,
+      "end_sec": 21.0,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 21.0,
+      "end_sec": 28.0,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 28.0,
+      "end_sec": 62.0,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 62.0,
+      "end_sec": 67.0,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 67.0,
+      "end_sec": 73.0,
+      "subtask": "close pitcher lid"
+    },
+    {
+      "start_sec": 73.0,
+      "end_sec": 74.0,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 74.0,
+      "end_sec": 74.5,
+      "subtask": "place pitcher"
+    },
+    {
+      "start_sec": 74.5,
+      "end_sec": 75.0,
+      "subtask": "pick up pitcher"
+    },
+    {
+      "start_sec": 75.0,
+      "end_sec": 80.0,
+      "subtask": "pour water into tall glass"
+    },
+    {
+      "start_sec": 80.0,
+      "end_sec": 84.0,
+      "subtask": "pour water into glass"
+    },
+    {
+      "start_sec": 84.0,
+      "end_sec": 139.5,
+      "subtask": "pour water into tall glass"
+    },
+    {
+      "start_sec": 139.5,
+      "end_sec": 141.0,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 141.0,
+      "end_sec": 142.5,
+      "subtask": "place pitcher"
+    },
+    {
+      "start_sec": 142.5,
+      "end_sec": 152.5,
+      "subtask": "place glass"
+    },
+    {
+      "start_sec": 152.5,
+      "end_sec": 161.18,
+      "subtask": "close pitcher lid"
+    }
+  ],
+  "metadata": {
+    "source_pred": "outputs/datasets/WGO_Bench_HomER/expS2_refine_qwen36_27b_pad0_fullcover_prompt/homer_1.json",
+    "boundary_source": "expS2_refine_qwen36_27b_pad0_fullcover_prompt"
+  }
+}

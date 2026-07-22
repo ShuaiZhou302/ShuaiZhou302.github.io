@@ -1,0 +1,339 @@
+{
+  "id": "homer_1",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "duration_sec": 161.18333333333334,
+  "n_sheets": 17,
+  "prompt_variant": "refine_local_v1",
+  "coarse_dir": "outputs/datasets/WGO_Bench_HomER/expB_recipe_aligned",
+  "n_windows_refined": 10,
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 10.0,
+      "subtask": "Close the pitcher lid",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Close the pitcher lid",
+        "rawprior": "Close the pitcher lid",
+        "seed": "open pitcher lid",
+        "ffmpeg": "Close the pitcher lid"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Close the pitcher lid\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 10.0,
+      "end_sec": 13.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pick up wine glass",
+        "ffmpeg": "Pour water into the wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 13.0,
+      "end_sec": 21.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pour water into wine glass",
+        "ffmpeg": "Pour water into wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 21.0,
+      "end_sec": 28.0,
+      "subtask": "close the pitcher lid",
+      "candidate_select_source": "B",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "close the pitcher lid",
+        "seed": "place pitcher on table",
+        "ffmpeg": "pour water into wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"close the pitcher lid\", \"source\": \"B\"}"
+    },
+    {
+      "start_sec": 28.0,
+      "end_sec": 62.0,
+      "subtask": "Pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water into wine glass",
+        "rawprior": "Pour water into wine glass",
+        "seed": "pour water into wine glass",
+        "ffmpeg": "Pour water into wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 62.0,
+      "end_sec": 67.0,
+      "subtask": "Place the pitcher on the table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Place the pitcher on the table",
+        "rawprior": "Place the pitcher on the table",
+        "seed": "place pitcher on table",
+        "ffmpeg": "Pour water into the wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Place the pitcher on the table\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 67.0,
+      "end_sec": 73.0,
+      "subtask": "close pitcher lid",
+      "candidate_select_source": "C",
+      "candidate_labels": {
+        "raw": "place the pitcher on the table",
+        "rawprior": "place the pitcher on the table",
+        "seed": "close pitcher lid",
+        "ffmpeg": "open the pitcher lid"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"close pitcher lid\", \"source\": \"C\"}"
+    },
+    {
+      "start_sec": 73.0,
+      "end_sec": 74.0,
+      "subtask": "move glass on table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "move glass on table",
+        "rawprior": "move glass on table",
+        "seed": "place pitcher on table",
+        "ffmpeg": "move the pitcher to the right"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"move glass on table\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 74.0,
+      "end_sec": 74.5,
+      "subtask": "Pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water into wine glass",
+        "rawprior": "Pour water into wine glass",
+        "seed": "lift pitcher",
+        "ffmpeg": "Pour water into the wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 74.5,
+      "end_sec": 75.0,
+      "subtask": "Pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water into wine glass",
+        "rawprior": "Pour water into wine glass",
+        "seed": "pour water into glass",
+        "ffmpeg": "Pour water into the wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 75.0,
+      "end_sec": 80.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pour water into tall glass",
+        "ffmpeg": "Pour water into the wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 80.0,
+      "end_sec": 84.0,
+      "subtask": "pour water into wine glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into wine glass",
+        "rawprior": "pour water into wine glass",
+        "seed": "pour water into wine glass",
+        "ffmpeg": "Pour water into wine glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"pour water into wine glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 84.0,
+      "end_sec": 139.5,
+      "subtask": "Pour water from pitcher into tall glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Pour water from pitcher into tall glass",
+        "rawprior": "Pour water from pitcher into tall glass",
+        "seed": "pour water into tall glass",
+        "ffmpeg": "Pour water into the tall glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Pour water from pitcher into tall glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 139.5,
+      "end_sec": 141.0,
+      "subtask": "pour water into tall glass",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "pour water into tall glass",
+        "rawprior": "pour water into tall glass",
+        "seed": "place pitcher on table",
+        "ffmpeg": "pour water into tall glass"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"pour water into tall glass\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 141.0,
+      "end_sec": 142.5,
+      "subtask": "place the pitcher on the table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "place the pitcher on the table",
+        "rawprior": "place the pitcher on the table",
+        "seed": "place pitcher on table",
+        "ffmpeg": "Place the pitcher on the table"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"place the pitcher on the table\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 142.5,
+      "end_sec": 152.5,
+      "subtask": "place the wine glass on the table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "place the wine glass on the table",
+        "rawprior": "place the wine glass on the table",
+        "seed": "place glass",
+        "ffmpeg": "place the wine glass on the table"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"place the wine glass on the table\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 152.5,
+      "end_sec": 161.18,
+      "subtask": "move pitcher to center of table",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "move pitcher to center of table",
+        "rawprior": "move pitcher to center of table",
+        "seed": "close pitcher lid",
+        "ffmpeg": "move pitcher to center of table"
+      },
+      "candidate_select_meta": {
+        "fps": 29.996897942301725,
+        "nframes": 4835,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"move pitcher to center of table\", \"source\": \"A\"}"
+    }
+  ],
+  "candidate_select_recipe": {
+    "name": "raw_rawprior_seed_ffmpeg_neighbor_selector_397B",
+    "frames_per_sheet": 5,
+    "image_max_side": 1120
+  }
+}

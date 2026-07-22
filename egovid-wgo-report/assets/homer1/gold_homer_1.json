@@ -1,0 +1,116 @@
+{
+  "id": "homer_1",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 7.709,
+      "subtask": "twist open the pitcher lid"
+    },
+    {
+      "start_sec": 7.709,
+      "end_sec": 10.837,
+      "subtask": "pick up the pitcher"
+    },
+    {
+      "start_sec": 10.837,
+      "end_sec": 20.746,
+      "subtask": "pour water from the pitcher into the wine glass"
+    },
+    {
+      "start_sec": 20.746,
+      "end_sec": 21.712,
+      "subtask": "place the pitcher on the black board right next to wine glass"
+    },
+    {
+      "start_sec": 21.712,
+      "end_sec": 26.514,
+      "subtask": "twist the pitcher lid to close it"
+    },
+    {
+      "start_sec": 26.514,
+      "end_sec": 27.855,
+      "subtask": "pick up the pitcher"
+    },
+    {
+      "start_sec": 27.855,
+      "end_sec": 62.588,
+      "subtask": "pour water from the pitcher into the wine glass"
+    },
+    {
+      "start_sec": 62.588,
+      "end_sec": 65.413,
+      "subtask": "move the tall glass closer to the wine glass"
+    },
+    {
+      "start_sec": 65.413,
+      "end_sec": 67.987,
+      "subtask": "place the pitcher on the black board right and below the wine glass"
+    },
+    {
+      "start_sec": 67.987,
+      "end_sec": 72.944,
+      "subtask": "twist the pitcher lid to open it slightly"
+    },
+    {
+      "start_sec": 72.944,
+      "end_sec": 74.356,
+      "subtask": "pick up the pitcher"
+    },
+    {
+      "start_sec": 74.356,
+      "end_sec": 79.969,
+      "subtask": "pour a bit of water from the pitcher into the tall glass"
+    },
+    {
+      "start_sec": 79.969,
+      "end_sec": 83.203,
+      "subtask": "move the glass wine 7cm to the left"
+    },
+    {
+      "start_sec": 83.203,
+      "end_sec": 134.022,
+      "subtask": "pour water from the pitcher into the tall glass until it's almost full"
+    },
+    {
+      "start_sec": 134.022,
+      "end_sec": 137.134,
+      "subtask": "pour water from the pitcher into the wine glass until it's full"
+    },
+    {
+      "start_sec": 137.134,
+      "end_sec": 140.219,
+      "subtask": "pour water from the pitcher into the tall glass until it's full"
+    },
+    {
+      "start_sec": 140.219,
+      "end_sec": 142.2,
+      "subtask": "place the pitcher on the table"
+    },
+    {
+      "start_sec": 142.2,
+      "end_sec": 147.534,
+      "subtask": "reposition the wine glass to the left center part of table"
+    },
+    {
+      "start_sec": 147.534,
+      "end_sec": 152.14,
+      "subtask": "move the tall glass to the right-center part of the table"
+    },
+    {
+      "start_sec": 152.14,
+      "end_sec": 161.18,
+      "subtask": "place the pitcher on the center part of the table between the two glasses"
+    }
+  ],
+  "metadata": {
+    "local_reannotation_line": 62,
+    "local_reannotation_saved_at_unix": 1782483511.842509,
+    "num_segments": 20,
+    "source_artifact": "/Users/hynky/Projects/carton_marketing/datasets/wasup_homer_gold/wasup_homer_gold.parquet",
+    "source_dataset": "toloka/HomER",
+    "source_family": "homer",
+    "source_video_url": "https://prodtlkcsafiles.blob.core.windows.net/ego-centric/5_Pouring%20liquids_Video%20Pw.mp4",
+    "updated_from_local_reannotations": true
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "id": "homer_4",
+  "instruction": "Clean tables, desks, or shelves with a cloth",
+  "duration_sec": 130.03333333333333,
+  "n_sheets": 14,
+  "prompt_variant": "refine_local_v1",
+  "coarse_dir": "outputs/datasets/WGO_Bench_HomER/expB_recipe_aligned",
+  "n_windows_refined": 8,
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 23.5,
+      "subtask": "Wipe the table with a cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the table with a cloth",
+        "seed": "Wipe the top surface and exterior sides of the wooden cabinet",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with a cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 23.5,
+      "end_sec": 24.5,
+      "subtask": "Open the drawer",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Open the drawer",
+        "rawprior": "Open the drawer",
+        "seed": "Open the top drawer of the cabinet",
+        "ffmpeg": "Open the drawer"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Open the drawer\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 24.5,
+      "end_sec": 26.5,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the inside of the drawer",
+        "ffmpeg": "Wipe the table with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with the cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 26.5,
+      "end_sec": 45.0,
+      "subtask": "Wipe the drawer interior with a cloth",
+      "candidate_select_source": "B",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the drawer interior with a cloth",
+        "seed": "Wipe the interior of the open drawer",
+        "ffmpeg": "Wipe the drawer with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the drawer interior with a cloth\", \"source\": \"B\"}"
+    },
+    {
+      "start_sec": 45.0,
+      "end_sec": 46.5,
+      "subtask": "Wipe the table with a cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the table with a cloth",
+        "seed": "Wipe the top of the table",
+        "ffmpeg": "Wipe the table with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with a cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 46.5,
+      "end_sec": 54.5,
+      "subtask": "Wipe the table with a cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with a cloth",
+        "rawprior": "Wipe the table with a cloth",
+        "seed": "Wipe the top surface of the cabinet",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with a cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 54.5,
+      "end_sec": 59.5,
+      "subtask": "Unfold the cloth",
+      "candidate_select_source": "D",
+      "candidate_labels": {
+        "raw": "Fold the cloth",
+        "rawprior": "Fold the cloth",
+        "seed": "Unfold and adjust the cleaning cloth",
+        "ffmpeg": "Unfold the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Unfold the cloth\", \"source\": \"D\"}"
+    },
+    {
+      "start_sec": 59.5,
+      "end_sec": 79.5,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the top surface and front exterior of the cabinet",
+        "ffmpeg": "Wipe the nightstand with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with the cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 79.5,
+      "end_sec": 87.5,
+      "subtask": "Wipe the drawer handle with a cloth",
+      "candidate_select_source": "D",
+      "candidate_labels": {
+        "raw": "Wipe the drawer with a cloth",
+        "rawprior": "Wipe the drawer with a cloth",
+        "seed": "Open the middle drawer of the cabinet",
+        "ffmpeg": "Wipe the drawer handle with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the drawer handle with a cloth\", \"source\": \"D\"}"
+    },
+    {
+      "start_sec": 87.5,
+      "end_sec": 89.5,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the table with the cloth",
+        "ffmpeg": "Wipe the table with the cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with the cloth\", \"source\": \"A\"}"
+    },
+    {
+      "start_sec": 89.5,
+      "end_sec": 130.03,
+      "subtask": "Wipe the table with the cloth",
+      "candidate_select_source": "A",
+      "candidate_labels": {
+        "raw": "Wipe the table with the cloth",
+        "rawprior": "Wipe the table with the cloth",
+        "seed": "Wipe the top surface of the cabinet thoroughly",
+        "ffmpeg": "Wipe the table with a cloth"
+      },
+      "candidate_select_meta": {
+        "fps": 30.0,
+        "nframes": 3901,
+        "frames_per_sheet": 5,
+        "image_max_side": 1120
+      },
+      "raw_response": "{\"label\": \"Wipe the table with the cloth\", \"source\": \"A\"}"
+    }
+  ],
+  "candidate_select_recipe": {
+    "name": "raw_rawprior_seed_ffmpeg_neighbor_selector_397B",
+    "frames_per_sheet": 5,
+    "image_max_side": 1120
+  }
+}

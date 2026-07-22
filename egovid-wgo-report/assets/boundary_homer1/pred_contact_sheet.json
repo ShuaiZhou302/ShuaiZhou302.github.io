@@ -1,0 +1,92 @@
+{
+  "id": "homer_1",
+  "instruction": "use pitcher to pour water into tall glass and wine glass",
+  "method": "contact_sheet_vlm",
+  "sample_sec": 0.5,
+  "tiles_per_sheet": 20,
+  "tile_px": 224,
+  "n_sheets": 17,
+  "duration_sec": 161.18333333333334,
+  "segments": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 9.5,
+      "subtask": "open pitcher lid"
+    },
+    {
+      "start_sec": 10.0,
+      "end_sec": 21.0,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 21.5,
+      "end_sec": 29.5,
+      "subtask": "close pitcher lid"
+    },
+    {
+      "start_sec": 30.0,
+      "end_sec": 59.5,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 60.0,
+      "end_sec": 62.0,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 62.0,
+      "end_sec": 67.0,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 67.0,
+      "end_sec": 74.0,
+      "subtask": "open pitcher lid"
+    },
+    {
+      "start_sec": 74.0,
+      "end_sec": 79.5,
+      "subtask": "pour water into tall glass"
+    },
+    {
+      "start_sec": 79.5,
+      "end_sec": 82.0,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 82.0,
+      "end_sec": 89.5,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 90.0,
+      "end_sec": 119.5,
+      "subtask": "pour water into glass"
+    },
+    {
+      "start_sec": 120.0,
+      "end_sec": 134.0,
+      "subtask": "pour water into tall glass"
+    },
+    {
+      "start_sec": 134.0,
+      "end_sec": 140.0,
+      "subtask": "pour water into wine glass"
+    },
+    {
+      "start_sec": 140.0,
+      "end_sec": 142.5,
+      "subtask": "place pitcher on table"
+    },
+    {
+      "start_sec": 150.0,
+      "end_sec": 153.0,
+      "subtask": "move pitcher"
+    },
+    {
+      "start_sec": 153.0,
+      "end_sec": 161.18333333333334,
+      "subtask": "pour water into glass"
+    }
+  ]
+}
