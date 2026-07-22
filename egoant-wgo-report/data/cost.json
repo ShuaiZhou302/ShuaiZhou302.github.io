@@ -55,7 +55,10 @@
     "label_frames_per_segment": 5,
     "image_max_side": 1120,
     "candidate_paths": 4,
-    "img_tokens_per_image": [900, 1600],
+    "img_tokens_per_image": [
+      900,
+      1600
+    ],
     "text_tokens_per_call": 600,
     "judge_text_tokens": 400,
     "status": "public_engineering_estimate"
@@ -63,7 +66,7 @@
   "recipes": {
     "raw_only": {
       "label": "S2 边界 + 单路 raw 标注",
-      "e2e_f1": 0.1388,
+      "e2e_f1": 0.1414,
       "api_calls": {
         "kind": "artifact_counted",
         "segmentation_whole_episode": 25,
@@ -99,7 +102,7 @@
     },
     "selector": {
       "label": "S2 边界 + 4 路候选 + selector",
-      "e2e_f1": 0.1517,
+      "e2e_f1": 0.1542,
       "api_calls": {
         "kind": "artifact_counted",
         "segmentation_whole_episode": 25,
@@ -175,7 +178,7 @@
         "latency_sec": 1660.459
       }
     },
-    "e2e_f1_note": "production one-pass E2E≈0.0656; not the same path as WGO selector E2E 0.1517"
+    "e2e_f1_note": "production one-pass E2E≈0.0641; not the same path as WGO selector E2E 0.1542"
   },
   "default_display": "both"
 }

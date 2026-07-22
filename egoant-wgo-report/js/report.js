@@ -398,12 +398,12 @@
     "selector397": {
       "zh": {
         "name": "+ 397B 多候选 selector",
-        "note": "同边界上多候选选优；E2E 0.1517，标注调用更多",
+        "note": "同边界上多候选选优；Gemini E2E 0.1542，标注调用更多",
         "model": null
       },
       "en": {
         "name": "+ 397B multi-candidate selector",
-        "note": "Same bounds; pick among candidates; E2E 0.1517; more label calls",
+        "note": "Same bounds; pick among candidates; Gemini E2E 0.1542; more label calls",
         "model": null
       }
     }
@@ -440,9 +440,9 @@
     s2_self: { en: { goal: "Keep the best boundaries but let the segmentation model self-label.", how: "Use S2 full-cover boundaries and Qwen3.6-27B labels.", input: "S2 predicted segments", result: "E2E F1 0.1017", verdict: "Better boundaries alone are not enough; labels remain weak." } },
     raw397: { en: { goal: "Lock boundaries and upgrade the labeler.", how: "Use the same S2 boundaries, then let 397B caption raw frames.", input: "raw frames within S2 segments", result: "E2E F1 0.1388", verdict: "Most gain comes from the larger labeler." } },
     ffmpeg397: { en: { goal: "Test sensitivity to decode and sampling path.", how: "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.", input: "ffmpeg-sampled raw frames", result: "E2E F1 0.1414", verdict: "Slightly better than the default raw path; useful as a candidate." } },
-    nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1080", verdict: "Context pollution lowers semantic accuracy while boundaries stay fixed." } },
+    nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1234", verdict: "Context pollution lowers semantic accuracy while boundaries stay fixed." } },
     nb397: { en: { goal: "Try neighbor context with a stronger raw prior.", how: "Feed previous/current/next frames plus a 397B raw prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1440", verdict: "Better than the 27B-prior neighbor path, still below selector." } },
-    selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "E2E F1 0.1517", verdict: "Best current end-to-end result; higher call count." } }
+    selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "E2E F1 0.1542", verdict: "Best current end-to-end result; higher call count." } }
   };
 
   function lang() {
@@ -1177,9 +1177,9 @@
     "title": "EgoANT × WGO-Bench HomER 标注消融长报告",
     "eval_subset": "HomER 25 episodes / 470 gold segments",
     "metric_seg": "Segment F1@0.75 micro + outer snap",
-    "metric_label": "LLM-judge accuracy on gold boundaries",
-    "metric_e2e": "Semantic E2E F1 (IoU match then judge)",
-    "model_note": "文中「Qwen3.6-27B」与日志里的 28B endpoint 指同一小模型服务；大模型统一写 Qwen3.5-397B。",
+    "metric_label": "Gemini-3.5-Flash judge accuracy on gold boundaries",
+    "metric_e2e": "Semantic E2E F1 (IoU match then Gemini-3.5-Flash judge)",
+    "model_note": "分段/标注模型仍为 Qwen 栈；语义打分已按 WGO/Macrodata 口径改用 Gemini-3.5-Flash judge。文中「Qwen3.6-27B」与日志里的 28B endpoint 指同一小模型服务。",
     "blog_refs": {
       "full100_seg_f1": 0.306,
       "full100_label_acc": 0.61,
@@ -1190,12 +1190,12 @@
     "best": {
       "seg_f1": 0.2031,
       "seg_config": "Qwen3.6-27B · S2 pad=0 + full-cover local prompt · contact sheet",
-      "label_acc": 0.511,
-      "label_config": "Qwen3.5-397B · HaWoR true hand-crop（raw 50.6%）",
-      "e2e_f1": 0.1517,
-      "e2e_config": "锁 S2 full-cover 边界 + Qwen3.5-397B candidate selector"
+      "label_acc": 0.5574,
+      "label_config": "Qwen3.6-27B raw 标签 · Gemini-3.5-Flash judge（raw 397B=50.2%，HaWoR hand-crop=50.9%）",
+      "e2e_f1": 0.154242,
+      "e2e_config": "锁 S2 full-cover 边界 + Qwen3.5-397B candidate selector · Gemini-3.5-Flash judge"
     },
-    "generated_note": "分数对齐 V5.1 / wgo_bench_v5_1_results；HomER-only 除非注明。"
+    "generated_note": "分数更新到 Gemini-3.5-Flash WGO rescore；未重判的旧 Label Acc 条目在 note 中标注。"
   },
   "glossary": [
     {
@@ -1818,13 +1818,13 @@
       "id": "nb28",
       "name": "+ 27B-prior neighbor relabel",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.108,
+      "e2e_f1": 0.123393,
       "pred_gold": "308/470",
       "note": "得分下降",
       "method": {
         "goal": "邻段（上一/当前/下一段）上下文 + 小模型 prior",
         "how": "PREV/CUR/NEXT≤5 帧 + seed prior，再标当前段",
-        "result": "E2E 0.1080",
+        "result": "E2E 0.1234",
         "verdict": "邻段（上一/当前/下一段）上下文在 Qwen 上易引入邻段上下文干扰"
       }
     },
@@ -1846,13 +1846,13 @@
       "id": "selector397",
       "name": "+ 397B candidate selector",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1517,
+      "e2e_f1": 0.154242,
       "pred_gold": "308/470",
-      "note": "同边界上多候选选优；E2E 0.1517，标注调用更多",
+      "note": "同边界上多候选选优；Gemini E2E 0.1542，标注调用更多",
       "method": {
         "goal": "多候选选优",
         "how": "对每段收集 raw / rawprior / seed / ffmpeg 等候选，397B selector 选一条",
-        "result": "E2E 0.1517（semantic 59）",
+        "result": "E2E 0.1542（semantic 60/79）",
         "verdict": "生产 E2E 推荐配置"
       }
     }
@@ -1953,8 +1953,8 @@
     "temporal_iou075": 4,
     "semantic_match": 3,
     "e2e_f1_episode": 0.231,
-    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1517",
-    "note_en": "Episode score; HomER micro E2E F1 = 0.1517 overall"
+    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1542",
+    "note_en": "Episode score; HomER micro E2E F1 = 0.1542 overall"
   },
   "candidate_demo_segment": {
     "start_sec": 26.5,
@@ -2384,7 +2384,7 @@
     },
     "selector": {
       "label": "最强：S2 边界 + 4 路候选 + selector",
-      "e2e_f1": 0.1517,
+      "e2e_f1": 0.154242,
       "api_calls_estimate": {
         "segmentation_whole_episode": 25,
         "segmentation_s2_refine": 155,

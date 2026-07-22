@@ -21,8 +21,8 @@
     "temporal_iou075": 2,
     "semantic_match": 2,
     "e2e_f1_episode": 0.308,
-    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1517",
-    "note_en": "Episode score; HomER micro E2E F1 = 0.1517 overall"
+    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1542",
+    "note_en": "Episode score; HomER micro E2E F1 = 0.1542 overall"
   },
   "candidate_demo_segment": {
     "start_sec": 17.5,

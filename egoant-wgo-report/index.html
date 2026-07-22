@@ -29,7 +29,7 @@
         <h1 data-i18n-html data-i18n="hero.title">EgoANT<br />评测 HomER</h1>
         <p class="splash-kicker" data-i18n="hero.eyebrow">WGO-Bench HomER · EgoANT</p>
         <p class="splash-lede" data-i18n="hero.lede">
-          我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；端到端 F1 为 0.1517。
+          我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；Gemini judge 端到端 F1 为 0.1542。
         
         </p>
         <div class="tag-pills">
@@ -117,8 +117,8 @@
       </div>
       <div class="callout good" data-i18n-html data-i18n="intro.vs">
         <strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoANT 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。
-        端到端本页 <strong>0.1517</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。
-        固定边界标注 Qwen 栈 ≈50.6–51.1% vs Macrodata 公开 ≈61%——句子质量仍有差距。
+        端到端本页 <strong>0.1542</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。
+        固定边界标注 Qwen 栈 Gemini judge 下 raw 27B 为 55.7%，raw 397B / HaWoR hand-crop 约 50.2–50.9% vs Macrodata 公开 ≈61%——句子质量仍有差距。
         <em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>
       </div>
     </section>
@@ -133,12 +133,12 @@
         </div>
         <div class="card">
           <div class="k" data-i18n="tldr.k.label">Label Acc（固定边界）</div>
-          <div class="v">50.6% / 51.1%</div>
-          <div class="s" data-i18n="tldr.label">raw（默认）/ HaWoR true hand-crop · 397B</div>
+          <div class="v">55.7%</div>
+          <div class="s" data-i18n="tldr.label">raw 27B（Gemini judge 当前最高）/ raw 397B / HaWoR true hand-crop</div>
         </div>
         <div class="card">
           <div class="k">E2E F1</div>
-          <div class="v">0.1517</div>
+          <div class="v">0.1542</div>
           <div class="s" data-i18n="tldr.e2e">锁分段边界 + 397B 多候选 selector</div>
         </div>
       </div>
@@ -300,7 +300,7 @@
       </p>
       <div class="callout good" data-i18n-html data-i18n="walk.score">
         <strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231
-        （全集 HomER micro 仍是 0.1517）。
+        （全集 HomER micro 仍是 0.1542）。
       </div>
 
       <div class="steps">
@@ -463,8 +463,8 @@
         <thead>
           <tr>
             <th data-i18n="cost.th.item">项</th>
-            <th data-i18n="cost.th.raw">单路 raw（E2E 0.1388）</th>
-            <th data-i18n="cost.th.sel">候选+selector（E2E 0.1517）</th>
+            <th data-i18n="cost.th.raw">单路 raw（E2E 0.1414）</th>
+            <th data-i18n="cost.th.sel">候选+selector（E2E 0.1542）</th>
           </tr>
         </thead>
         <tbody id="cost-tbody"></tbody>
@@ -472,7 +472,7 @@
     </section>
 
     <section id="story">
-      <h2 data-i18n="story.h2">6. 消融故事：我们怎样走到 0.1517</h2>
+      <h2 data-i18n="story.h2">6. 消融故事：我们怎样走到 0.1542</h2>
       <p data-i18n="story.lead">按时间线叙述；主表与图跟在后面。实验细节（做法卡、pad 消融）默认折叠。</p>
 
       <h3 data-i18n="story.h3.seg">6.1 分段：从假切点到「盖住完整动作」</h3>
@@ -516,9 +516,9 @@
 
       <h3 data-i18n="story.h3.label">6.2 标注：复杂视觉输入不一定提高准确率</h3>
       <p data-i18n-html data-i18n="story.label.p">
-        固定 gold 边界后，raw 多帧仍是最稳默认（50.6%）。
-        <strong>邻段 sheet</strong>（上一/当前/下一段拼在一起）、整帧 collage、YOLO/proxy hand-collage 都降低了准确率。
-        后来补跑 HaWoR 真手部 crop 才微涨到 51.1%——成本高，不该为 +0.4pp 强行全量 recon。
+        固定 gold 边界后，Gemini judge 重判改变了排序：raw 27B 达到 55.7%，高于 raw 397B 的 50.2% 与 HaWoR true hand-crop 的 50.9%。
+        <strong>邻段 sheet</strong>、整帧 collage、YOLO/proxy hand-collage 仍保留为旧 Qwen judge 消融，待 Gemini 重判后再作严格横比。
+        因此当前结论不是“越复杂越好”，而是“先固定 judge，再看视觉输入是否真的帮忙”。
       </p>
       <div class="chart-box">
         <h4 data-i18n="story.chart.label">标注准确率</h4>
@@ -542,7 +542,7 @@
           <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap2">
             <strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。
-            HomER 早期无手重建时用此类 proxy；后来 HaWoR true hand-crop 才微涨到 51.1%。
+            HomER 早期无手重建时用此类 proxy；Gemini 重判后 HaWoR true hand-crop 为 50.9%，低于 raw 27B。
           </figcaption>
         </figure>
       </div>
@@ -555,9 +555,9 @@
       <p data-i18n-html data-i18n="story.e2e.p">
         分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
         <strong>自标</strong>：分段小模型写句子，弱。
-        <strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1388。
-        <strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，E2E 掉到 0.108（见 <a href="#app-e2e">附录 C</a>）。
-        <strong>candidate selector</strong>：多路候选再选一句 → <strong>0.1517</strong>。
+        <strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1414。
+        <strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，Gemini E2E 为 0.1234（见 <a href="#app-e2e">附录 C</a>）。
+        <strong>candidate selector</strong>：多路候选再选一句 → Gemini E2E <strong>0.1542</strong>。
       </p>
       <div class="chart-box">
         <h4 data-i18n="story.chart.e2e">E2E F1</h4>
@@ -585,7 +585,7 @@
         <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">Contact sheet</div><div class="d" data-i18n="recipe.p1.d">0.5s · 224×144 · 20 tiles · yellow stamps</div></div>
         <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
         <div class="step"><div class="n">03</div><div class="t" data-i18n="recipe.p3.t">Local refine</div><div class="d" data-i18n="recipe.p3.d">No pad-out · cover actions · 27B → 0.2031</div></div>
-        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">Selector</div><div class="d" data-i18n="recipe.p4.d">397B multi-cand → E2E 0.1517</div></div>
+        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">Selector</div><div class="d" data-i18n="recipe.p4.d">397B multi-cand → Gemini E2E 0.1542</div></div>
       </div>
       <table>
         <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">不要默认启用</th></tr></thead>
@@ -597,12 +597,12 @@
           </tr>
           <tr>
             <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">锁精修边界 + 397B <strong>单路 raw</strong>（E2E≈0.1388）</td>
+            <td data-i18n-html data-i18n="recipe.r2.b">锁精修边界 + 397B <strong>单路 raw</strong>（E2E≈0.1414）</td>
             <td data-i18n="recipe.r2.c">邻段 / 整帧 collage / YOLO/proxy hand-crop</td>
           </tr>
           <tr>
             <td data-i18n="recipe.r3.a">标注（追分）</td>
-            <td data-i18n="recipe.r3.b">同上边界 + 多候选 + 397B selector（E2E 0.1517）</td>
+            <td data-i18n="recipe.r3.b">同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）</td>
             <td data-i18n="recipe.r3.c">分段小模型自标当终稿</td>
           </tr>
           <tr>

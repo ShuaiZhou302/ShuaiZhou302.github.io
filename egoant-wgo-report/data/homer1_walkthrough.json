@@ -23,7 +23,7 @@
     "temporal_iou075": 8,
     "semantic_match": 5,
     "e2e_f1_episode": 0.27,
-    "note": "本集分数；全集 HomER micro E2E F1 = 0.1517"
+    "note": "本集分数；全集 HomER micro E2E F1 = 0.1542"
   },
   "candidate_demo_segment": {
     "index": 3,

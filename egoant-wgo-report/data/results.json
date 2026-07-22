@@ -3,9 +3,9 @@
     "title": "EgoANT × WGO-Bench HomER 标注消融长报告",
     "eval_subset": "HomER 25 episodes / 470 gold segments",
     "metric_seg": "Segment F1@0.75 micro + outer snap",
-    "metric_label": "LLM-judge accuracy on gold boundaries",
-    "metric_e2e": "Semantic E2E F1 (IoU match then judge)",
-    "model_note": "文中「Qwen3.6-27B」与日志里的 28B endpoint 指同一小模型服务；大模型统一写 Qwen3.5-397B。",
+    "metric_label": "Gemini-3.5-Flash judge accuracy on gold boundaries",
+    "metric_e2e": "Semantic E2E F1 (IoU match then Gemini-3.5-Flash judge)",
+    "model_note": "分段/标注模型仍为 Qwen 栈；语义打分已按 WGO/Macrodata 口径改用 Gemini-3.5-Flash judge。文中「Qwen3.6-27B」与日志里的 28B endpoint 指同一小模型服务。",
     "blog_refs": {
       "full100_seg_f1": 0.306,
       "full100_label_acc": 0.61,
@@ -16,12 +16,12 @@
     "best": {
       "seg_f1": 0.2031,
       "seg_config": "Qwen3.6-27B · S2 pad=0 + full-cover local prompt · contact sheet",
-      "label_acc": 0.511,
-      "label_config": "Qwen3.5-397B · HaWoR true hand-crop（raw 50.6%）",
-      "e2e_f1": 0.1517,
-      "e2e_config": "锁 S2 full-cover 边界 + Qwen3.5-397B candidate selector"
+      "label_acc": 0.5574,
+      "label_config": "Qwen3.6-27B raw 标签 · Gemini-3.5-Flash judge（raw 397B=50.2%，HaWoR hand-crop=50.9%）",
+      "e2e_f1": 0.1542,
+      "e2e_config": "锁 S2 full-cover 边界 + Qwen3.5-397B candidate selector · Gemini-3.5-Flash judge"
     },
-    "generated_note": "分数对齐 V5.1 / wgo_bench_v5_1_results；HomER-only 除非注明。"
+    "generated_note": "分数更新到 Gemini-3.5-Flash WGO rescore；未重判的旧 Label Acc 条目在 note 中标注。"
   },
   "glossary": [
     {
@@ -403,19 +403,19 @@
     {
       "id": "raw_397b",
       "name": "raw 原帧（默认基线）",
-      "acc": 0.506,
-      "n_match": 238,
+      "acc": 0.5021,
+      "n_match": 236,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0,
-      "note": "Track A",
+      "note": "Gemini judge；旧 Qwen judge 为 238/470=50.6%",
       "method": {
         "goal": "给定 gold 边界，只评句子",
         "how": "段内均匀抽约 5 帧原图 → 397B caption → 另一次 397B judge",
         "input": "raw frames",
-        "result": "50.6%",
-        "verdict": "生产默认最稳"
+        "result": "50.2%",
+        "verdict": "稳定但不是 Gemini judge 下最高"
       }
     },
     {
@@ -427,13 +427,13 @@
       "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.023,
-      "note": "非真 hand",
+      "note": "非真 hand；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "把「手在哪」叠到画面上帮模型",
         "how": "HomER 无 hand_recon，用光流质心画 proxy overlay",
         "input": "overlay frames",
         "result": "48.3%",
-        "verdict": "得分下降；不能等同于真实 hand-crop"
+        "verdict": "得分下降；不能等同于真实 hand-crop（旧 judge，待 Gemini 重判）"
       }
     },
     {
@@ -445,31 +445,31 @@
       "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.085,
-      "note": "整帧≠hand",
+      "note": "整帧≠hand；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "给前后文整帧上下文",
         "how": "past/current/future 各约 6 格整帧拼图，再 caption",
         "input": "整帧 collage",
         "result": "42.1%",
-        "verdict": "上下文噪音大，准确率下降"
+        "verdict": "上下文噪音大，准确率下降（旧 judge，待 Gemini 重判）"
       }
     },
     {
       "id": "raw_27b",
       "name": "raw + Qwen3.6-27B",
-      "acc": 0.46,
-      "n_match": 216,
+      "acc": 0.5574,
+      "n_match": 262,
       "n": 470,
-      "model": "Qwen3.6-27B",
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
-      "delta_vs_raw": -0.046,
-      "note": "",
+      "delta_vs_raw": 0.0553,
+      "note": "Gemini judge 下当前最高；旧 Qwen judge 偏严为 216/470=46.0%",
       "method": {
         "goal": "小模型能否扛标注",
         "how": "同 raw 抽帧，换 27B",
         "input": "raw",
-        "result": "46.0%",
-        "verdict": "标注仍需大模型"
+        "result": "55.7%",
+        "verdict": "Gemini/WGO 口径下短句更被接受，当前固定边界最佳"
       }
     },
     {
@@ -481,13 +481,13 @@
       "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.138,
-      "note": "大跌",
+      "note": "大跌；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "对齐 WGO：看上一/当前/下一段",
         "how": "PREV/CUR/NEXT 三段 sheet 一并送 labeler",
         "input": "邻段 contact sheet",
         "result": "36.8%",
-        "verdict": "模型搞不清「当前」是哪一步"
+        "verdict": "模型搞不清「当前」是哪一步（旧 judge，待 Gemini 重判）"
       }
     },
     {
@@ -499,13 +499,13 @@
       "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.151,
-      "note": "修时间戳仍跌",
+      "note": "修时间戳仍跌；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "检查准确率下降是否由 tile 缺少秒戳导致",
         "how": "补黄字秒级时间戳后全量重跑",
         "input": "邻段 sheet（有戳）",
         "result": "35.5%",
-        "verdict": "不是缺戳的问题，这个视觉输入设计本身降低了标注准确率"
+        "verdict": "不是缺戳的问题，这个视觉输入设计本身降低了标注准确率（旧 judge，待 Gemini 重判）"
       }
     },
     {
@@ -517,32 +517,32 @@
       "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.1,
-      "note": "失败线",
+      "note": "失败线；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "聚焦手部区域像 Scale/blog",
         "how": "HomER 无 hand asset：用 YOLO 人/腕点或 center-proxy 裁剪拼 collage（非 HaWoR）",
         "input": "hand-collage approx",
         "result": "40.6%",
-        "verdict": "近似 crop 使得分下降；≠ true hand-crop"
+        "verdict": "近似 crop 使得分下降；≠ true hand-crop（旧 judge，待 Gemini 重判）"
       },
       "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
     },
     {
       "id": "l2_hawor",
       "name": "HaWoR true hand-crop",
-      "acc": 0.511,
-      "n_match": 240,
+      "acc": 0.5085,
+      "n_match": 239,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
-      "delta_vs_raw": 0.005,
-      "note": "+0.4pp",
+      "delta_vs_raw": 0.0064,
+      "note": "Gemini judge；旧 Qwen judge 为 240/470=51.1%",
       "method": {
         "goal": "真手腕 track 后再 crop",
         "how": "HaWoR → wrist track → 按手点裁；411/470 段 5/5 有效 crop",
         "input": "true hand-crop (+raw)",
-        "result": "51.1%",
-        "verdict": "有正向但成本高；有 asset 才作候选"
+        "result": "50.9%",
+        "verdict": "略高于 raw 397B，但低于 raw 27B；有 hand asset 时可作为候选"
       },
       "figure": "assets/homer1/homer1_handcrop_sheet_84_94.jpg"
     },
@@ -555,13 +555,13 @@
       "model": "Qwen3.5-397B judge",
       "full25": true,
       "delta_vs_raw": -0.076,
-      "note": "尺子变了",
+      "note": "尺子变了；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "更严语义等价标准",
         "how": "同一批 raw 预测，只换 judge rubric 重判",
         "input": "不变的 pred captions",
         "result": "43.0%",
-        "verdict": "汇报时必须固定 judge"
+        "verdict": "汇报时必须固定 judge（旧 judge，待 Gemini 重判）"
       }
     },
     {
@@ -573,113 +573,113 @@
       "model": "Qwen3.6-27B",
       "full25": true,
       "delta_vs_raw": null,
-      "note": "更差",
+      "note": "更差；旧 Qwen judge，待 Gemini 重判",
       "method": {
         "goal": "小模型 + 糙 hand collage",
         "how": "同 L2 近似 collage，换 27B",
         "input": "hand-collage approx",
         "result": "31.7%",
-        "verdict": "双重减分"
+        "verdict": "双重减分（旧 judge，待 Gemini 重判）"
       }
     }
   ],
   "e2e": [
     {
       "id": "egovid_e2e",
-      "name": "EgoANT 生产 one-pass",
+      "name": "EgoANT 生产 one-pass · Gemini judge",
       "seg_f1": 0.0953,
-      "e2e_f1": 0.0656,
+      "e2e_f1": 0.064063,
       "pred_gold": "810/470",
-      "note": "腕速切段 + 段内 caption；端到端弱",
+      "note": "腕速切段 + 段内 caption；Gemini judge 下端到端弱",
       "method": {
         "goal": "原管线端到端",
         "how": "腕速切 + 段内 caption",
-        "result": "E2E 0.0656",
-        "verdict": "基线"
+        "result": "E2E 0.0641",
+        "verdict": "基线（Gemini judge）"
       }
     },
     {
       "id": "s2_self",
-      "name": "S2 边界 + 分段模型自标",
+      "name": "S2 边界 + 分段模型自标 · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1054,
+      "e2e_f1": 0.123393,
       "pred_gold": "308/470",
-      "note": "边界已锁；句子仍弱",
+      "note": "边界已锁；Gemini judge 下自标仍弱",
       "method": {
         "goal": "边界用最强分段，标注仍用分段模型",
         "how": "锁 Seg=0.2031，27B 自写 subtask",
-        "result": "E2E 0.1054",
+        "result": "E2E 0.1234",
         "verdict": "边界好了，句子仍弱"
       }
     },
     {
       "id": "raw397",
-      "name": "397B 单路 raw 重标",
+      "name": "397B 单路 raw 重标 · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1388,
+      "e2e_f1": 0.141388,
       "pred_gold": "308/470",
-      "note": "锁 0.2031 边界后只换大模型写句；E2E 0.1388",
+      "note": "锁 0.2031 边界后只换大模型写句；Gemini E2E 0.1414",
       "method": {
         "goal": "锁边界换大模型标",
         "how": "同一批 S2 边界，397B 看 raw 帧重写标签",
-        "result": "E2E 0.1388",
-        "verdict": "主涨分来自换大模型"
+        "result": "E2E 0.1414",
+        "verdict": "比旧 Qwen judge 0.1388 略高"
       }
     },
     {
       "id": "ffmpeg397",
-      "name": "397B ffmpeg-raw 重标",
+      "name": "397B ffmpeg-raw 重标 · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1414,
+      "e2e_f1": 0.1491,
       "pred_gold": "308/470",
-      "note": "换解码抽帧路径；略好于默认 raw",
+      "note": "换解码抽帧路径；Gemini E2E 0.1491",
       "method": {
         "goal": "换解码/抽帧路径是否改变标注",
         "how": "ffmpeg 抽帧替代默认读帧，再 397B caption",
-        "result": "E2E 0.1414",
+        "result": "E2E 0.1491",
         "verdict": "略好于默认 raw，作候选源"
       }
     },
     {
       "id": "nb28",
-      "name": "27B-prior 邻段重标（准确率下降）",
+      "name": "seed/prior 邻段重标 · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.108,
+      "e2e_f1": 0.123393,
       "pred_gold": "308/470",
-      "note": "IoU match 仍 79；语义 match 掉到约 42。见附录 C",
+      "note": "IoU match 仍 79；Gemini semantic match 48",
       "method": {
         "goal": "邻段（上一/当前/下一段）上下文 + 小模型 prior",
         "how": "PREV/CUR/NEXT≤5 帧 + seed prior，再标当前段",
-        "result": "E2E 0.1080",
-        "verdict": "邻段（上一/当前/下一段）上下文在 Qwen 上易引入邻段上下文干扰"
+        "result": "E2E 0.1234",
+        "verdict": "邻段上下文仍容易污染当前句"
       }
     },
     {
       "id": "nb397",
-      "name": "397B-prior 邻段重标",
+      "name": "397B-prior 邻段重标 · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.144,
+      "e2e_f1": 0.1491,
       "pred_gold": "308/470",
-      "note": "可用作候选，仍低于 selector",
+      "note": "可用作候选；Gemini E2E 与 ffmpeg raw 持平",
       "method": {
         "goal": "邻段 + 大模型 prior",
         "how": "同上，prior 来自 397B raw",
-        "result": "E2E 0.1440",
+        "result": "E2E 0.1491",
         "verdict": "可用作候选，仍低于 selector"
       }
     },
     {
       "id": "selector397",
-      "name": "397B 多候选 selector",
+      "name": "397B 多候选 selector · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1517,
+      "e2e_f1": 0.154242,
       "pred_gold": "308/470",
-      "note": "同边界多候选选优；E2E 0.1517",
+      "note": "同边界多候选选优；Gemini E2E 0.1542",
       "method": {
         "goal": "多候选选优",
         "how": "对每段收集 raw / rawprior / seed / ffmpeg 等候选，397B selector 选一条",
-        "result": "E2E 0.1517（semantic 59）",
-        "verdict": "生产 E2E 推荐配置"
+        "result": "E2E 0.1542（semantic 60/79）",
+        "verdict": "当前 E2E 推荐配置"
       }
     }
   ],

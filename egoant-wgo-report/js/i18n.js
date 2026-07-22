@@ -22,7 +22,7 @@
       "hero.link.blog": "Macrodata blog",
       "hero.link.app": "附录细节",
       "hero.eyebrow": "WGO-Bench HomER · EgoANT",
-      "hero.lede": "我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；端到端 F1 为 0.1517。",
+      "hero.lede": "我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；Gemini judge 端到端 F1 为 0.1542。",
       "en.banner": "",
       "intro.h2": "导读：为什么要给第一视角人手视频做子任务标注",
       "intro.p1": "Egocentric human data（第一视角人手数据）用头戴或胸挂相机记录人如何操作物体：画面晃、手挡、动作密，和桌面第三人称机器人演示很不一样。要把长程演示变成可学习的监督信号，通常需要切成可执行的原子子任务，并写成短指令。",
@@ -37,7 +37,7 @@
       "intro.scope": "评测范围：本页分数与推荐配置均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。",
       "tldr.h2": "结论速览",
       "tldr.seg": "整集粗分 + 局部再切（窗口不外扩、盖住完整动作）· Qwen3.6-27B",
-      "tldr.label": "raw（默认）/ HaWoR true hand-crop · 397B",
+      "tldr.label": "raw 27B（Gemini judge 当前最高）/ raw 397B / HaWoR true hand-crop",
       "tldr.e2e": "锁分段边界 + 397B 多候选 selector",
       "cost.h2": "5. 开销对照：Macrodata 公开数字 vs EgoANT",
       "cost.note": "两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），只改标注调用。API 次数由公开报告产物结构计数；token 为工程估计。Macrodata 报的是 Gemini batch 美元价；本页给出 Qwen 栈的结构化估计，二者不是同模型账单。细节见附录 G。",
@@ -59,8 +59,8 @@
       "cost.row.prod_num": "仅保留聚合调用量级；不公开内部机器、路径或服务状态",
       "cost.recipe.h3": "WGO 两条标注路径（估计 tokens）",
       "cost.th.item": "项",
-      "cost.th.raw": "单路 raw（E2E 0.1388）",
-      "cost.th.sel": "候选+selector（E2E 0.1517）",
+      "cost.th.raw": "单路 raw（E2E 0.1414）",
+      "cost.th.sel": "候选+selector（E2E 0.1542）",
       "cost.dyn.summary": "HomER {n} 集合计 {min} 分钟（均长约 {mean}s）。WGO token 为工程估计；API 次数为产物计数。{extra}",
       "cost.dyn.extra": "",
       "cost.dyn.prod_h3": "生产默认路径：聚合成本说明",
@@ -133,7 +133,7 @@
       "contact.taxonomy.explain": "<strong>读图：</strong>左一 contact sheet 把整集按时间展开，用来找边界；中间两列是给“已知边界的标注任务”增加上下文，分别看前/中/后窗口或上一/当前/下一段；最右 hand crop 只保留手附近区域，前提是有可靠手腕轨迹。我们的 HomER 消融说明：上下文更多不一定更好，邻段和整帧 collage 往往会把别的动作带进当前句子。",
       "walk.h2": "4. 样例：跟着 homer_4 走读 selector 路径",
       "walk.lead": "下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；生产可在同边界下改用单路 raw。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。",
-      "story.h2": "6. 消融故事：我们怎样走到 0.1517",
+      "story.h2": "6. 消融故事：我们怎样走到 0.1542",
       "story.lead": "按时间线叙述；主表与图跟在后面。实验细节（做法卡、窗口外扩消融）默认折叠。",
       "story.h3.seg": "6.1 分段：从假切点到「盖住完整动作」",
       "story.h3.label": "6.2 标注：复杂视觉输入不一定提高准确率",
@@ -141,8 +141,8 @@
       "recipe.h2": "7. 推荐配置",
       "appendix.h2": "8. 附录：概念、公式、实现与成本记账",
       "tldr.k.label": "Label Acc（固定边界）",
-      "intro.vs": "<strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoANT 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。端到端本页 <strong>0.1517</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。固定边界标注 Qwen 栈 ≈50.6–51.1% vs Macrodata 公开 ≈61%——句子质量仍有差距。<em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>",
-      "walk.score": "<strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231（全集 HomER micro 仍是 0.1517）。",
+      "intro.vs": "<strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoANT 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。端到端本页 <strong>0.1542</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。固定边界标注 Qwen 栈 Gemini judge 下 raw 27B 为 55.7%，raw 397B / HaWoR hand-crop 约 50.2–50.9% vs Macrodata 公开 ≈61%——句子质量仍有差距。<em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>",
+      "walk.score": "<strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231（全集 HomER micro 仍是 0.1542）。",
       "walk.task": "任务指令：",
       "walk.s0.t": "输入视频",
       "walk.s1.t": "生成 contact sheet",
@@ -182,11 +182,11 @@
       "story.seg.legend": "表头：<strong>P（Precision）</strong>= match / pred（预测段里配对成功的比例）；<strong>R（Recall）</strong>= match / gold（gold 段被找回的比例）；<strong>match / pred / gold</strong>= 配对成功数 / 预测段数 / gold 段数（本子集 gold 恒为 470）。「模型」列若写<strong>规则后处理</strong>，表示在已有预测上做脚本合并，不再调用 LLM。",
       "story.seg.padnote": "窗口外扩秒数（旧称 pad）的消融未进入主决策路径；细节见折叠区。",
       "story.seg.fold": "展开：分段实验细节",
-      "story.label.p": "固定 gold 边界后，raw 多帧仍是最稳默认（50.6%）。<strong>邻段 sheet</strong>（上一/当前/下一段拼在一起）、整帧 collage、YOLO/proxy hand-collage 都降低了准确率。后来补跑 HaWoR 真手部 crop 才微涨到 51.1%——成本高，不该为 +0.4pp 强行全量 recon。",
+      "story.label.p": "固定 gold 边界后，Gemini judge 重判改变了排序：raw 27B 达到 <strong>55.7%</strong>，高于 raw 397B 的 50.2% 与 HaWoR true hand-crop 的 50.9%。邻段 sheet、整帧 collage、YOLO/proxy hand-collage 仍保留为旧 Qwen judge 消融，待 Gemini 重判后再作严格横比。当前结论不是“越复杂越好”，而是“先固定 judge，再看视觉输入是否真的帮忙”。",
       "story.label.cap1": "<strong>读图（三栏）：</strong>左=原帧；中=启发式框（画面中心偏下固定方框，<em>不是</em>手腕检测）；右=裁出后送给标注模型的图。这是失败的 proxy 路径示意。固定边界上这类输入低于 raw。详见 <a href=\"#app-visual\">附录 E</a>。",
-      "story.label.cap2": "<strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。HomER 早期无手重建时用此类 proxy；后来 HaWoR true hand-crop 才微涨到 51.1%。",
+      "story.label.cap2": "<strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。HomER 早期无手重建时用此类 proxy；Gemini 重判后 HaWoR true hand-crop 为 50.9%，低于 raw 27B。",
       "story.label.fold": "展开：标注实验细节（做法卡）",
-      "story.e2e.p": "分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。<strong>自标</strong>：分段小模型写句子，弱。<strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1388。<strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，E2E 掉到 0.108（见 <a href=\"#app-e2e\">附录 C</a>）。<strong>candidate selector</strong>：多路候选再选一句 → <strong>0.1517</strong>。",
+      "story.e2e.p": "分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。<strong>自标</strong>：分段小模型写句子，弱。<strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1414。<strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，Gemini E2E 为 0.1234（见 <a href=\"#app-e2e\">附录 C</a>）。<strong>candidate selector</strong>：多路候选再选一句 → Gemini E2E <strong>0.1542</strong>。",
       "story.e2e.fold": "展开：E2E 实验细节（做法卡）",
       "story.takeaway": "<strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；规则 merge 改善观感但没有提升 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常降低标注准确率；汇报时固定 judge。",
       "th.cond": "条件",
@@ -206,7 +206,7 @@
       "recipe.p3.t": "局部再切",
       "recipe.p3.d": "窗口不外扩 · 盖住完整动作 · 27B → 0.2031",
       "recipe.p4.t": "Selector",
-      "recipe.p4.d": "397B 多候选 → E2E 0.1517",
+      "recipe.p4.d": "397B 多候选 → Gemini E2E 0.1542",
       "recipe.th.stage": "阶段",
       "recipe.th.do": "推荐",
       "recipe.th.dont": "不要默认启用",
@@ -214,10 +214,10 @@
       "recipe.r1.b": "Qwen3.6-27B + 切段规则清单 + 局部精修（窗口不外扩、盖住完整动作）",
       "recipe.r1.c": "分片 max3；盲目规则 merge",
       "recipe.r2.a": "标注（省钱）",
-      "recipe.r2.b": "锁精修边界 + 397B <strong>单路 raw</strong>（E2E≈0.1388）",
+      "recipe.r2.b": "锁精修边界 + 397B <strong>单路 raw</strong>（E2E≈0.1414）",
       "recipe.r2.c": "邻段 / 整帧 collage / YOLO/proxy hand-crop",
       "recipe.r3.a": "标注（追分）",
-      "recipe.r3.b": "同上边界 + 多候选 + 397B selector（E2E 0.1517）",
+      "recipe.r3.b": "同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）",
       "recipe.r3.c": "分段小模型自标当终稿",
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
@@ -277,7 +277,7 @@
       "hero.link.blog": "Macrodata blog",
       "hero.link.app": "Appendix",
       "hero.eyebrow": "WGO-Bench HomER · EgoANT",
-      "hero.lede": "We evaluate EgoANT (Egovideo ANnoTate) on the public WGO-Bench HomER subset. The Qwen stack reaches Segment F1 0.2031 vs Macrodata HomER-only Gemini ≈0.227; end-to-end F1 is 0.1517.",
+      "hero.lede": "We evaluate EgoANT (Egovideo ANnoTate) on the public WGO-Bench HomER subset. The Qwen stack reaches Segment F1 0.2031 vs Macrodata HomER-only Gemini ≈0.227; Gemini-judged end-to-end F1 is 0.1542.",
       "en.banner": "",
       "intro.h2": "Why annotate egocentric human video into subtasks",
       "intro.p1": "Egocentric human data records first-person hand–object interaction: shake, occlusion, and dense actions—quite unlike third-person robot demos. Turning long episodes into learnable supervision usually means cutting atomic executable subtasks and writing short imperative labels.",
@@ -292,7 +292,7 @@
       "intro.scope": "Scope: scores and recipes on this page are HomER-anchored. Same-protocol results on WGO robot-view subsets and other egocentric corpora are not reported here yet.",
       "tldr.h2": "Key results",
       "tldr.seg": "Whole-episode coarse + local re-cut (no pad-out, cover full actions) · Qwen3.6-27B",
-      "tldr.label": "raw (default) / HaWoR true hand-crop · 397B",
+      "tldr.label": "raw 27B (Gemini judge best) / raw 397B / HaWoR true hand-crop",
       "tldr.e2e": "Locked boundaries + 397B multi-candidate selector",
       "cost.h2": "5. Cost: Macrodata published numbers vs EgoANT",
       "cost.note": "Both WGO paths share the same S2 segmentation (Seg F1=0.2031) and only change labeling calls. API counts are artifact-counted from report outputs; token numbers are engineering estimates. Macrodata quotes Gemini batch USD, while this page reports a Qwen-stack structural estimate, so they are not the same invoice. See Appendix G.",
@@ -314,8 +314,8 @@
       "cost.row.prod_num": "Aggregated call scale only; no internal machines, paths, or service status disclosed",
       "cost.recipe.h3": "WGO labeling paths (estimated tokens)",
       "cost.th.item": "Item",
-      "cost.th.raw": "Raw-only (E2E 0.1388)",
-      "cost.th.sel": "Candidates+selector (E2E 0.1517)",
+      "cost.th.raw": "Raw-only (E2E 0.1414)",
+      "cost.th.sel": "Candidates+selector (E2E 0.1542)",
       "cost.dyn.summary": "HomER {n} episodes, {min} minutes total (mean ~{mean}s). WGO tokens are engineering estimates; API counts are artifact-counted. {extra}",
       "cost.dyn.extra": "",
       "cost.dyn.prod_h3": "Production path: aggregated cost note",
@@ -388,7 +388,7 @@
       "contact.taxonomy.explain": "<strong>How to read it:</strong> the contact sheet unfolds an episode over time for boundary finding. The two middle inputs add context after boundaries are already fixed: past/current/future windows or previous/current/next segments. The hand crop keeps only the hand region and needs reliable wrist tracks. Our HomER ablations show that more context is not automatically better: neighbor sheets and full-frame collages often import the wrong action into the current label.",
       "walk.h2": "4. Walkthrough: homer_4 along the selector path",
       "walk.lead": "This walkthrough is the <strong>selector path</strong> (widescreen 1080p, clear wipe motion); production can use raw-only on the same bounds. Task: wipe tables / cabinet surfaces with a cloth. Folded prompts stay English originals.",
-      "story.h2": "6. Ablation story: how we reached 0.1517",
+      "story.h2": "6. Ablation story: how we reached 0.1542",
       "story.lead": "Told in timeline order; main tables/plots follow. Method cards and pad-out ablations stay folded by default.",
       "story.h3.seg": "6.1 Segmentation: from fake cuts to “cover full actions”",
       "story.h3.label": "6.2 Labeling: many “smarter-looking” visuals hurt",
@@ -396,8 +396,8 @@
       "recipe.h2": "7. Recommended recipe",
       "appendix.h2": "8. Appendix: concepts, formulas, implementation, cost accounting",
       "tldr.k.label": "Label Acc (fixed boundaries)",
-      "intro.vs": "<strong>Qwen stack approaches the Gemini reference on HomER:</strong> EgoANT Segment F1 <strong>0.2031</strong> vs Macrodata HomER-only Gemini ≈<strong>0.227</strong> (same subset—do not hard-compare to full-100 0.306). This page’s E2E is <strong>0.1517</strong> (public blog full-set E2E≈0.168 is a different scope—magnitude only). Fixed-boundary labels are ≈50.6–51.1% with our Qwen stack vs ≈61% public—sentence quality still lags. <em>Takeaway: on the hardest egocentric subset, our boundary detection is close to the Gemini reference; E2E and wording still have room.</em>",
-      "walk.score": "<strong>Episode score:</strong> gold 15 / pred 11; IoU≥0.75 matches 4; semantic matches 3; episode E2E≈0.231 (HomER micro overall stays 0.1517).",
+      "intro.vs": "<strong>Qwen stack approaches the Gemini reference on HomER:</strong> EgoANT Segment F1 <strong>0.2031</strong> vs Macrodata HomER-only Gemini ≈<strong>0.227</strong> (same subset—do not hard-compare to full-100 0.306). This page’s Gemini-judged E2E is <strong>0.1542</strong> (public blog full-set E2E≈0.168 is a different scope—magnitude only). Fixed-boundary labels now use the same Gemini judge: raw 27B reaches <strong>55.7%</strong>, while raw 397B / HaWoR hand-crop are about 50.2–50.9%, vs Macrodata public ≈61%. <em>Takeaway: on the hardest egocentric subset, boundary detection is close to the Gemini reference; E2E and wording still have room.</em>",
+      "walk.score": "<strong>Episode score:</strong> gold 15 / pred 11; IoU≥0.75 matches 4; semantic matches 3; episode E2E≈0.231 (HomER micro overall stays 0.1542).",
       "walk.task": "Task instruction:",
       "walk.s0.t": "Input video",
       "walk.s1.t": "Build contact sheets",
@@ -437,11 +437,11 @@
       "story.seg.legend": "Headers: <strong>P (Precision)</strong>= match / pred; <strong>R (Recall)</strong>= match / gold; <strong>match / pred / gold</strong>= counts (gold fixed at 470 here). If the model column says <strong>rule postprocess</strong>, it means scripted merges on existing preds—no LLM call.",
       "story.seg.padnote": "Pad-out second ablations are not on the main decision path; details stay folded.",
       "story.seg.fold": "Expand: segmentation details",
-      "story.label.p": "With gold bounds fixed, multi-frame raw stays the safest default (50.6%). <strong>Neighbor sheets</strong>, whole-frame collages, and YOLO/proxy hand-collages all drop. HaWoR true hand-crop later nudges to 51.1%—too costly to force full recon for +0.4pp.",
+      "story.label.p": "With gold boundaries fixed, the Gemini judge changes the ranking: raw 27B reaches <strong>55.7%</strong>, above raw 397B at 50.2% and HaWoR true hand-crop at 50.9%. Neighbor sheets, full-frame collages, and YOLO/proxy hand-collages remain old-Qwen-judge ablations until we rerun them with Gemini. The current lesson is to fix the judge first, then decide whether richer visual input actually helps.",
       "story.label.cap1": "<strong>How to read (3 panels):</strong> left=raw frame; middle=heuristic box (fixed lower-center square, <em>not</em> wrist detection); right=crop fed to the labeler. Failed proxy path—below raw on fixed bounds. See <a href=\"#app-visual\">Appendix E</a>.",
-      "story.label.cap2": "<strong>How to read (3 panels):</strong> left=raw; middle=YOLO person box (still not HaWoR wrists); right=crop the model sees. Early HomER used such proxies; HaWoR true hand-crop later reaches 51.1%.",
+      "story.label.cap2": "<strong>How to read (3 panels):</strong> left=raw; middle=YOLO person box (still not HaWoR wrists); right=crop the model sees. Early HomER used such proxies; Gemini-rescored HaWoR true hand-crop is 50.9%.",
       "story.label.fold": "Expand: labeling method cards",
-      "story.e2e.p": "After locking segmentation at 0.2031, only the labeling path changes (time matches stay fixed; semantic matches move). <strong>Self-label</strong>: weak. <strong>Raw relabel</strong>: 397B rewrites from current-segment raw frames → 0.1388. <strong>Neighbor relabel</strong>: feeds prev/cur/next frames; with a small-model prior, neighbor context often pollutes the sentence and E2E falls to 0.108 (see <a href=\"#app-e2e\">Appendix C</a>). <strong>Candidate selector</strong>: multi-path then pick one → <strong>0.1517</strong>.",
+      "story.e2e.p": "After locking segmentation at 0.2031, only the labeling path changes (time matches stay fixed; semantic matches move). <strong>Self-label</strong>: Gemini E2E 0.1234. <strong>Raw relabel</strong>: 397B rewrites from current-segment raw frames → Gemini E2E 0.1414. <strong>ffmpeg/rawprior candidates</strong>: both reach 0.1491. <strong>Candidate selector</strong>: multi-path then pick one → Gemini E2E <strong>0.1542</strong>.",
       "story.e2e.fold": "Expand: E2E method cards",
       "story.takeaway": "<strong>Takeaways:</strong> chunked contact sheets invent seam cuts; the rule list decides what to cut, local refine (cover full actions) decides how fine; rule merges look nicer but don’t lift F1; neighbor / crude hand-collages often hurt Qwen labeling; keep the judge fixed when reporting.",
       "th.cond": "Condition",
@@ -461,7 +461,7 @@
       "recipe.p3.t": "Local re-cut",
       "recipe.p3.d": "No pad-out · cover actions · 27B → 0.2031",
       "recipe.p4.t": "Selector",
-      "recipe.p4.d": "397B multi-cand → E2E 0.1517",
+      "recipe.p4.d": "397B multi-cand → Gemini E2E 0.1542",
       "recipe.th.stage": "Stage",
       "recipe.th.do": "Do",
       "recipe.th.dont": "Don’t enable by default",
@@ -469,10 +469,10 @@
       "recipe.r1.b": "Qwen3.6-27B + rule list + local refine (no pad-out, cover full actions)",
       "recipe.r1.c": "Chunked max3; blind rule merge",
       "recipe.r2.a": "Labeling (cheap)",
-      "recipe.r2.b": "Lock refined bounds + 397B <strong>raw-only</strong> (E2E≈0.1388)",
+      "recipe.r2.b": "Lock refined bounds + 397B <strong>raw-only</strong> (E2E≈0.1414)",
       "recipe.r2.c": "Neighbor / whole-frame collage / YOLO/proxy hand-crop",
       "recipe.r3.a": "Labeling (max score)",
-      "recipe.r3.b": "Same bounds + multi-cand + 397B selector (E2E 0.1517)",
+      "recipe.r3.b": "Same bounds + multi-cand + 397B selector (Gemini E2E 0.1542)",
       "recipe.r3.c": "Treat seg-model self-labels as final",
       "recipe.r4.a": "Comparison",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
@@ -572,10 +572,10 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       </article>
 
       <h3 id="app-e2e">C. 标注 / E2E 术语</h3>
-      <article class="concept-card"><h4>raw relabel</h4><p>边界锁死后，用 397B 看当前段 raw 帧重写一句 subtask。S2 边界 + 单路 raw 的 E2E F1 为 0.1388。</p></article>
+      <article class="concept-card"><h4>raw relabel</h4><p>边界锁死后，用 397B 看当前段 raw 帧重写一句 subtask。S2 边界 + 单路 raw 的 E2E F1 为 0.1414。</p></article>
       <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>边界相同，只把默认解码/抽帧实现换成 ffmpeg 路径。它不是新的标注策略，而是同一段视频的另一种候选文案来源；实验中略高于默认 raw，因此进入 selector 候选池。</p></article>
       <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似能提供上下文，但在 Qwen 上常把邻段动作写进当前句，因此降低标注准确率。</p></article>
-      <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；当前最高 E2E F1 为 0.1517。</p></article>
+      <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；当前 Gemini judge 最高 E2E F1 为 0.1542。</p></article>
 
       <h3 id="app-prod">D. EgoANT 生产原管线（澄清 VITRA）</h3>
       <div class="pipeline">
@@ -598,10 +598,10 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       </figure>
       <table><thead><tr><th>名称</th><th>模型看见什么</th><th>典型用途</th><th>HomER 上</th></tr></thead><tbody>
         <tr><td>contact sheet</td><td>带时间戳的抽帧拼图</td><td>分段</td><td>主路径</td></tr>
-        <tr><td>raw 多帧</td><td>段内均匀原帧</td><td>标注默认</td><td>Acc 50.6%</td></tr>
+        <tr><td>raw 多帧</td><td>段内均匀原帧</td><td>标注默认</td><td>Gemini Acc 55.7%（27B）/ 50.2%（397B）</td></tr>
         <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>降低准确率</td></tr>
         <tr><td>neighbor sheet</td><td>上一/当前/下一段 sheet</td><td>标注消融</td><td>降低准确率</td></tr>
-        <tr><td>HaWoR true hand-crop</td><td>按腕轨裁手部</td><td>标注候选</td><td>Acc 51.1%</td></tr>
+        <tr><td>HaWoR true hand-crop</td><td>按腕轨裁手部</td><td>标注候选</td><td>Gemini Acc 50.9%</td></tr>
       </tbody></table>
 
       <h3 id="app-prompts">F. Prompt 原文（English）</h3>
@@ -614,7 +614,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       </ul>
 
       <h3 id="app-cost">G. 成本：估计与公开数字对照</h3>
-      <p>Macrodata 公开 E2E batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；本页 Qwen 栈 token 为工程估计，保留结构化比较，不公开内部机器、路径或服务状态。</p>
+      <p>Macrodata 公开 E2E batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；本页 Qwen 栈 token 为工程估计；新增 Gemini judge 重判开销另行记录。页面保留结构化比较，不公开内部机器、路径或服务状态。</p>
 
       <h3 id="audit">H. 实验效度注意事项</h3>
       <table><thead><tr><th>项</th><th>发现</th><th>处理</th></tr></thead><tbody>
@@ -666,10 +666,10 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <article class="concept-card"><h4>Segmentation rule list (GEPA-searched prompt)</h4><p>This is not a new model and not a postprocess. More precisely, Macrodata used GEPA on a validation set to search for an English rule list. We reuse that rule list; we do not rerun GEPA in this report.</p></article>
 
       <h3 id="app-e2e">C. Labeling / E2E terms</h3>
-      <article class="concept-card"><h4>raw relabel</h4><p>With boundaries locked, Qwen3.5-397B rewrites one subtask label from raw frames inside the current segment. S2 bounds + raw-only relabel gives E2E F1 0.1388.</p></article>
+      <article class="concept-card"><h4>raw relabel</h4><p>With boundaries locked, Qwen3.5-397B rewrites one subtask label from raw frames inside the current segment. S2 bounds + raw-only relabel gives Gemini E2E F1 0.1414.</p></article>
       <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>Same boundaries, but the decode / frame-sampling implementation is switched to ffmpeg. It is not a new labeling strategy; it is another candidate label source for the same video segment, and it slightly beats the default raw path in this benchmark.</p></article>
       <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, reducing Qwen labeling accuracy on HomER.</p></article>
-      <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best E2E F1 is 0.1517.</p></article>
+      <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best Gemini-judged E2E F1 is 0.1542.</p></article>
 
       <h3 id="app-prod">D. EgoANT production pipeline (VITRA clarification)</h3>
       <div class="pipeline">
@@ -692,10 +692,10 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       </figure>
       <table><thead><tr><th>Name</th><th>What the model sees</th><th>Typical use</th><th>HomER result</th></tr></thead><tbody>
         <tr><td>contact sheet</td><td>timestamped frame grid</td><td>segmentation</td><td>main path</td></tr>
-        <tr><td>raw frames</td><td>uniform frames inside the segment</td><td>default labeling</td><td>Acc 50.6%</td></tr>
+        <tr><td>raw frames</td><td>uniform frames inside the segment</td><td>default labeling</td><td>Gemini Acc 55.7% (27B) / 50.2% (397B)</td></tr>
         <tr><td>temporal collage</td><td>past/current/future full-frame grids</td><td>labeling ablation</td><td>lower accuracy</td></tr>
         <tr><td>neighbor sheet</td><td>previous/current/next segment sheets</td><td>labeling ablation</td><td>lower accuracy</td></tr>
-        <tr><td>HaWoR true hand-crop</td><td>crop around wrist tracks</td><td>label candidate</td><td>Acc 51.1%</td></tr>
+        <tr><td>HaWoR true hand-crop</td><td>crop around wrist tracks</td><td>label candidate</td><td>Gemini Acc 50.9%</td></tr>
       </tbody></table>
 
       <h3 id="app-prompts">F. Prompt originals (English)</h3>
@@ -708,7 +708,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       </ul>
 
       <h3 id="app-cost">G. Cost: estimates and published numbers</h3>
-      <p>Macrodata reports about $2.64/video-hour for batch end-to-end seeded relabeling and about $0.43/h for segmentation-only batch. This page keeps Qwen-stack token numbers as engineering estimates and removes internal machines, paths, and service-state details.</p>
+      <p>Macrodata reports about $2.64/video-hour for batch end-to-end seeded relabeling and about $0.43/h for segmentation-only batch. This page keeps Qwen-stack token numbers as engineering estimates; the added Gemini judge rescore is reported separately. The public version removes internal machines, paths, and service-state details.</p>
 
       <h3 id="audit">H. Validity notes</h3>
       <table><thead><tr><th>Item</th><th>Observation</th><th>Treatment</th></tr></thead><tbody>
