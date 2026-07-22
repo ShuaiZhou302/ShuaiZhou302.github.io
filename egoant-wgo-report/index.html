@@ -59,7 +59,7 @@
         <a href="#story" data-i18n="nav.story">消融</a>
         <a href="#recipe" data-i18n="nav.recipe">推荐配置</a>
         <a href="#appendix" data-i18n="nav.appendix">附录</a>
-        <a href="#references" data-i18n="nav.references">References</a>
+        <a href="#references" data-i18n="nav.references">参考文献</a>
       </div>
       <div class="lang-switch" role="group" aria-label="Language">
         <button type="button" class="lang-btn active" data-lang="zh">ZH</button>
@@ -83,7 +83,7 @@
     <a href="#story" data-toc="story" data-i18n="nav.story">消融</a>
     <a href="#recipe" data-toc="recipe" data-i18n="nav.recipe">推荐配置</a>
     <a href="#appendix" data-toc="appendix" data-i18n="nav.appendix">附录</a>
-    <a href="#references" data-toc="references" data-i18n="nav.references">References</a>
+    <a href="#references" data-toc="references" data-i18n="nav.references">参考文献</a>
   </aside>
 
   <main class="wrap">
@@ -105,7 +105,7 @@
       <ul>
         <li data-i18n-html data-i18n="intro.li0">Egocentric 数据族：<a href="https://egoverse.ai/" target="_blank" rel="noopener">EgoVerse</a> / <a href="https://github.com/apple/ml-egodex" target="_blank" rel="noopener">EgoDex</a> / <a href="https://arxiv.org/abs/2604.23570" target="_blank" rel="noopener">EgoLive</a> 等第一人称人手操作演示，面向规模化 human-to-robot 数据。</li>
         <li data-i18n-html data-i18n="intro.li1">HomER：<a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 里的 egocentric human 子集；本报告固定评测 HomER 25 / 470 gold 段。</li>
-        <li data-i18n-html data-i18n="intro.li2"><a href="https://github.com/microsoft/VITRA" target="_blank" rel="noopener">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。</li>
+        <li data-i18n-html data-i18n="intro.li2"><a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。</li>
         <li data-i18n="intro.li3" data-i18n-html>WGO-Bench / <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata blog</a>：公开「切段 + 短句」评测协议与 Gemini 参考分，以及约 $2.64/视频小时（batch）的端到端开销。</li>
         <li data-i18n="intro.li4">Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。</li>
       </ul>
@@ -617,7 +617,7 @@
     <section id="appendix"></section>
 
     <section id="references">
-      <h2 data-i18n="references.h2">References</h2>
+      <h2 data-i18n="references.h2">参考文献</h2>
       <ol class="ref-list">
         <li data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
         <li data-i18n-html data-i18n="references.macrodata">Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">https://macrodata.co/blog/annotating-robot-video-subtasks</a></li>

@@ -470,10 +470,11 @@ tr.best td { background: #eaf5ee; font-weight: 600; }
 
 .pipeline {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.6rem;
   margin: 1rem 0;
 }
+@media (max-width: 1050px) { .pipeline { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 800px) { .pipeline { grid-template-columns: 1fr 1fr; } }
 .pipeline .step {
   background: var(--card);

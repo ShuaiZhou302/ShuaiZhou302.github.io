@@ -12,7 +12,7 @@
       "nav.story": "消融",
       "nav.recipe": "推荐配置",
       "nav.appendix": "附录",
-      "nav.references": "References",
+      "nav.references": "参考文献",
       "toc.label": "目录",
       "tag.ego": "第一视角",
       "tag.human": "人手数据",
@@ -30,7 +30,7 @@
       "intro.h3": "已有公开工作（地图）",
       "intro.li0": "Egocentric 数据族：<a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">EgoVerse</a> / <a href=\"https://github.com/apple/ml-egodex\" target=\"_blank\" rel=\"noopener\">EgoDex</a> / <a href=\"https://arxiv.org/abs/2604.23570\" target=\"_blank\" rel=\"noopener\">EgoLive</a> 等第一人称人手操作演示，面向规模化 human-to-robot 数据。",
       "intro.li1": "HomER：<a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">WGO-Bench</a> 里的 egocentric human 子集；本报告固定评测 HomER 25 / 470 gold 段。",
-      "intro.li2": "<a href=\"https://github.com/microsoft/VITRA\" target=\"_blank\" rel=\"noopener\">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。",
+      "intro.li2": "<a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。",
       "intro.li3": "WGO-Bench / <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 博客</a>：公开「切段 + 短句」评测协议与 Gemini 参考分，以及约 $2.64/视频小时（batch）的端到端开销。",
       "intro.li4": "Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。",
       "intro.p3": "本页报告 EgoANT 在 HomER 上、对标 WGO 协议的可复现消融：什么涨分、什么失败、成本如何与公开数字对照。名词解释见后文背景章。",
@@ -254,7 +254,7 @@
       "references.egodex": "Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href=\"https://arxiv.org/abs/2505.11709\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2505.11709</a>",
       "references.egoverse": "EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">https://egoverse.ai/</a>",
       "references.egolive": "Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href=\"https://doi.org/10.48550/arXiv.2604.23570\" target=\"_blank\" rel=\"noopener\">https://doi.org/10.48550/arXiv.2604.23570</a>",
-      "footer.text": "EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · F1 越大越好"
+      "footer.text": "EgoANT 在 WGO-Bench HomER 上的评测 · HomER 25/470 · F1 越大越好"
     },
     en: {
       "nav.intro": "Intro",
@@ -285,7 +285,7 @@
       "intro.h3": "Related public work (a map)",
       "intro.li0": "Egocentric data families such as <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">EgoVerse</a>, <a href=\"https://github.com/apple/ml-egodex\" target=\"_blank\" rel=\"noopener\">EgoDex</a>, and <a href=\"https://arxiv.org/abs/2604.23570\" target=\"_blank\" rel=\"noopener\">EgoLive</a> provide first-person human manipulation demonstrations at scale.",
       "intro.li1": "HomER is the egocentric human subset inside <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">WGO-Bench</a>; this report evaluates HomER 25 / 470 gold segments.",
-      "intro.li2": "<a href=\"https://github.com/microsoft/VITRA\" target=\"_blank\" rel=\"noopener\">VITRA</a> is a public line of work on turning real human-hand videos into VLA training signals; it motivates “motion/hand signal first, caption second,” but EgoANT does not use VITRA as the segmentation backend.",
+      "intro.li2": "<a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">VITRA</a> is a public line of work on turning real human-hand videos into VLA training signals; it motivates “motion/hand signal first, caption second,” but EgoANT does not use VITRA as the segmentation backend.",
       "intro.li3": "WGO-Bench / <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata blog</a>: public segment+label protocol, Gemini reference scores, and ~$2.64/video-hour (batch) end-to-end cost.",
       "intro.li4": "Scale Labs dense video captioning: captions on already-cut clips—not raw-episode segmentation.",
       "intro.p3": "This page reports EgoANT ablations on HomER under the WGO protocol: what lifts scores, what fails, and how cost compares to the published numbers. Glossary follows in Background.",
