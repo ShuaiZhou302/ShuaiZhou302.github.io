@@ -140,7 +140,7 @@
     },
     {
       "id": "whole_legacy_27b",
-      "name": "整集一次 + legacy prompt（无 GEPA 规则）",
+      "name": "整集一次 + legacy prompt（无 GEPA-searched 规则）",
       "f1": 0.123,
       "p": 0.257,
       "r": 0.081,
@@ -160,7 +160,7 @@
     },
     {
       "id": "aligned_gepa_27b",
-      "name": "整集一次 + GEPA 规则 prompt",
+      "name": "整集一次 + GEPA-searched 规则 prompt",
       "f1": 0.1369,
       "p": 0.228,
       "r": 0.098,
@@ -172,7 +172,7 @@
       "note": "仍欠分割，但比 legacy 略好",
       "method": {
         "goal": "用 completed-events + 时长先验对齐 blog 规则",
-        "how": "GEPA prompt：只标完成操作；偏好约 2–10s 段",
+        "how": "GEPA-searched prompt：只标完成操作；偏好约 2–10s 段",
         "input": "整集 contact sheet + GEPA",
         "result": "F1 0.1369",
         "verdict": "外形对齐有效，但仍欠分割"
@@ -355,7 +355,7 @@
         "how": "相邻且 label 完全相同则合并",
         "input": "S2 full-cover 预测",
         "result": "F1 0.1987",
-        "verdict": "好看但掉分；勿默认 merge"
+        "verdict": "时间轴更整洁但 F1 降低；不要默认 merge"
       }
     },
     {
@@ -375,7 +375,7 @@
         "how": "解析 verb/object 近似匹配后合并",
         "input": "S2 full-cover 预测",
         "result": "F1 0.1947",
-        "verdict": "继续掉分"
+        "verdict": "继续降低 F1"
       }
     },
     {
@@ -389,13 +389,13 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "跨短间隙合并，掉分最多",
+      "note": "跨短间隙合并，F1 降低最多",
       "method": {
         "goal": "短间隙也桥接合并",
         "how": "允许短时间桥接后合并",
         "input": "S2 full-cover 预测",
         "result": "F1 0.1883",
-        "verdict": "掉分最多"
+        "verdict": "F1 降低最多"
       }
     }
   ],
@@ -433,7 +433,7 @@
         "how": "HomER 无 hand_recon，用光流质心画 proxy overlay",
         "input": "overlay frames",
         "result": "48.3%",
-        "verdict": "伤分；不能冒充真 hand"
+        "verdict": "得分下降；不能等同于真实 hand-crop"
       }
     },
     {
@@ -451,7 +451,7 @@
         "how": "past/current/future 各约 6 格整帧拼图，再 caption",
         "input": "整帧 collage",
         "result": "42.1%",
-        "verdict": "上下文噪音大，跌分"
+        "verdict": "上下文噪音大，准确率下降"
       }
     },
     {
@@ -501,11 +501,11 @@
       "delta_vs_raw": -0.151,
       "note": "修时间戳仍跌",
       "method": {
-        "goal": "怀疑跌分因 tile 缺秒戳",
+        "goal": "检查准确率下降是否由 tile 缺少秒戳导致",
         "how": "补黄字秒级时间戳后全量重跑",
         "input": "邻段 sheet（有戳）",
         "result": "35.5%",
-        "verdict": "不是缺戳的问题，recipe 本身伤分"
+        "verdict": "不是缺戳的问题，这个视觉输入设计本身降低了标注准确率"
       }
     },
     {
@@ -523,7 +523,7 @@
         "how": "HomER 无 hand asset：用 YOLO 人/腕点或 center-proxy 裁剪拼 collage（非 HaWoR）",
         "input": "hand-collage approx",
         "result": "40.6%",
-        "verdict": "近似 crop 伤分；≠ true hand-crop"
+        "verdict": "近似 crop 使得分下降；≠ true hand-crop"
       },
       "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
     },
@@ -642,7 +642,7 @@
     },
     {
       "id": "nb28",
-      "name": "27B-prior 邻段重标（掉分）",
+      "name": "27B-prior 邻段重标（准确率下降）",
       "seg_f1": 0.2031,
       "e2e_f1": 0.108,
       "pred_gold": "308/470",

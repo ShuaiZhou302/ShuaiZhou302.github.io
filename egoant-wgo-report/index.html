@@ -180,15 +180,13 @@
         相对 Gemini 参考栈，同一套权重与 prompt 可在不同机器上复跑，消融结论可核对。
       </p>
 
-      <h3 data-i18n="world.h3.gepa">GEPA 是什么（定义）</h3>
+      <h3 data-i18n="world.h3.gepa">GEPA 在本文里指什么</h3>
       <ol>
-        <li data-i18n-html data-i18n="world.gepa.1"><strong>GEPA 本身</strong>：Macrodata 用来<strong>自动搜索更好 prompt</strong> 的方法/过程。我们写这篇报告时<strong>没有</strong>在推理阶段重跑 GEPA。</li>
-        <li data-i18n-html data-i18n="world.gepa.2"><strong>我们实际用的东西</strong>：搜索结果沉淀下来的一段<strong>英文分段 prompt</strong>（他们内部名
+        <li data-i18n-html data-i18n="world.gepa.1"><strong>GEPA 本身</strong>：一种 reflective prompt evolution 方法。Macrodata 博客中说明，他们用 GEPA 在独立验证集上搜索更好的分段 prompt。</li>
+        <li data-i18n-html data-i18n="world.gepa.2"><strong>我们实际复用的东西</strong>：搜索结果沉淀下来的一段<strong>英文分段 prompt</strong>（他们内部名
           <code>completed_events_duration_prior_v1</code>）。</li>
-        <li data-i18n-html data-i18n="world.gepa.3"><strong>实质</strong>：就是在发给视觉语言模型的 <strong>text prompt 里加入一组硬规则</strong>
-          ——只切「已完成的操作事件」、多数段约 2–10 秒、不要把靠近/微调/收回拆成假事件、不要把不同的 pick/place 乱合并。
-          <em>不是新模型，也不是后处理脚本。</em></li>
-        <li data-i18n-html data-i18n="world.gepa.4"><strong>怎么用</strong>：整集 contact sheet 图像 + 这段英文规则 → 一次粗分。样例 Step 02 折叠区为英文全文；概念与实现见 <a href="#app-seg">附录 B</a>，原文下载见 <a href="#app-prompts">附录 F</a>。</li>
+        <li data-i18n-html data-i18n="world.gepa.3"><strong>因此本文不把 GEPA 当作运行时模块</strong>：我们没有重新跑 GEPA，也没有把 GEPA 当模型或后处理脚本；只是把那组规则写进 VLM 请求文本。</li>
+        <li data-i18n-html data-i18n="world.gepa.4"><strong>怎么用</strong>：整集 contact sheet 图像 + 这段英文规则 → 一次粗分。规则要求只标完成事件、偏好约 2–10 秒、忽略靠近/微调/收回等非完成事件。样例 Step 02 折叠区为英文全文；概念与实现见 <a href="#app-seg">附录 B</a>，原文下载见 <a href="#app-prompts">附录 F</a>。</li>
       </ol>
 
       <h3 data-i18n="world.h3.terms">后面会反复出现的几个词</h3>
@@ -255,6 +253,10 @@
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy comparing contact sheets, temporal collages, neighbor sheets, and hand crops" />
         <figcaption data-i18n="contact.taxonomy.cap">本地图示：contact sheet、整帧 temporal collage、邻段 sheet、hand crop 是四种不同视觉输入；它们在实验中不可互相代称。</figcaption>
       </figure>
+      <p class="plain" data-i18n-html data-i18n="contact.taxonomy.explain">
+        <strong>读图：</strong>左一 contact sheet 把整集按时间展开，用来找边界；中间两列是给“已知边界的标注任务”增加上下文，分别看前/中/后窗口或上一/当前/下一段；
+        最右 hand crop 只保留手附近区域，前提是有可靠手腕轨迹。我们的 HomER 消融说明：上下文更多不一定更好，邻段和整帧 collage 往往会把别的动作带进当前句子。
+      </p>
     </section>
 
     <section id="boundary">
@@ -512,10 +514,10 @@
         <div id="seg-methods" class="method-grid" style="margin-top:1rem"></div>
       </details>
 
-      <h3 data-i18n="story.h3.label">6.2 标注：很多「看起来更聪明」的视觉输入其实伤分</h3>
+      <h3 data-i18n="story.h3.label">6.2 标注：复杂视觉输入不一定提高准确率</h3>
       <p data-i18n-html data-i18n="story.label.p">
         固定 gold 边界后，raw 多帧仍是最稳默认（50.6%）。
-        <strong>邻段 sheet</strong>（上一/当前/下一段拼在一起）、整帧 collage、YOLO/proxy hand-collage 都会跌。
+        <strong>邻段 sheet</strong>（上一/当前/下一段拼在一起）、整帧 collage、YOLO/proxy hand-collage 都降低了准确率。
         后来补跑 HaWoR 真手部 crop 才微涨到 51.1%——成本高，不该为 +0.4pp 强行全量 recon。
       </p>
       <div class="chart-box">
@@ -573,7 +575,7 @@
       </details>
       <div class="callout" data-i18n-html data-i18n="story.takeaway">
         <strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；
-        规则 merge 改善观感但不涨 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常伤标注；汇报时固定 judge。
+        规则 merge 改善观感但没有提升 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常降低标注准确率；汇报时固定 judge。
       </div>
     </section>
 
@@ -617,13 +619,15 @@
     <section id="references">
       <h2 data-i18n="references.h2">References</h2>
       <ol class="ref-list">
-        <li><a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench on Hugging Face</a><span class="ref-note" data-i18n="references.wgo">公开 subtask annotation benchmark，本页使用其中 HomER 子集做评测。</span></li>
-        <li><a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata Labs: Segmenting Robot Video into Actionable Subtasks</a><span class="ref-note" data-i18n="references.macrodata">WGO-Bench、评测协议、Gemini 参考分和公开成本数字来源。</span></li>
-        <li><a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">Scale Labs: The Path to Large Scale Dense Video Captioning</a><span class="ref-note" data-i18n="references.scale">视觉输入表示、hand-crop/collage 与 dense captioning 消融的公开参考。</span></li>
-        <li><a href="https://github.com/microsoft/VITRA" target="_blank" rel="noopener">VITRA</a><span class="ref-note" data-i18n="references.vitra">真实人手视频转 VLA 训练信号的公开工作；本报告只借鉴问题设定，不把 VITRA 当作切段后端。</span></li>
-        <li><a href="https://github.com/apple/ml-egodex" target="_blank" rel="noopener">EgoDex</a><span class="ref-note" data-i18n="references.egodex">大规模 egocentric dexterous manipulation 数据集。</span></li>
-        <li><a href="https://egoverse.ai/" target="_blank" rel="noopener">EgoVerse</a><span class="ref-note" data-i18n="references.egoverse">面向 robot learning 的第一视角 human data 生态。</span></li>
-        <li><a href="https://arxiv.org/abs/2604.23570" target="_blank" rel="noopener">EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</a><span class="ref-note" data-i18n="references.egolive">真实世界人类任务的第一视角数据集论文。</span></li>
+        <li data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
+        <li data-i18n-html data-i18n="references.macrodata">Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">https://macrodata.co/blog/annotating-robot-video-subtasks</a></li>
+        <li data-i18n-html data-i18n="references.gepa">Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href="https://arxiv.org/abs/2507.19457" target="_blank" rel="noopener">https://arxiv.org/abs/2507.19457</a></li>
+        <li data-i18n-html data-i18n="references.scale">Choghari, Jade, Sansone, Agustin, Pasqualis, Nicolas, Mader, Conrado, Tiupikov, Aleks, Sivapurapu, Mouli. (2026). <em>The Path to Large Scale Dense Video Captioning</em>. Scale Labs. <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning</a></li>
+        <li data-i18n-html data-i18n="references.vitra">Li, Qixiu, Deng, Yu, Liang, Yaobo, Luo, Lin, Zhou, Lei, Yao, Chengtang, et al. (2025). <em>VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos</em>. Project page. <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">https://microsoft.github.io/VITRA/</a></li>
+        <li data-i18n-html data-i18n="references.hawor">Zhang, Jinglei, Deng, Jiankang, Ma, Chao, Potamias, Rolandos Alexandros. (2025). <em>HaWoR: World-Space Hand Motion Reconstruction from Egocentric Videos</em>. arXiv. <a href="https://arxiv.org/abs/2501.02973" target="_blank" rel="noopener">https://arxiv.org/abs/2501.02973</a></li>
+        <li data-i18n-html data-i18n="references.egodex">Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href="https://arxiv.org/abs/2505.11709" target="_blank" rel="noopener">https://arxiv.org/abs/2505.11709</a></li>
+        <li data-i18n-html data-i18n="references.egoverse">EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href="https://egoverse.ai/" target="_blank" rel="noopener">https://egoverse.ai/</a></li>
+        <li data-i18n-html data-i18n="references.egolive">Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href="https://doi.org/10.48550/arXiv.2604.23570" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2604.23570</a></li>
       </ol>
     </section>
   </main>

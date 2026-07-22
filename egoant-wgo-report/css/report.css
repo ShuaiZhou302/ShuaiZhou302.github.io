@@ -458,6 +458,9 @@ tr.best td { background: #eaf5ee; font-weight: 600; }
   border-radius: 8px;
   background: #1a222c;
 }
+.figure img[src$=".svg"] {
+  background: var(--card);
+}
 .gallery {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -655,6 +658,7 @@ pre.formula {
   padding-left: 1.2rem;
 }
 .ref-list li { padding-left: 0.2rem; }
+.ref-list li, .ref-list a { overflow-wrap: anywhere; }
 .ref-list .ref-note {
   display: block;
   color: var(--muted);

@@ -194,7 +194,7 @@
     "merge_bridge": {
       "zh": {
         "name": "后处理：跨短间隙桥接合并",
-        "note": "跨短间隙合并，掉分最多",
+        "note": "跨短间隙合并，F1 降低最多",
         "model": "规则后处理（非 LLM）"
       },
       "en": {
@@ -271,7 +271,7 @@
       },
       "en": {
         "name": "Neighbor sheets + second-level timestamps",
-        "note": "Fixing stamps still hurts",
+        "note": "Fixing timestamps still lowers accuracy",
         "model": "Qwen3.5-397B"
       }
     },
@@ -374,7 +374,7 @@
     "nb28": {
       "zh": {
         "name": "+ 邻段重标（27B prior）",
-        "note": "伤分",
+        "note": "得分下降",
         "model": null
       },
       "en": {
@@ -420,7 +420,7 @@
     s2_pad0_plain_27b: { en: { goal: "Ablate local-window padding.", how: "Local refine with pad_sec=0, before adding the full-cover instruction.", input: "local sheets", result: "F1 0.1711, 582 predictions", verdict: "No pad-out is best among pad widths, but still too fragmented." } },
     s2_pad05_27b: { en: { goal: "Test whether a little extra context helps.", how: "Local refine with 0.5 seconds of pad-out.", input: "local sheets", result: "F1 0.1444", verdict: "Worse than no pad-out." } },
     s2_pad1_27b: { en: { goal: "Test a larger local context window.", how: "Local refine with 1.0 second of pad-out.", input: "local sheets", result: "F1 0.1485", verdict: "Worse than no pad-out." } },
-    s2_pad2_27b: { en: { goal: "Test an even wider local context window.", how: "Local refine with 2.0 seconds of pad-out.", input: "local sheets", result: "F1 0.1436", verdict: "Extra neighboring context hurts." } },
+    s2_pad2_27b: { en: { goal: "Test an even wider local context window.", how: "Local refine with 2.0 seconds of pad-out.", input: "local sheets", result: "F1 0.1436", verdict: "Extra neighboring context lowers F1." } },
     s2_midpoint_post: { en: { goal: "Cover the time window using scripted postprocessing.", how: "Apply midpoint full-cover postprocess after pad=0 predictions.", input: "predicted boundaries", result: "F1 0.1635", verdict: "Scripted cover is worse than putting full-cover into the prompt." } },
     s2_fullcover_qwen36: { en: { goal: "Re-cut locally while covering all completed actions in the window.", how: "Coarse GEPA pass, local timestamped sheets, pad=0, and full-cover prompt.", input: "local contact sheet plus coarse-bound hint", result: "F1 0.2031, 308 predictions", verdict: "Main segmentation gain in the Qwen stack." } },
     merge_exact: { en: { goal: "Make the timeline cleaner by merging adjacent identical labels.", how: "Rule-based merge when adjacent labels are exactly identical.", input: "S2 full-cover predictions", result: "F1 0.1987", verdict: "Looks cleaner but lowers F1; do not enable by default." } },
@@ -431,7 +431,7 @@
     temporal_collage: { en: { goal: "Add whole-frame past/current/future context.", how: "Create separate full-frame grids from past, current, and future windows.", input: "whole-frame collage", result: "Accuracy 42.1%", verdict: "Context noise outweighs the benefit." } },
     raw_27b: { en: { goal: "Test whether the smaller model can label fixed segments.", how: "Same raw-frame input as the default labeler, but with Qwen3.6-27B.", input: "raw frames", result: "Accuracy 46.0%", verdict: "Labeling still benefits from the larger model." } },
     l1_neighbor: { en: { goal: "Use previous/current/next segment context.", how: "Feed PREV/CUR/NEXT contact sheets together to the labeler.", input: "neighbor contact sheets", result: "Accuracy 36.8%", verdict: "The model loses track of which action is current." } },
-    l1_ts_rerun: { en: { goal: "Check whether missing timestamps caused the neighbor-sheet drop.", how: "Re-run neighbor sheets after adding second-level yellow timestamps.", input: "timestamped neighbor sheets", result: "Accuracy 35.5%", verdict: "The recipe itself hurts; timestamps were not the issue." } },
+    l1_ts_rerun: { en: { goal: "Check whether missing timestamps caused the neighbor-sheet drop.", how: "Re-run neighbor sheets after adding second-level yellow timestamps.", input: "timestamped neighbor sheets", result: "Accuracy 35.5%", verdict: "The input design lowers accuracy; timestamps were not the issue." } },
     l2_yolo_proxy: { en: { goal: "Focus visual attention on hand-object regions.", how: "Use YOLO/person or center-proxy crops because HomER has no native hand asset in this benchmark.", input: "approximate hand collage", result: "Accuracy 40.6%", verdict: "Approximate crops hurt and are not true hand crops." } },
     l2_hawor: { en: { goal: "Use real wrist tracks for hand crops.", how: "Run HaWoR, build wrist tracks, and crop around hand points; 411/470 segments had full crop coverage.", input: "true hand crops plus raw fallback", result: "Accuracy 51.1%", verdict: "Small positive gain, but expensive; use when reliable hand assets exist." } },
     l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Reports must keep the judge fixed." } },
@@ -440,7 +440,7 @@
     s2_self: { en: { goal: "Keep the best boundaries but let the segmentation model self-label.", how: "Use S2 full-cover boundaries and Qwen3.6-27B labels.", input: "S2 predicted segments", result: "E2E F1 0.1017", verdict: "Better boundaries alone are not enough; labels remain weak." } },
     raw397: { en: { goal: "Lock boundaries and upgrade the labeler.", how: "Use the same S2 boundaries, then let 397B caption raw frames.", input: "raw frames within S2 segments", result: "E2E F1 0.1388", verdict: "Most gain comes from the larger labeler." } },
     ffmpeg397: { en: { goal: "Test sensitivity to decode and sampling path.", how: "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.", input: "ffmpeg-sampled raw frames", result: "E2E F1 0.1414", verdict: "Slightly better than the default raw path; useful as a candidate." } },
-    nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1080", verdict: "Context pollution hurts semantics while boundaries stay fixed." } },
+    nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1080", verdict: "Context pollution lowers semantic accuracy while boundaries stay fixed." } },
     nb397: { en: { goal: "Try neighbor context with a stronger raw prior.", how: "Feed previous/current/next frames plus a 397B raw prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1440", verdict: "Better than the 27B-prior neighbor path, still below selector." } },
     selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "E2E F1 0.1517", verdict: "Best current end-to-end result; higher call count." } }
   };
@@ -1314,7 +1314,7 @@
     },
     {
       "id": "whole_legacy_27b",
-      "name": "整集一次 + legacy prompt（无 GEPA 规则）",
+      "name": "整集一次 + legacy prompt（无 GEPA-searched 规则）",
       "f1": 0.123,
       "p": 0.257,
       "r": 0.081,
@@ -1334,7 +1334,7 @@
     },
     {
       "id": "aligned_gepa_27b",
-      "name": "整集一次 + GEPA 规则 prompt",
+      "name": "整集一次 + GEPA-searched 规则 prompt",
       "f1": 0.1369,
       "p": 0.228,
       "r": 0.098,
@@ -1346,7 +1346,7 @@
       "note": "仍欠分割，但比 legacy 略好",
       "method": {
         "goal": "用 completed-events + 时长先验对齐 blog 规则",
-        "how": "GEPA prompt：只标完成操作；偏好约 2–10s 段",
+        "how": "GEPA-searched prompt：只标完成操作；偏好约 2–10s 段",
         "input": "整集 contact sheet + GEPA",
         "result": "F1 0.1369",
         "verdict": "外形对齐有效，但仍欠分割"
@@ -1529,7 +1529,7 @@
         "how": "相邻且 label 完全相同则合并",
         "input": "S2 full-cover 预测",
         "result": "F1 0.1987",
-        "verdict": "好看但掉分；勿默认 merge"
+        "verdict": "时间轴更整洁但 F1 降低；不要默认 merge"
       }
     },
     {
@@ -1549,7 +1549,7 @@
         "how": "解析 verb/object 近似匹配后合并",
         "input": "S2 full-cover 预测",
         "result": "F1 0.1947",
-        "verdict": "继续掉分"
+        "verdict": "继续降低 F1"
       }
     },
     {
@@ -1563,13 +1563,13 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "跨短间隙合并，掉分最多",
+      "note": "跨短间隙合并，F1 降低最多",
       "method": {
         "goal": "短间隙也桥接合并",
         "how": "允许短时间桥接后合并",
         "input": "S2 full-cover 预测",
         "result": "F1 0.1883",
-        "verdict": "掉分最多"
+        "verdict": "F1 降低最多"
       }
     }
   ],
@@ -1607,7 +1607,7 @@
         "how": "HomER 无 hand_recon，用光流质心画 proxy overlay",
         "input": "overlay frames",
         "result": "48.3%",
-        "verdict": "伤分；不能冒充真 hand"
+        "verdict": "得分下降；不能等同于真实 hand-crop"
       }
     },
     {
@@ -1625,7 +1625,7 @@
         "how": "past/current/future 各约 6 格整帧拼图，再 caption",
         "input": "整帧 collage",
         "result": "42.1%",
-        "verdict": "上下文噪音大，跌分"
+        "verdict": "上下文噪音大，准确率下降"
       }
     },
     {
@@ -1675,11 +1675,11 @@
       "delta_vs_raw": -0.151,
       "note": "修时间戳仍跌",
       "method": {
-        "goal": "怀疑跌分因 tile 缺秒戳",
+        "goal": "检查准确率下降是否由 tile 缺少秒戳导致",
         "how": "补黄字秒级时间戳后全量重跑",
         "input": "邻段 sheet（有戳）",
         "result": "35.5%",
-        "verdict": "不是缺戳的问题，recipe 本身伤分"
+        "verdict": "不是缺戳的问题，这个视觉输入设计本身降低了标注准确率"
       }
     },
     {
@@ -1697,7 +1697,7 @@
         "how": "HomER 无 hand asset：用 YOLO 人/腕点或 center-proxy 裁剪拼 collage（非 HaWoR）",
         "input": "hand-collage approx",
         "result": "40.6%",
-        "verdict": "近似 crop 伤分；≠ true hand-crop"
+        "verdict": "近似 crop 使得分下降；≠ true hand-crop"
       },
       "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
     },
@@ -1820,7 +1820,7 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.108,
       "pred_gold": "308/470",
-      "note": "伤分",
+      "note": "得分下降",
       "method": {
         "goal": "邻段（上一/当前/下一段）上下文 + 小模型 prior",
         "how": "PREV/CUR/NEXT≤5 帧 + seed prior，再标当前段",

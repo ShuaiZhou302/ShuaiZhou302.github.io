@@ -99,11 +99,11 @@
       "world.li.prod": "<strong>生产默认管线</strong>（日常批标）：HaWoR 手重建 → 腕速平滑与 minima 切段 → 段内 raw 抽帧写短句 → merge judge / rewrite。细节见 <a href=\"#app-prod\">附录 D</a>。启发来自 Vitra 一类「先运动再 caption」工作流，但<strong>切段后端是 HaWoR 腕速，不是 Vitra 模型</strong>。",
       "world.li.wgo": "<strong>本报告 WGO 实验线</strong>（对标 Macrodata）：contact sheet + Qwen 视觉语言模型切段 → 锁边界后标注 / 多候选 selector。正文消融主要讲这条线。",
       "world.p.models": "模型栈以 <strong>Qwen</strong> 为主：分段用 <strong>Qwen3.6-27B</strong>（快、便宜、可复现），标注 / judge / selector 用 <strong>Qwen3.5-397B</strong>（句子质量与选优）。相对 Gemini 参考栈，同一套权重与 prompt 可在不同机器上复跑，消融结论可核对。",
-      "world.h3.gepa": "GEPA 是什么（定义）",
-      "world.gepa.1": "<strong>GEPA 本身</strong>：Macrodata 用来<strong>自动搜索更好 prompt</strong> 的方法/过程。我们写这篇报告时<strong>没有</strong>在推理阶段重跑 GEPA。",
-      "world.gepa.2": "<strong>我们实际用的东西</strong>：搜索结果沉淀下来的<strong>切段规则清单</strong>（英文 prompt；内部名 <code>completed_events_duration_prior_v1</code>）。",
-      "world.gepa.3": "<strong>实质</strong>：就是在发给视觉语言模型的 <strong>text prompt 里加入一组硬规则</strong>——只切「已完成的操作事件」、多数段约 2–10 秒、不要把靠近/微调/收回拆成假事件、不要把不同的 pick/place 乱合并。<em>不是新模型，也不是后处理脚本。</em>",
-      "world.gepa.4": "<strong>怎么用</strong>：整集 contact sheet 图像 + 这段英文规则 → 一次粗分。样例 Step 02 折叠区为英文全文；概念与实现见 <a href=\"#app-seg\">附录 B</a>，原文下载见 <a href=\"#app-prompts\">附录 F</a>。",
+      "world.h3.gepa": "GEPA 在本文里指什么",
+      "world.gepa.1": "<strong>GEPA 本身</strong>：一种 reflective prompt evolution 方法。Macrodata 博客中说明，他们用 GEPA 在独立验证集上搜索更好的分段 prompt。",
+      "world.gepa.2": "<strong>我们实际复用的东西</strong>：搜索结果沉淀下来的<strong>切段规则清单</strong>（英文 prompt；内部名 <code>completed_events_duration_prior_v1</code>）。",
+      "world.gepa.3": "<strong>因此本文不把 GEPA 当作运行时模块</strong>：我们没有重新跑 GEPA，也没有把 GEPA 当模型或后处理脚本；只是把那组规则写进 VLM 请求文本。",
+      "world.gepa.4": "<strong>怎么用</strong>：整集 contact sheet 图像 + 这段英文规则 → 一次粗分。规则要求只标完成事件、偏好约 2–10 秒、忽略靠近/微调/收回等非完成事件。样例 Step 02 折叠区为英文全文；概念与实现见 <a href=\"#app-seg\">附录 B</a>，原文下载见 <a href=\"#app-prompts\">附录 F</a>。",
       "world.h3.terms": "后面会反复出现的几个词",
       "world.term.1": "<strong>时间窗口</strong>：视频时间轴上的一段连续区间（例如 84–94 秒），不是软件 UI 窗口。",
       "world.term.2": "<strong>第一遍加密切（S1）</strong>：提高切段密度以抬召回（容易切碎）。详见 <a href=\"#app-seg\">附录 B</a>。",
@@ -130,12 +130,13 @@
       "contact.cap1": "同参数生成的一张 sheet（前 ~10 秒）。全片与局部时间窗口都用这一套 layout。",
       "contact.cap2": "局部时间窗口示例：版式相同，只换时间范围（第二遍精修看这种图）。",
       "contact.taxonomy.cap": "本地图示：contact sheet、整帧 temporal collage、邻段 sheet、hand crop 是四种不同视觉输入；它们在实验中不可互相代称。",
+      "contact.taxonomy.explain": "<strong>读图：</strong>左一 contact sheet 把整集按时间展开，用来找边界；中间两列是给“已知边界的标注任务”增加上下文，分别看前/中/后窗口或上一/当前/下一段；最右 hand crop 只保留手附近区域，前提是有可靠手腕轨迹。我们的 HomER 消融说明：上下文更多不一定更好，邻段和整帧 collage 往往会把别的动作带进当前句子。",
       "walk.h2": "4. 样例：跟着 homer_4 走读 selector 路径",
       "walk.lead": "下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；生产可在同边界下改用单路 raw。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。",
       "story.h2": "6. 消融故事：我们怎样走到 0.1517",
       "story.lead": "按时间线叙述；主表与图跟在后面。实验细节（做法卡、窗口外扩消融）默认折叠。",
       "story.h3.seg": "6.1 分段：从假切点到「盖住完整动作」",
-      "story.h3.label": "6.2 标注：很多「看起来更聪明」的视觉输入其实伤分",
+      "story.h3.label": "6.2 标注：复杂视觉输入不一定提高准确率",
       "story.h3.e2e": "6.3 E2E：锁边界，涨分靠大模型多候选",
       "recipe.h2": "7. 推荐配置",
       "appendix.h2": "8. 附录：概念、公式、实现与成本记账",
@@ -181,13 +182,13 @@
       "story.seg.legend": "表头：<strong>P（Precision）</strong>= match / pred（预测段里配对成功的比例）；<strong>R（Recall）</strong>= match / gold（gold 段被找回的比例）；<strong>match / pred / gold</strong>= 配对成功数 / 预测段数 / gold 段数（本子集 gold 恒为 470）。「模型」列若写<strong>规则后处理</strong>，表示在已有预测上做脚本合并，不再调用 LLM。",
       "story.seg.padnote": "窗口外扩秒数（旧称 pad）的消融未进入主决策路径；细节见折叠区。",
       "story.seg.fold": "展开：分段实验细节",
-      "story.label.p": "固定 gold 边界后，raw 多帧仍是最稳默认（50.6%）。<strong>邻段 sheet</strong>（上一/当前/下一段拼在一起）、整帧 collage、YOLO/proxy hand-collage 都会跌。后来补跑 HaWoR 真手部 crop 才微涨到 51.1%——成本高，不该为 +0.4pp 强行全量 recon。",
+      "story.label.p": "固定 gold 边界后，raw 多帧仍是最稳默认（50.6%）。<strong>邻段 sheet</strong>（上一/当前/下一段拼在一起）、整帧 collage、YOLO/proxy hand-collage 都降低了准确率。后来补跑 HaWoR 真手部 crop 才微涨到 51.1%——成本高，不该为 +0.4pp 强行全量 recon。",
       "story.label.cap1": "<strong>读图（三栏）：</strong>左=原帧；中=启发式框（画面中心偏下固定方框，<em>不是</em>手腕检测）；右=裁出后送给标注模型的图。这是失败的 proxy 路径示意。固定边界上这类输入低于 raw。详见 <a href=\"#app-visual\">附录 E</a>。",
       "story.label.cap2": "<strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。HomER 早期无手重建时用此类 proxy；后来 HaWoR true hand-crop 才微涨到 51.1%。",
       "story.label.fold": "展开：标注实验细节（做法卡）",
       "story.e2e.p": "分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。<strong>自标</strong>：分段小模型写句子，弱。<strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1388。<strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，E2E 掉到 0.108（见 <a href=\"#app-e2e\">附录 C</a>）。<strong>candidate selector</strong>：多路候选再选一句 → <strong>0.1517</strong>。",
       "story.e2e.fold": "展开：E2E 实验细节（做法卡）",
-      "story.takeaway": "<strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；规则 merge 改善观感但不涨 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常伤标注；汇报时固定 judge。",
+      "story.takeaway": "<strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；规则 merge 改善观感但没有提升 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常降低标注准确率；汇报时固定 judge。",
       "th.cond": "条件",
       "th.model": "模型或方法",
       "th.note": "结果一句话",
@@ -243,14 +244,16 @@
       "hero.title": "EgoANT<br />评测 HomER",
       "hero.grid.aria": "第一视角人手子任务视频墙",
       "nav.brand": "EgoANT · 报告",
-      "references.h2": "References",
-      "references.wgo": "公开 subtask annotation benchmark，本页使用其中 HomER 子集做评测。",
-      "references.macrodata": "WGO-Bench、评测协议、Gemini 参考分和公开成本数字来源。",
-      "references.scale": "视觉输入表示、hand-crop/collage 与 dense captioning 消融的公开参考。",
-      "references.vitra": "真实人手视频转 VLA 训练信号的公开工作；本报告只借鉴问题设定，不把 VITRA 当作切段后端。",
-      "references.egodex": "大规模 egocentric dexterous manipulation 数据集。",
-      "references.egoverse": "面向 robot learning 的第一视角 human data 生态。",
-      "references.egolive": "真实世界人类任务的第一视角数据集论文。",
+      "references.h2": "参考文献",
+      "references.wgo": "Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">https://huggingface.co/datasets/macrodata/WGO-Bench</a>",
+      "references.macrodata": "Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">https://macrodata.co/blog/annotating-robot-video-subtasks</a>",
+      "references.gepa": "Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href=\"https://arxiv.org/abs/2507.19457\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2507.19457</a>",
+      "references.scale": "Choghari, Jade, Sansone, Agustin, Pasqualis, Nicolas, Mader, Conrado, Tiupikov, Aleks, Sivapurapu, Mouli. (2026). <em>The Path to Large Scale Dense Video Captioning</em>. Scale Labs. <a href=\"https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning\" target=\"_blank\" rel=\"noopener\">https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning</a>",
+      "references.vitra": "Li, Qixiu, Deng, Yu, Liang, Yaobo, Luo, Lin, Zhou, Lei, Yao, Chengtang, et al. (2025). <em>VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos</em>. Project page. <a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">https://microsoft.github.io/VITRA/</a>",
+      "references.hawor": "Zhang, Jinglei, Deng, Jiankang, Ma, Chao, Potamias, Rolandos Alexandros. (2025). <em>HaWoR: World-Space Hand Motion Reconstruction from Egocentric Videos</em>. arXiv. <a href=\"https://arxiv.org/abs/2501.02973\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2501.02973</a>",
+      "references.egodex": "Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href=\"https://arxiv.org/abs/2505.11709\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2505.11709</a>",
+      "references.egoverse": "EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">https://egoverse.ai/</a>",
+      "references.egolive": "Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href=\"https://doi.org/10.48550/arXiv.2604.23570\" target=\"_blank\" rel=\"noopener\">https://doi.org/10.48550/arXiv.2604.23570</a>",
       "footer.text": "EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · F1 越大越好"
     },
     en: {
@@ -382,6 +385,7 @@
       "contact.cap1": "One sheet with the same params (first ~10s). Whole-episode and local windows share this layout.",
       "contact.cap2": "Local time-window example: same layout, different range (what pass-2 refine sees).",
       "contact.taxonomy.cap": "Local diagram: contact sheets, whole-frame temporal collages, neighbor sheets, and hand crops are distinct visual inputs and should not be used interchangeably.",
+      "contact.taxonomy.explain": "<strong>How to read it:</strong> the contact sheet unfolds an episode over time for boundary finding. The two middle inputs add context after boundaries are already fixed: past/current/future windows or previous/current/next segments. The hand crop keeps only the hand region and needs reliable wrist tracks. Our HomER ablations show that more context is not automatically better: neighbor sheets and full-frame collages often import the wrong action into the current label.",
       "walk.h2": "4. Walkthrough: homer_4 along the selector path",
       "walk.lead": "This walkthrough is the <strong>selector path</strong> (widescreen 1080p, clear wipe motion); production can use raw-only on the same bounds. Task: wipe tables / cabinet surfaces with a cloth. Folded prompts stay English originals.",
       "story.h2": "6. Ablation story: how we reached 0.1517",
@@ -496,13 +500,15 @@
       "hero.grid.aria": "Egocentric human subtask video wall",
       "nav.brand": "EgoANT · Report",
       "references.h2": "References",
-      "references.wgo": "Public subtask annotation benchmark; this page evaluates the HomER subset.",
-      "references.macrodata": "Source for WGO-Bench, the evaluation protocol, Gemini reference numbers, and published cost figures.",
-      "references.scale": "Public reference for visual input design, hand crops/collages, and dense captioning ablations.",
-      "references.vitra": "Public work on converting real human-hand videos into VLA training signals; this report borrows the problem framing, not VITRA as a segmentation backend.",
-      "references.egodex": "Large-scale egocentric dexterous manipulation dataset.",
-      "references.egoverse": "First-person human-data ecosystem for robot learning.",
-      "references.egolive": "Paper on a large-scale egocentric dataset from real-world human tasks.",
+      "references.wgo": "Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">https://huggingface.co/datasets/macrodata/WGO-Bench</a>",
+      "references.macrodata": "Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">https://macrodata.co/blog/annotating-robot-video-subtasks</a>",
+      "references.gepa": "Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href=\"https://arxiv.org/abs/2507.19457\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2507.19457</a>",
+      "references.scale": "Choghari, Jade, Sansone, Agustin, Pasqualis, Nicolas, Mader, Conrado, Tiupikov, Aleks, Sivapurapu, Mouli. (2026). <em>The Path to Large Scale Dense Video Captioning</em>. Scale Labs. <a href=\"https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning\" target=\"_blank\" rel=\"noopener\">https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning</a>",
+      "references.vitra": "Li, Qixiu, Deng, Yu, Liang, Yaobo, Luo, Lin, Zhou, Lei, Yao, Chengtang, et al. (2025). <em>VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos</em>. Project page. <a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">https://microsoft.github.io/VITRA/</a>",
+      "references.hawor": "Zhang, Jinglei, Deng, Jiankang, Ma, Chao, Potamias, Rolandos Alexandros. (2025). <em>HaWoR: World-Space Hand Motion Reconstruction from Egocentric Videos</em>. arXiv. <a href=\"https://arxiv.org/abs/2501.02973\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2501.02973</a>",
+      "references.egodex": "Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href=\"https://arxiv.org/abs/2505.11709\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2505.11709</a>",
+      "references.egoverse": "EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">https://egoverse.ai/</a>",
+      "references.egolive": "Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href=\"https://doi.org/10.48550/arXiv.2604.23570\" target=\"_blank\" rel=\"noopener\">https://doi.org/10.48550/arXiv.2604.23570</a>",
       "footer.text": "EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · higher F1 is better"
     },
   };
@@ -519,14 +525,14 @@
       <h3 id="app-metrics">A. 得分方法：直觉 + 公式</h3>
       <figure class="figure">
         <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
-        <figcaption>IoU 衡量时间段重叠；m 是通过 IoU 阈值的一对一时间匹配数。</figcaption>
+      <figcaption>IoU 衡量时间段重叠；<code>m</code> 是通过 IoU 阈值的一对一时间匹配数。</figcaption>
       </figure>
       <h4>A.1 Segment F1（只评时间切分）</h4>
       <p><strong>IoU</strong> 是两个时间段交集长度除以并集长度。若 pred 与 gold 的 IoU ≥ 0.75，就可 greedy 一对一配对；一个 pred 不能匹配多个 gold。</p>
       <pre class="formula">P = m / n_pred
 R = m / n_gold
 F1 = 2·P·R / (P+R)</pre>
-      <p>其中 <code>m</code> 是 temporal matches，<code>n_pred</code> 是预测段数，<code>n_gold</code> 是人工 gold 段数。Precision 防止乱切太多，Recall 防止漏切太多，F1 用调和平均同时惩罚这两类错误。</p>
+      <p>其中 <code>m</code> 是时间匹配数（temporal matches），也就是 IoU 达标的一对一 pred/gold 配对数；<code>n_pred</code> 是预测段数，<code>n_gold</code> 是人工 gold 段数。Precision 防止乱切太多，Recall 防止漏切太多，F1 用调和平均同时惩罚这两类错误。</p>
 
       <h4>A.2 固定边界 Label Acc（只评文案）</h4>
       <p>时间边界直接使用 gold，只考模型能否把这段动作写成同一个完成事件。</p>
@@ -561,14 +567,14 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <p>要求模型把窗口里看得见的完成事件都切出来，但不要把 approach、adjust、retract 拆成假事件。算法式 midpoint 后处理不如把 full-cover 写进 prompt。</p>
       </article>
       <article class="concept-card">
-        <h4>切段规则清单（GEPA 规则 prompt）</h4>
-        <p>这里不是新模型，也不是后处理脚本；只是把 Macrodata 搜索得到的英文分段规则放进 VLM 请求文本。</p>
+        <h4>切段规则清单（GEPA 搜索得到的 prompt）</h4>
+        <p>这里不是新模型，也不是后处理脚本；更准确地说，是 Macrodata 用 GEPA 在验证集上搜索得到的一组英文分段规则。我们复用的是这份规则清单，而不是在本报告里重新运行 GEPA。</p>
       </article>
 
       <h3 id="app-e2e">C. 标注 / E2E 术语</h3>
       <article class="concept-card"><h4>raw relabel</h4><p>边界锁死后，用 397B 看当前段 raw 帧重写一句 subtask。S2 边界 + 单路 raw 的 E2E F1 为 0.1388。</p></article>
-      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>边界相同，只换视频解码/抽帧路径，作为候选源之一。结果略高于默认 raw。</p></article>
-      <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似有上下文，但在 Qwen 上常把邻段动作写进当前句，所以掉分。</p></article>
+      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>边界相同，只把默认解码/抽帧实现换成 ffmpeg 路径。它不是新的标注策略，而是同一段视频的另一种候选文案来源；实验中略高于默认 raw，因此进入 selector 候选池。</p></article>
+      <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似能提供上下文，但在 Qwen 上常把邻段动作写进当前句，因此降低标注准确率。</p></article>
       <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；当前最高 E2E F1 为 0.1517。</p></article>
 
       <h3 id="app-prod">D. EgoANT 生产原管线（澄清 VITRA）</h3>
@@ -579,25 +585,29 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">段内 raw 抽帧写短句</div></div>
         <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge → rewrite</div></div>
       </div>
-      <p>VITRA 启发的是“先手部/运动信号，再 caption”的问题设定；本系统实际用 HaWoR wrist-speed 作为生产切段信号，不把 VITRA 当作后端模型。</p>
+      <figure class="figure">
+        <img src="assets/explain/wrist_speed_oversegmentation.svg" alt="Wrist-speed minima segmentation schematic" />
+        <figcaption>生产默认管线先用 HaWoR 重建左右手腕轨迹，再对腕速做平滑并在速度低谷切段。这个信号很有用，但停顿、微调、放手和收回也会形成低谷，所以容易把一个完成任务切成太多小段。</figcaption>
+      </figure>
+      <p>VITRA 启发的是“先手部/运动信号，再 caption”的问题设定；本系统实际用 HaWoR wrist-speed 作为生产切段信号，不把 VITRA 当作后端模型。它的主要失败模式是<strong>过分割</strong>：动作中途的犹豫或微调在速度曲线上也像边界，后续 merge judge 虽可合并一部分，但在 WGO 的 IoU 口径下仍会拉低 Segment F1。</p>
 
       <h3 id="app-visual">E. 视觉输入对照</h3>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
-        <figcaption>这些视觉输入的作用不同：contact sheet 用于分段，raw/hand-crop/collage 主要用于固定边界标注消融。</figcaption>
+        <figcaption>这些视觉输入的作用不同：contact sheet 让模型看完整时间轴，用于找边界；raw/hand-crop/collage 则是在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
       </figure>
       <table><thead><tr><th>名称</th><th>模型看见什么</th><th>典型用途</th><th>HomER 上</th></tr></thead><tbody>
         <tr><td>contact sheet</td><td>带时间戳的抽帧拼图</td><td>分段</td><td>主路径</td></tr>
         <tr><td>raw 多帧</td><td>段内均匀原帧</td><td>标注默认</td><td>Acc 50.6%</td></tr>
-        <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>伤分</td></tr>
-        <tr><td>neighbor sheet</td><td>上一/当前/下一段 sheet</td><td>标注消融</td><td>伤分</td></tr>
+        <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>降低准确率</td></tr>
+        <tr><td>neighbor sheet</td><td>上一/当前/下一段 sheet</td><td>标注消融</td><td>降低准确率</td></tr>
         <tr><td>HaWoR true hand-crop</td><td>按腕轨裁手部</td><td>标注候选</td><td>Acc 51.1%</td></tr>
       </tbody></table>
 
       <h3 id="app-prompts">F. Prompt 原文（English）</h3>
       <p>英文 prompt 全文在样例章折叠区展示，此处保留下载入口。</p>
       <ul>
-        <li><a href="#walk-2">GEPA 规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
+        <li><a href="#walk-2">GEPA 搜索得到的切段规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>下载</a></li>
         <li><a href="#walk-5">Judge / Selector</a> · <a href="prompts/judge_semantic_match.md" download>judge</a> · <a href="prompts/candidate_selector.md" download>selector</a></li>
@@ -610,7 +620,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <table><thead><tr><th>项</th><th>发现</th><th>处理</th></tr></thead><tbody>
         <tr><td>复制目录产物</td><td>不能把文件时间戳接近当作重标证据</td><td>只报告可追溯实验输出</td></tr>
         <tr><td>proxy overlay</td><td>光流/中心框不是真手部重建</td><td>与 HaWoR true hand-crop 分开汇报</td></tr>
-        <tr><td>neighbor sheet</td><td>补时间戳后仍跌分</td><td>结论是上下文设计本身伤分</td></tr>
+        <tr><td>neighbor sheet</td><td>补时间戳后仍降低准确率</td><td>结论是上下文设计本身容易污染当前动作描述</td></tr>
       </tbody></table>
     `,
     en: `
@@ -653,12 +663,12 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <article class="concept-card"><h4>S2 local refinement</h4><p>After coarse segmentation, S2 opens a local time window near coarse bounds and re-cuts using the same timestamped contact-sheet layout. The final <strong>pad=0 + full-cover prompt</strong> reaches Segment F1 0.2031.</p></article>
       <article class="concept-card"><h4>No pad-out (pad=0)</h4><p>The refine window equals the coarse interval and does not peek 0.5/1/2 extra seconds on either side. This reduces neighboring-action contamination; all pad-out ablations scored lower than pad=0.</p></article>
       <article class="concept-card"><h4>Full-cover prompt</h4><p>The model must cover every completed event visible in the window, while avoiding fake approach/adjust/retract fragments. Scripted midpoint postprocessing was worse than writing this requirement into the prompt.</p></article>
-      <article class="concept-card"><h4>Segmentation rule list (GEPA-derived prompt)</h4><p>This is not a new model and not a postprocess. It is an English rule list found by Macrodata-style prompt search and included in the VLM request text.</p></article>
+      <article class="concept-card"><h4>Segmentation rule list (GEPA-searched prompt)</h4><p>This is not a new model and not a postprocess. More precisely, Macrodata used GEPA on a validation set to search for an English rule list. We reuse that rule list; we do not rerun GEPA in this report.</p></article>
 
       <h3 id="app-e2e">C. Labeling / E2E terms</h3>
       <article class="concept-card"><h4>raw relabel</h4><p>With boundaries locked, Qwen3.5-397B rewrites one subtask label from raw frames inside the current segment. S2 bounds + raw-only relabel gives E2E F1 0.1388.</p></article>
-      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>Same boundaries, but a different decode/sampling path; it is used as one candidate source.</p></article>
-      <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, so it hurts Qwen labeling on HomER.</p></article>
+      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>Same boundaries, but the decode / frame-sampling implementation is switched to ffmpeg. It is not a new labeling strategy; it is another candidate label source for the same video segment, and it slightly beats the default raw path in this benchmark.</p></article>
+      <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, reducing Qwen labeling accuracy on HomER.</p></article>
       <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best E2E F1 is 0.1517.</p></article>
 
       <h3 id="app-prod">D. EgoANT production pipeline (VITRA clarification)</h3>
@@ -669,25 +679,29 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">raw frames inside each segment</div></div>
         <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge then rewrite</div></div>
       </div>
-      <p>VITRA motivates the “motion/hand signal first, caption second” framing. EgoANT uses HaWoR wrist-speed signals for production segmentation; it does not use VITRA as a backend model.</p>
+      <figure class="figure">
+        <img src="assets/explain/wrist_speed_oversegmentation.svg" alt="Wrist-speed minima segmentation schematic" />
+        <figcaption>The production default first reconstructs left/right wrist tracks with HaWoR, smooths wrist speed, and cuts at speed valleys. The signal is useful, but pauses, adjustments, release, and hand retraction can also look like valleys, creating too many segments.</figcaption>
+      </figure>
+      <p>VITRA motivates the “motion/hand signal first, caption second” framing. EgoANT uses HaWoR wrist-speed signals for production segmentation; it does not use VITRA as a backend model. Its main failure mode is <strong>over-segmentation</strong>: hesitation and small adjustments often look like boundaries in the speed curve. A later merge judge can repair some of this, but the WGO IoU metric still penalizes fragmented boundaries.</p>
 
       <h3 id="app-visual">E. Visual input comparison</h3>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
-        <figcaption>These inputs serve different purposes: contact sheets are for segmentation, while raw frames, hand crops, and collages are labeling ablations.</figcaption>
+        <figcaption>These inputs serve different purposes: contact sheets expose the timeline for boundary finding; raw frames, hand crops, and collages compare visual evidence after the boundary is fixed.</figcaption>
       </figure>
       <table><thead><tr><th>Name</th><th>What the model sees</th><th>Typical use</th><th>HomER result</th></tr></thead><tbody>
         <tr><td>contact sheet</td><td>timestamped frame grid</td><td>segmentation</td><td>main path</td></tr>
         <tr><td>raw frames</td><td>uniform frames inside the segment</td><td>default labeling</td><td>Acc 50.6%</td></tr>
-        <tr><td>temporal collage</td><td>past/current/future full-frame grids</td><td>labeling ablation</td><td>hurts</td></tr>
-        <tr><td>neighbor sheet</td><td>previous/current/next segment sheets</td><td>labeling ablation</td><td>hurts</td></tr>
+        <tr><td>temporal collage</td><td>past/current/future full-frame grids</td><td>labeling ablation</td><td>lower accuracy</td></tr>
+        <tr><td>neighbor sheet</td><td>previous/current/next segment sheets</td><td>labeling ablation</td><td>lower accuracy</td></tr>
         <tr><td>HaWoR true hand-crop</td><td>crop around wrist tracks</td><td>label candidate</td><td>Acc 51.1%</td></tr>
       </tbody></table>
 
       <h3 id="app-prompts">F. Prompt originals (English)</h3>
       <p>Full English prompts are shown once in the walkthrough folds; downloads remain here.</p>
       <ul>
-        <li><a href="#walk-2">GEPA rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
+        <li><a href="#walk-2">GEPA-searched segmentation rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>download</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>download</a></li>
         <li><a href="#walk-5">Judge / Selector</a> · <a href="prompts/judge_semantic_match.md" download>judge</a> · <a href="prompts/candidate_selector.md" download>selector</a></li>
@@ -700,7 +714,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <table><thead><tr><th>Item</th><th>Observation</th><th>Treatment</th></tr></thead><tbody>
         <tr><td>Copied prediction folders</td><td>Close file timestamps are not evidence of a fresh relabel run</td><td>Only traceable experiment outputs are reported</td></tr>
         <tr><td>proxy overlay</td><td>Optical-flow or center-box proxies are not true hand reconstruction</td><td>Reported separately from HaWoR true hand-crop</td></tr>
-        <tr><td>neighbor sheet</td><td>Adding timestamps did not recover the score</td><td>The context design itself is treated as harmful here</td></tr>
+        <tr><td>neighbor sheet</td><td>Adding timestamps did not recover accuracy</td><td>The context design itself appears to pollute the current action description</td></tr>
       </tbody></table>
     `
   };
