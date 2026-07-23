@@ -86,7 +86,7 @@
     "s2_full25_397b": {
       "zh": {
         "name": "第二遍局部精修早期版（窗外扩≈1s，尚未盖住完整动作）",
-        "note": "方向对，但不是最终「盖住完整动作」",
+        "note": "早期局部精修配置",
         "model": "Qwen3.5-397B"
       },
       "en": {
@@ -158,7 +158,7 @@
     "s2_fullcover_qwen36": {
       "zh": {
         "name": "局部再切：窗口不外扩 + 盖住完整动作（S2 · pad=0 · full-cover）",
-        "note": "当前最强分段",
+        "note": "已评测分段配置最高值",
         "model": "Qwen3.6-27B"
       },
       "en": {
@@ -169,7 +169,7 @@
     },
     "merge_exact": {
       "zh": {
-        "name": "后处理：合并相邻「文案完全相同」段",
+        "name": "后处理：合并相邻完全相同标签段",
         "note": "合并后 F1 下降",
         "model": "规则后处理（非 LLM）"
       },
@@ -223,7 +223,7 @@
       },
       "en": {
         "name": "Proxy overlay · Qwen3.5-397B",
-        "note": "Not true hand crops; below raw",
+        "note": "Heuristic overlay; below raw",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
@@ -242,7 +242,7 @@
     "temporal_collage": {
       "zh": {
         "name": "temporal collage · Qwen3.5-397B",
-        "note": "上下文污染当前句",
+        "note": "低于 raw 397B",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
@@ -289,7 +289,7 @@
     },
     "l1_neighbor": {
       "zh": {
-        "name": "邻段 contact sheet（上一/当前/下一段）",
+        "name": "邻段 sheet（上一/当前/下一段）",
         "note": "容易写到邻段动作",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
@@ -319,7 +319,7 @@
       },
       "en": {
         "name": "Proxy hand-collage · Qwen3.5-397B",
-        "note": "Approximate crop, not true hand-crop",
+        "note": "近似裁剪，不是重建腕轨迹裁剪",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
@@ -330,7 +330,7 @@
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "HaWoR true hand-crop",
+        "name": "HaWoR 重建腕轨迹裁剪",
         "note": "Slightly above raw 397B, below raw 27B",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
@@ -386,12 +386,12 @@
     "raw397": {
       "zh": {
         "name": "+ 397B 单路 raw 重标",
-        "note": "锁 0.2031 边界后单路 raw；Gemini E2E 0.1414，成本远低于 selector",
+        "note": "固定 0.2031 预测边界；Gemini E2E 0.1414；调用少于 selector",
         "model": null
       },
       "en": {
         "name": "+ 397B raw-only relabel",
-        "note": "Same 0.2031 bounds; Gemini E2E 0.1414; cheaper than selector",
+        "note": "Same 0.2031 predicted boundaries; Gemini E2E 0.1414; fewer calls than selector",
         "model": null
       }
     },
@@ -446,55 +446,55 @@
     "selector397": {
       "zh": {
         "name": "+ 397B 多候选 selector",
-        "note": "同边界上多候选选优；Gemini E2E 0.1542，标注调用更多",
+        "note": "同一预测边界；Gemini E2E 0.1542；调用更多",
         "model": null
       },
       "en": {
         "name": "+ 397B multi-candidate selector",
-        "note": "Same bounds; pick among candidates; Gemini E2E 0.1542; more label calls",
+        "note": "Same predicted boundaries; Gemini E2E 0.1542; more calls",
         "model": null
       }
     }
   };
 
   const METHOD_I18N = {
-    egovid_baseline: { en: { goal: "Use wrist-speed valleys as automatic subtask cuts.", how: "HaWoR/wrist speed minima, short-span rules, then merge judge.", input: "video plus hand reconstruction", result: "F1 0.0953, 810 predictions vs 470 gold", verdict: "Over-fragmented heuristic baseline." } },
-    cs_max3_397b: { en: { goal: "Approximate the public contact-sheet recipe with chunked sheets.", how: "Legacy prompt; at most three sheets per API call.", input: "chunked contact sheets", result: "F1 0.0952", verdict: "Artificial chunk seams become fake event boundaries." } },
-    cs_max3_27b: { en: { goal: "Repeat chunked contact sheets with the smaller model.", how: "Same max_sheets=3 legacy setup.", input: "chunked contact sheets", result: "F1 0.1278", verdict: "Model size alone does not fix a flawed chunking recipe." } },
-    whole_legacy_27b: { en: { goal: "Remove fake chunk seams.", how: "Send whole-episode sheets in one request with the legacy prompt.", input: "whole-episode contact sheets", result: "F1 0.1230, only 148 predictions", verdict: "Seam artifacts vanish, but the model under-segments." } },
-    aligned_gepa_27b: { en: { goal: "Align the prompt with completed-event and duration-prior rules.", how: "Use a GEPA-derived rule list: completed actions, roughly 2–10 second events.", input: "whole-episode sheets plus rule list", result: "F1 0.1369", verdict: "The rule list helps, but recall remains low." } },
-    s1_full25_397b: { en: { goal: "Counter under-segmentation by increasing cut density.", how: "Shorter duration prior and denser-cut instruction over all 25 HomER episodes.", input: "whole-episode sheets plus denser-cut prompt", result: "F1 0.1556, 558 predictions", verdict: "Recall improves, but over-segmentation returns." } },
-    s2_full25_397b: { en: { goal: "Re-cut locally after a coarse pass.", how: "Coarse bounds to local contact-sheet windows; early setup used about one second of pad-out.", input: "local sheets plus coarse-bound hints", result: "F1 0.1674", verdict: "Right direction, but not the final full-cover recipe." } },
-    s2_pad0_plain_27b: { en: { goal: "Ablate local-window padding.", how: "Local refine with pad_sec=0, before adding the full-cover instruction.", input: "local sheets", result: "F1 0.1711, 582 predictions", verdict: "No pad-out is best among pad widths, but still too fragmented." } },
-    s2_pad05_27b: { en: { goal: "Test whether a little extra context helps.", how: "Local refine with 0.5 seconds of pad-out.", input: "local sheets", result: "F1 0.1444", verdict: "Worse than no pad-out." } },
-    s2_pad1_27b: { en: { goal: "Test a larger local context window.", how: "Local refine with 1.0 second of pad-out.", input: "local sheets", result: "F1 0.1485", verdict: "Worse than no pad-out." } },
-    s2_pad2_27b: { en: { goal: "Test an even wider local context window.", how: "Local refine with 2.0 seconds of pad-out.", input: "local sheets", result: "F1 0.1436", verdict: "Extra neighboring context lowers F1." } },
-    s2_midpoint_post: { en: { goal: "Cover the time window using scripted postprocessing.", how: "Apply midpoint full-cover postprocess after pad=0 predictions.", input: "predicted boundaries", result: "F1 0.1635", verdict: "Scripted cover is worse than putting full-cover into the prompt." } },
-    s2_fullcover_qwen36: { en: { goal: "Re-cut locally while covering all completed actions in the window.", how: "Coarse GEPA pass, local timestamped sheets, pad=0, and full-cover prompt.", input: "local contact sheet plus coarse-bound hint", result: "F1 0.2031, 308 predictions", verdict: "Main segmentation gain in the Qwen stack." } },
-    merge_exact: { en: { goal: "Make the timeline cleaner by merging adjacent identical labels.", how: "Rule-based merge when adjacent labels are exactly identical.", input: "S2 full-cover predictions", result: "F1 0.1987", verdict: "Looks cleaner but lowers F1; do not enable by default." } },
-    merge_verb: { en: { goal: "Merge adjacent segments with similar verb/object.", how: "Parse approximate verb/object matches and merge adjacent spans.", input: "S2 full-cover predictions", result: "F1 0.1947", verdict: "More aggressive merge lowers F1 further." } },
-    merge_bridge: { en: { goal: "Bridge short gaps between likely-similar spans.", how: "Allow short temporal gaps before merging.", input: "S2 full-cover predictions", result: "F1 0.1883", verdict: "Largest drop among merge rules." } },
-    raw_27b: { en: { goal: "Test whether the smaller model can label fixed segments.", how: "Same raw-frame input as the default labeler, but with Qwen3.6-27B.", input: "raw frames", result: "Gemini Acc 55.7%", verdict: "Best fixed-boundary label setting under the WGO/Macrodata judge." } },
-    temporal_collage_27b: { en: { goal: "Test past/current/future context with the smaller model.", how: "Create whole-frame grids from past, current, and future windows.", input: "temporal collage", result: "Gemini Acc 52.8%", verdict: "Better than 397B collage, still below simple raw 27B." } },
-    overlay_27b: { en: { goal: "Show approximate motion/hand-region cues.", how: "Draw proxy visual marks on raw frames, then label fixed gold segments.", input: "proxy overlay frames", result: "Gemini Acc 50.6%", verdict: "Does not beat raw 27B; useful as an ablation only." } },
-    raw_397b: { en: { goal: "Evaluate label quality with fixed gold boundaries.", how: "Uniformly sample raw frames per segment, caption with 397B, and score with Gemini.", input: "raw frames", result: "Gemini Acc 50.2%", verdict: "Stable baseline, but not the Gemini-rescored winner." } },
-    predictions_labeling: { en: { goal: "Audit a duplicate prediction artifact.", how: "Score the copied prediction file with the same Gemini judge.", input: "raw label predictions", result: "Gemini Acc 50.2%", verdict: "No hidden gain; keep the traceable raw row as baseline." } },
-    overlay_proxy: { en: { goal: "Show the model an approximate hand or motion location.", how: "Use optical-flow / center-proxy visual marks because true hand reconstruction was not available for this proxy ablation.", input: "proxy overlay frames", result: "Gemini Acc 48.5%", verdict: "Hurts score; do not present it as true hand overlay." } },
-    temporal_collage: { en: { goal: "Add whole-frame past/current/future context.", how: "Create separate full-frame grids from past, current, and future windows.", input: "whole-frame collage", result: "Gemini Acc 45.1%", verdict: "Context noise outweighs the benefit." } },
-    l1_neighbor: { en: { goal: "Use previous/current/next segment context.", how: "Feed PREV/CUR/NEXT contact sheets together to the labeler.", input: "neighbor contact sheets", result: "Gemini Acc 39.6%", verdict: "The model loses track of which action is current." } },
-    l1_ts_rerun: { en: { goal: "Check whether missing timestamps caused the neighbor-sheet drop.", how: "Re-run neighbor sheets after adding second-level yellow timestamps.", input: "timestamped neighbor sheets", result: "Gemini Acc 40.0%", verdict: "Timestamps help slightly, but the input design still hurts." } },
-    l2_yolo_proxy: { en: { goal: "Focus visual attention on hand-object regions.", how: "Use approximate crop/collage proxies instead of reliable wrist tracks.", input: "proxy hand collage", result: "Gemini Acc 39.1%", verdict: "Approximate crops hurt and are not true hand crops." } },
-    l2_hawor: { en: { goal: "Use real wrist tracks for hand crops.", how: "Run HaWoR, build wrist tracks, crop around hands, and fall back to raw when crops are incomplete.", input: "true hand crops plus raw fallback", result: "Gemini Acc 50.9%", verdict: "Small gain over raw 397B, but still below raw 27B." } },
-    l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Reports must keep the judge fixed." } },
-    l2_proxy_27b: { en: { goal: "Legacy excluded ablation.", how: "Approximate hand-collage with the smaller model was not part of the final Gemini-rescored main table.", input: "approximate hand collage", result: "Excluded from main table", verdict: "Do not compare against Gemini-rescored rows." } },
-    egovid_e2e: { en: { goal: "Measure the original one-pass cut-and-label path.", how: "Rule-based wrist cuts followed by per-segment captions.", input: "production-style baseline output", result: "E2E F1 0.0656", verdict: "Weak end-to-end baseline under the WGO protocol." } },
-    s2_self: { en: { goal: "Keep the best boundaries but let the segmentation model self-label.", how: "Use S2 full-cover boundaries and Qwen3.6-27B labels.", input: "S2 predicted segments", result: "Gemini E2E F1 0.1234", verdict: "Better boundaries alone are not enough; labels remain weak." } },
-    raw27b_e2e: { en: { goal: "Check whether the fixed-boundary Label Acc winner also wins E2E.", how: "Use S2 boundaries, then relabel each predicted segment with raw frames and Qwen3.6-27B.", input: "raw frames within S2 segments", result: "Gemini E2E F1 0.1285", verdict: "Better than self-label, but below 397B raw and selector." } },
-    raw397: { en: { goal: "Lock boundaries and upgrade the labeler.", how: "Use the same S2 boundaries, then let 397B caption raw frames.", input: "raw frames within S2 segments", result: "Gemini E2E F1 0.1414", verdict: "Most single-path gain comes from the larger labeler." } },
-    ffmpeg397: { en: { goal: "Test sensitivity to decode and sampling path.", how: "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.", input: "ffmpeg-sampled raw frames", result: "Gemini E2E F1 0.1491", verdict: "Slightly better than the default raw path; useful as a candidate." } },
-    nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1234", verdict: "Context pollution lowers semantic accuracy while boundaries stay fixed." } },
-    nb397: { en: { goal: "Try neighbor context with a stronger raw prior.", how: "Feed previous/current/next frames plus a 397B raw prior.", input: "neighbor frames plus prior", result: "Gemini E2E F1 0.1491", verdict: "Useful as a candidate, still below selector." } },
-    selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "Gemini E2E F1 0.1542", verdict: "Best current end-to-end result; higher call count." } }
+    egovid_baseline: { en: { goal: "Evaluate the wrist-speed production baseline.", how: "Use HaWoR-estimated hand motion, wrist-speed valleys, and adjacent-segment merging.", input: "video plus HaWoR hand-motion reconstruction", result: "Segment F1 0.0953; 810 predictions vs 470 references", verdict: "This baseline produces substantially more segments than the reference annotation." } },
+    cs_max3_397b: { en: { goal: "Evaluate chunked contact-sheet requests.", how: "Use the legacy prompt with at most three sheets per request.", input: "chunked contact sheets", result: "Segment F1 0.0952", verdict: "Request seams are often interpreted as action boundaries." } },
+    cs_max3_27b: { en: { goal: "Repeat chunked contact sheets with Qwen3.6-27B.", how: "Keep max_sheets=3 and the legacy prompt while changing the segmenter.", input: "chunked contact sheets", result: "Segment F1 0.1278", verdict: "Changing the model does not remove pseudo-boundaries introduced by chunking." } },
+    whole_legacy_27b: { en: { goal: "Remove chunk seams.", how: "Submit whole-episode sheets in one request with the legacy prompt.", input: "whole-episode contact sheets", result: "Segment F1 0.1230; 148 predictions", verdict: "Pseudo-boundaries decrease, but the model predicts fewer segments than the reference." } },
+    aligned_gepa_27b: { en: { goal: "Use completed-event segmentation rules.", how: "Submit whole-episode sheets with the GEPA-derived segmentation prompt.", input: "whole-episode contact sheets plus GEPA-derived segmentation prompt", result: "Segment F1 0.1369", verdict: "The prompt improves over the legacy prompt, but recall remains low." } },
+    s1_full25_397b: { en: { goal: "Increase predicted segment density.", how: "Adjust the duration prior and denser-cut instruction over all 25 HomER videos.", input: "whole-episode sheets plus denser-cut prompt", result: "Segment F1 0.1556; 558 predictions", verdict: "Recall increases together with the number of predicted segments." } },
+    s2_full25_397b: { en: { goal: "Add local refinement after coarse segmentation.", how: "Open local contact-sheet windows near coarse bounds; this early setup used about one second of pad-out.", input: "local sheets plus coarse-bound hints", result: "Segment F1 0.1674", verdict: "This is an early local-refinement configuration, not the final full-cover setup." } },
+    s2_pad0_plain_27b: { en: { goal: "Compare local-window padding widths.", how: "Run local refine with pad_sec=0 before adding the full-cover instruction.", input: "local contact sheets", result: "Segment F1 0.1711; 582 predictions", verdict: "pad=0 is above the tested pad-out settings, but still predicts many segments." } },
+    s2_pad05_27b: { en: { goal: "Test 0.5s pad-out.", how: "Add 0.5 seconds of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1444", verdict: "This setting is below pad=0." } },
+    s2_pad1_27b: { en: { goal: "Test 1.0s pad-out.", how: "Add 1.0 second of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1485", verdict: "This setting is below pad=0." } },
+    s2_pad2_27b: { en: { goal: "Test 2.0s pad-out.", how: "Add 2.0 seconds of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1436", verdict: "This setting is below pad=0." } },
+    s2_midpoint_post: { en: { goal: "Compare scripted coverage with a prompt constraint.", how: "Apply midpoint full-cover postprocessing after pad=0 predictions.", input: "predicted boundaries", result: "Segment F1 0.1635", verdict: "This postprocess is below putting full-cover directly in the prompt." } },
+    s2_fullcover_qwen36: { en: { goal: "Refine local windows while covering completed actions.", how: "Use local timestamped contact sheets, pad=0, and a full-cover prompt after coarse segmentation.", input: "local timestamped contact sheets plus coarse-bound hints", result: "Segment F1 0.2031; 308 predictions", verdict: "Highest Segment F1 among evaluated segmentation settings." } },
+    merge_exact: { en: { goal: "Test adjacent identical-label merging.", how: "Merge adjacent predictions whose labels are exactly identical.", input: "S2 full-cover predictions", result: "Segment F1 0.1987", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
+    merge_verb: { en: { goal: "Test adjacent verb/object merging.", how: "Parse approximate verb/object matches and merge adjacent spans.", input: "S2 full-cover predictions", result: "Segment F1 0.1947", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
+    merge_bridge: { en: { goal: "Test short-gap bridge merging.", how: "Allow short temporal gaps before merging adjacent spans.", input: "S2 full-cover predictions", result: "Segment F1 0.1883", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
+    raw_27b: { en: { goal: "Evaluate 27B labeling under fixed reference boundaries.", how: "Sample raw frames from each reference segment, label with Qwen3.6-27B, and score with Gemini-3.5-Flash.", input: "raw frames", result: "Label Acc 55.7%", verdict: "Highest observed value in the fixed-reference-boundary diagnostic setting." } },
+    temporal_collage_27b: { en: { goal: "Evaluate past/current/future context with 27B.", how: "Build temporal collages for fixed reference segments and label with Qwen3.6-27B.", input: "temporal collage", result: "Label Acc 52.8%", verdict: "Below raw 27B." } },
+    overlay_27b: { en: { goal: "Evaluate heuristic overlay cues with 27B.", how: "Draw optical-flow or heuristic visual marks on raw frames before labeling.", input: "proxy overlay frames", result: "Label Acc 50.6%", verdict: "Below raw 27B." } },
+    raw_397b: { en: { goal: "Evaluate 397B raw-frame labeling under fixed reference boundaries.", how: "Sample raw frames from each reference segment, label with Qwen3.5-397B, and score with Gemini-3.5-Flash.", input: "raw frames", result: "Label Acc 50.2%", verdict: "397B raw-frame baseline." } },
+    predictions_labeling: { en: { goal: "Audit a duplicate prediction artifact.", how: "Score the copied prediction file with the same Gemini judge.", input: "raw label predictions", result: "Label Acc 50.2%", verdict: "Matches the raw 397B result." } },
+    overlay_proxy: { en: { goal: "Evaluate heuristic overlay cues with 397B.", how: "Use optical-flow or center-proxy visual marks; this is not hand reconstruction.", input: "proxy overlay frames", result: "Label Acc 48.5%", verdict: "Below raw 397B." } },
+    temporal_collage: { en: { goal: "Evaluate whole-frame past/current/future context with 397B.", how: "Build a temporal collage for each fixed reference segment.", input: "whole-frame temporal collage", result: "Label Acc 45.1%", verdict: "Below raw 397B." } },
+    l1_neighbor: { en: { goal: "Evaluate previous/current/next context.", how: "Feed previous, current, and next segment sheets to the labeler.", input: "neighbor contact sheets", result: "Label Acc 39.6%", verdict: "Below raw 397B." } },
+    l1_ts_rerun: { en: { goal: "Evaluate neighbor sheets with second-level timestamps.", how: "Re-run previous/current/next sheets after adding second-level timestamps.", input: "timestamped neighbor sheets", result: "Label Acc 40.0%", verdict: "Below raw 397B." } },
+    l2_yolo_proxy: { en: { goal: "Evaluate approximate hand-crop collages.", how: "Use YOLO or center-heuristic crops rather than reconstructed wrist tracks.", input: "proxy hand-collage", result: "Label Acc 39.1%", verdict: "Below raw 397B." } },
+    l2_hawor: { en: { goal: "Evaluate HaWoR-reconstructed wrist-guided crops.", how: "Estimate wrist tracks with HaWoR, crop around hands, and use raw fallback when crops are incomplete.", input: "HaWoR-reconstructed wrist-guided crop plus raw fallback", result: "Label Acc 50.9%", verdict: "Above raw 397B and below raw 27B." } },
+    l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Main reports should keep the semantic judge fixed." } },
+    l2_proxy_27b: { en: { goal: "Legacy excluded ablation.", how: "Approximate hand-collage with Qwen3.6-27B was not part of the Gemini-rescored main table.", input: "approximate hand collage", result: "Excluded from main table", verdict: "Do not compare with Gemini-rescored rows." } },
+    egovid_e2e: { en: { goal: "Evaluate the production one-pass output under WGO metrics.", how: "Generate wrist-speed boundaries and per-segment labels.", input: "production-style baseline output", result: "Semantic E2E F1 0.0641", verdict: "Below the WGO-Bench evaluation pipeline settings." } },
+    s2_self: { en: { goal: "Evaluate segmenter self-labeling.", how: "Use S2 predicted boundaries and keep Qwen3.6-27B labels.", input: "S2 predicted segments", result: "Semantic E2E F1 0.1234", verdict: "Below relabel and selector settings." } },
+    raw27b_e2e: { en: { goal: "Test whether fixed-boundary 27B labeling transfers to predicted-boundary E2E.", how: "Use S2 predicted boundaries and relabel each segment from raw frames with Qwen3.6-27B.", input: "raw frames within S2 predicted segments", result: "Semantic E2E F1 0.1285", verdict: "Above self-labeling and below 397B raw and selector." } },
+    raw397: { en: { goal: "Evaluate 397B raw-frame relabel under predicted boundaries.", how: "Use S2 predicted boundaries and relabel from raw frames with Qwen3.5-397B.", input: "raw frames within S2 predicted segments", result: "Semantic E2E F1 0.1414", verdict: "Low-cost predicted-boundary E2E path." } },
+    ffmpeg397: { en: { goal: "Evaluate an alternate decode/sampling path as a candidate source.", how: "Use S2 predicted boundaries, ffmpeg-sampled frames, and Qwen3.5-397B labels.", input: "ffmpeg-sampled raw frames", result: "Semantic E2E F1 0.1491", verdict: "Candidate source used for selector comparison." } },
+    nb28: { en: { goal: "Evaluate neighbor relabel with a 27B prior.", how: "Use previous/current/next visual context plus a Qwen3.6-27B prior under S2 boundaries.", input: "neighbor frames plus 27B prior", result: "Semantic E2E F1 0.1234", verdict: "Below 397B raw." } },
+    nb397: { en: { goal: "Evaluate neighbor relabel with a 397B raw prior.", how: "Use previous/current/next visual context plus a 397B raw prior under S2 boundaries.", input: "neighbor frames plus 397B prior", result: "Semantic E2E F1 0.1491", verdict: "Candidate source used for selector comparison." } },
+    selector397: { en: { goal: "Evaluate multi-candidate selection.", how: "Generate raw, ffmpeg, seed, and rawprior candidates under the same S2 predicted boundaries, then let Qwen3.5-397B select the final label. The selector does not read gold labels.", input: "candidate labels for S2 predicted segments", result: "Semantic E2E F1 0.1542", verdict: "Highest observed E2E value among evaluated configurations." } }
   };
 
   function lang() {
@@ -1226,12 +1226,12 @@
 
   window.__RESULTS__ = {
   "meta": {
-    "title": "EgoANT × WGO-Bench HomER 标注消融长报告",
+    "title": "EgoANT on WGO-Bench HomER",
     "eval_subset": "HomER 25 episodes / 470 gold segments",
     "metric_seg": "Segment F1@0.75 micro + outer snap",
     "metric_label": "Gemini-3.5-Flash judge accuracy on gold boundaries",
     "metric_e2e": "Semantic E2E F1 (IoU match then Gemini-3.5-Flash judge)",
-    "model_note": "分段/标注模型仍为 Qwen 栈；语义打分已按 WGO/Macrodata 口径改用 Gemini-3.5-Flash judge。文中「Qwen3.6-27B」与日志里的 28B endpoint 指同一小模型服务。",
+    "model_note": "Model roles are separated: Qwen3.6-27B is the primary segmenter; Qwen3.6-27B and Qwen3.5-397B generate label candidates; Qwen3.5-397B selects among candidates; Gemini-3.5-Flash is the primary semantic evaluation judge.",
     "blog_refs": {
       "full100_seg_f1": 0.306,
       "full100_label_acc": 0.61,
@@ -1241,72 +1241,76 @@
     },
     "best": {
       "seg_f1": 0.2031,
-      "seg_config": "Qwen3.6-27B · S2 pad=0 + full-cover local prompt · contact sheet",
+      "seg_config": "Qwen3.6-27B · S2 pad=0 + full-cover local prompt · timestamped contact sheets",
       "label_acc": 0.5574,
-      "label_config": "Qwen3.6-27B raw labels · Gemini-3.5-Flash judge (fixed gold boundaries)",
+      "label_config": "Qwen3.6-27B raw labels · Gemini-3.5-Flash judge · fixed reference boundaries",
       "e2e_f1": 0.1542,
-      "e2e_config": "S2 full-cover boundaries + Qwen3.5-397B multi-candidate selector · Gemini-3.5-Flash judge"
+      "e2e_config": "S2 predicted boundaries + Qwen3.5-397B multi-candidate selector · Gemini-3.5-Flash judge"
     },
     "generated_note": "All main Label Acc and Semantic E2E entries are rescored with Gemini-3.5-Flash judge; Segment F1 remains pure temporal IoU."
   },
   "glossary": [
     {
       "term": "contact sheet",
-      "def": "按固定间隔抽帧拼成的时间戳联系表，用于分段；默认 0.5s×约20格≈10s 窗。"
+      "def": "按固定间隔抽帧拼成的带时间戳网格图，用于时间分段。本文默认每 0.5 秒一帧，每张约 20 格。"
     },
     {
-      "term": "整帧 temporal collage",
-      "def": "把 past/current/future 的整帧格子拼在一起给标注模型；≠ contact sheet。"
+      "term": "temporal collage",
+      "def": "把 past / current / future 的整帧网格合并给标注模型，用于固定边界标注消融。"
     },
     {
-      "term": "L1 邻段 contact sheet",
-      "def": "把上一/当前/下一子任务的 sheet 一起喂给标注模型。"
+      "term": "neighbor sheet",
+      "def": "把上一段、当前段和下一段的 contact sheets 一起给标注模型，用于测试相邻动作上下文是否有帮助。"
     },
     {
-      "term": "L2 YOLO/proxy hand-collage",
-      "def": "HomER 无 hand asset 时用 YOLO 腕点或画面中心 proxy 裁手部拼图；失败线。"
+      "term": "proxy hand-collage",
+      "def": "在没有可靠手部轨迹时，用 YOLO 或画面中心启发式裁剪出的近似手部拼图；不等同于重建腕轨迹裁剪。"
     },
     {
-      "term": "HaWoR true hand-crop",
-      "def": "先跑 HaWoR 得 wrist track，再按手部点裁剪；固定边界标注微涨线。"
+      "term": "HaWoR-reconstructed wrist-guided crop",
+      "def": "先用 HaWoR 从第一视角视频估计腕部轨迹，再基于估计轨迹裁剪手部区域；不是传感器 ground truth。"
     },
     {
-      "term": "optical-flow proxy overlay",
-      "def": "用光流质心近似手部叠图；不是真 hand overlay。"
+      "term": "proxy overlay",
+      "def": "在原帧上叠加光流或启发式视觉提示；不是真实手部重建。"
     },
     {
-      "term": "GEPA",
-      "def": "Macrodata 用自动搜索得到的英文分段 prompt 规则集（不是新模型）；推理时只是把这些规则贴进请求。"
+      "term": "GEPA-derived segmentation prompt",
+      "def": "Macrodata 通过 GEPA 搜索得到的 completed-event segmentation rules；本文推理时复用的是规则文本，而不是运行 GEPA。"
     },
     {
-      "term": "S1 反欠分割",
-      "def": "提高切段密度以抬召回；易过分割。"
+      "term": "S1 denser cuts",
+      "def": "提高预测片段密度以提升召回率的第一遍分段设置。"
     },
     {
       "term": "S2 pad=0 + full-cover local prompt",
-      "def": "粗分后再对局部时间窗口精修；pad=0 表示不外扩；full-cover 要求盖住该时间窗口内完成事件。"
+      "def": "粗分后在局部时间窗口内精修；pad=0 表示不引入窗口外上下文，full-cover 要求覆盖窗口内可见完成动作。"
     },
     {
       "term": "candidate selector",
-      "def": "对同一边界生成多条候选标签，再由大模型选一条定稿。"
+      "def": "在同一预测边界上生成多条候选标签，再由 Qwen3.5-397B 选择最终标签；selector 不读取 gold 标签。"
     },
     {
       "term": "Qwen3.6-27B",
-      "def": "分段主模型；日志里有时写作 28B endpoint，本文统一 27B。"
+      "def": "本文主要分段模型，也用于部分候选标签生成。"
     },
     {
       "term": "Qwen3.5-397B",
-      "def": "标注 / judge / selector 用的大模型。"
+      "def": "用于候选标签生成和 candidate selector；不作为主语义评测 judge。"
+    },
+    {
+      "term": "Gemini-3.5-Flash",
+      "def": "本文主语义评测 judge，用于 Label Acc 和 Semantic E2E F1 的语义匹配。"
     },
     {
       "term": "HomER 25 / 470",
-      "def": "本报告评测子集：25 集第一视角 episode、470 个 gold 段。"
+      "def": "本文评测范围：25 个第一视角人类操作视频，470 个参考片段。"
     }
   ],
   "segmentation": [
     {
       "id": "egovid_baseline",
-      "name": "EgoANT 原管线：rule-based 腕速切段 + merge",
+      "name": "EgoANT production baseline: wrist-speed segmentation + merge",
       "f1": 0.0953,
       "p": null,
       "r": null,
@@ -1315,18 +1319,18 @@
       "gold": 470,
       "model": "rule-based（腕速 minima + merge）",
       "full25": true,
-      "note": "过分割：预测段远多于 gold",
+      "note": "Predicted segments exceed reference segments",
       "method": {
-        "goal": "用手腕速度谷值自动切子任务",
-        "how": "HaWoR/腕速找 minima → 短段策略 → merge judge",
-        "input": "视频 + hand recon",
-        "result": "F1 0.0953，pred 810（远超 470）",
-        "verdict": "启发式过碎，作基线"
+        "goal": "评估基于腕速候选边界的生产管线基线。",
+        "how": "HaWoR 重建手部运动后，根据腕部速度低谷生成候选边界，并进行相邻片段合并。",
+        "input": "视频 + HaWoR 手部运动重建",
+        "result": "Segment F1 0.0953；810 个预测片段，470 个参考片段",
+        "verdict": "该启发式基线产生的片段数量明显多于参考片段。"
       }
     },
     {
       "id": "cs_max3_397b",
-      "name": "Contact sheet 分片（max_sheets=3，每次最多 3 张）",
+      "name": "Contact-sheet chunking (max_sheets=3)",
       "f1": 0.0952,
       "p": 0.132,
       "r": 0.075,
@@ -1335,18 +1339,18 @@
       "gold": 470,
       "model": "Qwen3.5-397B",
       "full25": true,
-      "note": "分片接缝处出现假边界",
+      "note": "Chunk seams introduce pseudo-boundaries",
       "method": {
-        "goal": "模仿 blog：把长视频切成多张 sheet 分次送模型",
-        "how": "legacy prompt；每集最多 3 张 sheet，分次 API",
-        "input": "contact sheet（分片）",
-        "result": "F1 0.0952",
-        "verdict": "人工切窗边界被当成事件边界"
+        "goal": "评估分片提交 contact sheets 的影响。",
+        "how": "旧版 prompt；每次请求最多包含 3 张 sheet。",
+        "input": "分片 contact sheets",
+        "result": "Segment F1 0.0952",
+        "verdict": "请求分片边界会被模型误识别为动作边界。"
       }
     },
     {
       "id": "cs_max3_27b",
-      "name": "Contact sheet 分片（max_sheets=3）",
+      "name": "Contact-sheet chunking (max_sheets=3) · 27B",
       "f1": 0.1278,
       "p": 0.171,
       "r": 0.102,
@@ -1355,18 +1359,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "同设置下小模型优于大模型分片版",
+      "note": "Same chunked setup with Qwen3.6-27B",
       "method": {
-        "goal": "同上，换小模型",
-        "how": "同 max3 + legacy",
-        "input": "contact sheet（分片）",
-        "result": "F1 0.1278",
-        "verdict": "更大模型≠自动更好；分片 recipe 本身有毒"
+        "goal": "在相同分片设置下替换分段模型。",
+        "how": "同 max_sheets=3 与旧版 prompt，模型换为 Qwen3.6-27B。",
+        "input": "分片 contact sheets",
+        "result": "Segment F1 0.1278",
+        "verdict": "模型变化不能消除分片请求边界带来的伪边界问题。"
       }
     },
     {
       "id": "whole_legacy_27b",
-      "name": "整集一次 + legacy prompt（无 GEPA-searched 规则）",
+      "name": "Whole-episode sheets + legacy prompt",
       "f1": 0.123,
       "p": 0.257,
       "r": 0.081,
@@ -1375,18 +1379,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "欠分割：预测段过少",
+      "note": "Fewer pseudo-boundaries but fewer predicted segments",
       "method": {
-        "goal": "去掉分片接缝",
-        "how": "max_sheets=0，整集 sheet 一次作为视觉输入提交给 API",
-        "input": "整集 contact sheet",
-        "result": "F1 0.123，pred 仅 148",
-        "verdict": "假切点没了，但切太少"
+        "goal": "移除分片请求边界。",
+        "how": "整集 sheets 一次性作为视觉输入提交，使用旧版 prompt。",
+        "input": "整集 contact sheets",
+        "result": "Segment F1 0.1230；148 个预测片段",
+        "verdict": "伪边界减少，但预测片段数量低于参考片段。"
       }
     },
     {
       "id": "aligned_gepa_27b",
-      "name": "整集一次 + GEPA-searched 规则 prompt",
+      "name": "Whole-episode sheets + GEPA-derived segmentation prompt",
       "f1": 0.1369,
       "p": 0.228,
       "r": 0.098,
@@ -1395,18 +1399,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "仍欠分割，但比 legacy 略好",
+      "note": "Improves over legacy prompt but remains low-recall",
       "method": {
-        "goal": "用 completed-events + 时长先验对齐 blog 规则",
-        "how": "GEPA-searched prompt：只标完成操作；偏好约 2–10s 段",
-        "input": "整集 contact sheet + GEPA",
-        "result": "F1 0.1369",
-        "verdict": "外形对齐有效，但仍欠分割"
+        "goal": "使用 completed-event segmentation rules 对齐公开协议。",
+        "how": "整集 sheets 加入 GEPA-derived segmentation prompt。",
+        "input": "整集 contact sheets + GEPA-derived segmentation prompt",
+        "result": "Segment F1 0.1369",
+        "verdict": "相对旧版 prompt 有提高，但召回率仍较低。"
       }
     },
     {
       "id": "s1_full25_397b",
-      "name": "S1：反欠分割（提高切段密度）",
+      "name": "S1 denser cuts",
       "f1": 0.1556,
       "p": 0.143,
       "r": 0.17,
@@ -1415,18 +1419,18 @@
       "gold": 470,
       "model": "Qwen3.5-397B",
       "full25": true,
-      "note": "召回上升，但又切得过碎",
+      "note": "Higher recall with more predicted segments",
       "method": {
-        "goal": "纠正 GEPA 后切太少",
-        "how": "改 duration prior / 提高切段密度；全量 25 集",
-        "input": "整集 sheet + 反欠分割 prompt",
-        "result": "F1 0.1556，pred 558",
-        "verdict": "召回上来，过分割回来"
+        "goal": "提高预测片段密度以改善召回率。",
+        "how": "调整 duration prior 与分段密度指令，覆盖全部 25 个 HomER 视频。",
+        "input": "整集 sheets + denser-cut prompt",
+        "result": "Segment F1 0.1556；558 个预测片段",
+        "verdict": "召回率提高，同时预测片段数量增加。"
       }
     },
     {
       "id": "s2_full25_397b",
-      "name": "S2 早期精修（pad≈1，无 full-cover）",
+      "name": "S2 early local refinement (pad≈1, no full-cover)",
       "f1": 0.1674,
       "p": 0.163,
       "r": 0.172,
@@ -1435,18 +1439,18 @@
       "gold": 470,
       "model": "Qwen3.5-397B",
       "full25": true,
-      "note": "早期二次精修，尚未用 full-cover",
+      "note": "Early local-refinement configuration",
       "method": {
-        "goal": "粗分后再局部细切",
-        "how": "粗边界 → 局部时间窗口 contact sheet → 二次精修；early 配置 pad≈1.0",
-        "input": "局部 sheet + 粗段 hint",
-        "result": "F1 0.1674",
-        "verdict": "方向对，但不是最终 full-cover"
+        "goal": "在粗分后加入局部时间窗口精修。",
+        "how": "粗边界附近生成局部 contact sheets，early 设置约 pad=1.0。",
+        "input": "局部 contact sheets + coarse-bound hints",
+        "result": "Segment F1 0.1674",
+        "verdict": "局部精修高于对应粗分设置，但不同于最终 full-cover 配置。"
       }
     },
     {
       "id": "s2_pad0_plain_27b",
-      "name": "S2 精修 pad=0（尚无 full-cover）",
+      "name": "S2 local refinement pad=0 (without full-cover)",
       "f1": 0.1711,
       "p": 0.1546,
       "r": 0.1915,
@@ -1455,18 +1459,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "pad=0 较好，但仍偏碎",
+      "note": "Pad=0 variant before full-cover prompt",
       "method": {
-        "goal": "消融 pad 宽度",
-        "how": "局部精修，pad_sec=0，未加 full-cover 覆盖约束",
-        "input": "局部 sheet",
-        "result": "F1 0.1711，pred 582",
-        "verdict": "pad=0 优于 pad=0.5/1/2，但仍过碎"
+        "goal": "比较局部精修窗口的外扩宽度。",
+        "how": "pad_sec=0，尚未加入 full-cover 约束。",
+        "input": "局部 contact sheets",
+        "result": "Segment F1 0.1711；582 个预测片段",
+        "verdict": "pad=0 高于其他 pad-out 设置，但预测片段仍较多。"
       }
     },
     {
       "id": "s2_pad05_27b",
-      "name": "S2 精修 pad=0.5（时间窗口外扩）",
+      "name": "S2 local refinement pad=0.5",
       "f1": 0.1444,
       "p": 0.1266,
       "r": 0.1681,
@@ -1475,18 +1479,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "把时间窗口外扩 0.5s，不如 pad=0",
+      "note": "Pad-out by 0.5 seconds",
       "method": {
-        "goal": "给局部时间窗口前后多看一点",
-        "how": "pad_sec=0.5",
-        "input": "局部 sheet",
-        "result": "F1 0.1444",
-        "verdict": "不如 pad=0"
+        "goal": "测试轻微窗口外扩。",
+        "how": "局部精修时向两侧加入 0.5 秒上下文。",
+        "input": "局部 contact sheets",
+        "result": "Segment F1 0.1444",
+        "verdict": "该设置低于 pad=0。"
       }
     },
     {
       "id": "s2_pad1_27b",
-      "name": "S2 精修 pad=1.0",
+      "name": "S2 local refinement pad=1.0",
       "f1": 0.1485,
       "p": 0.1259,
       "r": 0.1809,
@@ -1495,18 +1499,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "外扩 1s，不如 pad=0",
+      "note": "Pad-out by 1 second",
       "method": {
-        "goal": "同上",
-        "how": "pad_sec=1.0",
-        "input": "局部 sheet",
-        "result": "F1 0.1485",
-        "verdict": "不如 pad=0"
+        "goal": "测试 1 秒窗口外扩。",
+        "how": "局部精修时向两侧加入 1.0 秒上下文。",
+        "input": "局部 contact sheets",
+        "result": "Segment F1 0.1485",
+        "verdict": "该设置低于 pad=0。"
       }
     },
     {
       "id": "s2_pad2_27b",
-      "name": "S2 精修 pad=2.0",
+      "name": "S2 local refinement pad=2.0",
       "f1": 0.1436,
       "p": 0.122,
       "r": 0.1745,
@@ -1515,18 +1519,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "外扩 2s，不如 pad=0",
+      "note": "Pad-out by 2 seconds",
       "method": {
-        "goal": "同上",
-        "how": "pad_sec=2.0",
-        "input": "局部 sheet",
-        "result": "F1 0.1436",
-        "verdict": "不如 pad=0"
+        "goal": "测试 2 秒窗口外扩。",
+        "how": "局部精修时向两侧加入 2.0 秒上下文。",
+        "input": "局部 contact sheets",
+        "result": "Segment F1 0.1436",
+        "verdict": "该设置低于 pad=0。"
       }
     },
     {
       "id": "s2_midpoint_post",
-      "name": "S2 pad=0 + midpoint full-cover 后处理（非 prompt）",
+      "name": "S2 pad=0 + midpoint full-cover postprocess",
       "f1": 0.1635,
       "p": 0.1478,
       "r": 0.183,
@@ -1535,13 +1539,13 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "用算法补覆盖 ≠ 写进 prompt 的 full-cover",
+      "note": "Scripted coverage postprocess",
       "method": {
-        "goal": "用算法把预测盖满时间轴",
-        "how": "pad=0 预测后再做 midpoint full-cover postprocess",
+        "goal": "比较脚本式覆盖后处理与 prompt 约束。",
+        "how": "在 pad=0 预测后应用 midpoint full-cover 后处理。",
         "input": "预测边界",
-        "result": "F1 0.1635",
-        "verdict": "不如把 full-cover 写进 local prompt"
+        "result": "Segment F1 0.1635",
+        "verdict": "该后处理低于直接在 prompt 中加入 full-cover 约束。"
       }
     },
     {
@@ -1555,18 +1559,18 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "当前最强分段",
+      "note": "Highest Segment F1 among evaluated segmentation settings",
       "method": {
-        "goal": "局部时间窗口内重切，并要求盖满该时间窗口、保持任务粒度",
-        "how": "粗分 GEPA → 滑动时间窗口/覆盖时间窗口 sheet（0.5s×20）→ pad=0 + full-cover prompt 只重切该时间窗口",
-        "input": "局部 timestamped contact sheet + 粗段 hint",
-        "result": "F1 0.2031，pred 308，P↑",
-        "verdict": "Qwen 栈主升力；勿与 early S2 0.1674 混称"
+        "goal": "在局部时间窗口内重切并覆盖可见完成动作。",
+        "how": "粗分后生成局部 timestamped contact sheets；pad=0；prompt 要求覆盖窗口内完成动作。",
+        "input": "局部 timestamped contact sheets + coarse-bound hints",
+        "result": "Segment F1 0.2031；308 个预测片段",
+        "verdict": "这是已评测分段配置中的最高 Segment F1。"
       }
     },
     {
       "id": "merge_exact",
-      "name": "后处理：在 0.2031 上合并相邻「文案完全相同」段",
+      "name": "Postprocess: merge adjacent identical labels",
       "f1": 0.1987,
       "p": null,
       "r": null,
@@ -1575,18 +1579,18 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "合并后 F1 下降",
+      "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "合并相邻同文案碎片，让时间轴更干净",
-        "how": "相邻且 label 完全相同则合并",
+        "goal": "测试基于相同标签的相邻片段合并。",
+        "how": "相邻且标签完全相同时合并。",
         "input": "S2 full-cover 预测",
-        "result": "F1 0.1987",
-        "verdict": "时间轴更整洁但 F1 降低；不要默认 merge"
+        "result": "Segment F1 0.1987",
+        "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
     },
     {
       "id": "merge_verb",
-      "name": "后处理：在 0.2031 上按动词/物体合并相邻段",
+      "name": "Postprocess: merge adjacent verb/object matches",
       "f1": 0.1947,
       "p": null,
       "r": null,
@@ -1595,18 +1599,18 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "更激进合并，F1 再降",
+      "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "同动词/物体就合并",
-        "how": "解析 verb/object 近似匹配后合并",
+        "goal": "测试基于近似动词/物体匹配的相邻片段合并。",
+        "how": "解析近似 verb/object 后合并相邻片段。",
         "input": "S2 full-cover 预测",
-        "result": "F1 0.1947",
-        "verdict": "继续降低 F1"
+        "result": "Segment F1 0.1947",
+        "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
     },
     {
       "id": "merge_bridge",
-      "name": "后处理：在 0.2031 上跨短间隙桥接合并",
+      "name": "Postprocess: bridge short gaps then merge",
       "f1": 0.1883,
       "p": null,
       "r": null,
@@ -1615,13 +1619,13 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "跨短间隙合并，F1 降低最多",
+      "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "短间隙也桥接合并",
-        "how": "允许短时间桥接后合并",
+        "goal": "测试允许短时间间隔桥接的相邻片段合并。",
+        "how": "允许短间隙桥接后合并片段。",
         "input": "S2 full-cover 预测",
-        "result": "F1 0.1883",
-        "verdict": "F1 降低最多"
+        "result": "Segment F1 0.1883",
+        "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
     }
   ],
@@ -1635,13 +1639,13 @@
       "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.05531914889999989,
-      "note": "Best fixed-boundary label score after Gemini rescore.",
+      "note": "262 / 470 semantic matches under fixed reference boundaries",
       "method": {
-        "goal": "Test whether the smaller model can label fixed segments.",
-        "how": "Same raw-frame input as the default labeler, but with Qwen3.6-27B.",
+        "goal": "评估 27B 在固定参考边界下的标注准确率。",
+        "how": "对每个参考片段抽取 raw frames，由 Qwen3.6-27B 生成标签，再由 Gemini-3.5-Flash 评测。",
         "input": "raw frames",
-        "result": "Acc 55.7%",
-        "verdict": "Best fixed-boundary label setting under Gemini judge."
+        "result": "Label Acc 55.7%",
+        "verdict": "这是固定参考边界诊断设置中的最高观察值。"
       }
     },
     {
@@ -1653,13 +1657,13 @@
       "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.025531914899999952,
-      "note": "Better than 397B collage, still below raw 27B.",
+      "note": "248 / 470 semantic matches",
       "method": {
-        "goal": "Test past/current/future context with the smaller model.",
-        "how": "Build past/current/future whole-frame grids for each fixed gold segment.",
+        "goal": "评估 past/current/future 整帧上下文对固定边界标注的影响。",
+        "how": "为每个参考片段构造 temporal collage，由 Qwen3.6-27B 生成标签。",
         "input": "temporal collage",
-        "result": "Acc 52.8%",
-        "verdict": "Extra context helps less than simple raw frames."
+        "result": "Label Acc 52.8%",
+        "verdict": "该设置低于 raw 27B。"
       }
     },
     {
@@ -1671,31 +1675,31 @@
       "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.004255319099999988,
-      "note": "Approximate overlay; not true hand reconstruction.",
+      "note": "238 / 470 semantic matches; overlay is heuristic, not hand reconstruction",
       "method": {
-        "goal": "Show the model approximate motion/hand-region cues.",
-        "how": "Draw optical-flow / heuristic visual marks on raw frames, then label fixed gold segments.",
+        "goal": "评估启发式叠加提示对固定边界标注的影响。",
+        "how": "在 raw frames 上叠加光流或启发式视觉提示，由 Qwen3.6-27B 生成标签。",
         "input": "proxy overlay frames",
-        "result": "Acc 50.6%",
-        "verdict": "Does not beat raw 27B; useful only as an ablation."
+        "result": "Label Acc 50.6%",
+        "verdict": "该设置低于 raw 27B。"
       }
     },
     {
       "id": "l2_hawor",
-      "name": "HaWoR true hand-crop · Qwen3.5-397B",
+      "name": "HaWoR-reconstructed wrist-guided crop · Qwen3.5-397B",
       "acc": 0.5085,
       "n_match": 239,
       "n": 470,
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0063829786999999305,
-      "note": "Slightly above raw 397B, below raw 27B; requires reliable wrist tracks.",
+      "note": "239 / 470 semantic matches; crop path uses raw fallback when needed",
       "method": {
-        "goal": "Use real wrist tracks for hand crops.",
-        "how": "Run HaWoR, build wrist tracks, crop around hands, and fall back to raw when crops are incomplete.",
-        "input": "true hand-crop plus raw fallback",
-        "result": "Acc 50.9%",
-        "verdict": "Small gain over raw 397B, not enough to beat raw 27B."
+        "goal": "评估基于 HaWoR 重建腕轨迹的裁剪输入。",
+        "how": "用 HaWoR 估计腕部轨迹并裁剪手部区域；裁剪不完整时使用 raw fallback。",
+        "input": "HaWoR-reconstructed wrist-guided crop + raw fallback",
+        "result": "Label Acc 50.9%",
+        "verdict": "该混合输入略高于 raw 397B，低于 raw 27B。"
       }
     },
     {
@@ -1707,13 +1711,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0,
-      "note": "397B raw baseline under the same Gemini judge.",
+      "note": "236 / 470 semantic matches",
       "method": {
-        "goal": "Evaluate label quality with fixed gold boundaries.",
-        "how": "Uniformly sample raw frames per gold segment, label with 397B, then score with Gemini.",
+        "goal": "评估 397B raw-frame 固定边界标注。",
+        "how": "对每个参考片段抽取 raw frames，由 Qwen3.5-397B 生成标签，再由 Gemini-3.5-Flash 评测。",
         "input": "raw frames",
-        "result": "Acc 50.2%",
-        "verdict": "Stable baseline, but not the Gemini-rescored winner."
+        "result": "Label Acc 50.2%",
+        "verdict": "作为 397B raw-frame 基线。"
       }
     },
     {
@@ -1725,13 +1729,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0,
-      "note": "Duplicate/audit path matched raw 397B exactly.",
+      "note": "236 / 470 semantic matches",
       "method": {
-        "goal": "Verify that the copied labeling artifact matches the traceable raw run.",
-        "how": "Score the audit prediction file with the same Gemini judge.",
+        "goal": "审计一份重复预测产物。",
+        "how": "用相同 Gemini judge 对复制的预测文件重新计分。",
         "input": "raw label predictions",
-        "result": "Acc 50.2%",
-        "verdict": "No hidden gain; keep the traceable raw row as the baseline."
+        "result": "Label Acc 50.2%",
+        "verdict": "与 raw 397B 结果一致。"
       }
     },
     {
@@ -1743,13 +1747,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.01702127660000008,
-      "note": "Visual marks hurt relative to raw 397B.",
+      "note": "228 / 470 semantic matches",
       "method": {
-        "goal": "Show the model approximate hand/motion location.",
-        "how": "Use optical-flow / center-proxy visual marks because true hand tracks are unavailable for this proxy ablation.",
+        "goal": "评估启发式 overlay 输入对 397B 标注的影响。",
+        "how": "使用 optical-flow 或 center-proxy 视觉提示；该输入不等同于手部重建。",
         "input": "proxy overlay frames",
-        "result": "Acc 48.5%",
-        "verdict": "Hurts score; do not present it as true hand overlay."
+        "result": "Label Acc 48.5%",
+        "verdict": "该设置低于 raw 397B。"
       }
     },
     {
@@ -1761,13 +1765,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.05106382980000007,
-      "note": "Past/current/future grids polluted current-action wording.",
+      "note": "212 / 470 semantic matches",
       "method": {
-        "goal": "Add whole-frame past/current/future context.",
-        "how": "Create full-frame grids from past, current, and future windows for the same fixed segment.",
+        "goal": "评估 whole-frame past/current/future 上下文对 397B 标注的影响。",
+        "how": "为每个参考片段构造整帧 temporal collage。",
         "input": "whole-frame temporal collage",
-        "result": "Acc 45.1%",
-        "verdict": "Context noise outweighs benefit on HomER."
+        "result": "Label Acc 45.1%",
+        "verdict": "该设置低于 raw 397B。"
       }
     },
     {
@@ -1779,13 +1783,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.10212765960000003,
-      "note": "Adding timestamps did not fix neighbor-context pollution.",
+      "note": "188 / 470 semantic matches",
       "method": {
-        "goal": "Check whether missing timestamps caused neighbor-sheet failure.",
-        "how": "Re-run previous/current/next sheets after adding second-level timestamps.",
+        "goal": "测试给 neighbor sheets 添加秒级时间戳后的效果。",
+        "how": "上一/当前/下一段 sheet 均加入秒级时间戳后重新标注。",
         "input": "timestamped neighbor sheets",
-        "result": "Acc 40.0%",
-        "verdict": "Timestamps help slightly, but the input design still hurts."
+        "result": "Label Acc 40.0%",
+        "verdict": "该设置低于 raw 397B。"
       }
     },
     {
@@ -1797,13 +1801,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.10638297870000007,
-      "note": "The model often labels neighboring actions instead of the current one.",
+      "note": "186 / 470 semantic matches",
       "method": {
-        "goal": "Use previous/current/next segment context.",
-        "how": "Feed PREV/CUR/NEXT contact sheets together to the labeler.",
+        "goal": "评估上一段/当前段/下一段上下文对固定边界标注的影响。",
+        "how": "同时输入 previous/current/next segment sheets。",
         "input": "neighbor contact sheets",
-        "result": "Acc 39.6%",
-        "verdict": "The model loses track of which action is current."
+        "result": "Label Acc 39.6%",
+        "verdict": "该设置低于 raw 397B。"
       }
     },
     {
@@ -1815,13 +1819,13 @@
       "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.11063829790000007,
-      "note": "Approximate crop/collage is not true hand crop and performs poorly.",
+      "note": "184 / 470 semantic matches",
       "method": {
-        "goal": "Focus visual attention on hand-object regions.",
-        "how": "Use approximate crop/collage proxies instead of reliable wrist tracks.",
-        "input": "proxy hand collage",
-        "result": "Acc 39.1%",
-        "verdict": "Approximate crops hurt and should not be conflated with HaWoR true hand-crop."
+        "goal": "评估近似手部裁剪拼图。",
+        "how": "使用 YOLO 或中心启发式裁剪，而不是重建腕轨迹。",
+        "input": "proxy hand-collage",
+        "result": "Label Acc 39.1%",
+        "verdict": "该设置低于 raw 397B。"
       },
       "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
     }
@@ -1833,12 +1837,12 @@
       "seg_f1": 0.0953,
       "e2e_f1": 0.064063,
       "pred_gold": "810/470",
-      "note": "wrist-speed cuts + per-segment caption; weak under WGO E2E",
+      "note": "810 predicted / 470 reference segments; 41 semantic matches after temporal matching",
       "method": {
-        "goal": "Measure the original one-pass cut-and-label path.",
-        "how": "Rule-based wrist cuts followed by per-segment captions.",
-        "result": "E2E 0.0641",
-        "verdict": "Weak end-to-end baseline under the WGO protocol."
+        "goal": "评估生产管线基线的端到端输出。",
+        "how": "腕速候选边界生成后，对每段生成标签。",
+        "result": "Semantic E2E F1 0.0641",
+        "verdict": "该生产基线低于 WGO-Bench 评测管线的 S2 配置。"
       }
     },
     {
@@ -1847,12 +1851,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.123393,
       "pred_gold": "308/470",
-      "note": "same boundaries; semantic match 48",
+      "note": "48 semantic matches after temporal matching",
       "method": {
-        "goal": "Keep the best boundaries but let the segmentation model self-label.",
-        "how": "Use S2 full-cover boundaries and Qwen3.6-27B labels.",
-        "result": "E2E 0.1234",
-        "verdict": "Better boundaries alone are not enough; labels remain weak."
+        "goal": "评估分段模型自标。",
+        "how": "使用 S2 预测边界，并保留 Qwen3.6-27B 生成的标签。",
+        "result": "Semantic E2E F1 0.1234",
+        "verdict": "该设置低于后续 relabel 和 selector 设置。"
       }
     },
     {
@@ -1861,12 +1865,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.128535,
       "pred_gold": "308/470",
-      "note": "semantic match 50; not the E2E winner",
+      "note": "50 semantic matches after temporal matching",
       "method": {
-        "goal": "Check whether the fixed-boundary Label Acc winner also wins E2E.",
-        "how": "Use S2 boundaries, then relabel each predicted segment with raw frames and Qwen3.6-27B.",
-        "result": "E2E 0.1285",
-        "verdict": "Better than self-label, but below 397B raw and selector."
+        "goal": "测试固定边界诊断中表现最高的 27B raw 标注是否也提高 E2E。",
+        "how": "固定 S2 预测边界，由 Qwen3.6-27B 基于 raw frames 重新生成标签。",
+        "result": "Semantic E2E F1 0.1285",
+        "verdict": "该设置高于 self-label，低于 397B raw 和 selector。"
       }
     },
     {
@@ -1875,12 +1879,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.141388,
       "pred_gold": "308/470",
-      "note": "semantic match 55; strong single-path baseline",
+      "note": "55 semantic matches after temporal matching",
       "method": {
-        "goal": "Lock boundaries and upgrade the labeler.",
-        "how": "Use the same S2 boundaries, then let 397B caption raw frames.",
-        "result": "E2E 0.1414",
-        "verdict": "Most single-path gain comes from the larger labeler."
+        "goal": "评估 397B raw-frame relabel。",
+        "how": "固定 S2 预测边界，由 Qwen3.5-397B 基于 raw frames 重新生成标签。",
+        "result": "Semantic E2E F1 0.1414",
+        "verdict": "这是低成本 predicted-boundary E2E 配置。"
       }
     },
     {
@@ -1889,12 +1893,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.1491,
       "pred_gold": "308/470",
-      "note": "semantic match 58; candidate source",
+      "note": "58 semantic matches after temporal matching",
       "method": {
-        "goal": "Test sensitivity to decode and sampling path.",
-        "how": "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.",
-        "result": "E2E 0.1491",
-        "verdict": "Slightly better than the default raw path; useful as a candidate."
+        "goal": "评估另一套解码/抽帧路径产生的候选标签。",
+        "how": "固定 S2 预测边界，使用 ffmpeg 抽帧后由 Qwen3.5-397B 标注。",
+        "result": "Semantic E2E F1 0.1491",
+        "verdict": "该候选源进入 selector 比较。"
       }
     },
     {
@@ -1903,12 +1907,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.123393,
       "pred_gold": "308/470",
-      "note": "semantic match 48; context pollution",
+      "note": "48 semantic matches after temporal matching",
       "method": {
-        "goal": "Try neighbor context with a small-model prior.",
-        "how": "Feed previous/current/next frames plus a Qwen3.6-27B prior.",
-        "result": "E2E 0.1234",
-        "verdict": "Context pollution lowers semantic accuracy while boundaries stay fixed."
+        "goal": "评估带 27B prior 的 neighbor relabel。",
+        "how": "固定 S2 预测边界，输入上一/当前/下一段视觉上下文和 27B prior。",
+        "result": "Semantic E2E F1 0.1234",
+        "verdict": "该设置低于 397B raw。"
       }
     },
     {
@@ -1917,12 +1921,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.1491,
       "pred_gold": "308/470",
-      "note": "semantic match 58; tied with ffmpeg raw",
+      "note": "58 semantic matches after temporal matching",
       "method": {
-        "goal": "Try neighbor context with a stronger raw prior.",
-        "how": "Feed previous/current/next frames plus a 397B raw prior.",
-        "result": "E2E 0.1491",
-        "verdict": "Useful as a candidate, still below selector."
+        "goal": "评估带 397B raw prior 的 neighbor relabel。",
+        "how": "固定 S2 预测边界，输入上一/当前/下一段视觉上下文和 397B raw prior。",
+        "result": "Semantic E2E F1 0.1491",
+        "verdict": "该候选源进入 selector 比较。"
       }
     },
     {
@@ -1931,12 +1935,12 @@
       "seg_f1": 0.2031,
       "e2e_f1": 0.154242,
       "pred_gold": "308/470",
-      "note": "semantic match 60; current best E2E",
+      "note": "60 semantic matches after temporal matching",
       "method": {
-        "goal": "Select among multiple candidate labels for the same boundary.",
-        "how": "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.",
-        "result": "E2E 0.1542",
-        "verdict": "Best current end-to-end result; higher call count."
+        "goal": "评估多候选选择。",
+        "how": "在同一 S2 预测边界上生成 raw、ffmpeg、seed、rawprior 等候选，由 Qwen3.5-397B 选择最终标签。selector 不读取 gold 标签。",
+        "result": "Semantic E2E F1 0.1542",
+        "verdict": "这是已评测 E2E 配置中的最高观察值。"
       }
     }
   ],

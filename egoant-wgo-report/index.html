@@ -26,10 +26,10 @@
         </div>
       </div>
       <div class="splash-center">
-        <h1 data-i18n-html data-i18n="hero.title">EgoANT<br />评测 HomER</h1>
+        <h1 data-i18n-html data-i18n="hero.title">EgoANT<br />on WGO-Bench HomER</h1>
         <p class="splash-kicker" data-i18n="hero.eyebrow">WGO-Bench HomER · EgoANT</p>
         <p class="splash-lede" data-i18n="hero.lede">
-          我们在公开 WGO-Bench HomER 子集上评测 EgoANT（Egovideo ANnoTate）。Qwen 栈分段 F1 达 0.2031，对照 Macrodata HomER-only Gemini ≈0.227；Gemini judge 端到端 F1 为 0.1542。
+          EgoANT 是一套面向第一视角人类操作视频的自动标注管线，用于将长视频划分为动作级片段，并为每个片段生成简洁的操作描述。在 WGO-Bench HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 0.2031；在固定该预测边界后，多候选标注与选择方案取得 Semantic E2E F1 0.1542。
         
         </p>
         <div class="tag-pills">
@@ -57,7 +57,7 @@
         <a href="#walk" data-i18n="nav.walk">样例</a>
         <a href="#cost" data-i18n="nav.cost">成本</a>
         <a href="#story" data-i18n="nav.story">消融</a>
-        <a href="#recipe" data-i18n="nav.recipe">推荐配置</a>
+        <a href="#recipe" data-i18n="nav.recipe">推荐配置与使用边界</a>
         <a href="#appendix" data-i18n="nav.appendix">附录</a>
         <a href="#references" data-i18n="nav.references">参考文献</a>
       </div>
@@ -81,7 +81,7 @@
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
     <a href="#cost" data-toc="cost" data-i18n="nav.cost">成本</a>
     <a href="#story" data-toc="story" data-i18n="nav.story">消融</a>
-    <a href="#recipe" data-toc="recipe" data-i18n="nav.recipe">推荐配置</a>
+    <a href="#recipe" data-toc="recipe" data-i18n="nav.recipe">推荐配置与使用边界</a>
     <a href="#appendix" data-toc="appendix" data-i18n="nav.appendix">附录</a>
     <a href="#references" data-toc="references" data-i18n="nav.references">参考文献</a>
   </aside>
@@ -94,32 +94,32 @@
     <p id="en-body-note" class="callout" hidden></p>
 
     <section id="intro">
-      <h2 data-i18n="intro.h2">导读：为什么要给第一视角人手视频做子任务标注</h2>
+      <h2 data-i18n="intro.h2">导读：第一视角操作视频的子任务分段与语义标注</h2>
       <p data-i18n="intro.p1">
-        Egocentric human data（第一视角人手数据）用头戴或胸挂相机记录人如何操作物体：画面晃、手挡、动作密，和桌面第三人称机器人演示很不一样。要把长程演示变成可学习的监督信号，通常需要切成可执行的原子子任务，并写成短指令。
+        为将第一视角人类操作视频转化为结构化训练数据，我们需要识别其中的动作级时间片段，并为每个片段生成简洁的语义描述。这类视频通常包含相机运动、手部遮挡和连续的细粒度操作。
       </p>
       <p data-i18n="intro.p2">
-        子任务边界与文案正在成为 VLA / 链式推理 / 奖励建模等管线的核心输入。人工逐小时标注无法跟上数据规模，因此需要可复现的自动标注管线。
+        动作边界与语义描述可用于 VLA 预训练、层级技能学习和奖励模型构建。人工逐小时标注难以覆盖大规模视频，因此需要可审计的自动标注管线。
       </p>
-      <h3 data-i18n="intro.h3">已有公开工作（地图）</h3>
+      <h3 data-i18n="intro.h3">相关数据集与标注方法</h3>
       <ul>
         <li data-i18n-html data-i18n="intro.li0">Egocentric 数据族：<a href="https://egoverse.ai/" target="_blank" rel="noopener">EgoVerse</a> / <a href="https://github.com/apple/ml-egodex" target="_blank" rel="noopener">EgoDex</a> / <a href="https://arxiv.org/abs/2604.23570" target="_blank" rel="noopener">EgoLive</a> 等第一人称人手操作演示，面向规模化 human-to-robot 数据。</li>
-        <li data-i18n-html data-i18n="intro.li1">HomER：<a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 里的 egocentric human 子集；本报告固定评测 HomER 25 / 470 gold 段。</li>
+        <li data-i18n-html data-i18n="intro.li1">HomER：<a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 里的 egocentric human 子集；本报告的评测范围为 HomER 25 / 470 gold 段。</li>
         <li data-i18n-html data-i18n="intro.li2"><a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。</li>
         <li data-i18n="intro.li3" data-i18n-html>WGO-Bench / <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata blog</a>：公开「切段 + 短句」评测协议与 Gemini 参考分，以及约 $2.64/视频小时（batch）的端到端开销。</li>
         <li data-i18n="intro.li4">Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。</li>
       </ul>
       <p data-i18n="intro.p3">
-        本页报告 EgoANT 在 HomER 上、对标 WGO 协议的可复现消融：什么涨分、什么失败、成本如何与公开数字对照。名词解释见后文背景章。
+        本页报告 EgoANT 在 HomER 上的评测协议、方法设计、主要组件比较、失败模式和成本分析。
       </p>
       <div id="scope" class="callout" data-i18n="intro.scope">
-        评测范围：本页分数与推荐配置均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。
+        评测范围：本页分数与推荐配置与使用边界均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。
       </div>
       <div class="callout good" data-i18n-html data-i18n="intro.vs">
-        <strong>Qwen 栈接近 Gemini 参考（HomER 口径）：</strong>EgoANT 分段 F1 <strong>0.2031</strong>，对照 Macrodata HomER-only Gemini ≈<strong>0.227</strong>（同一子集；不要拿全量 0.306 硬比）。
+        <strong>HomER-only 范围对照：</strong>EgoANT 的 Segment F1 为 <strong>0.2031</strong>；Macrodata 报告的 HomER-only Gemini 参考约为 <strong>0.227</strong>，绝对差为 <strong>0.0239</strong>。
         端到端本页 <strong>0.1542</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。
         固定边界标注 Qwen 栈 Gemini judge 下 raw 27B 为 55.7%，raw 397B / HaWoR hand-crop 约 50.2–50.9% vs Macrodata 公开 ≈61%——句子质量仍有差距。
-        <em>结论：最难 egocentric 子集上，我们的切段已接近 Gemini 参考；端到端与文案仍有空间。</em>
+        <em>核心观察：粗到细的分段策略显著高于腕速生产基线；简单 raw-frame 标注在 HomER 上比更复杂的视觉上下文更稳定；多候选选择在额外调用成本下取得最高 E2E 观察值。</em>
       </div>
     </section>
 
@@ -134,44 +134,44 @@
         <div class="card">
           <div class="k" data-i18n="tldr.k.label">Label Acc（固定边界）</div>
           <div class="v">55.7%</div>
-          <div class="s" data-i18n="tldr.label">raw 27B（Gemini judge 当前最高）/ raw 397B / HaWoR true hand-crop</div>
+          <div class="s" data-i18n="tldr.label">raw 27B：固定参考边界下的最高 Label Acc</div>
         </div>
         <div class="card">
           <div class="k">E2E F1</div>
           <div class="v">0.1542</div>
-          <div class="s" data-i18n="tldr.e2e">锁分段边界 + 397B 多候选 selector</div>
+          <div class="s" data-i18n="tldr.e2e">S2 预测边界 + 397B 多候选 selector</div>
         </div>
       </div>
     </section>
 
     <section id="world">
-      <h2 data-i18n="world.h2">1. 背景：这些名字分别是什么</h2>
+      <h2 data-i18n="world.h2">1. 术语、数据集与实验设置</h2>
 
       <h3 data-i18n="world.h3.md">Macrodata 公开报告在谈什么</h3>
       <p data-i18n-html data-i18n="world.p.md">
         <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata · Annotating Robot Video Subtasks</a>
-        把「长视频 → 可执行子任务 + 短句」做成公开问题：发布数据集
+        将“长视频 → 动作级片段 + 短语义描述”定义为公开评测问题：发布数据集
         <strong>WGO-Bench</strong>、三种分数（分段 / 固定边界标注 / 端到端），以及 Gemini 等参考分。
-        本报告在同一评测协议上，给出 <strong>EgoANT</strong> 的可复现消融：涨分项、失败配置与推荐路径。
+        本报告在同一评测协议上，给出 <strong>EgoANT</strong> 的可复现消融：主要配置、失败模式与推荐路径。
       </p>
 
       <h3 data-i18n="world.h3.ego">Egocentric 数据与 WGO-Bench</h3>
       <p data-i18n-html data-i18n="world.p.ego">
-        规模化第一人称人手数据常见族系包括 <strong>EgoVerse / EgoDex / EgoLive</strong> 等；它们提供长程 human 演示，但「如何切成可执行子任务 + 短指令」仍需标注协议与评测。
+        规模化第一人称人手数据常见族系包括 <strong>EgoVerse / EgoDex / EgoLive</strong> 等；它们提供长程 human 演示，但「如何生成时间边界和短操作描述」仍需标注协议与评测。
         <strong>WGO-Bench</strong> 把这一问题做成公开基准（约 100 个 episode），其中 <strong>HomER</strong> 是第一视角人类操作子集——画面晃、手挡、动作密，通常比桌面第三人称更难。
         本报告固定评测：<strong>HomER 25 集 / 470 个 gold 子任务段</strong>。
         Macrodata 全量 100 集 Segment F1≈0.306 是 Gemini 主线 headline；HomER-only 更公平的对照约 0.227。
         不宜与全量 100 集 headline（0.306）直接对比。同协议下其他子集的结果见导读范围声明。
       </p>
 
-      <h3 data-i18n="world.h3.egoant">EgoANT：生产默认 vs 本报告实验线</h3>
+      <h3 data-i18n="world.h3.egoant">生产管线与 WGO-Bench 评测管线</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
         <strong>EgoANT</strong> 是我们的 egocentric 人手视频自动标注系统。它有两条需要分清的路径：
       </p>
       <ul>
-        <li data-i18n-html data-i18n="world.li.prod"><strong>生产默认管线</strong>（日常批标）：HaWoR 手重建 → 腕速平滑与 minima 切段 → 段内 raw 抽帧写短句 → merge judge / rewrite。
+        <li data-i18n-html data-i18n="world.li.prod"><strong>生产管线</strong>（日常批标）：HaWoR 手重建 → 腕速平滑与 minima 切段 → 段内 raw 抽帧写短句 → merge judge / rewrite。
           细节见 <a href="#app-prod">附录 D</a>。启发来自 Vitra 一类「先运动再 caption」工作流，但<strong>切段后端是 HaWoR 腕速，不是 Vitra 模型</strong>。</li>
-        <li data-i18n-html data-i18n="world.li.wgo"><strong>本报告 WGO 实验线</strong>（对标 Macrodata）：contact sheet + Qwen 视觉语言模型切段 → 锁边界后标注 / 多候选 selector。
+        <li data-i18n-html data-i18n="world.li.wgo"><strong>WGO-Bench 评测管线</strong>：带时间戳的 contact sheets → Qwen3.6-27B 分段 → 固定预测边界后的语义标注与多候选选择。
           正文消融主要讲这条线。</li>
       </ul>
       <p data-i18n-html data-i18n="world.p.models">
@@ -179,6 +179,44 @@
         标注 / judge / selector 用 <strong>Qwen3.5-397B</strong>（句子质量与选优）。
         相对 Gemini 参考栈，同一套权重与 prompt 可在不同机器上复跑，消融结论可核对。
       </p>
+      <div style="overflow-x:auto">
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th data-i18n="role.th.role">角色</th>
+              <th data-i18n="role.th.model">模型</th>
+              <th data-i18n="role.th.gold">是否读取 gold 信息</th>
+              <th data-i18n="role.th.use">在本文中的作用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-i18n="role.segmenter">Segmenter</td>
+              <td>Qwen3.6-27B</td>
+              <td data-i18n="role.no">否</td>
+              <td data-i18n="role.segmenter.use">生成预测时间边界</td>
+            </tr>
+            <tr>
+              <td data-i18n="role.captioner">Caption generator</td>
+              <td>Qwen3.6-27B / Qwen3.5-397B</td>
+              <td data-i18n="role.no">否</td>
+              <td data-i18n="role.captioner.use">生成候选语义标签</td>
+            </tr>
+            <tr>
+              <td data-i18n="role.selector">Candidate selector</td>
+              <td>Qwen3.5-397B</td>
+              <td data-i18n="role.no">否</td>
+              <td data-i18n="role.selector.use">从候选标签中选择最终标签</td>
+            </tr>
+            <tr>
+              <td data-i18n="role.judge">Primary evaluation judge</td>
+              <td>Gemini-3.5-Flash</td>
+              <td data-i18n="role.gold_label">只读取 gold 标签用于离线评分</td>
+              <td data-i18n="role.judge.use">计算 Label Acc 与 Semantic E2E F1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <h3 data-i18n="world.h3.gepa">GEPA 在本文里指什么</h3>
       <ol>
@@ -194,30 +232,30 @@
         <li data-i18n-html data-i18n="world.term.1"><strong>时间窗口</strong>：视频时间轴上的一段连续区间（例如 84–94 秒），不是软件 UI 窗口。</li>
         <li data-i18n-html data-i18n="world.term.2"><strong>第一遍加密切（S1）</strong>：提高切段密度以抬召回（容易切碎）。详见 <a href="#app-seg">附录 B</a>。</li>
         <li data-i18n-html data-i18n="world.term.3"><strong>第二遍局部精修（S2）</strong>：在粗边界附近的一小段时间里再切一次。</li>
-        <li data-i18n-html data-i18n="world.term.4"><strong>窗口不外扩（pad=0）</strong>：精修时只看粗边界这段，不向两侧多「偷看」几秒。</li>
-        <li data-i18n-html data-i18n="world.term.5"><strong>盖住完整动作（full-cover）</strong>：这段里看得见的完成事件都要切到，别切成摆弄碎片。</li>
+        <li data-i18n-html data-i18n="world.term.4"><strong>窗口不外扩（pad=0）</strong>：精修时只看粗边界这段，不引入窗口外相邻动作。</li>
+        <li data-i18n-html data-i18n="world.term.5"><strong>盖住完整动作（full-cover）</strong>：这段里看得见的完成事件都要切到，避免不完整微动作片段。</li>
         <li data-i18n-html data-i18n="world.term.6"><strong>selector / judge</strong>：selector 从多条候选标签里选一句定稿；judge 只用于打分，判断预测句与 gold 是否同一完成事件。</li>
-        <li data-i18n-html data-i18n="world.term.7"><strong>HaWoR</strong>：手部重建，用来得到真手腕轨迹再做 hand-crop（贵；默认标注仍可用 raw 帧）。</li>
+        <li data-i18n-html data-i18n="world.term.7"><strong>HaWoR</strong>：手部重建，用来得到估计腕部轨迹并生成 wrist-guided crops（贵；默认标注仍可用 raw 帧）。</li>
         <li data-i18n-html data-i18n="world.term.8"><strong>Qwen3.6-27B</strong>：分段主模型（日志有时写作 28B endpoint，同一服务）；<strong>Qwen3.5-397B</strong>：标注 / judge / selector。</li>
       </ul>
       <div class="callout" data-i18n-html data-i18n="world.callout">
         <strong>易混淆的视觉输入：</strong>
-        contact sheet（分段用时间戳拼图）≠ 整帧 temporal collage ≠ L1 邻段 sheet ≠ L2 YOLO/proxy hand-collage ≠ HaWoR true hand-crop。
+        contact sheet（分段用时间戳拼图）≠ 整帧 temporal collage ≠ L1 邻段 sheet ≠ L2 YOLO/proxy hand-collage ≠ HaWoR-reconstructed wrist-guided crop。
       </div>
     </section>
 
     <section id="metrics">
-      <h2 data-i18n="metrics.h2">2. 怎么打分（三句话 + 一个玩具例子）</h2>
+      <h2 data-i18n="metrics.h2">2. 评测指标</h2>
       <p class="plain" data-i18n-html data-i18n="metrics.lead">完整公式与直觉见 <a href="#app-metrics">附录 A</a>。正文只记定义与玩具例。</p>
       <ol>
-        <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1</strong>：只评时间切分（刀工）；IoU≥0.75 一对一配对。</li>
-        <li data-i18n-html data-i18n="metrics.li2"><strong>固定边界 Label Acc</strong>：时间用 gold，只评句子是否同一完成事件（文案）。</li>
-        <li data-i18n-html data-i18n="metrics.li3"><strong>Semantic E2E F1</strong>：先时间配对，再对配对成功的 pair 做语义 judge；刀工与文案都过才算。</li>
+        <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1</strong>：只评时间切分（时间边界质量）；IoU≥0.75 一对一配对。</li>
+        <li data-i18n-html data-i18n="metrics.li2"><strong>固定边界 Label Acc</strong>：时间用 gold，只评句子是否同一完成事件（语义描述）。</li>
+        <li data-i18n-html data-i18n="metrics.li3"><strong>Semantic E2E F1</strong>：先时间配对，再对配对成功的 pair 做语义 judge；时间边界质量与语义描述都过才算。</li>
       </ol>
-      <p data-i18n="metrics.toy">F1 越大越好，上限 1.0。玩具例子（与 scorer 一致）：</p>
+      <p data-i18n="metrics.toy">简化示例（与 scorer 逻辑一致）：</p>
       <figure class="figure">
         <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
-        <figcaption data-i18n="metrics.figcap">本地图示：先用 IoU 判断 pred/gold 时间段是否重叠足够，再用 match 数计算 precision、recall 和 F1。</figcaption>
+        <figcaption data-i18n="metrics.figcap">该图展示如何先用 IoU 判断 pred/gold 时间段是否重叠足够，再由匹配数计算 precision、recall 和 F1。</figcaption>
       </figure>
       <p data-i18n="metrics.toy.g">Gold：G0[0,3], G1[3,6], G2[6,10] · Pred：P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]</p>
       <ol>
@@ -233,7 +271,7 @@
     </section>
 
     <section id="contact">
-      <h2 data-i18n="contact.h2">3. Contact sheet：模型实际在「看」什么</h2>
+      <h2 data-i18n="contact.h2">3. Contact-sheet 视觉输入</h2>
       <p data-i18n-html data-i18n="contact.p">
         我们不把整段 MP4 作为视觉输入直接提交给模型，而是每隔 <strong>0.5 秒</strong>抽一帧，缩到约 <strong>224×144</strong>，
         每张 sheet <strong>20 格（5×4）</strong>，格子上画<strong>黄色时间戳</strong>。
@@ -251,16 +289,16 @@
       </div>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy comparing raw frames, proxy overlays, temporal collages, neighbor sheets, and hand crops" />
-        <figcaption data-i18n="contact.taxonomy.cap">本地图示：raw、多帧 overlay、temporal collage、邻段 sheet、hand crop 是不同视觉输入；它们在实验中不可互相代称。</figcaption>
+        <figcaption data-i18n="contact.taxonomy.cap">该图展示 raw frames、proxy overlay、temporal collage、neighbor sheet 和 wrist-guided crop 等视觉输入的差异。</figcaption>
       </figure>
       <p class="plain" data-i18n-html data-i18n="contact.taxonomy.explain">
         <strong>读图：</strong>contact sheet 用来找边界；raw 是固定边界标注的最朴素输入；proxy overlay 是在原帧上叠加光流/启发式提示，<em>不是</em>真手部重建；
-        temporal collage 与 neighbor sheet 给前后文；true hand-crop 则依赖可靠腕轨。Gemini 重评显示：更多视觉上下文不一定更好，overlay、邻段和整帧 collage 往往把别的动作带进当前句子。
+        temporal collage 与 neighbor sheet 引入前后文；基于 HaWoR 重建腕轨迹的裁剪依赖估计腕部轨迹。Gemini 重评显示，增加视觉上下文并未提高 HomER 上的固定边界标注准确率。
       </p>
     </section>
 
     <section id="boundary">
-      <h2 data-i18n="boundary.h2">3.5 边界对照：同一段视频，三种切法</h2>
+      <h2 data-i18n="boundary.h2">3.5 边界对照：同一视频上的三种分段结果</h2>
       <p class="plain" data-i18n-html data-i18n="boundary.lead">
         对齐 Macrodata 博客的 Boundary comparison 交互：上方播视频，下方多轨时间轴；播放头随时间移动，点击色块可跳到该段。
       </p>
@@ -294,7 +332,7 @@
     </section>
 
     <section id="walk">
-      <h2 data-i18n="walk.h2">4. 样例：跟着 homer_4 走读 selector 路径</h2>
+      <h2 data-i18n="walk.h2">4. 样例：案例分析：homer_4 的端到端处理流程</h2>
       <p data-i18n-html data-i18n="walk.lead">
         下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；生产可在同边界下改用单路 raw。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。
       </p>
@@ -340,8 +378,8 @@
           <div class="step-h"><span class="badge">03</span><h3 class="step-title" data-i18n="walk.s3.t">局部再切一遍：窗口不外扩，盖住完整动作</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s3.p">
             在粗边界附近开一个<strong>短时间窗</strong>，用<strong>同一版式</strong>的 sheet 再切一次。
-            <strong>窗口不外扩</strong>：只看粗边界这段，不向两侧多偷看几秒（技术名 pad=0）；
-            <strong>盖住完整动作</strong>：窗内看得见的完成事件都要切到，别切成摆弄碎片（技术名 full-cover）。
+            <strong>窗口不外扩</strong>：只使用粗边界内部的视觉上下文（技术名 pad=0）；
+            <strong>盖住完整动作</strong>：窗内看得见的完成事件都要切到，避免不完整微动作片段（技术名 full-cover）。
             （整步技术名：S2 · pad=0 · full-cover）
           </p>
           <figure class="figure">
@@ -350,7 +388,7 @@
           </figure>
           <figure class="figure">
             <img src="assets/explain/s2_no_pad_full_cover.svg" alt="S2 no-pad full-cover local refinement diagram" />
-            <figcaption data-i18n="walk.s3.diagram.cap">本地图示：S2 只在粗分窗口内重切；pad=0 避免看进邻段，full-cover 要求窗口内完成动作都被覆盖。</figcaption>
+            <figcaption data-i18n="walk.s3.diagram.cap">该图展示 S2 如何在粗分窗口内重切；pad=0 不引入窗口外上下文，full-cover 要求覆盖窗口内完成动作。</figcaption>
           </figure>
           <details class="prompt-fold">
             <summary data-i18n="walk.prompt.s2">Prompt (English only)</summary>
@@ -361,7 +399,7 @@
         <article class="step-card" id="walk-4">
           <div class="step-h"><span class="badge">04</span><h3 class="step-title" data-i18n="walk.s4.t">多候选标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s4.p">
-            边界锁死后，对每一段用多条路径各写一句：
+            固定分段边界后，对每一段用多条路径各写一句：
             <strong>raw</strong>=默认读帧；
             <strong>ffmpeg</strong>=换解码抽帧路径；
             <strong>seed</strong>=带先验/种子标签的变体；
@@ -452,7 +490,7 @@
             <td data-i18n="cost.row.wgo_num">见下表；非 Gemini 账单</td>
           </tr>
           <tr>
-            <td data-i18n="cost.row.prod">EgoANT 生产默认路径</td>
+            <td data-i18n="cost.row.prod">EgoANT 生产管线</td>
             <td data-i18n="cost.row.prod_scope">同一 HomER 子集上的内部工程估计</td>
             <td data-i18n="cost.row.prod_num">仅保留聚合调用量级；不公开内部机器、路径或服务状态</td>
           </tr>
@@ -472,19 +510,19 @@
     </section>
 
     <section id="story">
-      <h2 data-i18n="story.h2">6. 消融故事：我们怎样走到 0.1542</h2>
+      <h2 data-i18n="story.h2">6. 方法演进与组件比较</h2>
       <p data-i18n="story.lead">按时间线叙述；主表与图跟在后面。实验细节（做法卡、pad 消融）默认折叠。</p>
 
-      <h3 data-i18n="story.h3.seg">6.1 分段：从假切点到「盖住完整动作」</h3>
+      <h3 data-i18n="story.h3.seg">6.1 分段：从分片伪边界到局部精修</h3>
       <ol>
         <li data-i18n-html data-i18n="story.seg.1">原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
-        <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处造假边界。</li>
+        <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处引入伪边界。</li>
         <li data-i18n-html data-i18n="story.seg.3"><strong>整集一次</strong> + legacy prompt（尚无切段规则清单）：假切点没了，却欠分割。</li>
         <li data-i18n-html data-i18n="story.seg.4">换成 <strong>切段规则清单</strong>（GEPA）：到 0.137，仍偏少。</li>
         <li data-i18n-html data-i18n="story.seg.5"><strong>第一遍加密切（S1）</strong>：召回上升，但过分割。</li>
-        <li data-i18n-html data-i18n="story.seg.6"><strong>第二遍局部精修</strong>：方向对；最终 <strong>窗口不外扩 + 盖住完整动作</strong>（S2 · pad=0 · full-cover）到 <strong>0.2031</strong>。
+        <li data-i18n-html data-i18n="story.seg.6"><strong>第二遍局部精修</strong>：结果支持局部精修这一设计方向；最终 <strong>窗口不外扩 + 盖住完整动作</strong>（S2 · pad=0 · full-cover）到 <strong>0.2031</strong>。
           （另测过用算法补覆盖的后处理：不如把「盖住完整动作」写进 prompt。）</li>
-        <li data-i18n-html data-i18n="story.seg.7">相邻 merge 三种<strong>规则后处理</strong>（不是再调模型）：时间轴更好看，但 F1 全掉——不要默认 merge。</li>
+        <li data-i18n-html data-i18n="story.seg.7">相邻 merge 三种<strong>规则后处理</strong>（不是再调模型）：时间轴更好看，但 均降低 Segment F1，因此不作为默认配置。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.seg">Segment F1（主路径）</h4>
@@ -514,10 +552,10 @@
         <div id="seg-methods" class="method-grid" style="margin-top:1rem"></div>
       </details>
 
-      <h3 data-i18n="story.h3.label">6.2 标注：复杂视觉输入不一定提高准确率</h3>
+      <h3 data-i18n="story.h3.label">6.2 标注：更复杂的视觉输入未必提高准确率</h3>
       <p data-i18n-html data-i18n="story.label.p">
-        固定 gold 边界后，Gemini judge 全量重判改变了排序：<strong>raw 27B 最高，为 55.7%</strong>；
-        temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR true hand-crop 397B 为 50.9%，raw 397B 为 50.2%。
+        固定参考边界后，Gemini judge 全量重评显示：<strong>raw 27B 最高，为 55.7%</strong>；
+        temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR-reconstructed wrist-guided crop 397B 为 50.9%，raw 397B 为 50.2%。
         397B 上，overlay 48.5%、temporal collage 45.1%、neighbor / proxy hand-collage 约 39–40%。
         结论很朴素：在 HomER 这个子集上，复杂视觉输入常常污染当前动作描述；先固定 judge，再讨论输入设计。
       </p>
@@ -543,7 +581,7 @@
           <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap2">
             <strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。
-            HomER 早期无手重建时用此类 proxy；Gemini 重判后 HaWoR true hand-crop 为 50.9%，低于 raw 27B。
+            HomER 早期无手重建时使用此类 proxy；Gemini 重评后，基于 HaWoR 重建腕轨迹的裁剪为 50.9%。
           </figcaption>
         </figure>
       </div>
@@ -552,12 +590,12 @@
         <div id="label-methods" class="method-grid"></div>
       </details>
 
-      <h3 data-i18n="story.h3.e2e">6.3 E2E：锁边界，涨分靠大模型多候选</h3>
+      <h3 data-i18n="story.h3.e2e">6.3 E2E：锁边界，单路生成与多候选选择</h3>
       <p data-i18n-html data-i18n="story.e2e.p">
         分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
-        <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然固定边界 Label Acc 最高，但接到预测边界后 E2E 只有 0.1285；
+        <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然在固定参考边界 Label Acc 上最高，但在预测边界上 E2E 只有 0.1285；
         <strong>397B raw 重标</strong>到 0.1414；<strong>ffmpeg raw</strong>和<strong>397B-prior neighbor</strong>都到 0.1491；
-        <strong>candidate selector</strong>从多路候选里选一句，Gemini E2E 最高，为 <strong>0.1542</strong>。
+        <strong>candidate selector</strong>从多路候选中选择最终标签，取得最高观察值 <strong>0.1542</strong>。
       </p>
       <div class="chart-box">
         <h4 data-i18n="story.chart.e2e">E2E F1</h4>
@@ -575,13 +613,13 @@
       </details>
       <div class="callout" data-i18n-html data-i18n="story.takeaway">
         <strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；
-        规则 merge 改善观感但没有提升 F1；Gemini 重评后，raw 27B 是固定边界标注最高分，但端到端最高仍是 S2 边界 + 397B 多候选 selector。
+        三种规则合并策略均降低 Segment F1；Gemini 重评后，raw 27B 是固定参考边界下的最高标注配置，但端到端最高观察值仍来自 S2 预测边界 + 397B 多候选 selector。
         换句话说，<strong>27B 是最好的 fixed-boundary captioner，但不是最好的 noisy predicted-segment label resolver</strong>。
       </div>
     </section>
 
     <section id="recipe">
-      <h2 data-i18n="recipe.h2">7. 推荐配置</h2>
+      <h2 data-i18n="recipe.h2">7. 推荐配置与使用边界</h2>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">Contact sheet</div><div class="d" data-i18n="recipe.p1.d">0.5s · 224×144 · 20 tiles · yellow stamps</div></div>
         <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
@@ -589,20 +627,20 @@
         <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">Selector</div><div class="d" data-i18n="recipe.p4.d">397B multi-cand → Gemini E2E 0.1542</div></div>
       </div>
       <table>
-        <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">不要默认启用</th></tr></thead>
+        <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">当前不推荐</th></tr></thead>
         <tbody>
           <tr>
             <td data-i18n="recipe.r1.a">分段</td>
             <td data-i18n="recipe.r1.b">Qwen3.6-27B + 切段规则清单 + 局部精修（窗口不外扩、盖住完整动作）</td>
-            <td data-i18n="recipe.r1.c">分片 max3；盲目规则 merge</td>
+            <td data-i18n="recipe.r1.c">分片 max3；基于规则的相邻片段合并</td>
           </tr>
           <tr>
             <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">固定 gold 边界文案优先：27B raw（Label Acc 55.7%）；预测边界 E2E 省钱线：397B raw（0.1414）</td>
+            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B raw（Label Acc 55.7%）；预测边界 E2E 低成本配置：397B raw（0.1414）</td>
             <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
           </tr>
           <tr>
-            <td data-i18n="recipe.r3.a">标注（追分）</td>
+            <td data-i18n="recipe.r3.a">高准确率配置</td>
             <td data-i18n="recipe.r3.b">同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）</td>
             <td data-i18n="recipe.r3.c">分段小模型自标当终稿</td>
           </tr>

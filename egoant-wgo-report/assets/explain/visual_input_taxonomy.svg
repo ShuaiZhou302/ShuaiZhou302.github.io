@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" role="img" aria-label="Visual inputs compared: raw frames, proxy overlay, temporal collage, neighbor sheets, and true hand crop">
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" role="img" aria-label="Visual inputs compared: raw frames, proxy overlay, temporal collage, neighbor sheets, and wrist-guided crop">
   <style>
     .bg{fill:#fffaf1}.card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}.title{font:700 18px Inter,Arial,sans-serif;fill:#141414}.sub{font:13px Inter,Arial,sans-serif;fill:#4f4a42}.tiny{font:11px Inter,Arial,sans-serif;fill:#554b40}.label{font:12px Inter,Arial,sans-serif;fill:#1f1d1a}.good{fill:#2f7d70}.gold{fill:#f2c84b}.pred{fill:#2f7d70}.muted{fill:#d9d5cb}.warn{fill:#c85e25}.ink{stroke:#2f7d70;stroke-width:4;fill:none;stroke-linecap:round}.arrow{stroke:#c85e25;stroke-width:4;fill:none;marker-end:url(#arrow)}
   </style>
@@ -30,7 +30,7 @@
       <path class="arrow" d="M35 26 C55 16, 72 20, 88 30"/>
       <path class="arrow" d="M112 30 C98 18, 83 16, 68 24"/>
     </g>
-    <text x="18" y="190" class="label">Not true hand reconstruction</text>
+    <text x="18" y="190" class="label">Not measured hand pose</text>
     <text x="18" y="212" class="tiny">27B 50.6%; 397B 48.5%</text>
   </g>
 
@@ -62,8 +62,8 @@
 
   <g transform="translate(938,105)">
     <rect class="card" width="205" height="235" rx="12"/>
-    <text x="18" y="34" class="title">True hand-crop</text>
-    <text x="18" y="58" class="sub">crop using wrist tracks</text>
+    <text x="18" y="34" class="title">Wrist-guided crop</text>
+    <text x="18" y="58" class="sub">crop from estimated tracks</text>
     <g transform="translate(31,82)">
       <rect x="0" y="0" width="144" height="88" rx="8" fill="#e8e1d4"/>
       <rect x="28" y="22" width="88" height="42" rx="7" fill="none" stroke="#2f7d70" stroke-width="4"/>
