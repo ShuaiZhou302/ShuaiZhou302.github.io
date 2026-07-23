@@ -575,7 +575,8 @@
       </details>
       <div class="callout" data-i18n-html data-i18n="story.takeaway">
         <strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；
-        规则 merge 改善观感但没有提升 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常降低标注准确率；汇报时固定 judge。
+        规则 merge 改善观感但没有提升 F1；Gemini 重评后，raw 27B 是固定边界标注最高分，但端到端最高仍是 S2 边界 + 397B 多候选 selector。
+        换句话说，<strong>27B 是最好的 fixed-boundary captioner，但不是最好的 noisy predicted-segment label resolver</strong>。
       </div>
     </section>
 
@@ -597,8 +598,8 @@
           </tr>
           <tr>
             <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">锁精修边界 + 397B <strong>单路 raw</strong>（E2E≈0.1414）</td>
-            <td data-i18n="recipe.r2.c">邻段 / 整帧 collage / YOLO/proxy hand-crop</td>
+            <td data-i18n-html data-i18n="recipe.r2.b">固定 gold 边界文案优先：27B raw（Label Acc 55.7%）；预测边界 E2E 省钱线：397B raw（0.1414）</td>
+            <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
           </tr>
           <tr>
             <td data-i18n="recipe.r3.a">标注（追分）</td>
