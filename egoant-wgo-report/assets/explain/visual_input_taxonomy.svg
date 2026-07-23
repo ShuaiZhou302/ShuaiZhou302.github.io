@@ -1,64 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 560" role="img" aria-labelledby="title desc">
-  <title id="title">Visual input taxonomy for EgoANT WGO experiments</title>
-  <desc id="desc">A taxonomy comparing contact sheets, temporal collages, neighbor sheets, and hand crops.</desc>
-  <defs>
-    <style>
-      .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.card{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}
-      .tile{fill:#e8e2d6;stroke:#fffdf8;stroke-width:2}.stamp{fill:#f0c94d}.hand{fill:#c45c26}.focus{fill:#2f6f66}.bad{fill:#bfc7ca}
-      .txt{font:16px "IBM Plex Sans",Arial,sans-serif}.mono{font:13px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}
-    </style>
-  </defs>
-  <rect width="1240" height="560" rx="18" class="bg"/>
-  <text x="42" y="50" class="txt label ink">Visual inputs are different objects, not synonyms</text>
-  <text x="42" y="82" class="txt muted">Each ablation changes what the VLM sees, and often changes the task difficulty.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" role="img" aria-label="Visual inputs compared: raw frames, proxy overlay, temporal collage, neighbor sheets, and true hand crop">
+  <style>
+    .bg{fill:#fffaf1}.card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}.title{font:700 18px Inter,Arial,sans-serif;fill:#141414}.sub{font:13px Inter,Arial,sans-serif;fill:#4f4a42}.tiny{font:11px Inter,Arial,sans-serif;fill:#554b40}.label{font:12px Inter,Arial,sans-serif;fill:#1f1d1a}.good{fill:#2f7d70}.gold{fill:#f2c84b}.pred{fill:#2f7d70}.muted{fill:#d9d5cb}.warn{fill:#c85e25}.ink{stroke:#2f7d70;stroke-width:4;fill:none;stroke-linecap:round}.arrow{stroke:#c85e25;stroke-width:4;fill:none;marker-end:url(#arrow)}
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#c85e25"/></marker></defs>
+  <rect class="bg" width="1180" height="390" rx="18"/>
+  <text x="38" y="44" class="title">Visual inputs are different objects, not synonyms</text>
+  <text x="38" y="70" class="sub">The ablation name should describe what the VLM actually sees.</text>
 
-  <g transform="translate(42,122)">
-    <rect width="268" height="350" rx="14" class="card"/>
-    <text x="20" y="36" class="txt label ink">Contact sheet</text>
-    <text x="20" y="64" class="txt small muted">20 timestamped frames</text>
-    <text x="20" y="84" class="txt small muted">used for segmentation</text>
-    <g transform="translate(24,112)">
-      <rect x="0" y="0" width="42" height="30" class="tile"/><rect x="48" y="0" width="42" height="30" class="tile"/><rect x="96" y="0" width="42" height="30" class="tile"/><rect x="144" y="0" width="42" height="30" class="tile"/>
-      <rect x="0" y="36" width="42" height="30" class="tile"/><rect x="48" y="36" width="42" height="30" class="tile"/><rect x="96" y="36" width="42" height="30" class="tile"/><rect x="144" y="36" width="42" height="30" class="tile"/>
-      <rect x="0" y="72" width="42" height="30" class="tile"/><rect x="48" y="72" width="42" height="30" class="tile"/><rect x="96" y="72" width="42" height="30" class="tile"/><rect x="144" y="72" width="42" height="30" class="tile"/>
-      <rect x="0" y="108" width="42" height="30" class="tile"/><rect x="48" y="108" width="42" height="30" class="tile"/><rect x="96" y="108" width="42" height="30" class="tile"/><rect x="144" y="108" width="42" height="30" class="tile"/>
-      <rect x="5" y="5" width="27" height="9" class="stamp"/><rect x="53" y="5" width="27" height="9" class="stamp"/><rect x="101" y="5" width="27" height="9" class="stamp"/>
+  <g transform="translate(38,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">Raw frames</text>
+    <text x="18" y="58" class="sub">current segment only</text>
+    <g transform="translate(22,82)">
+      <rect x="0" y="0" width="46" height="34" fill="#e8e1d4"/><rect x="54" y="0" width="46" height="34" fill="#d9d5cb"/><rect x="108" y="0" width="46" height="34" fill="#cfc9bd"/>
+      <rect x="0" y="42" width="46" height="34" fill="#d9d5cb"/><rect x="54" y="42" width="46" height="34" fill="#e8e1d4"/><rect x="108" y="42" width="46" height="34" fill="#d9d5cb"/>
     </g>
-    <text x="20" y="300" class="mono ink">Best for: boundaries</text>
+    <text x="18" y="190" class="label">Best fixed-boundary label</text>
+    <text x="18" y="212" class="tiny">Gemini Acc 55.7% with 27B</text>
   </g>
 
-  <g transform="translate(340,122)">
-    <rect width="268" height="350" rx="14" class="card"/>
-    <text x="20" y="36" class="txt label ink">Temporal collage</text>
-    <text x="20" y="64" class="txt small muted">past / current / future</text>
-    <text x="20" y="84" class="txt small muted">full-frame grids for labels</text>
-    <rect x="28" y="125" width="60" height="110" rx="8" class="bad"/><text x="38" y="260" class="mono ink">past</text>
-    <rect x="104" y="125" width="60" height="110" rx="8" class="focus"/><text x="105" y="260" class="mono ink">current</text>
-    <rect x="180" y="125" width="60" height="110" rx="8" class="bad"/><text x="188" y="260" class="mono ink">future</text>
-    <text x="20" y="300" class="mono ink">Lower label Acc</text>
+  <g transform="translate(263,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">Proxy overlay</text>
+    <text x="18" y="58" class="sub">raw + approximate marks</text>
+    <g transform="translate(30,82)">
+      <rect x="0" y="0" width="145" height="88" rx="8" fill="#e8e1d4"/>
+      <circle cx="58" cy="47" r="18" fill="#c85e25" opacity=".22"/><circle cx="94" cy="48" r="18" fill="#c85e25" opacity=".22"/>
+      <path class="ink" d="M48 55 C62 30, 82 30, 99 55"/>
+      <path class="arrow" d="M35 26 C55 16, 72 20, 88 30"/>
+      <path class="arrow" d="M112 30 C98 18, 83 16, 68 24"/>
+    </g>
+    <text x="18" y="190" class="label">Not true hand reconstruction</text>
+    <text x="18" y="212" class="tiny">27B 50.6%; 397B 48.5%</text>
   </g>
 
-  <g transform="translate(638,122)">
-    <rect width="268" height="350" rx="14" class="card"/>
-    <text x="20" y="36" class="txt label ink">Neighbor sheets</text>
-    <text x="20" y="64" class="txt small muted">previous / current / next</text>
-    <text x="20" y="84" class="txt small muted">segment sheets</text>
-    <rect x="28" y="132" width="62" height="78" rx="8" class="bad"/>
-    <rect x="104" y="132" width="62" height="78" rx="8" class="focus"/>
-    <rect x="180" y="132" width="62" height="78" rx="8" class="bad"/>
-    <path d="M94 171h8M170 171h8" stroke="#5c564c" stroke-width="2"/>
-    <text x="32" y="236" class="mono ink">prev</text><text x="108" y="236" class="mono ink">cur</text><text x="185" y="236" class="mono ink">next</text>
-    <text x="20" y="300" class="mono ink">Context pollution</text>
+  <g transform="translate(488,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">Temporal collage</text>
+    <text x="18" y="58" class="sub">past / current / future</text>
+    <g transform="translate(24,83)">
+      <rect x="0" y="0" width="45" height="82" rx="8" class="muted"/><rect x="55" y="0" width="45" height="82" rx="8" class="pred"/><rect x="110" y="0" width="45" height="82" rx="8" class="muted"/>
+      <text x="8" y="107" class="tiny">past</text><text x="55" y="107" class="tiny">current</text><text x="112" y="107" class="tiny">future</text>
+    </g>
+    <text x="18" y="190" class="label">Adds context after bounds</text>
+    <text x="18" y="212" class="tiny">Often pollutes current label</text>
   </g>
 
-  <g transform="translate(936,122)">
-    <rect width="268" height="350" rx="14" class="card"/>
-    <text x="20" y="36" class="txt label ink">Hand crop</text>
-    <text x="20" y="64" class="txt small muted">crop around hands/wrists</text>
-    <text x="20" y="84" class="txt small muted">before labeling</text>
-    <rect x="50" y="125" width="168" height="120" rx="10" class="tile"/>
-    <circle cx="102" cy="182" r="25" class="hand"/><circle cx="166" cy="182" r="25" class="hand"/>
-    <rect x="74" y="151" width="120" height="66" rx="8" fill="none" stroke="#2f6f66" stroke-width="5"/>
-    <text x="20" y="300" class="mono ink">Requires wrist tracks</text>
+  <g transform="translate(713,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">Neighbor sheets</text>
+    <text x="18" y="58" class="sub">prev / current / next</text>
+    <g transform="translate(22,84)">
+      <rect x="0" y="0" width="44" height="62" rx="7" class="muted"/><text x="13" y="84" class="tiny">prev</text>
+      <rect x="58" y="0" width="44" height="62" rx="7" class="pred"/><text x="62" y="84" class="tiny">cur</text>
+      <rect x="116" y="0" width="44" height="62" rx="7" class="muted"/><text x="125" y="84" class="tiny">next</text>
+      <line x1="50" y1="31" x2="54" y2="31" stroke="#4f4a42"/><line x1="108" y1="31" x2="112" y2="31" stroke="#4f4a42"/>
+    </g>
+    <text x="18" y="190" class="label">Looks helpful, but risky</text>
+    <text x="18" y="212" class="tiny">May describe neighboring action</text>
+  </g>
+
+  <g transform="translate(938,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">True hand-crop</text>
+    <text x="18" y="58" class="sub">crop using wrist tracks</text>
+    <g transform="translate(31,82)">
+      <rect x="0" y="0" width="144" height="88" rx="8" fill="#e8e1d4"/>
+      <rect x="28" y="22" width="88" height="42" rx="7" fill="none" stroke="#2f7d70" stroke-width="4"/>
+      <circle cx="54" cy="43" r="18" fill="#c85e25"/><circle cx="96" cy="43" r="18" fill="#c85e25"/>
+    </g>
+    <text x="18" y="190" class="label">Needs reliable hand signal</text>
+    <text x="18" y="212" class="tiny">HaWoR crop: Gemini Acc 50.9%</text>
   </g>
 </svg>

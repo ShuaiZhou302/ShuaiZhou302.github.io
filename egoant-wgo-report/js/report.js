@@ -205,98 +205,134 @@
     },
     "raw_397b": {
       "zh": {
-        "name": "raw 原帧（默认基线）",
-        "note": "Track A",
-        "model": "Qwen3.5-397B"
+        "name": "raw 原帧 · Qwen3.5-397B",
+        "note": "Gemini judge 基线",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "Raw frames (default baseline)",
-        "note": "Track A",
-        "model": "Qwen3.5-397B"
+        "name": "Raw frames · Qwen3.5-397B",
+        "note": "Gemini-judge baseline",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
     "overlay_proxy": {
       "zh": {
-        "name": "optical-flow proxy overlay",
-        "note": "非真 hand",
-        "model": "Qwen3.5-397B"
+        "name": "proxy overlay · Qwen3.5-397B",
+        "note": "非真 hand；低于 raw",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "optical-flow proxy overlay",
-        "note": "Not true hand crops",
-        "model": "Qwen3.5-397B"
+        "name": "Proxy overlay · Qwen3.5-397B",
+        "note": "Not true hand crops; below raw",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+      }
+    },
+    "overlay_27b": {
+      "zh": {
+        "name": "proxy overlay · Qwen3.6-27B",
+        "note": "近似叠图；未超过 raw 27B",
+        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+      },
+      "en": {
+        "name": "Proxy overlay · Qwen3.6-27B",
+        "note": "Approximate overlay; below raw 27B",
+        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
       }
     },
     "temporal_collage": {
       "zh": {
-        "name": "整帧 temporal collage（P/C/F）",
-        "note": "整帧≠hand",
-        "model": "Qwen3.5-397B"
+        "name": "temporal collage · Qwen3.5-397B",
+        "note": "上下文污染当前句",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "Whole-frame temporal collage (P/C/F)",
-        "note": "Whole frame ≠ hand",
-        "model": "Qwen3.5-397B"
+        "name": "Temporal collage · Qwen3.5-397B",
+        "note": "Context pollutes current label",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+      }
+    },
+    "temporal_collage_27b": {
+      "zh": {
+        "name": "temporal collage · Qwen3.6-27B",
+        "note": "低于 raw 27B",
+        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+      },
+      "en": {
+        "name": "Temporal collage · Qwen3.6-27B",
+        "note": "Below raw 27B",
+        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
       }
     },
     "raw_27b": {
       "zh": {
-        "name": "raw + Qwen3.6-27B",
-        "note": "",
-        "model": "Qwen3.6-27B"
+        "name": "raw 原帧 · Qwen3.6-27B",
+        "note": "固定边界标注最高",
+        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "raw + Qwen3.6-27B",
-        "note": "",
-        "model": "Qwen3.6-27B"
+        "name": "Raw frames · Qwen3.6-27B",
+        "note": "Best fixed-boundary labels",
+        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+      }
+    },
+    "predictions_labeling": {
+      "zh": {
+        "name": "raw 原帧重复审计 · Qwen3.5-397B",
+        "note": "与 raw 397B 一致",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+      },
+      "en": {
+        "name": "Raw-frame duplicate audit · Qwen3.5-397B",
+        "note": "Matches raw 397B",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
     "l1_neighbor": {
       "zh": {
         "name": "邻段 contact sheet（上一/当前/下一段）",
-        "note": "大跌",
-        "model": "Qwen3.5-397B"
+        "note": "容易写到邻段动作",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
         "name": "Neighbor contact sheets (prev/cur/next)",
-        "note": "Large drop",
-        "model": "Qwen3.5-397B"
+        "note": "Often labels neighboring actions",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
     "l1_ts_rerun": {
       "zh": {
         "name": "邻段 sheet + 秒级时间戳重跑",
-        "note": "修时间戳仍跌",
-        "model": "Qwen3.5-397B"
+        "note": "修时间戳仍低",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
         "name": "Neighbor sheets + second-level timestamps",
         "note": "Fixing timestamps still lowers accuracy",
-        "model": "Qwen3.5-397B"
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
     "l2_yolo_proxy": {
       "zh": {
-        "name": "YOLO/proxy hand-collage",
-        "note": "失败线",
-        "model": "Qwen3.5-397B"
+        "name": "proxy hand-collage · Qwen3.5-397B",
+        "note": "近似 crop，不是真 hand-crop",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "YOLO/proxy hand-collage",
-        "note": "Failure path",
-        "model": "Qwen3.5-397B"
+        "name": "Proxy hand-collage · Qwen3.5-397B",
+        "note": "Approximate crop, not true hand-crop",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
     "l2_hawor": {
       "zh": {
         "name": "HaWoR 真手部 crop",
-        "note": "+0.4pp",
-        "model": "Qwen3.5-397B"
+        "note": "略高于 raw 397B，低于 raw 27B",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
         "name": "HaWoR true hand-crop",
-        "note": "+0.4pp",
-        "model": "Qwen3.5-397B"
+        "note": "Slightly above raw 397B, below raw 27B",
+        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
     "l4_strict_judge": {
@@ -350,12 +386,24 @@
     "raw397": {
       "zh": {
         "name": "+ 397B 单路 raw 重标",
-        "note": "锁 0.2031 边界后单路 raw；E2E 0.1388，成本远低于 selector",
+        "note": "锁 0.2031 边界后单路 raw；Gemini E2E 0.1414，成本远低于 selector",
         "model": null
       },
       "en": {
         "name": "+ 397B raw-only relabel",
-        "note": "Same 0.2031 bounds; E2E 0.1388; cheaper than selector",
+        "note": "Same 0.2031 bounds; Gemini E2E 0.1414; cheaper than selector",
+        "model": null
+      }
+    },
+    "raw27b_e2e": {
+      "zh": {
+        "name": "+ 27B 单路 raw 重标",
+        "note": "固定边界 Label Acc 最高，但 E2E 不是最高",
+        "model": null
+      },
+      "en": {
+        "name": "+ 27B raw-only relabel",
+        "note": "Best fixed-boundary Label Acc, but not best E2E",
         "model": null
       }
     },
@@ -426,23 +474,27 @@
     merge_exact: { en: { goal: "Make the timeline cleaner by merging adjacent identical labels.", how: "Rule-based merge when adjacent labels are exactly identical.", input: "S2 full-cover predictions", result: "F1 0.1987", verdict: "Looks cleaner but lowers F1; do not enable by default." } },
     merge_verb: { en: { goal: "Merge adjacent segments with similar verb/object.", how: "Parse approximate verb/object matches and merge adjacent spans.", input: "S2 full-cover predictions", result: "F1 0.1947", verdict: "More aggressive merge lowers F1 further." } },
     merge_bridge: { en: { goal: "Bridge short gaps between likely-similar spans.", how: "Allow short temporal gaps before merging.", input: "S2 full-cover predictions", result: "F1 0.1883", verdict: "Largest drop among merge rules." } },
-    raw_397b: { en: { goal: "Evaluate label quality with fixed gold boundaries.", how: "Uniformly sample about five raw frames per segment, caption with 397B, and judge separately.", input: "raw frames", result: "Accuracy 50.6%", verdict: "Most stable default labeling input." } },
-    overlay_proxy: { en: { goal: "Show the model an approximate hand location.", how: "Use optical-flow centroid proxy overlay because true hand reconstruction was not available for this ablation.", input: "proxy overlay frames", result: "Accuracy 48.3%", verdict: "Hurts score; do not present it as true hand overlay." } },
-    temporal_collage: { en: { goal: "Add whole-frame past/current/future context.", how: "Create separate full-frame grids from past, current, and future windows.", input: "whole-frame collage", result: "Accuracy 42.1%", verdict: "Context noise outweighs the benefit." } },
-    raw_27b: { en: { goal: "Test whether the smaller model can label fixed segments.", how: "Same raw-frame input as the default labeler, but with Qwen3.6-27B.", input: "raw frames", result: "Accuracy 46.0%", verdict: "Labeling still benefits from the larger model." } },
-    l1_neighbor: { en: { goal: "Use previous/current/next segment context.", how: "Feed PREV/CUR/NEXT contact sheets together to the labeler.", input: "neighbor contact sheets", result: "Accuracy 36.8%", verdict: "The model loses track of which action is current." } },
-    l1_ts_rerun: { en: { goal: "Check whether missing timestamps caused the neighbor-sheet drop.", how: "Re-run neighbor sheets after adding second-level yellow timestamps.", input: "timestamped neighbor sheets", result: "Accuracy 35.5%", verdict: "The input design lowers accuracy; timestamps were not the issue." } },
-    l2_yolo_proxy: { en: { goal: "Focus visual attention on hand-object regions.", how: "Use YOLO/person or center-proxy crops because HomER has no native hand asset in this benchmark.", input: "approximate hand collage", result: "Accuracy 40.6%", verdict: "Approximate crops hurt and are not true hand crops." } },
-    l2_hawor: { en: { goal: "Use real wrist tracks for hand crops.", how: "Run HaWoR, build wrist tracks, and crop around hand points; 411/470 segments had full crop coverage.", input: "true hand crops plus raw fallback", result: "Accuracy 51.1%", verdict: "Small positive gain, but expensive; use when reliable hand assets exist." } },
+    raw_27b: { en: { goal: "Test whether the smaller model can label fixed segments.", how: "Same raw-frame input as the default labeler, but with Qwen3.6-27B.", input: "raw frames", result: "Gemini Acc 55.7%", verdict: "Best fixed-boundary label setting under the WGO/Macrodata judge." } },
+    temporal_collage_27b: { en: { goal: "Test past/current/future context with the smaller model.", how: "Create whole-frame grids from past, current, and future windows.", input: "temporal collage", result: "Gemini Acc 52.8%", verdict: "Better than 397B collage, still below simple raw 27B." } },
+    overlay_27b: { en: { goal: "Show approximate motion/hand-region cues.", how: "Draw proxy visual marks on raw frames, then label fixed gold segments.", input: "proxy overlay frames", result: "Gemini Acc 50.6%", verdict: "Does not beat raw 27B; useful as an ablation only." } },
+    raw_397b: { en: { goal: "Evaluate label quality with fixed gold boundaries.", how: "Uniformly sample raw frames per segment, caption with 397B, and score with Gemini.", input: "raw frames", result: "Gemini Acc 50.2%", verdict: "Stable baseline, but not the Gemini-rescored winner." } },
+    predictions_labeling: { en: { goal: "Audit a duplicate prediction artifact.", how: "Score the copied prediction file with the same Gemini judge.", input: "raw label predictions", result: "Gemini Acc 50.2%", verdict: "No hidden gain; keep the traceable raw row as baseline." } },
+    overlay_proxy: { en: { goal: "Show the model an approximate hand or motion location.", how: "Use optical-flow / center-proxy visual marks because true hand reconstruction was not available for this proxy ablation.", input: "proxy overlay frames", result: "Gemini Acc 48.5%", verdict: "Hurts score; do not present it as true hand overlay." } },
+    temporal_collage: { en: { goal: "Add whole-frame past/current/future context.", how: "Create separate full-frame grids from past, current, and future windows.", input: "whole-frame collage", result: "Gemini Acc 45.1%", verdict: "Context noise outweighs the benefit." } },
+    l1_neighbor: { en: { goal: "Use previous/current/next segment context.", how: "Feed PREV/CUR/NEXT contact sheets together to the labeler.", input: "neighbor contact sheets", result: "Gemini Acc 39.6%", verdict: "The model loses track of which action is current." } },
+    l1_ts_rerun: { en: { goal: "Check whether missing timestamps caused the neighbor-sheet drop.", how: "Re-run neighbor sheets after adding second-level yellow timestamps.", input: "timestamped neighbor sheets", result: "Gemini Acc 40.0%", verdict: "Timestamps help slightly, but the input design still hurts." } },
+    l2_yolo_proxy: { en: { goal: "Focus visual attention on hand-object regions.", how: "Use approximate crop/collage proxies instead of reliable wrist tracks.", input: "proxy hand collage", result: "Gemini Acc 39.1%", verdict: "Approximate crops hurt and are not true hand crops." } },
+    l2_hawor: { en: { goal: "Use real wrist tracks for hand crops.", how: "Run HaWoR, build wrist tracks, crop around hands, and fall back to raw when crops are incomplete.", input: "true hand crops plus raw fallback", result: "Gemini Acc 50.9%", verdict: "Small gain over raw 397B, but still below raw 27B." } },
     l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Reports must keep the judge fixed." } },
-    l2_proxy_27b: { en: { goal: "Combine small model and approximate hand collage.", how: "Same proxy-crop input, but with Qwen3.6-27B.", input: "approximate hand collage", result: "Accuracy 31.7%", verdict: "Both the input and the smaller labeler hurt." } },
+    l2_proxy_27b: { en: { goal: "Legacy excluded ablation.", how: "Approximate hand-collage with the smaller model was not part of the final Gemini-rescored main table.", input: "approximate hand collage", result: "Excluded from main table", verdict: "Do not compare against Gemini-rescored rows." } },
     egovid_e2e: { en: { goal: "Measure the original one-pass cut-and-label path.", how: "Rule-based wrist cuts followed by per-segment captions.", input: "production-style baseline output", result: "E2E F1 0.0656", verdict: "Weak end-to-end baseline under the WGO protocol." } },
-    s2_self: { en: { goal: "Keep the best boundaries but let the segmentation model self-label.", how: "Use S2 full-cover boundaries and Qwen3.6-27B labels.", input: "S2 predicted segments", result: "E2E F1 0.1017", verdict: "Better boundaries alone are not enough; labels remain weak." } },
-    raw397: { en: { goal: "Lock boundaries and upgrade the labeler.", how: "Use the same S2 boundaries, then let 397B caption raw frames.", input: "raw frames within S2 segments", result: "E2E F1 0.1388", verdict: "Most gain comes from the larger labeler." } },
-    ffmpeg397: { en: { goal: "Test sensitivity to decode and sampling path.", how: "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.", input: "ffmpeg-sampled raw frames", result: "E2E F1 0.1414", verdict: "Slightly better than the default raw path; useful as a candidate." } },
+    s2_self: { en: { goal: "Keep the best boundaries but let the segmentation model self-label.", how: "Use S2 full-cover boundaries and Qwen3.6-27B labels.", input: "S2 predicted segments", result: "Gemini E2E F1 0.1234", verdict: "Better boundaries alone are not enough; labels remain weak." } },
+    raw27b_e2e: { en: { goal: "Check whether the fixed-boundary Label Acc winner also wins E2E.", how: "Use S2 boundaries, then relabel each predicted segment with raw frames and Qwen3.6-27B.", input: "raw frames within S2 segments", result: "Gemini E2E F1 0.1285", verdict: "Better than self-label, but below 397B raw and selector." } },
+    raw397: { en: { goal: "Lock boundaries and upgrade the labeler.", how: "Use the same S2 boundaries, then let 397B caption raw frames.", input: "raw frames within S2 segments", result: "Gemini E2E F1 0.1414", verdict: "Most single-path gain comes from the larger labeler." } },
+    ffmpeg397: { en: { goal: "Test sensitivity to decode and sampling path.", how: "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.", input: "ffmpeg-sampled raw frames", result: "Gemini E2E F1 0.1491", verdict: "Slightly better than the default raw path; useful as a candidate." } },
     nb28: { en: { goal: "Try neighbor context with a small-model prior.", how: "Feed previous/current/next frames plus a Qwen3.6-27B prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1234", verdict: "Context pollution lowers semantic accuracy while boundaries stay fixed." } },
-    nb397: { en: { goal: "Try neighbor context with a stronger raw prior.", how: "Feed previous/current/next frames plus a 397B raw prior.", input: "neighbor frames plus prior", result: "E2E F1 0.1440", verdict: "Better than the 27B-prior neighbor path, still below selector." } },
-    selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "E2E F1 0.1542", verdict: "Best current end-to-end result; higher call count." } }
+    nb397: { en: { goal: "Try neighbor context with a stronger raw prior.", how: "Feed previous/current/next frames plus a 397B raw prior.", input: "neighbor frames plus prior", result: "Gemini E2E F1 0.1491", verdict: "Useful as a candidate, still below selector." } },
+    selector397: { en: { goal: "Select among multiple candidate labels for the same boundary.", how: "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.", input: "candidate labels for S2 segments", result: "Gemini E2E F1 0.1542", verdict: "Best current end-to-end result; higher call count." } }
   };
 
   function lang() {
@@ -1136,7 +1188,7 @@
     }
     const mainSeg = data.segmentation.filter((r) => ["egovid_baseline","cs_max3_397b","cs_max3_27b","whole_legacy_27b","aligned_gepa_27b","s1_full25_397b","s2_full25_397b","s2_fullcover_qwen36"].includes(r.id));
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25);
-    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.55, true);
+    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.60, true);
     renderBars(document.querySelector("#e2e-bars"), data.e2e, "e2e_f1", 0.18, true);
     fillSegTable(data);
     fillSegPadTable(data);
@@ -1152,7 +1204,7 @@
       if (!D || !D.data) return;
       const mainSeg = D.data.segmentation.filter((r) => ["egovid_baseline","cs_max3_397b","cs_max3_27b","whole_legacy_27b","aligned_gepa_27b","s1_full25_397b","s2_full25_397b","s2_fullcover_qwen36"].includes(r.id));
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25);
-      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.55, true);
+      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.60, true);
       renderBars(document.querySelector("#e2e-bars"), D.data.e2e, "e2e_f1", 0.18, true);
       fillSegTable(D.data);
       fillSegPadTable(D.data);
@@ -1191,11 +1243,11 @@
       "seg_f1": 0.2031,
       "seg_config": "Qwen3.6-27B · S2 pad=0 + full-cover local prompt · contact sheet",
       "label_acc": 0.5574,
-      "label_config": "Qwen3.6-27B raw 标签 · Gemini-3.5-Flash judge（raw 397B=50.2%，HaWoR hand-crop=50.9%）",
-      "e2e_f1": 0.154242,
-      "e2e_config": "锁 S2 full-cover 边界 + Qwen3.5-397B candidate selector · Gemini-3.5-Flash judge"
+      "label_config": "Qwen3.6-27B raw labels · Gemini-3.5-Flash judge (fixed gold boundaries)",
+      "e2e_f1": 0.1542,
+      "e2e_config": "S2 full-cover boundaries + Qwen3.5-397B multi-candidate selector · Gemini-3.5-Flash judge"
     },
-    "generated_note": "分数更新到 Gemini-3.5-Flash WGO rescore；未重判的旧 Label Acc 条目在 note 中标注。"
+    "generated_note": "All main Label Acc and Semantic E2E entries are rescored with Gemini-3.5-Flash judge; Segment F1 remains pure temporal IoU."
   },
   "glossary": [
     {
@@ -1575,285 +1627,316 @@
   ],
   "labeling": [
     {
-      "id": "raw_397b",
-      "name": "raw 原帧（默认基线）",
-      "acc": 0.506,
+      "id": "raw_27b",
+      "name": "raw frames · Qwen3.6-27B",
+      "acc": 0.5574,
+      "n_match": 262,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": 0.05531914889999989,
+      "note": "Best fixed-boundary label score after Gemini rescore.",
+      "method": {
+        "goal": "Test whether the smaller model can label fixed segments.",
+        "how": "Same raw-frame input as the default labeler, but with Qwen3.6-27B.",
+        "input": "raw frames",
+        "result": "Acc 55.7%",
+        "verdict": "Best fixed-boundary label setting under Gemini judge."
+      }
+    },
+    {
+      "id": "temporal_collage_27b",
+      "name": "temporal collage · Qwen3.6-27B",
+      "acc": 0.5277,
+      "n_match": 248,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": 0.025531914899999952,
+      "note": "Better than 397B collage, still below raw 27B.",
+      "method": {
+        "goal": "Test past/current/future context with the smaller model.",
+        "how": "Build past/current/future whole-frame grids for each fixed gold segment.",
+        "input": "temporal collage",
+        "result": "Acc 52.8%",
+        "verdict": "Extra context helps less than simple raw frames."
+      }
+    },
+    {
+      "id": "overlay_27b",
+      "name": "proxy overlay · Qwen3.6-27B",
+      "acc": 0.5064,
       "n_match": 238,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": 0.004255319099999988,
+      "note": "Approximate overlay; not true hand reconstruction.",
+      "method": {
+        "goal": "Show the model approximate motion/hand-region cues.",
+        "how": "Draw optical-flow / heuristic visual marks on raw frames, then label fixed gold segments.",
+        "input": "proxy overlay frames",
+        "result": "Acc 50.6%",
+        "verdict": "Does not beat raw 27B; useful only as an ablation."
+      }
+    },
+    {
+      "id": "l2_hawor",
+      "name": "HaWoR true hand-crop · Qwen3.5-397B",
+      "acc": 0.5085,
+      "n_match": 239,
+      "n": 470,
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": 0.0063829786999999305,
+      "note": "Slightly above raw 397B, below raw 27B; requires reliable wrist tracks.",
+      "method": {
+        "goal": "Use real wrist tracks for hand crops.",
+        "how": "Run HaWoR, build wrist tracks, crop around hands, and fall back to raw when crops are incomplete.",
+        "input": "true hand-crop plus raw fallback",
+        "result": "Acc 50.9%",
+        "verdict": "Small gain over raw 397B, not enough to beat raw 27B."
+      }
+    },
+    {
+      "id": "raw_397b",
+      "name": "raw frames · Qwen3.5-397B",
+      "acc": 0.5021,
+      "n_match": 236,
+      "n": 470,
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0,
-      "note": "Track A",
+      "note": "397B raw baseline under the same Gemini judge.",
       "method": {
-        "goal": "给定 gold 边界，只评句子",
-        "how": "段内均匀抽约 5 帧原图 → 397B caption → 另一次 397B judge",
+        "goal": "Evaluate label quality with fixed gold boundaries.",
+        "how": "Uniformly sample raw frames per gold segment, label with 397B, then score with Gemini.",
         "input": "raw frames",
-        "result": "50.6%",
-        "verdict": "生产默认最稳"
+        "result": "Acc 50.2%",
+        "verdict": "Stable baseline, but not the Gemini-rescored winner."
+      }
+    },
+    {
+      "id": "predictions_labeling",
+      "name": "raw frames duplicate audit · Qwen3.5-397B",
+      "acc": 0.5021,
+      "n_match": 236,
+      "n": 470,
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": 0.0,
+      "note": "Duplicate/audit path matched raw 397B exactly.",
+      "method": {
+        "goal": "Verify that the copied labeling artifact matches the traceable raw run.",
+        "how": "Score the audit prediction file with the same Gemini judge.",
+        "input": "raw label predictions",
+        "result": "Acc 50.2%",
+        "verdict": "No hidden gain; keep the traceable raw row as the baseline."
       }
     },
     {
       "id": "overlay_proxy",
-      "name": "optical-flow proxy overlay",
-      "acc": 0.483,
-      "n_match": 227,
+      "name": "proxy overlay · Qwen3.5-397B",
+      "acc": 0.4851,
+      "n_match": 228,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
-      "delta_vs_raw": -0.023,
-      "note": "非真 hand",
+      "delta_vs_raw": -0.01702127660000008,
+      "note": "Visual marks hurt relative to raw 397B.",
       "method": {
-        "goal": "把「手在哪」叠到画面上帮模型",
-        "how": "HomER 无 hand_recon，用光流质心画 proxy overlay",
-        "input": "overlay frames",
-        "result": "48.3%",
-        "verdict": "得分下降；不能等同于真实 hand-crop"
+        "goal": "Show the model approximate hand/motion location.",
+        "how": "Use optical-flow / center-proxy visual marks because true hand tracks are unavailable for this proxy ablation.",
+        "input": "proxy overlay frames",
+        "result": "Acc 48.5%",
+        "verdict": "Hurts score; do not present it as true hand overlay."
       }
     },
     {
       "id": "temporal_collage",
-      "name": "整帧 temporal collage（P/C/F）",
-      "acc": 0.421,
-      "n_match": 198,
+      "name": "temporal collage · Qwen3.5-397B",
+      "acc": 0.4511,
+      "n_match": 212,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
-      "delta_vs_raw": -0.085,
-      "note": "整帧≠hand",
+      "delta_vs_raw": -0.05106382980000007,
+      "note": "Past/current/future grids polluted current-action wording.",
       "method": {
-        "goal": "给前后文整帧上下文",
-        "how": "past/current/future 各约 6 格整帧拼图，再 caption",
-        "input": "整帧 collage",
-        "result": "42.1%",
-        "verdict": "上下文噪音大，准确率下降"
-      }
-    },
-    {
-      "id": "raw_27b",
-      "name": "raw + Qwen3.6-27B",
-      "acc": 0.46,
-      "n_match": 216,
-      "n": 470,
-      "model": "Qwen3.6-27B",
-      "full25": true,
-      "delta_vs_raw": -0.046,
-      "note": "",
-      "method": {
-        "goal": "小模型能否扛标注",
-        "how": "同 raw 抽帧，换 27B",
-        "input": "raw",
-        "result": "46.0%",
-        "verdict": "标注仍需大模型"
-      }
-    },
-    {
-      "id": "l1_neighbor",
-      "name": "L1 邻段 contact sheet",
-      "acc": 0.368,
-      "n_match": 173,
-      "n": 470,
-      "model": "Qwen3.5-397B",
-      "full25": true,
-      "delta_vs_raw": -0.138,
-      "note": "大跌",
-      "method": {
-        "goal": "对齐 WGO：看上一/当前/下一段",
-        "how": "PREV/CUR/NEXT 三段 sheet 一并送 labeler",
-        "input": "邻段 contact sheet",
-        "result": "36.8%",
-        "verdict": "模型搞不清「当前」是哪一步"
+        "goal": "Add whole-frame past/current/future context.",
+        "how": "Create full-frame grids from past, current, and future windows for the same fixed segment.",
+        "input": "whole-frame temporal collage",
+        "result": "Acc 45.1%",
+        "verdict": "Context noise outweighs benefit on HomER."
       }
     },
     {
       "id": "l1_ts_rerun",
-      "name": "L1 + 秒级时间戳重跑",
-      "acc": 0.355,
-      "n_match": 167,
+      "name": "neighbor sheet + timestamps · Qwen3.5-397B",
+      "acc": 0.4,
+      "n_match": 188,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
-      "delta_vs_raw": -0.151,
-      "note": "修时间戳仍跌",
+      "delta_vs_raw": -0.10212765960000003,
+      "note": "Adding timestamps did not fix neighbor-context pollution.",
       "method": {
-        "goal": "检查准确率下降是否由 tile 缺少秒戳导致",
-        "how": "补黄字秒级时间戳后全量重跑",
-        "input": "邻段 sheet（有戳）",
-        "result": "35.5%",
-        "verdict": "不是缺戳的问题，这个视觉输入设计本身降低了标注准确率"
+        "goal": "Check whether missing timestamps caused neighbor-sheet failure.",
+        "how": "Re-run previous/current/next sheets after adding second-level timestamps.",
+        "input": "timestamped neighbor sheets",
+        "result": "Acc 40.0%",
+        "verdict": "Timestamps help slightly, but the input design still hurts."
+      }
+    },
+    {
+      "id": "l1_neighbor",
+      "name": "neighbor sheet · Qwen3.5-397B",
+      "acc": 0.3957,
+      "n_match": 186,
+      "n": 470,
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": -0.10638297870000007,
+      "note": "The model often labels neighboring actions instead of the current one.",
+      "method": {
+        "goal": "Use previous/current/next segment context.",
+        "how": "Feed PREV/CUR/NEXT contact sheets together to the labeler.",
+        "input": "neighbor contact sheets",
+        "result": "Acc 39.6%",
+        "verdict": "The model loses track of which action is current."
       }
     },
     {
       "id": "l2_yolo_proxy",
-      "name": "L2 YOLO/proxy hand-collage",
-      "acc": 0.406,
-      "n_match": 191,
+      "name": "proxy hand-collage · Qwen3.5-397B",
+      "acc": 0.3915,
+      "n_match": 184,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
-      "delta_vs_raw": -0.1,
-      "note": "失败线",
+      "delta_vs_raw": -0.11063829790000007,
+      "note": "Approximate crop/collage is not true hand crop and performs poorly.",
       "method": {
-        "goal": "聚焦手部区域像 Scale/blog",
-        "how": "HomER 无 hand asset：用 YOLO 人/腕点或 center-proxy 裁剪拼 collage（非 HaWoR）",
-        "input": "hand-collage approx",
-        "result": "40.6%",
-        "verdict": "近似 crop 使得分下降；≠ true hand-crop"
+        "goal": "Focus visual attention on hand-object regions.",
+        "how": "Use approximate crop/collage proxies instead of reliable wrist tracks.",
+        "input": "proxy hand collage",
+        "result": "Acc 39.1%",
+        "verdict": "Approximate crops hurt and should not be conflated with HaWoR true hand-crop."
       },
       "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
-    },
-    {
-      "id": "l2_hawor",
-      "name": "HaWoR true hand-crop",
-      "acc": 0.511,
-      "n_match": 240,
-      "n": 470,
-      "model": "Qwen3.5-397B",
-      "full25": true,
-      "delta_vs_raw": 0.005,
-      "note": "+0.4pp",
-      "method": {
-        "goal": "真手腕 track 后再 crop",
-        "how": "HaWoR → wrist track → 按手点裁；411/470 段 5/5 有效 crop",
-        "input": "true hand-crop (+raw)",
-        "result": "51.1%",
-        "verdict": "有正向但成本高；有 asset 才作候选"
-      },
-      "figure": "assets/homer1/homer1_handcrop_sheet_84_94.jpg"
-    },
-    {
-      "id": "l4_strict_judge",
-      "name": "L4 严 judge 重判 raw",
-      "acc": 0.43,
-      "n_match": 202,
-      "n": 470,
-      "model": "Qwen3.5-397B judge",
-      "full25": true,
-      "delta_vs_raw": -0.076,
-      "note": "尺子变了",
-      "method": {
-        "goal": "更严语义等价标准",
-        "how": "同一批 raw 预测，只换 judge rubric 重判",
-        "input": "不变的 pred captions",
-        "result": "43.0%",
-        "verdict": "汇报时必须固定 judge"
-      }
-    },
-    {
-      "id": "l2_proxy_27b",
-      "name": "L2 YOLO/proxy hand-collage · 27B",
-      "acc": 0.317,
-      "n_match": 149,
-      "n": 470,
-      "model": "Qwen3.6-27B",
-      "full25": true,
-      "delta_vs_raw": null,
-      "note": "更差",
-      "method": {
-        "goal": "小模型 + 糙 hand collage",
-        "how": "同 L2 近似 collage，换 27B",
-        "input": "hand-collage approx",
-        "result": "31.7%",
-        "verdict": "双重减分"
-      }
     }
   ],
   "e2e": [
     {
       "id": "egovid_e2e",
-      "name": "EgoANT one-pass",
+      "name": "EgoANT production one-pass · Gemini judge",
       "seg_f1": 0.0953,
-      "e2e_f1": 0.0656,
+      "e2e_f1": 0.064063,
       "pred_gold": "810/470",
-      "note": "切+标一体弱",
+      "note": "wrist-speed cuts + per-segment caption; weak under WGO E2E",
       "method": {
-        "goal": "原管线端到端",
-        "how": "腕速切 + 段内 caption",
-        "result": "E2E 0.0656",
-        "verdict": "基线"
+        "goal": "Measure the original one-pass cut-and-label path.",
+        "how": "Rule-based wrist cuts followed by per-segment captions.",
+        "result": "E2E 0.0641",
+        "verdict": "Weak end-to-end baseline under the WGO protocol."
       }
     },
     {
       "id": "s2_self",
-      "name": "S2 full-cover + 自标",
+      "name": "S2 boundaries + 27B self-label · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1054,
+      "e2e_f1": 0.123393,
       "pred_gold": "308/470",
-      "note": "边界已锁",
+      "note": "same boundaries; semantic match 48",
       "method": {
-        "goal": "边界用最强分段，标注仍用分段模型",
-        "how": "锁 Seg=0.2031，27B 自写 subtask",
-        "result": "E2E 0.1054",
-        "verdict": "边界好了，句子仍弱"
+        "goal": "Keep the best boundaries but let the segmentation model self-label.",
+        "how": "Use S2 full-cover boundaries and Qwen3.6-27B labels.",
+        "result": "E2E 0.1234",
+        "verdict": "Better boundaries alone are not enough; labels remain weak."
+      }
+    },
+    {
+      "id": "raw27b_e2e",
+      "name": "S2 + 27B raw relabel · Gemini judge",
+      "seg_f1": 0.2031,
+      "e2e_f1": 0.128535,
+      "pred_gold": "308/470",
+      "note": "semantic match 50; not the E2E winner",
+      "method": {
+        "goal": "Check whether the fixed-boundary Label Acc winner also wins E2E.",
+        "how": "Use S2 boundaries, then relabel each predicted segment with raw frames and Qwen3.6-27B.",
+        "result": "E2E 0.1285",
+        "verdict": "Better than self-label, but below 397B raw and selector."
       }
     },
     {
       "id": "raw397",
-      "name": "+ 397B raw relabel",
+      "name": "S2 + 397B raw relabel · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1388,
+      "e2e_f1": 0.141388,
       "pred_gold": "308/470",
-      "note": "锁 0.2031 边界后单路 raw；E2E 0.1388，成本远低于 selector",
+      "note": "semantic match 55; strong single-path baseline",
       "method": {
-        "goal": "锁边界换大模型标",
-        "how": "同一批 S2 边界，397B 看 raw 帧重写标签",
-        "result": "E2E 0.1388",
-        "verdict": "主涨分来自换大模型"
+        "goal": "Lock boundaries and upgrade the labeler.",
+        "how": "Use the same S2 boundaries, then let 397B caption raw frames.",
+        "result": "E2E 0.1414",
+        "verdict": "Most single-path gain comes from the larger labeler."
       }
     },
     {
       "id": "ffmpeg397",
-      "name": "+ 397B ffmpeg raw relabel",
+      "name": "S2 + 397B ffmpeg-raw relabel · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.1414,
+      "e2e_f1": 0.1491,
       "pred_gold": "308/470",
-      "note": "抽帧路径变体",
+      "note": "semantic match 58; candidate source",
       "method": {
-        "goal": "换解码/抽帧路径是否改变标注",
-        "how": "ffmpeg 抽帧替代默认读帧，再 397B caption",
-        "result": "E2E 0.1414",
-        "verdict": "略好于默认 raw，作候选源"
+        "goal": "Test sensitivity to decode and sampling path.",
+        "how": "Use ffmpeg-based frame extraction with the same S2 boundaries and 397B labeler.",
+        "result": "E2E 0.1491",
+        "verdict": "Slightly better than the default raw path; useful as a candidate."
       }
     },
     {
       "id": "nb28",
-      "name": "+ 27B-prior neighbor relabel",
+      "name": "S2 + neighbor relabel (27B prior) · Gemini judge",
       "seg_f1": 0.2031,
       "e2e_f1": 0.123393,
       "pred_gold": "308/470",
-      "note": "得分下降",
+      "note": "semantic match 48; context pollution",
       "method": {
-        "goal": "邻段（上一/当前/下一段）上下文 + 小模型 prior",
-        "how": "PREV/CUR/NEXT≤5 帧 + seed prior，再标当前段",
+        "goal": "Try neighbor context with a small-model prior.",
+        "how": "Feed previous/current/next frames plus a Qwen3.6-27B prior.",
         "result": "E2E 0.1234",
-        "verdict": "邻段（上一/当前/下一段）上下文在 Qwen 上易引入邻段上下文干扰"
+        "verdict": "Context pollution lowers semantic accuracy while boundaries stay fixed."
       }
     },
     {
       "id": "nb397",
-      "name": "+ raw397-prior neighbor relabel",
+      "name": "S2 + neighbor relabel (397B prior) · Gemini judge",
       "seg_f1": 0.2031,
-      "e2e_f1": 0.144,
+      "e2e_f1": 0.1491,
       "pred_gold": "308/470",
-      "note": "",
+      "note": "semantic match 58; tied with ffmpeg raw",
       "method": {
-        "goal": "邻段 + 大模型 prior",
-        "how": "同上，prior 来自 397B raw",
-        "result": "E2E 0.1440",
-        "verdict": "可用作候选，仍低于 selector"
+        "goal": "Try neighbor context with a stronger raw prior.",
+        "how": "Feed previous/current/next frames plus a 397B raw prior.",
+        "result": "E2E 0.1491",
+        "verdict": "Useful as a candidate, still below selector."
       }
     },
     {
       "id": "selector397",
-      "name": "+ 397B candidate selector",
+      "name": "S2 + 397B multi-candidate selector · Gemini judge",
       "seg_f1": 0.2031,
       "e2e_f1": 0.154242,
       "pred_gold": "308/470",
-      "note": "同边界上多候选选优；Gemini E2E 0.1542，标注调用更多",
+      "note": "semantic match 60; current best E2E",
       "method": {
-        "goal": "多候选选优",
-        "how": "对每段收集 raw / rawprior / seed / ffmpeg 等候选，397B selector 选一条",
-        "result": "E2E 0.1542（semantic 60/79）",
-        "verdict": "生产 E2E 推荐配置"
+        "goal": "Select among multiple candidate labels for the same boundary.",
+        "how": "Generate candidates from raw, ffmpeg, seed, and prior variants, then let 397B select the final label.",
+        "result": "E2E 0.1542",
+        "verdict": "Best current end-to-end result; higher call count."
       }
     }
   ],
@@ -2280,14 +2363,20 @@
   ]
 };
   window.__COST__ = {
-  "kind": "estimate",
-  "note": "Engineering estimate (not billing). Two recipes share the same S2 segmentation; they differ in labeling fan-out.",
+  "kind": "public_engineering_estimate",
+  "note": "WGO raw/selector tokens are engineering estimates. API call counts are artifact-counted from report outputs. Internal machines, paths, and service-state details are intentionally omitted from the public report.",
   "eval_subset": "HomER 25 episodes",
+  "sources": {
+    "labels": "public report artifacts",
+    "wgo_exp_usage_files": 0,
+    "internal_usage_sources": "omitted"
+  },
   "video": {
     "n_episodes": 25,
     "total_sec": 2402.4,
     "total_min": 40.04,
     "mean_sec": 96.1,
+    "duration_source": "ffprobe_on_local_mp4",
     "per_episode_sec": {
       "homer_1": 161.2,
       "homer_10": 120.8,
@@ -2317,50 +2406,33 @@
     }
   },
   "recipe_counts": {
+    "kind": "artifact_counted",
     "n_pred_segments": 308,
     "n_sheets_total": 256,
     "n_s2_windows_total": 155,
+    "n_iou_match_judge": 79,
     "mean_sheets_per_ep": 10.24,
     "mean_pred_per_ep": 12.32,
     "mean_s2_windows_per_ep": 6.2
   },
-  "api_calls_estimate": {
-    "segmentation_whole_episode": 25,
-    "segmentation_s2_refine": 155,
-    "labeling": 1232,
-    "candidate_selector": 308,
-    "e2e_judge_text_only": 79,
-    "total": 1799
-  },
-  "tokens_estimate": {
-    "total_low": 6977500,
-    "total_high": 11577200,
-    "per_video_minute_low": 174263,
-    "per_video_minute_high": 289141,
-    "per_episode_mean_low": 279100,
-    "per_episode_mean_high": 463088,
-    "segmentation_low": 477900,
-    "segmentation_high": 765600,
-    "labeling_low": 6468000,
-    "labeling_high": 10780000,
-    "judge": 31600
-  },
-  "assumptions": {
-    "sample_interval_sec": 0.5,
-    "frames_per_sheet": 20,
+  "assumptions_tokens": {
     "label_frames_per_segment": 5,
+    "image_max_side": 1120,
     "candidate_paths": 4,
     "img_tokens_per_image": [
       900,
       1600
     ],
-    "text_tokens_per_call": 600
+    "text_tokens_per_call": 600,
+    "judge_text_tokens": 400,
+    "status": "public_engineering_estimate"
   },
   "recipes": {
     "raw_only": {
-      "label": "生产简化：S2 边界 + 单路 raw 标注",
-      "e2e_f1": 0.1388,
-      "api_calls_estimate": {
+      "label": "S2 边界 + 单路 raw 标注",
+      "e2e_f1": 0.1414,
+      "api_calls": {
+        "kind": "artifact_counted",
         "segmentation_whole_episode": 25,
         "segmentation_s2_refine": 155,
         "labeling": 308,
@@ -2368,24 +2440,35 @@
         "e2e_judge_text_only": 79,
         "total": 567
       },
-      "tokens_estimate": {
+      "api_calls_estimate": {
+        "kind": "artifact_counted",
+        "segmentation_whole_episode": 25,
+        "segmentation_s2_refine": 155,
+        "labeling": 308,
+        "candidate_selector": 0,
+        "e2e_judge_text_only": 79,
+        "total": 567
+      },
+      "tokens": {
+        "kind": "engineering_estimate",
         "total_low": 2080300,
         "total_high": 3446000,
         "per_video_minute_low": 51956,
-        "per_video_minute_high": 86064,
-        "per_episode_mean_low": 83212,
-        "per_episode_mean_high": 137840,
-        "segmentation_low": 477900,
-        "segmentation_high": 765600,
-        "labeling_low": 1570800,
-        "labeling_high": 2648800,
-        "judge": 31600
+        "per_video_minute_high": 86064
+      },
+      "tokens_estimate": {
+        "kind": "engineering_estimate",
+        "total_low": 2080300,
+        "total_high": 3446000,
+        "per_video_minute_low": 51956,
+        "per_video_minute_high": 86064
       }
     },
     "selector": {
-      "label": "最强：S2 边界 + 4 路候选 + selector",
-      "e2e_f1": 0.154242,
-      "api_calls_estimate": {
+      "label": "S2 边界 + 4 路候选 + selector",
+      "e2e_f1": 0.1542,
+      "api_calls": {
+        "kind": "artifact_counted",
         "segmentation_whole_episode": 25,
         "segmentation_s2_refine": 155,
         "labeling": 1232,
@@ -2393,20 +2476,73 @@
         "e2e_judge_text_only": 79,
         "total": 1799
       },
-      "tokens_estimate": {
+      "api_calls_estimate": {
+        "kind": "artifact_counted",
+        "segmentation_whole_episode": 25,
+        "segmentation_s2_refine": 155,
+        "labeling": 1232,
+        "candidate_selector": 308,
+        "e2e_judge_text_only": 79,
+        "total": 1799
+      },
+      "tokens": {
+        "kind": "engineering_estimate",
         "total_low": 6977500,
         "total_high": 11577200,
         "per_video_minute_low": 174263,
-        "per_video_minute_high": 289141,
-        "per_episode_mean_low": 279100,
-        "per_episode_mean_high": 463088,
-        "segmentation_low": 477900,
-        "segmentation_high": 765600,
-        "labeling_low": 6468000,
-        "labeling_high": 10780000,
-        "judge": 31600
+        "per_video_minute_high": 289141
+      },
+      "tokens_estimate": {
+        "kind": "engineering_estimate",
+        "total_low": 6977500,
+        "total_high": 11577200,
+        "per_video_minute_low": 174263,
+        "per_video_minute_high": 289141
       }
     }
+  },
+  "production_measured": {
+    "label": "EgoANT production default path (HaWoR wrist-speed cuts + caption + merge)",
+    "kind": "aggregate_estimate",
+    "source": "internal aggregate, paths omitted",
+    "n_episodes": 25,
+    "api_calls_total": 2574,
+    "prompt_tokens": 8039348,
+    "completion_tokens": 823878,
+    "total_tokens": 8863226,
+    "per_video_minute_tokens": 221359,
+    "per_episode_mean_tokens": 354529,
+    "stages": {
+      "caption": {
+        "requests": 1882,
+        "prompt_tokens": 5756442,
+        "completion_tokens": 481952,
+        "total_tokens": 6238394,
+        "latency_sec": 12411.453
+      },
+      "episode_summary": {
+        "requests": 25,
+        "prompt_tokens": 32544,
+        "completion_tokens": 369,
+        "total_tokens": 32913,
+        "latency_sec": 10.493
+      },
+      "merge_judge": {
+        "requests": 299,
+        "prompt_tokens": 1312672,
+        "completion_tokens": 202621,
+        "total_tokens": 1515293,
+        "latency_sec": 2477.988
+      },
+      "merge_rewrite": {
+        "requests": 368,
+        "prompt_tokens": 937690,
+        "completion_tokens": 138936,
+        "total_tokens": 1076626,
+        "latency_sec": 1660.459
+      }
+    },
+    "e2e_f1_note": "production one-pass E2E≈0.0641; not the same path as WGO selector E2E 0.1542"
   },
   "default_display": "both"
 };

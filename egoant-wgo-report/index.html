@@ -250,12 +250,12 @@
         </figure>
       </div>
       <figure class="figure">
-        <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy comparing contact sheets, temporal collages, neighbor sheets, and hand crops" />
-        <figcaption data-i18n="contact.taxonomy.cap">本地图示：contact sheet、整帧 temporal collage、邻段 sheet、hand crop 是四种不同视觉输入；它们在实验中不可互相代称。</figcaption>
+        <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy comparing raw frames, proxy overlays, temporal collages, neighbor sheets, and hand crops" />
+        <figcaption data-i18n="contact.taxonomy.cap">本地图示：raw、多帧 overlay、temporal collage、邻段 sheet、hand crop 是不同视觉输入；它们在实验中不可互相代称。</figcaption>
       </figure>
       <p class="plain" data-i18n-html data-i18n="contact.taxonomy.explain">
-        <strong>读图：</strong>左一 contact sheet 把整集按时间展开，用来找边界；中间两列是给“已知边界的标注任务”增加上下文，分别看前/中/后窗口或上一/当前/下一段；
-        最右 hand crop 只保留手附近区域，前提是有可靠手腕轨迹。我们的 HomER 消融说明：上下文更多不一定更好，邻段和整帧 collage 往往会把别的动作带进当前句子。
+        <strong>读图：</strong>contact sheet 用来找边界；raw 是固定边界标注的最朴素输入；proxy overlay 是在原帧上叠加光流/启发式提示，<em>不是</em>真手部重建；
+        temporal collage 与 neighbor sheet 给前后文；true hand-crop 则依赖可靠腕轨。Gemini 重评显示：更多视觉上下文不一定更好，overlay、邻段和整帧 collage 往往把别的动作带进当前句子。
       </p>
     </section>
 
@@ -516,9 +516,10 @@
 
       <h3 data-i18n="story.h3.label">6.2 标注：复杂视觉输入不一定提高准确率</h3>
       <p data-i18n-html data-i18n="story.label.p">
-        固定 gold 边界后，Gemini judge 重判改变了排序：raw 27B 达到 55.7%，高于 raw 397B 的 50.2% 与 HaWoR true hand-crop 的 50.9%。
-        <strong>邻段 sheet</strong>、整帧 collage、YOLO/proxy hand-collage 仍保留为旧 Qwen judge 消融，待 Gemini 重判后再作严格横比。
-        因此当前结论不是“越复杂越好”，而是“先固定 judge，再看视觉输入是否真的帮忙”。
+        固定 gold 边界后，Gemini judge 全量重判改变了排序：<strong>raw 27B 最高，为 55.7%</strong>；
+        temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR true hand-crop 397B 为 50.9%，raw 397B 为 50.2%。
+        397B 上，overlay 48.5%、temporal collage 45.1%、neighbor / proxy hand-collage 约 39–40%。
+        结论很朴素：在 HomER 这个子集上，复杂视觉输入常常污染当前动作描述；先固定 judge，再讨论输入设计。
       </p>
       <div class="chart-box">
         <h4 data-i18n="story.chart.label">标注准确率</h4>
@@ -554,10 +555,9 @@
       <h3 data-i18n="story.h3.e2e">6.3 E2E：锁边界，涨分靠大模型多候选</h3>
       <p data-i18n-html data-i18n="story.e2e.p">
         分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
-        <strong>自标</strong>：分段小模型写句子，弱。
-        <strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1414。
-        <strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，Gemini E2E 为 0.1234（见 <a href="#app-e2e">附录 C</a>）。
-        <strong>candidate selector</strong>：多路候选再选一句 → Gemini E2E <strong>0.1542</strong>。
+        <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然固定边界 Label Acc 最高，但接到预测边界后 E2E 只有 0.1285；
+        <strong>397B raw 重标</strong>到 0.1414；<strong>ffmpeg raw</strong>和<strong>397B-prior neighbor</strong>都到 0.1491；
+        <strong>candidate selector</strong>从多路候选里选一句，Gemini E2E 最高，为 <strong>0.1542</strong>。
       </p>
       <div class="chart-box">
         <h4 data-i18n="story.chart.e2e">E2E F1</h4>

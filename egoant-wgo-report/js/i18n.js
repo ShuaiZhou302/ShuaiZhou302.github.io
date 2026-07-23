@@ -129,8 +129,8 @@
       "contact.p": "我们不把整段 MP4 作为视觉输入直接提交给模型，而是每隔 <strong>0.5 秒</strong>抽一帧，缩到约 <strong>224×144</strong>，每张 sheet <strong>20 格（5×4）</strong>，格子上画<strong>黄色时间戳</strong>。一张 sheet 大约覆盖 10 秒；一集长视频会拆成多张 sheet。",
       "contact.cap1": "同参数生成的一张 sheet（前 ~10 秒）。全片与局部时间窗口都用这一套 layout。",
       "contact.cap2": "局部时间窗口示例：版式相同，只换时间范围（第二遍精修看这种图）。",
-      "contact.taxonomy.cap": "本地图示：contact sheet、整帧 temporal collage、邻段 sheet、hand crop 是四种不同视觉输入；它们在实验中不可互相代称。",
-      "contact.taxonomy.explain": "<strong>读图：</strong>左一 contact sheet 把整集按时间展开，用来找边界；中间两列是给“已知边界的标注任务”增加上下文，分别看前/中/后窗口或上一/当前/下一段；最右 hand crop 只保留手附近区域，前提是有可靠手腕轨迹。我们的 HomER 消融说明：上下文更多不一定更好，邻段和整帧 collage 往往会把别的动作带进当前句子。",
+      "contact.taxonomy.cap": "本地图示：raw、多帧 overlay、temporal collage、邻段 sheet、hand crop 是不同视觉输入；它们在实验中不可互相代称。",
+      "contact.taxonomy.explain": "<strong>读图：</strong>contact sheet 用来找边界；raw 是固定边界标注的最朴素输入；proxy overlay 是在原帧上叠加光流/启发式提示，<em>不是</em>真手部重建；temporal collage 与 neighbor sheet 给前后文；true hand-crop 则依赖可靠腕轨。Gemini 重评显示：更多视觉上下文不一定更好，overlay、邻段和整帧 collage 往往把别的动作带进当前句子。",
       "walk.h2": "4. 样例：跟着 homer_4 走读 selector 路径",
       "walk.lead": "下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；生产可在同边界下改用单路 raw。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。",
       "story.h2": "6. 消融故事：我们怎样走到 0.1542",
@@ -182,13 +182,13 @@
       "story.seg.legend": "表头：<strong>P（Precision）</strong>= match / pred（预测段里配对成功的比例）；<strong>R（Recall）</strong>= match / gold（gold 段被找回的比例）；<strong>match / pred / gold</strong>= 配对成功数 / 预测段数 / gold 段数（本子集 gold 恒为 470）。「模型」列若写<strong>规则后处理</strong>，表示在已有预测上做脚本合并，不再调用 LLM。",
       "story.seg.padnote": "窗口外扩秒数（旧称 pad）的消融未进入主决策路径；细节见折叠区。",
       "story.seg.fold": "展开：分段实验细节",
-      "story.label.p": "固定 gold 边界后，Gemini judge 重判改变了排序：raw 27B 达到 <strong>55.7%</strong>，高于 raw 397B 的 50.2% 与 HaWoR true hand-crop 的 50.9%。邻段 sheet、整帧 collage、YOLO/proxy hand-collage 仍保留为旧 Qwen judge 消融，待 Gemini 重判后再作严格横比。当前结论不是“越复杂越好”，而是“先固定 judge，再看视觉输入是否真的帮忙”。",
+      "story.label.p": "固定 gold 边界后，Gemini judge 全量重判改变了排序：<strong>raw 27B 最高，为 55.7%</strong>；temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR true hand-crop 397B 为 50.9%，raw 397B 为 50.2%。397B 上，overlay 48.5%、temporal collage 45.1%、neighbor / proxy hand-collage 约 39–40%。结论很朴素：在 HomER 这个子集上，复杂视觉输入常常污染当前动作描述；先固定 judge，再讨论输入设计。",
       "story.label.cap1": "<strong>读图（三栏）：</strong>左=原帧；中=启发式框（画面中心偏下固定方框，<em>不是</em>手腕检测）；右=裁出后送给标注模型的图。这是失败的 proxy 路径示意。固定边界上这类输入低于 raw。详见 <a href=\"#app-visual\">附录 E</a>。",
       "story.label.cap2": "<strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。HomER 早期无手重建时用此类 proxy；Gemini 重判后 HaWoR true hand-crop 为 50.9%，低于 raw 27B。",
       "story.label.fold": "展开：标注实验细节（做法卡）",
-      "story.e2e.p": "分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。<strong>自标</strong>：分段小模型写句子，弱。<strong>raw 重标</strong>：397B 只看当前段 raw 帧重写句子 → 0.1414。<strong>邻段重标</strong>：把上一/当前/下一段少量帧一并喂给模型；小模型 prior 时易引入邻段上下文干扰，Gemini E2E 为 0.1234（见 <a href=\"#app-e2e\">附录 C</a>）。<strong>candidate selector</strong>：多路候选再选一句 → Gemini E2E <strong>0.1542</strong>。",
+      "story.e2e.p": "分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。<strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然固定边界 Label Acc 最高，但接到预测边界后 E2E 只有 0.1285；<strong>397B raw 重标</strong>到 0.1414；<strong>ffmpeg raw</strong>和<strong>397B-prior neighbor</strong>都到 0.1491；<strong>candidate selector</strong>从多路候选里选一句，Gemini E2E 最高，为 <strong>0.1542</strong>。",
       "story.e2e.fold": "展开：E2E 实验细节（做法卡）",
-      "story.takeaway": "<strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；规则 merge 改善观感但没有提升 F1；邻段 / 粗糙 hand-collage 在 Qwen 上常降低标注准确率；汇报时固定 judge。",
+      "story.takeaway": "<strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；规则 merge 改善观感但没有提升 F1；Gemini 重评后，raw 27B 是固定边界标注最高分，但端到端最高仍是 S2 边界 + 397B 多候选 selector；overlay、邻段和粗糙 hand-collage 目前都不该默认启用。",
       "th.cond": "条件",
       "th.model": "模型或方法",
       "th.note": "结果一句话",
@@ -214,15 +214,15 @@
       "recipe.r1.b": "Qwen3.6-27B + 切段规则清单 + 局部精修（窗口不外扩、盖住完整动作）",
       "recipe.r1.c": "分片 max3；盲目规则 merge",
       "recipe.r2.a": "标注（省钱）",
-      "recipe.r2.b": "锁精修边界 + 397B <strong>单路 raw</strong>（E2E≈0.1414）",
-      "recipe.r2.c": "邻段 / 整帧 collage / YOLO/proxy hand-crop",
+      "recipe.r2.b": "固定 gold 边界文案优先：27B raw（Label Acc 55.7%）；预测边界 E2E 省钱线：397B raw（0.1414）",
+      "recipe.r2.c": "proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用",
       "recipe.r3.a": "标注（追分）",
       "recipe.r3.b": "同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）",
       "recipe.r3.c": "分段小模型自标当终稿",
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "用全量 0.306 headline 直接对比",
-      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录讲实现细节（公式/表可能中英混排）。目录： <a href=\"#app-metrics\">A 得分</a> · <a href=\"#app-seg\">B 分段概念</a> · <a href=\"#app-e2e\">C 标注/E2E 术语</a> · <a href=\"#app-prod\">D 生产管线</a> · <a href=\"#app-visual\">E 视觉输入</a> · <a href=\"#app-prompts\">F Prompt</a> · <a href=\"#app-cost\">G 成本记账</a> · <a href=\"#audit\">H 效度</a>。",
+      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚公式、术语和实现边界。目录： <a href=\"#app-metrics\">A 得分</a> · <a href=\"#app-seg\">B 分段概念</a> · <a href=\"#app-e2e\">C 标注/E2E 术语</a> · <a href=\"#app-prod\">D 生产管线</a> · <a href=\"#app-visual\">E 视觉输入</a> · <a href=\"#app-prompts\">F Prompt</a> · <a href=\"#app-cost\">G 成本记账</a> · <a href=\"#audit\">H 效度</a>。",
       "metrics.toy.g": "Gold：G0[0,3], G1[3,6], G2[6,10] · Pred：P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]",
       "metrics.toy.1": "Outer snap：P0.start→0，P3.end→10",
       "metrics.toy.2": "IoU：P0–G0≈0.933，P1–G1≈0.781",
@@ -384,8 +384,8 @@
       "contact.p": "We do not feed raw MP4 bytes as vision input. We sample a frame every <strong>0.5s</strong>, resize to ~<strong>224×144</strong>, pack <strong>20 tiles (5×4)</strong> per sheet with <strong>yellow timestamps</strong>. One sheet ≈10s; long episodes become many sheets.",
       "contact.cap1": "One sheet with the same params (first ~10s). Whole-episode and local windows share this layout.",
       "contact.cap2": "Local time-window example: same layout, different range (what pass-2 refine sees).",
-      "contact.taxonomy.cap": "Local diagram: contact sheets, whole-frame temporal collages, neighbor sheets, and hand crops are distinct visual inputs and should not be used interchangeably.",
-      "contact.taxonomy.explain": "<strong>How to read it:</strong> the contact sheet unfolds an episode over time for boundary finding. The two middle inputs add context after boundaries are already fixed: past/current/future windows or previous/current/next segments. The hand crop keeps only the hand region and needs reliable wrist tracks. Our HomER ablations show that more context is not automatically better: neighbor sheets and full-frame collages often import the wrong action into the current label.",
+      "contact.taxonomy.cap": "Local diagram: raw frames, proxy overlays, temporal collages, neighbor sheets, and hand crops are distinct visual inputs and should not be used interchangeably.",
+      "contact.taxonomy.explain": "<strong>How to read it:</strong> contact sheets expose the timeline for boundary finding. Raw frames are the simplest fixed-boundary labeling input. Proxy overlay means raw frames with optical-flow or heuristic marks, <em>not</em> true hand reconstruction. Temporal collages and neighbor sheets add context. True hand-crop needs reliable wrist tracks. The Gemini rescore shows that richer context is not automatically better: overlay, neighbor sheets, and full-frame collages often import the wrong action into the current label.",
       "walk.h2": "4. Walkthrough: homer_4 along the selector path",
       "walk.lead": "This walkthrough is the <strong>selector path</strong> (widescreen 1080p, clear wipe motion); production can use raw-only on the same bounds. Task: wipe tables / cabinet surfaces with a cloth. Folded prompts stay English originals.",
       "story.h2": "6. Ablation story: how we reached 0.1542",
@@ -437,13 +437,13 @@
       "story.seg.legend": "Headers: <strong>P (Precision)</strong>= match / pred; <strong>R (Recall)</strong>= match / gold; <strong>match / pred / gold</strong>= counts (gold fixed at 470 here). If the model column says <strong>rule postprocess</strong>, it means scripted merges on existing preds—no LLM call.",
       "story.seg.padnote": "Pad-out second ablations are not on the main decision path; details stay folded.",
       "story.seg.fold": "Expand: segmentation details",
-      "story.label.p": "With gold boundaries fixed, the Gemini judge changes the ranking: raw 27B reaches <strong>55.7%</strong>, above raw 397B at 50.2% and HaWoR true hand-crop at 50.9%. Neighbor sheets, full-frame collages, and YOLO/proxy hand-collages remain old-Qwen-judge ablations until we rerun them with Gemini. The current lesson is to fix the judge first, then decide whether richer visual input actually helps.",
+      "story.label.p": "With gold boundaries fixed, the full Gemini rescore changes the ranking: <strong>raw 27B is best at 55.7%</strong>; temporal collage 27B reaches 52.8%, proxy overlay 27B 50.6%, HaWoR true hand-crop 397B 50.9%, and raw 397B 50.2%. On 397B, overlay drops to 48.5%, temporal collage to 45.1%, and neighbor / proxy hand-collage stays around 39–40%. The lesson is simple: on HomER, richer visual inputs often pollute the current-action label; fix the judge before judging input design.",
       "story.label.cap1": "<strong>How to read (3 panels):</strong> left=raw frame; middle=heuristic box (fixed lower-center square, <em>not</em> wrist detection); right=crop fed to the labeler. Failed proxy path—below raw on fixed bounds. See <a href=\"#app-visual\">Appendix E</a>.",
       "story.label.cap2": "<strong>How to read (3 panels):</strong> left=raw; middle=YOLO person box (still not HaWoR wrists); right=crop the model sees. Early HomER used such proxies; Gemini-rescored HaWoR true hand-crop is 50.9%.",
       "story.label.fold": "Expand: labeling method cards",
-      "story.e2e.p": "After locking segmentation at 0.2031, only the labeling path changes (time matches stay fixed; semantic matches move). <strong>Self-label</strong>: Gemini E2E 0.1234. <strong>Raw relabel</strong>: 397B rewrites from current-segment raw frames → Gemini E2E 0.1414. <strong>ffmpeg/rawprior candidates</strong>: both reach 0.1491. <strong>Candidate selector</strong>: multi-path then pick one → Gemini E2E <strong>0.1542</strong>.",
+      "story.e2e.p": "After locking segmentation at 0.2031, only the labeling path changes (time matches stay fixed; semantic matches move). <strong>27B self-label</strong> gives 0.1234. <strong>27B raw relabel</strong> wins fixed-boundary Label Acc, but reaches only 0.1285 E2E on predicted S2 bounds. <strong>397B raw relabel</strong> reaches 0.1414; <strong>ffmpeg raw</strong> and <strong>397B-prior neighbor</strong> both reach 0.1491. <strong>Candidate selector</strong> picks one label from multiple candidates and remains best at <strong>0.1542</strong>.",
       "story.e2e.fold": "Expand: E2E method cards",
-      "story.takeaway": "<strong>Takeaways:</strong> chunked contact sheets invent seam cuts; the rule list decides what to cut, local refine (cover full actions) decides how fine; rule merges look nicer but don’t lift F1; neighbor / crude hand-collages often hurt Qwen labeling; keep the judge fixed when reporting.",
+      "story.takeaway": "<strong>Takeaways:</strong> chunked contact sheets invent seam cuts; the rule list decides what to cut, local refine (cover full actions) decides how fine; rule merges look nicer but don’t lift F1. After the Gemini rescore, raw 27B is the best fixed-boundary labeler, but the best end-to-end recipe is still S2 bounds + 397B multi-candidate selector. Overlay, neighbor sheets, and crude hand-collages should not be default paths.",
       "th.cond": "Condition",
       "th.model": "Model / method",
       "th.note": "One-line takeaway",
@@ -469,8 +469,8 @@
       "recipe.r1.b": "Qwen3.6-27B + rule list + local refine (no pad-out, cover full actions)",
       "recipe.r1.c": "Chunked max3; blind rule merge",
       "recipe.r2.a": "Labeling (cheap)",
-      "recipe.r2.b": "Lock refined bounds + 397B <strong>raw-only</strong> (E2E≈0.1414)",
-      "recipe.r2.c": "Neighbor / whole-frame collage / YOLO/proxy hand-crop",
+      "recipe.r2.b": "For fixed gold-boundary wording: 27B raw (Label Acc 55.7%); for predicted-boundary E2E on a budget: 397B raw (0.1414)",
+      "recipe.r2.c": "Proxy overlay / neighbor sheets / whole-frame collage / proxy hand-crop as defaults",
       "recipe.r3.a": "Labeling (max score)",
       "recipe.r3.b": "Same bounds + multi-cand + 397B selector (Gemini E2E 0.1542)",
       "recipe.r3.c": "Treat seg-model self-labels as final",
@@ -594,13 +594,14 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <h3 id="app-visual">E. 视觉输入对照</h3>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
-        <figcaption>这些视觉输入的作用不同：contact sheet 让模型看完整时间轴，用于找边界；raw/hand-crop/collage 则是在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
+        <figcaption>这些视觉输入的作用不同：contact sheet 让模型看完整时间轴，用于找边界；raw、proxy overlay、hand-crop、collage 则是在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
       </figure>
       <table><thead><tr><th>名称</th><th>模型看见什么</th><th>典型用途</th><th>HomER 上</th></tr></thead><tbody>
         <tr><td>contact sheet</td><td>带时间戳的抽帧拼图</td><td>分段</td><td>主路径</td></tr>
         <tr><td>raw 多帧</td><td>段内均匀原帧</td><td>标注默认</td><td>Gemini Acc 55.7%（27B）/ 50.2%（397B）</td></tr>
-        <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>降低准确率</td></tr>
-        <tr><td>neighbor sheet</td><td>上一/当前/下一段 sheet</td><td>标注消融</td><td>降低准确率</td></tr>
+        <tr><td>proxy overlay</td><td>原帧 + 光流/启发式叠加提示，不是真手部重建</td><td>标注消融</td><td>Gemini Acc 50.6%（27B）/ 48.5%（397B）</td></tr>
+        <tr><td>temporal collage</td><td>past/current/future 整帧格</td><td>标注消融</td><td>Gemini Acc 52.8%（27B）/ 45.1%（397B）</td></tr>
+        <tr><td>neighbor sheet</td><td>上一/当前/下一段 sheet</td><td>标注消融</td><td>Gemini Acc 39.6–40.0%（397B）</td></tr>
         <tr><td>HaWoR true hand-crop</td><td>按腕轨裁手部</td><td>标注候选</td><td>Gemini Acc 50.9%</td></tr>
       </tbody></table>
 
@@ -688,13 +689,14 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <h3 id="app-visual">E. Visual input comparison</h3>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
-        <figcaption>These inputs serve different purposes: contact sheets expose the timeline for boundary finding; raw frames, hand crops, and collages compare visual evidence after the boundary is fixed.</figcaption>
+        <figcaption>These inputs serve different purposes: contact sheets expose the timeline for boundary finding; raw frames, proxy overlays, hand crops, and collages compare visual evidence after the boundary is fixed.</figcaption>
       </figure>
       <table><thead><tr><th>Name</th><th>What the model sees</th><th>Typical use</th><th>HomER result</th></tr></thead><tbody>
         <tr><td>contact sheet</td><td>timestamped frame grid</td><td>segmentation</td><td>main path</td></tr>
         <tr><td>raw frames</td><td>uniform frames inside the segment</td><td>default labeling</td><td>Gemini Acc 55.7% (27B) / 50.2% (397B)</td></tr>
-        <tr><td>temporal collage</td><td>past/current/future full-frame grids</td><td>labeling ablation</td><td>lower accuracy</td></tr>
-        <tr><td>neighbor sheet</td><td>previous/current/next segment sheets</td><td>labeling ablation</td><td>lower accuracy</td></tr>
+        <tr><td>proxy overlay</td><td>raw frames with optical-flow / heuristic marks, not true hand reconstruction</td><td>labeling ablation</td><td>Gemini Acc 50.6% (27B) / 48.5% (397B)</td></tr>
+        <tr><td>temporal collage</td><td>past/current/future full-frame grids</td><td>labeling ablation</td><td>Gemini Acc 52.8% (27B) / 45.1% (397B)</td></tr>
+        <tr><td>neighbor sheet</td><td>previous/current/next segment sheets</td><td>labeling ablation</td><td>Gemini Acc 39.6–40.0% (397B)</td></tr>
         <tr><td>HaWoR true hand-crop</td><td>crop around wrist tracks</td><td>label candidate</td><td>Gemini Acc 50.9%</td></tr>
       </tbody></table>
 
