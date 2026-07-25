@@ -103,15 +103,11 @@ a:hover { color: var(--warm); }
 
 /* —— Sections —— */
 .section {
-  padding: 3.2rem 0 2.4rem;
+  padding: 3.6rem 0 2.6rem;
   scroll-margin-top: 4.5rem;
 }
 
 #bio { scroll-margin-top: 4.5rem; }
-
-.section + .section {
-  border-top: 1px solid var(--line);
-}
 
 .section-kicker {
   margin: 0 0 0.35rem;
@@ -465,8 +461,7 @@ a:hover { color: var(--warm); }
 
 /* —— Footer —— */
 .site-footer {
-  padding: 2rem 0 3rem;
-  border-top: 1px solid var(--line);
+  padding: 2.4rem 0 3rem;
   text-align: center;
   color: var(--muted);
   font-size: 0.88rem;
