@@ -30,6 +30,7 @@ body {
   font-family: var(--sans);
   line-height: 1.65;
   font-size: 17px;
+  overflow-x: hidden;
 }
 
 img, video {
@@ -48,7 +49,8 @@ a:hover { color: var(--warm); }
 .wrap {
   max-width: var(--max);
   margin: 0 auto;
-  padding: 0 1.35rem;
+  padding-left: max(1.35rem, env(safe-area-inset-left));
+  padding-right: max(1.35rem, env(safe-area-inset-right));
 }
 
 /* —— Top nav —— */
@@ -551,23 +553,90 @@ a:hover { color: var(--warm); }
 @media (max-width: 560px) {
   body { font-size: 16px; }
 
+  .wrap {
+    padding-left: max(1.15rem, env(safe-area-inset-left));
+    padding-right: max(1.15rem, env(safe-area-inset-right));
+  }
+
   .topnav-inner {
-    padding: 0.75rem 1rem;
+    padding: 0.7rem max(1.15rem, env(safe-area-inset-right)) 0.7rem max(1.15rem, env(safe-area-inset-left));
   }
 
   .nav-links {
     width: 100%;
-    gap: 0.5rem 0.75rem;
+    gap: 0.45rem 0.7rem;
     justify-content: flex-start;
+    font-size: 0.86rem;
   }
 
-  .section { padding: 2.4rem 0 1.8rem; }
+  .section { padding: 2.2rem 0 1.7rem; }
 
   .bio-photo {
-    width: min(220px, 62vw);
+    width: min(200px, 56vw);
+  }
+
+  .bio-text > p:not(.bio-lead) {
+    text-align: center;
   }
 
   .pub {
-    padding: 1rem;
+    padding: 0.95rem;
+  }
+
+  .news-date {
+    font-size: 0.9rem;
+  }
+}
+
+/* Extreme narrow / resize stress test */
+@media (max-width: 380px) {
+  body { font-size: 15.5px; }
+
+  .wrap {
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+  }
+
+  .topnav-inner {
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+    gap: 0.55rem;
+  }
+
+  .brand { font-size: 0.98rem; }
+
+  .nav-links {
+    gap: 0.4rem 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  .bio {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .bio h1 {
+    font-size: clamp(1.75rem, 9vw, 2.2rem);
+  }
+
+  .bio-lead {
+    font-size: 1.02rem;
+    padding: 0 0.15rem;
+  }
+
+  .bio-text > p:not(.bio-lead) {
+    text-align: center;
+    line-height: 1.6;
+    padding: 0 0.1rem;
+  }
+
+  .social {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .pub-tab {
+    font-size: 0.84rem;
+    padding: 0.35rem 0.7rem;
   }
 }
