@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ShuaiZhou302.github.io/sitemap.xml
+Sitemap: https://www.shuai-zhou.com/sitemap.xml
