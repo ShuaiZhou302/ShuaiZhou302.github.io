@@ -151,13 +151,99 @@
         </p>
         <p class="pub-note">* denotes equal contribution.</p>
 
-        <div class="pub-tabs" role="tablist" aria-label="Publication topics">
-          <button type="button" class="pub-tab is-active" role="tab" aria-selected="true" aria-controls="pub-robot-learning" id="tab-robot-learning" data-panel="pub-robot-learning">Robot Learning</button>
-          <button type="button" class="pub-tab" role="tab" aria-selected="false" aria-controls="pub-planning-learning" id="tab-planning-learning" data-panel="pub-planning-learning">Planning &amp; Learning</button>
-          <button type="button" class="pub-tab" role="tab" aria-selected="false" aria-controls="pub-heuristic-search" id="tab-heuristic-search" data-panel="pub-heuristic-search">Heuristic Search</button>
+        <div class="pub-filters" role="tablist" aria-label="Publication topics">
+          <div class="pub-tabs pub-tabs-all">
+            <button type="button" class="pub-tab is-active" role="tab" aria-selected="true" aria-controls="pub-all" id="tab-all" data-panel="pub-all">All</button>
+          </div>
+          <div class="pub-tabs">
+            <button type="button" class="pub-tab" role="tab" aria-selected="false" aria-controls="pub-robot-learning" id="tab-robot-learning" data-panel="pub-robot-learning">Robot Learning</button>
+            <button type="button" class="pub-tab" role="tab" aria-selected="false" aria-controls="pub-planning-learning" id="tab-planning-learning" data-panel="pub-planning-learning">Planning &amp; Learning</button>
+            <button type="button" class="pub-tab" role="tab" aria-selected="false" aria-controls="pub-heuristic-search" id="tab-heuristic-search" data-panel="pub-heuristic-search">Heuristic Search</button>
+          </div>
         </div>
 
-        <div class="pub-panel is-active" id="pub-robot-learning" role="tabpanel" aria-labelledby="tab-robot-learning">
+        <div class="pub-panel is-active" id="pub-all" role="tabpanel" aria-labelledby="tab-all">
+          <div class="pub-list">
+            <article class="pub">
+              <a class="pub-media" href="https://arxiv.org/abs/2511.21886">
+                <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/REMAP.mp4" aria-label="REMAP teaser"></video>
+              </a>
+              <div class="pub-body">
+                <h3 class="pub-title"><a href="https://arxiv.org/abs/2511.21886">From Discrete Plans to Real-World Execution: A World-Model-Driven Framework for Execution-Aware Multi-Agent Path Finding</a></h3>
+                <p class="pub-authors">Jingtian Yan, <strong>Shuai Zhou</strong>, He Jiang, Stephen Smith, Jiaoyang Li</p>
+                <p class="pub-venue">Under Review</p>
+                <div class="pub-links">
+                  <a href="https://arxiv.org/abs/2511.21886">paper</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="pub">
+              <a class="pub-media" href="https://multi-robot-lamp.github.io/">
+                <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/teaser.mp4" aria-label="LAMP teaser"></video>
+              </a>
+              <div class="pub-body">
+                <h3 class="pub-title"><a href="https://multi-robot-lamp.github.io/">LAMP: Long-Horizon Adaptive Manipulation Planning for Multi-Robot Collaboration in Cluttered Space</a></h3>
+                <p class="pub-authors"><strong>Shuai Zhou</strong>, Yorai Shaoul, Jiaoyang Li</p>
+                <p class="pub-venue">IROS 2026</p>
+                <div class="pub-links">
+                  <a href="https://arxiv.org/abs/2606.29358">paper</a>
+                  <a href="https://multi-robot-lamp.github.io/">project</a>
+                  <a href="https://github.com/ShuaiZhou302/LAMP">code</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="pub">
+              <a class="pub-media" href="https://humanoid-touch-dream.github.io/">
+                <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/tea3.mp4" aria-label="HTD teaser"></video>
+              </a>
+              <div class="pub-body">
+                <h3 class="pub-title"><a href="https://humanoid-touch-dream.github.io/">HTD: Learning Versatile Humanoid Manipulation with Touch Dreaming</a></h3>
+                <p class="pub-authors">Yaru Niu, Zhenlong Fang, Binghong Chen, <strong>Shuai Zhou</strong>, Revanth Krishna Senthilkumaran, Hao Zhang, Bingqing Chen, Chen Qiu, Hongtei (Eric) Tseng, Jonathan Francis, Ding Zhao</p>
+                <p class="pub-venue">IROS 2026<br>WCBM Workshop &amp; SemRob Workshop, RSS 2026</p>
+                <div class="pub-links">
+                  <a href="https://arxiv.org/abs/2604.13015/">paper</a>
+                  <a href="https://humanoid-touch-dream.github.io/">project</a>
+                  <a href="https://github.com/chrisyrniu/humanoid-touch-dream">code</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="pub">
+              <a class="pub-media" href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">
+                <img src="images/lsrpstar.png" alt="LSRP* teaser" width="440" height="275">
+              </a>
+              <div class="pub-body">
+                <h3 class="pub-title"><a href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">LSRP*: Scalable and Anytime Planning for Multi-Agent Path Finding with Asynchronous Actions</a></h3>
+                <p class="pub-authors"><strong>Shuai Zhou</strong>, Shizhe Zhao, Zhongqiang Ren</p>
+                <p class="pub-venue">SoCS 2025</p>
+                <div class="pub-links">
+                  <a href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">paper</a>
+                  <a href="https://rap-lab.github.io/research/mapfaa">project</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="pub">
+              <a class="pub-media" href="https://doi.org/10.1609/aaai.v39i14.33618">
+                <img src="images/agent_onehundred.gif" alt="LSRP teaser" width="440" height="275">
+              </a>
+              <div class="pub-body">
+                <h3 class="pub-title"><a href="https://doi.org/10.1609/aaai.v39i14.33618">Loosely Synchronized Rule-Based Planning for Multi-Agent Path Finding with Asynchronous Actions</a></h3>
+                <p class="pub-authors"><strong>Shuai Zhou</strong>, Shizhe Zhao, Zhongqiang Ren</p>
+                <p class="pub-venue">AAAI 2025</p>
+                <div class="pub-links">
+                  <a href="https://doi.org/10.1609/aaai.v39i14.33618">paper</a>
+                  <a href="https://rap-lab.github.io/research/mapfaa">project</a>
+                  <a href="https://github.com/rap-lab-org/public_LSRP">code</a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="pub-panel" id="pub-robot-learning" role="tabpanel" aria-labelledby="tab-robot-learning" hidden>
           <h3 class="pub-panel-title">Robot Learning</h3>
           <div class="pub-list">
             <article class="pub">
