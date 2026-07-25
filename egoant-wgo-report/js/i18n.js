@@ -369,6 +369,20 @@
       "world.li.prod": "<strong>Production pipeline</strong>: HaWoR hand-motion reconstruction → smoothed wrist-speed candidate boundaries → raw-frame segment captions → adjacent-segment merge and rewrite. Details are in <a href=\"#app-prod\">Appendix D</a>. This pipeline borrows the VITRA-style motion-first decomposition idea, but the segmentation signal is HaWoR wrist motion, not the VITRA model.",
       "world.li.wgo": "<strong>WGO-Bench evaluation pipeline</strong>: timestamped contact sheets → Qwen3.6-27B segmentation → semantic labeling and multi-candidate selection under fixed predicted boundaries. The body experiments mainly cover this pipeline.",
       "world.p.models": "Model roles are separated as follows: <strong>Qwen3.6-27B</strong> is the segmenter and can also generate some label candidates; <strong>Qwen3.5-397B</strong> generates candidate captions and acts as the candidate selector; <strong>Gemini-3.5-Flash</strong> is only the final semantic evaluation judge and does not generate labels or select candidates. Earlier Qwen-judge results are judge-sensitivity checks, not main scores.",
+      "role.th.role": "Role",
+      "role.th.model": "Model",
+      "role.th.gold": "Reads gold labels?",
+      "role.th.use": "Role in this report",
+      "role.segmenter": "Segmenter",
+      "role.no": "No",
+      "role.segmenter.use": "Produces predicted temporal boundaries",
+      "role.captioner": "Caption generator",
+      "role.captioner.use": "Generates candidate semantic labels",
+      "role.selector": "Candidate selector",
+      "role.selector.use": "Chooses the final label from candidates",
+      "role.judge": "Primary evaluation judge",
+      "role.gold_label": "Reads gold labels only for offline scoring",
+      "role.judge.use": "Computes Label Acc and Semantic E2E F1",
       "world.h3.gepa": "Meaning of GEPA-derived prompt in this report",
       "world.gepa.1": "Macrodata used GEPA on a validation set to search for segmentation prompts. This report does not run GEPA at inference time.",
       "world.gepa.2": "What we reuse is the publicly described completed-event segmentation rules: an English segmentation-rule prompt.",
@@ -743,7 +757,10 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
 
   function t(key, lang) {
     const L = I18N[lang] || I18N.zh;
-    return (L[key] != null ? L[key] : (I18N.zh[key] || key));
+    if (L[key] != null) return L[key];
+    // Never fall back to Chinese when rendering EN.
+    if (lang === "en") return key;
+    return I18N.zh[key] || key;
   }
 
   function applyI18n(lang) {

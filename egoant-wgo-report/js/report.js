@@ -319,7 +319,7 @@
       },
       "en": {
         "name": "Proxy hand-collage · Qwen3.5-397B",
-        "note": "近似裁剪，不是重建腕轨迹裁剪",
+        "note": "Approximate crop, not reconstructed wrist-track crop",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
     },
@@ -330,7 +330,7 @@
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       },
       "en": {
-        "name": "HaWoR 重建腕轨迹裁剪",
+        "name": "HaWoR-reconstructed wrist-guided crop",
         "note": "Slightly above raw 397B, below raw 27B",
         "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
       }
