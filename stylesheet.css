@@ -420,6 +420,15 @@ a:hover { color: var(--warm); }
   color: inherit;
 }
 
+.blog-date {
+  display: block;
+  margin: 0 0 0.45rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
 .blog-card h3 {
   margin: 0 0 0.4rem;
   font-family: var(--serif);
