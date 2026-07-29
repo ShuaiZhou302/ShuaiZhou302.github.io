@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n="page.title">EgoANT 在 WGO-Bench HomER 上的评测报告</title>
+  <title data-i18n="page.title">EgoANT</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
@@ -18,7 +18,7 @@
         <a class="brand splash-brand" href="#top">EgoANT</a>
         <div class="splash-bar-right">
           <a class="splash-link" href="#blog" data-i18n="splash.link.blog">报告</a>
-          <a class="splash-link" href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">WGO-Bench</a>
+          <a class="splash-link" href="https://www.shuai-zhou.com/" data-i18n="splash.link.home">返回主页</a>
           <div class="lang-switch" role="group" aria-label="Language">
             <button type="button" class="lang-btn active" data-lang="zh">ZH</button>
             <button type="button" class="lang-btn" data-lang="en">EN</button>
@@ -26,18 +26,16 @@
         </div>
       </div>
       <div class="splash-center">
-        <h1 data-i18n-html data-i18n="hero.title">EgoANT<br />on WGO-Bench HomER</h1>
-        <p class="splash-kicker" data-i18n="hero.eyebrow">WGO-Bench HomER · EgoANT</p>
+        <h1 data-i18n-html data-i18n="hero.title">EgoANT</h1>
+        <p class="splash-kicker" data-i18n="hero.eyebrow">用开源视觉语言模型标注第一视角人类视频</p>
         <p class="splash-lede" data-i18n="hero.lede">
-          EgoANT 是一套面向第一视角人类操作视频的自动标注管线，用于将长视频划分为动作级片段，并为每个片段生成简洁的操作描述。在 WGO-Bench HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 0.2031；在固定该预测边界后，多候选标注与选择方案取得 Semantic E2E F1 0.1542。
+          EgoANT 是一套面向第一视角人类操作视频的自动标注管线，用于将长视频划分为动作级片段，并为每个片段生成简洁的操作描述。EgoANT 在 WGO-Bench 的第一视角人类操作基准子集 HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 0.2031；固定参考边界下的纯标注 Label Acc 达 55.7%；纯视频输入的端到端方案取得总分 Semantic E2E F1 0.1542。据此形成了一套相对廉价、基于开源视觉语言模型的第一视角子任务自动标注系统。
         
         </p>
         <div class="tag-pills">
-          <span class="tag-pill" data-i18n="tag.ego">第一视角</span>
-          <span class="tag-pill" data-i18n="tag.human">人手数据</span>
-          <span class="tag-pill" data-i18n="tag.subtask">子任务</span>
-          <span class="tag-pill" data-i18n="tag.wgo">WGO-Bench</span>
-          <span class="tag-pill" data-i18n="tag.egoant">EgoANT</span>
+          <span class="tag-pill" data-i18n="tag.ego">第一视角人手数据</span>
+          <span class="tag-pill" data-i18n="tag.subtask">子任务标注</span>
+          <span class="tag-pill" data-i18n="tag.pretrain">预训练</span>
         </div>
         <a class="splash-cta" href="#blog" data-i18n="splash.cta">进入报告</a>
       </div>
@@ -46,7 +44,7 @@
 
   <nav class="topnav blog-nav">
     <div class="topnav-inner">
-      <a class="brand" href="#blog" data-i18n="nav.brand">EgoANT · 报告</a>
+      <a class="brand" href="#blog" data-i18n="nav.brand">EgoANT</a>
       <div class="topnav-links">
         <a href="#intro" data-i18n="nav.intro">导读</a>
         <a href="#tldr" data-i18n="nav.tldr">结论</a>
