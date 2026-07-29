@@ -196,18 +196,20 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .splash-kicker {
   text-transform: none;
   letter-spacing: 0.02em;
-  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
-  color: rgba(255,255,255,0.78);
-  margin: 0 auto 1rem;
+  font-family: var(--serif);
+  font-size: clamp(0.9rem, 1.7vw, 1.12rem);
+  font-style: italic;
   font-weight: 500;
+  color: rgba(255,255,255,0.82);
+  margin: 0 auto 1rem;
   max-width: 36rem;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 .splash-center h1 {
   font-family: var(--sans);
   font-weight: 700;
-  font-size: clamp(2.8rem, 7vw, 4.6rem);
-  line-height: 1.08;
+  font-size: clamp(7.65rem, 20vw, 13rem);
+  line-height: 1.05;
   letter-spacing: -0.03em;
   margin: 0 0 0.55rem;
   max-width: none;
@@ -217,14 +219,17 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   max-width: 48ch;
   color: rgba(255,255,255,0.9);
   font-size: 1.05rem;
+  font-style: normal;
   margin: 0 0 1.1rem;
   text-shadow: 0 1px 12px rgba(0,0,0,0.5);
 }
 .splash .tag-pills { justify-content: center; margin-bottom: 1.4rem; }
 .splash .tag-pill {
   color: #fff;
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.28);
+  /* report accent2 terracotta — readable on dark hero */
+  background: rgba(196, 92, 38, 0.78);
+  border-color: rgba(255, 210, 170, 0.55);
+  backdrop-filter: blur(4px);
 }
 .splash-cta {
   display: inline-block;
