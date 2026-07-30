@@ -201,7 +201,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   font-style: italic;
   font-weight: 500;
   color: rgba(255,255,255,0.82);
-  margin: 0 auto 1rem;
+  margin: 0.35rem auto 1.15rem;
   max-width: 36rem;
   line-height: 1.4;
 }
@@ -211,7 +211,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   font-size: clamp(7.65rem, 20vw, 13rem);
   line-height: 1.05;
   letter-spacing: -0.03em;
-  margin: 0 0 0.55rem;
+  margin: 0 0 1.35rem;
   max-width: none;
   text-shadow: 0 2px 24px rgba(0,0,0,0.45);
 }

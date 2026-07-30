@@ -27,11 +27,7 @@
       </div>
       <div class="splash-center">
         <h1 data-i18n-html data-i18n="hero.title">EgoANT</h1>
-        <p class="splash-kicker" data-i18n="hero.eyebrow">用开源视觉语言模型标注第一视角人类视频</p>
-        <p class="splash-lede" data-i18n="hero.lede">
-          EgoANT 是一套面向第一视角人类操作视频的自动标注管线，用于将长视频划分为动作级片段，并为每个片段生成简洁的操作描述。EgoANT 在 WGO-Bench 的第一视角人类操作基准子集 HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 0.2031；固定参考边界下的纯标注 Label Acc 达 55.7%；纯视频输入的端到端方案取得总分 Semantic E2E F1 0.1542。据此形成了一套相对廉价、基于开源视觉语言模型的第一视角子任务自动标注系统。
-        
-        </p>
+        <p class="splash-kicker" data-i18n="hero.eyebrow">用开源视觉语言模型对第一视角人类视频进行分段与标注</p>
         <div class="tag-pills">
           <span class="tag-pill" data-i18n="tag.ego">第一视角人手数据</span>
           <span class="tag-pill" data-i18n="tag.subtask">子任务标注</span>
@@ -108,7 +104,8 @@
         <li data-i18n="intro.li4">Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。</li>
       </ul>
       <p data-i18n="intro.p3">
-        本页报告 EgoANT 在 HomER 上的评测协议、方法设计、主要组件比较、失败模式和成本分析。
+        EgoANT 是一套面向第一视角人类操作视频的自动标注管线，用于将长视频划分为动作级片段，并为每个片段生成简洁的操作描述。EgoANT 在 WGO-Bench 的第一视角人类操作基准子集 HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 0.2031；固定参考边界下的纯标注 Label Acc 达 55.7%；纯视频输入的端到端方案取得总分 Semantic E2E F1 0.1542。据此形成了一套相对廉价、基于开源视觉语言模型的第一视角子任务自动标注系统。
+      
       </p>
       <div id="scope" class="callout" data-i18n="intro.scope">
         评测范围：本页分数与推荐配置与使用边界均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。
@@ -672,7 +669,7 @@
   </div><!-- /#blog -->
 
   <footer>
-    <span data-i18n="footer.text">EgoANT evaluated on WGO-Bench HomER · HomER 25/470 · higher F1 is better</span>
+    <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
   <script src="js/i18n.js"></script>
