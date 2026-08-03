@@ -163,7 +163,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   padding: 1rem 1.2rem 2.5rem;
 }
 .splash-bar {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: flex-end;
   gap: 1rem; flex-wrap: wrap;
 }
 .splash-brand { color: #fff !important; margin-right: 0; font-size: 1.05rem; }
@@ -339,6 +339,54 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   letter-spacing: -0.03em;
 }
 .tldr .s { font-size: 0.88rem; color: var(--muted); }
+
+.tldr-points {
+  list-style: none;
+  margin: -1.4rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.tldr-points li {
+  position: relative;
+  padding: 0.75rem 1rem 0.75rem 2.2rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  background: var(--card);
+  counter-increment: tldr-point;
+}
+.tldr-points {
+  counter-reset: tldr-point;
+}
+.tldr-points li::before {
+  content: counter(tldr-point);
+  position: absolute;
+  left: 0.85rem;
+  top: 0.78rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+sup.cite {
+  font-size: 0.68em;
+  line-height: 0;
+  vertical-align: super;
+  margin-left: 0.08em;
+}
+sup.cite a.cite-ref {
+  text-decoration: none;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+sup.cite a.cite-ref:hover { text-decoration: underline; }
+.ref-list li:target {
+  background: #fdf3d8;
+  border-radius: 6px;
+  box-shadow: 0 0 0 6px #fdf3d8;
+}
 
 section {
   margin: 2.8rem 0;

@@ -15,10 +15,8 @@
     <div class="splash-scrim" aria-hidden="true"></div>
     <div class="splash-ui">
       <div class="splash-bar">
-        <a class="brand splash-brand" href="#top">EgoANT</a>
         <div class="splash-bar-right">
-          <a class="splash-link" href="#blog" data-i18n="splash.link.blog">报告</a>
-          <a class="splash-link" href="https://www.shuai-zhou.com/" data-i18n="splash.link.home">返回主页</a>
+          <a class="brand splash-brand" href="#top">EgoANT</a>
           <div class="lang-switch" role="group" aria-label="Language">
             <button type="button" class="lang-btn active" data-lang="zh">ZH</button>
             <button type="button" class="lang-btn" data-lang="en">EN</button>
@@ -44,8 +42,8 @@
       <div class="topnav-links">
         <a href="#intro" data-i18n="nav.intro">导读</a>
         <a href="#tldr" data-i18n="nav.tldr">结论</a>
-        <a href="#world" data-i18n="nav.world">背景</a>
-        <a href="#metrics" data-i18n="nav.metrics">评测</a>
+        <a href="#evaluate" data-i18n="nav.evaluate">如何评估</a>
+        <a href="#world" data-i18n="nav.world">相关工作</a>
         <a href="#contact" data-i18n="nav.contact">Contact sheet</a>
         <a href="#boundary" data-i18n="nav.boundary">边界对照</a>
         <a href="#walk" data-i18n="nav.walk">样例</a>
@@ -68,8 +66,8 @@
     <div class="side-toc-label" data-i18n="toc.label">目录</div>
     <a href="#intro" data-toc="intro" data-i18n="nav.intro">导读</a>
     <a href="#tldr" data-toc="tldr" data-i18n="nav.tldr">结论速览</a>
-    <a href="#world" data-toc="world" data-i18n="nav.world">背景</a>
-    <a href="#metrics" data-toc="metrics" data-i18n="nav.metrics">评测</a>
+    <a href="#evaluate" data-toc="evaluate" data-i18n="nav.evaluate">如何评估</a>
+    <a href="#world" data-toc="world" data-i18n="nav.world">相关工作</a>
     <a href="#contact" data-toc="contact" data-i18n="nav.contact">Contact sheet</a>
     <a href="#boundary" data-toc="boundary" data-i18n="nav.boundary">边界对照</a>
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
@@ -88,38 +86,23 @@
     <p id="en-body-note" class="callout" hidden></p>
 
     <section id="intro">
-      <h2 data-i18n="intro.h2">导读：第一视角操作视频的子任务分段与语义标注</h2>
-      <p data-i18n="intro.p1">
-        为将第一视角人类操作视频转化为结构化训练数据，我们需要识别其中的动作级时间片段，并为每个片段生成简洁的语义描述。这类视频通常包含相机运动、手部遮挡和连续的细粒度操作。
+      <h2 data-i18n="intro.h2">导读：为什么要给第一视角人类视频做子任务标注</h2>
+      <p data-i18n-html data-i18n="intro.ego">
+        第一视角（egocentric）人类视频指由佩戴在头部的相机记录的、以第一人称视角拍下的人类日常操作过程：一个人在真实厨房里切菜、在工位上装配零件、在超市里整理货架。相机跟着头动，双手在画面中央干活，物体、光照、失败与重试都来自真实环境而不是实验室布景。近两年 EgoVerse<sup class="cite"><a class="cite-ref" href="#ref-egoverse">8</a></sup>、EgoDex<sup class="cite"><a class="cite-ref" href="#ref-egodex">7</a></sup>、EgoLive<sup class="cite"><a class="cite-ref" href="#ref-egolive">9</a></sup> 等公开数据集把这类视频推到了千小时以上的规模。
       </p>
-      <p data-i18n="intro.p2">
-        动作边界与语义描述可用于 VLA 预训练、层级技能学习和奖励模型构建。人工逐小时标注难以覆盖大规模视频，因此需要可审计的自动标注管线。
+      <p data-i18n-html data-i18n="intro.value">
+        对机器人学习和具身基础模型来说，这类数据的价值主要有三点。其一是<strong>分布外性能</strong>：真实人类视频覆盖的场景、物体和技能远比遥操作采集的机器人数据多样，用它做预训练可以直接改善策略在没见过的环境里的表现。其二是<strong>可迁移的操作结构</strong>：人手和机器人末端之间存在共享的「看到什么 → 该做什么」先验，人类视频可以先撑起视觉-语言-动作模型的预训练语料，再用少量真机数据对齐动作空间。其三是<strong>采集成本</strong>：拍这类数据不需要机器人本体、不需要遥操作员，一个头戴相机就能在真实环境里并行地、长时间地产出数据。
       </p>
-      <h3 data-i18n="intro.h3">相关数据集与标注方法</h3>
-      <ul>
-        <li data-i18n-html data-i18n="intro.li0">Egocentric 数据族：<a href="https://egoverse.ai/" target="_blank" rel="noopener">EgoVerse</a> / <a href="https://github.com/apple/ml-egodex" target="_blank" rel="noopener">EgoDex</a> / <a href="https://arxiv.org/abs/2604.23570" target="_blank" rel="noopener">EgoLive</a> 等第一人称人手操作演示，面向规模化 human-to-robot 数据。</li>
-        <li data-i18n-html data-i18n="intro.li1">HomER：<a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 里的 egocentric human 子集；本报告的评测范围为 HomER 25 / 470 gold 段。</li>
-        <li data-i18n-html data-i18n="intro.li2"><a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a>：把真实人手视频转成 VLA 训练信号的公开工作，启发「先运动/手部信号，再写 caption」的思路；EgoANT 生产线用 HaWoR 腕速实现切段，而非直接跑 VITRA 模型。</li>
-        <li data-i18n="intro.li3" data-i18n-html>WGO-Bench / <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata blog</a>：公开「切段 + 短句」评测协议与 Gemini 参考分，以及约 $2.64/视频小时（batch）的端到端开销。</li>
-        <li data-i18n="intro.li4">Scale Labs dense video captioning：在已切好的 clip 上做稠密描述；不做 raw episode 的切段问题。</li>
-      </ul>
-      <p data-i18n="intro.p3">
-        EgoANT 是一套面向第一视角人类操作视频的自动标注管线，用于将长视频划分为动作级片段，并为每个片段生成简洁的操作描述。EgoANT 在 WGO-Bench 的第一视角人类操作基准子集 HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 0.2031；固定参考边界下的纯标注 Label Acc 达 55.7%；纯视频输入的端到端方案取得总分 Semantic E2E F1 0.1542。据此形成了一套相对廉价、基于开源视觉语言模型的第一视角子任务自动标注系统。
-      
+      <p data-i18n-html data-i18n="intro.why">
+        但原始视频本身不是训练数据。一段十几分钟的第一视角视频通常连续包含几十个动作，既没有时间边界，也没有语言标签。要把它变成结构化的监督信号，必须回答两个问题：<strong>每个动作在什么时候开始和结束</strong>，以及<strong>这一段在做什么</strong>。这两个问题合起来就是本文的任务——子任务分段与语义标注。
       </p>
-      <div id="scope" class="callout" data-i18n="intro.scope">
-        评测范围：本页分数与推荐配置与使用边界均锚定 HomER。WGO-Bench 中的 robot 视角子集，以及其他 egocentric 库上的同协议结果尚未在本页报告，留待后续扩展。
-      </div>
-      <div class="callout good" data-i18n-html data-i18n="intro.vs">
-        <strong>HomER-only 范围对照：</strong>EgoANT 的 Segment F1 为 <strong>0.2031</strong>；Macrodata 报告的 HomER-only Gemini 参考约为 <strong>0.227</strong>，绝对差为 <strong>0.0239</strong>。
-        端到端本页 <strong>0.1542</strong>（公开 blog 全量 E2E≈0.168 为不同子集，只作量级对照）。
-        固定边界标注 Qwen 栈 Gemini judge 下 raw 27B 为 55.7%，raw 397B / HaWoR hand-crop 约 50.2–50.9% vs Macrodata 公开 ≈61%——句子质量仍有差距。
-        <em>核心观察：粗到细的分段策略显著高于腕速生产基线；简单 raw-frame 标注在 HomER 上比更复杂的视觉上下文更稳定；多候选选择在额外调用成本下取得最高 E2E 观察值。</em>
-      </div>
+      <p data-i18n-html data-i18n="intro.task">
+        这件事并不容易：画面随头部晃动，手经常挡住被操作的物体，动作之间没有明显的停顿，细粒度操作一个接一个。而得到的动作边界与语义描述，正是 VLA 预训练、层级技能学习和奖励模型构建所需要的监督形式。人工逐小时标注显然覆盖不了千小时量级的语料，因此我们需要一条<strong>可审计、可复现、成本可控的自动标注管线</strong>。
+      </p>
     </section>
 
     <section id="tldr">
-      <h2 data-i18n="tldr.h2">结论速览</h2>
+      <h2 data-i18n="tldr.h2">结论速览（TL;DR）</h2>
       <div class="tldr">
         <div class="card">
           <div class="k">Segment F1</div>
@@ -137,26 +120,83 @@
           <div class="s" data-i18n="tldr.e2e">S2 预测边界 + 397B 多候选 selector</div>
         </div>
       </div>
+      <ul class="tldr-points">
+        <li data-i18n-html data-i18n="tldr.pt1"><strong>换更强的模型，比堆视觉 trick 更管用。</strong>固定参考边界的纯标注上，最朴素的 raw 抽帧 + Qwen3.6-27B 拿到最高的 55.7%，而 proxy overlay、temporal collage、邻段 sheet、手部裁剪这些额外视觉上下文全部低于它（39.2%–52.8%）。分段上同样如此：同一套 contact-sheet 配置，Qwen3.6-27B 是 0.1278，上一代更大的 Qwen3.5-397B 只有 0.0952。</li>
+        <li data-i18n-html data-i18n="tldr.pt2"><strong>但换一种视频表示，确实能把开源模型和闭源模型的差距拉近。</strong>把整段视频改成带时间戳的 contact sheet，再做「整集粗分 + 局部精修」，Segment F1 从生产基线的 0.0953 提到 <strong>0.2031</strong>。Macrodata 公开报告里同一 recipe 换成非 Gemini 模型只有 0.11–0.14，而 Gemini 的 HomER-only 参考是 0.227——表示与搜索策略把开源栈从「差一倍」拉到了差 0.024。</li>
+        <li data-i18n-html data-i18n="tldr.pt3"><strong>contact sheet 对分段特别有效，对标注却没有额外收益。</strong>时间戳拼贴让模型在一次调用里看到十秒级的时间结构，这正是判断「动作何时完成」所需要的信息；而一旦边界已经固定，模型只需要看清这一段里手在干什么，多余的时间上下文反而变成噪声。</li>
+        <li data-i18n-html data-i18n="tldr.pt4"><strong>端到端的瓶颈在边界，不在句子。</strong>用参考边界时标注准确率有 55.7%，换成预测边界后端到端只剩 0.1542；分段的 Segment F1 0.2031 基本就是端到端分数的天花板。</li>
+        <li data-i18n-html data-i18n="tldr.pt5"><strong>多候选 + selector 是目前最好的端到端配置，代价是额外调用。</strong>S2 预测边界 + Qwen3.5-397B 多候选选择得到 E2E 0.1542，高于分段模型自标（0.1234）和各种单次 relabel（0.1285–0.1491）。</li>
+      </ul>
+    </section>
+
+
+    <section id="evaluate">
+      <h2 data-i18n="metrics.h2">1. 我们如何评估这条管线</h2>
+      <p data-i18n-html data-i18n="eval.lead">
+        要比较不同的标注方案，需要一个公开、可复现、并且和我们的任务同构的基准——它必须同时考核「切得对不对」和「写得对不对」。本文用的是 <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a><sup class="cite"><a class="cite-ref" href="#ref-wgo">1</a></sup>。
+      </p>
+
+      <h3 data-i18n="eval.h3.bench">WGO-Bench 与 HomER 子集</h3>
+      <p data-i18n-html data-i18n="eval.p.bench">
+        WGO-Bench（What's Going On Benchmark）由 Macrodata 随其公开博客一同发布<sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup>，把「长视频 → 动作级片段 + 一句话描述」定义成一个可以打分的公开任务。它包含约 100 个 episode，每个 episode 提供人工标注的子任务时间边界，以及每段对应的一句短描述。
+        其中 <strong>HomER</strong> 是它的第一视角人类操作子集：画面随头动晃、手常挡住物体、动作连续且细，通常比第三人称桌面视频更难。
+        本报告的所有分数固定在 <strong>HomER 的 25 个视频 / 470 个参考片段</strong>上。
+      </p>
+
+      <h3 data-i18n="eval.h3.metrics">三类分数分别在考什么</h3>
+      <p class="plain" data-i18n-html data-i18n="metrics.lead">完整公式与直觉见 <a href="#app-metrics">附录 A</a>。正文只记定义与玩具例。</p>
+      <ol>
+        <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1</strong>：只评时间切分（时间边界质量）；IoU≥0.75 一对一配对。</li>
+        <li data-i18n-html data-i18n="metrics.li2"><strong>固定边界 Label Acc</strong>：时间用 gold，只评句子是否同一完成事件（语义描述）。</li>
+        <li data-i18n-html data-i18n="metrics.li3"><strong>Semantic E2E F1</strong>：先时间配对，再对配对成功的 pair 做语义 judge；时间边界质量与语义描述都过才算。</li>
+      </ol>
+      <p data-i18n="metrics.toy">简化示例（与 scorer 逻辑一致）：</p>
+      <figure class="figure">
+        <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
+        <figcaption data-i18n="metrics.figcap">该图展示如何先用 IoU 判断 pred/gold 时间段是否重叠足够，再由匹配数计算 precision、recall 和 F1。</figcaption>
+      </figure>
+      <p data-i18n="metrics.toy.g">Gold：G0[0,3], G1[3,6], G2[6,10] · Pred：P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]</p>
+      <ol>
+        <li data-i18n="metrics.toy.1">Outer snap：P0.start→0，P3.end→10</li>
+        <li data-i18n="metrics.toy.2">IoU：P0–G0≈0.933，P1–G1≈0.781</li>
+        <li data-i18n="metrics.toy.3">n_match=2 → P=0.50，R≈0.67，F1≈0.571</li>
+      </ol>
+      <div id="toy-timeline" class="timeline"></div>
+      <div class="legend-row" aria-label="Metric colors">
+        <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
+        <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.pred">Pred / 模型预测</span></span>
+      </div>
+      <div id="scope" class="callout" data-i18n-html data-i18n="intro.scope">
+        <strong>评测范围：</strong>本页所有分数与推荐配置都锚定 HomER 的 25 个视频 / 470 个参考片段。Macrodata 报告的完整 WGO-Bench Segment F1 约 0.306 覆盖全部约 100 个 episode，不宜与本页数字直接比较；同范围的 HomER-only Gemini 参考约 <strong>0.227</strong>，才是本文合适的对照。
+      </div>
     </section>
 
     <section id="world">
-      <h2 data-i18n="world.h2">1. 术语、数据集与实验设置</h2>
-
-      <h3 data-i18n="world.h3.md">Macrodata 公开报告在谈什么</h3>
-      <p data-i18n-html data-i18n="world.p.md">
-        <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata · Annotating Robot Video Subtasks</a>
-        将“长视频 → 动作级片段 + 短语义描述”定义为公开评测问题：发布数据集
-        <strong>WGO-Bench</strong>、三种分数（分段 / 固定边界标注 / 端到端），以及 Gemini 等参考分。
-        本报告在同一评测协议上，给出 <strong>EgoANT</strong> 的可复现消融：主要配置、失败模式与推荐路径。
+      <h2 data-i18n="world.h2">2. 相关工作与实验设置</h2>
+      <p data-i18n-html data-i18n="world.p.lead">
+        在我们之前，已经有几条把长视频变成子任务标注的公开路线。它们各自解决了问题的一部分，也各自留下了缺口——这些缺口决定了我们要往哪里试。
       </p>
 
-      <h3 data-i18n="world.h3.ego">Egocentric 数据与 WGO-Bench</h3>
-      <p data-i18n-html data-i18n="world.p.ego">
-        规模化第一人称人手数据常见族系包括 <strong>EgoVerse / EgoDex / EgoLive</strong> 等；它们提供长程 human 演示，但「如何生成时间边界和短操作描述」仍需标注协议与评测。
-        <strong>WGO-Bench</strong> 把这一问题做成公开基准（约 100 个 episode），其中 <strong>HomER</strong> 是第一视角人类操作子集——画面晃、手挡、动作密，通常比桌面第三人称更难。
-        本报告固定评测：<strong>HomER 25 集 / 470 个 gold 子任务段</strong>。
-        Macrodata 全量 100 集 Segment F1≈0.306 是 Gemini 主线 headline；HomER-only 更公平的对照约 0.227。
-        不宜与全量 100 集 headline（0.306）直接对比。同协议下其他子集的结果见导读范围声明。
+      <h3 data-i18n="world.h3.rule">Rule-based 分段：VITRA 与固定时长切分</h3>
+      <p data-i18n-html data-i18n="world.p.rule">
+        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 把单目第一视角视频处理成三维手部与相机运动、原子动作片段和语言指令，它的切段依据是手部运动信号——取腕部速度的局部极小值当作动作边界。另一类更简单的做法直接按固定时长切。我们把这两类统称为 <strong>rule-based 分段</strong>。
+        它们共同的问题是<strong>过分割</strong>：一个动作内部的停顿、重新抓握、手腕微调都会产生速度低谷，于是「把胡萝卜放进碗里」被切成五六段。我们自己的生产管线正走这条路线（HaWoR 腕速 + minima 切段 + merge），在 HomER 上它预测出 810 段而参考只有 470 段，Segment F1 只有 <strong>0.0953</strong>。
+      </p>
+
+      <h3 data-i18n="world.h3.md">Macrodata / WGO-Bench：把问题变成可评测的</h3>
+      <p data-i18n-html data-i18n="world.p.md">
+        <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata · Annotating Robot Video Subtasks</a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup>
+        是目前最系统的公开工作：它把「长视频 → 动作级片段 + 短语义描述」定义成可打分的公开问题，发布了 WGO-Bench 与三类分数，给出了 contact sheet 一类的视觉输入设计和用 GEPA 搜索得到的分段 prompt，并在多个闭源与开源模型上做了对照。
+        有两处留白与我们直接相关：其一，它报告了在强模型（Gemini）上各种 trick 的收益，但没有回答<strong>预算有限、只能用开源模型时该加哪些 trick</strong>——而这恰恰是我们要标几千小时视频时的真实约束；其二，它的标注实验建立在<strong>人工切好的边界</strong>之上，而分段本身同样重要，后面会看到它其实是端到端分数的瓶颈。
+      </p>
+
+      <h3 data-i18n="world.h3.scale">Scale Labs：已切好的 clip 上的稠密描述</h3>
+      <p data-i18n-html data-i18n="world.p.scale">
+        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论的是在<strong>已经切分好的 clip</strong> 上写稠密描述，以及拼贴、时间戳、稳定抽帧这些具体工程做法。它对我们的视觉输入设计有直接启发，但同样跳过了「从原始长视频里预测边界」这一步。
+      </p>
+
+      <p data-i18n-html data-i18n="intro.p3">
+        EgoANT 是我们针对这些缺口做的一套面向第一视角人类操作视频的自动标注管线：把长视频划分为动作级片段，并为每个片段生成简洁的操作描述。在 HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 <strong>0.2031</strong>；固定参考边界下的纯标注 Label Acc 达 <strong>55.7%</strong>；只以视频为输入的端到端方案取得 Semantic E2E F1 <strong>0.1542</strong>。据此形成了一套相对廉价、完全基于开源视觉语言模型的第一视角子任务自动标注系统。
       </p>
 
       <h3 data-i18n="world.h3.egoant">生产管线与 WGO-Bench 评测管线</h3>
@@ -215,7 +255,7 @@
 
       <h3 data-i18n="world.h3.gepa">GEPA 在本文里指什么</h3>
       <ol>
-        <li data-i18n-html data-i18n="world.gepa.1"><strong>GEPA 本身</strong>：一种 reflective prompt evolution 方法。Macrodata 博客中说明，他们用 GEPA 在独立验证集上搜索更好的分段 prompt。</li>
+        <li data-i18n-html data-i18n="world.gepa.1"><strong>GEPA 本身</strong>：一种 reflective prompt evolution 方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata 博客中说明，他们用 GEPA 在独立验证集上搜索更好的分段 prompt。</li>
         <li data-i18n-html data-i18n="world.gepa.2"><strong>我们实际复用的东西</strong>：搜索结果沉淀下来的一段<strong>英文分段 prompt</strong>（他们内部名
           <code>completed_events_duration_prior_v1</code>）。</li>
         <li data-i18n-html data-i18n="world.gepa.3"><strong>因此本文不把 GEPA 当作运行时模块</strong>：我们没有重新跑 GEPA，也没有把 GEPA 当模型或后处理脚本；只是把那组规则写进 VLM 请求文本。</li>
@@ -230,38 +270,12 @@
         <li data-i18n-html data-i18n="world.term.4"><strong>窗口不外扩（pad=0）</strong>：精修时只看粗边界这段，不引入窗口外相邻动作。</li>
         <li data-i18n-html data-i18n="world.term.5"><strong>盖住完整动作（full-cover）</strong>：这段里看得见的完成事件都要切到，避免不完整微动作片段。</li>
         <li data-i18n-html data-i18n="world.term.6"><strong>selector / judge</strong>：selector 从多条候选标签里选一句定稿；judge 只用于打分，判断预测句与 gold 是否同一完成事件。</li>
-        <li data-i18n-html data-i18n="world.term.7"><strong>HaWoR</strong>：手部重建，用来得到估计腕部轨迹并生成 wrist-guided crops（贵；默认标注仍可用 raw 帧）。</li>
+        <li data-i18n-html data-i18n="world.term.7"><strong>HaWoR</strong><sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：手部重建，用来得到估计腕部轨迹并生成 wrist-guided crops（贵；默认标注仍可用 raw 帧）。</li>
         <li data-i18n-html data-i18n="world.term.8"><strong>Qwen3.6-27B</strong>：分段主模型（日志有时写作 28B endpoint，同一服务）；<strong>Qwen3.5-397B</strong>：标注 / judge / selector。</li>
       </ul>
       <div class="callout" data-i18n-html data-i18n="world.callout">
         <strong>易混淆的视觉输入：</strong>
         contact sheet（分段用时间戳拼图）≠ 整帧 temporal collage ≠ L1 邻段 sheet ≠ L2 YOLO/proxy hand-collage ≠ HaWoR-reconstructed wrist-guided crop。
-      </div>
-    </section>
-
-    <section id="metrics">
-      <h2 data-i18n="metrics.h2">2. 评测指标</h2>
-      <p class="plain" data-i18n-html data-i18n="metrics.lead">完整公式与直觉见 <a href="#app-metrics">附录 A</a>。正文只记定义与玩具例。</p>
-      <ol>
-        <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1</strong>：只评时间切分（时间边界质量）；IoU≥0.75 一对一配对。</li>
-        <li data-i18n-html data-i18n="metrics.li2"><strong>固定边界 Label Acc</strong>：时间用 gold，只评句子是否同一完成事件（语义描述）。</li>
-        <li data-i18n-html data-i18n="metrics.li3"><strong>Semantic E2E F1</strong>：先时间配对，再对配对成功的 pair 做语义 judge；时间边界质量与语义描述都过才算。</li>
-      </ol>
-      <p data-i18n="metrics.toy">简化示例（与 scorer 逻辑一致）：</p>
-      <figure class="figure">
-        <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
-        <figcaption data-i18n="metrics.figcap">该图展示如何先用 IoU 判断 pred/gold 时间段是否重叠足够，再由匹配数计算 precision、recall 和 F1。</figcaption>
-      </figure>
-      <p data-i18n="metrics.toy.g">Gold：G0[0,3], G1[3,6], G2[6,10] · Pred：P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]</p>
-      <ol>
-        <li data-i18n="metrics.toy.1">Outer snap：P0.start→0，P3.end→10</li>
-        <li data-i18n="metrics.toy.2">IoU：P0–G0≈0.933，P1–G1≈0.781</li>
-        <li data-i18n="metrics.toy.3">n_match=2 → P=0.50，R≈0.67，F1≈0.571</li>
-      </ol>
-      <div id="toy-timeline" class="timeline"></div>
-      <div class="legend-row" aria-label="Metric colors">
-        <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
-        <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.pred">Pred / 模型预测</span></span>
       </div>
     </section>
 
@@ -653,15 +667,15 @@
     <section id="references">
       <h2 data-i18n="references.h2">参考文献</h2>
       <ol class="ref-list">
-        <li data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
-        <li data-i18n-html data-i18n="references.macrodata">Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">https://macrodata.co/blog/annotating-robot-video-subtasks</a></li>
-        <li data-i18n-html data-i18n="references.gepa">Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href="https://arxiv.org/abs/2507.19457" target="_blank" rel="noopener">https://arxiv.org/abs/2507.19457</a></li>
-        <li data-i18n-html data-i18n="references.scale">Choghari, Jade, Sansone, Agustin, Pasqualis, Nicolas, Mader, Conrado, Tiupikov, Aleks, Sivapurapu, Mouli. (2026). <em>The Path to Large Scale Dense Video Captioning</em>. Scale Labs. <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning</a></li>
-        <li data-i18n-html data-i18n="references.vitra">Li, Qixiu, Deng, Yu, Liang, Yaobo, Luo, Lin, Zhou, Lei, Yao, Chengtang, et al. (2025). <em>VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos</em>. Project page. <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">https://microsoft.github.io/VITRA/</a></li>
-        <li data-i18n-html data-i18n="references.hawor">Zhang, Jinglei, Deng, Jiankang, Ma, Chao, Potamias, Rolandos Alexandros. (2025). <em>HaWoR: World-Space Hand Motion Reconstruction from Egocentric Videos</em>. arXiv. <a href="https://arxiv.org/abs/2501.02973" target="_blank" rel="noopener">https://arxiv.org/abs/2501.02973</a></li>
-        <li data-i18n-html data-i18n="references.egodex">Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href="https://arxiv.org/abs/2505.11709" target="_blank" rel="noopener">https://arxiv.org/abs/2505.11709</a></li>
-        <li data-i18n-html data-i18n="references.egoverse">EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href="https://egoverse.ai/" target="_blank" rel="noopener">https://egoverse.ai/</a></li>
-        <li data-i18n-html data-i18n="references.egolive">Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href="https://doi.org/10.48550/arXiv.2604.23570" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2604.23570</a></li>
+        <li id="ref-wgo" data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
+        <li id="ref-macrodata" data-i18n-html data-i18n="references.macrodata">Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">https://macrodata.co/blog/annotating-robot-video-subtasks</a></li>
+        <li id="ref-gepa" data-i18n-html data-i18n="references.gepa">Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href="https://arxiv.org/abs/2507.19457" target="_blank" rel="noopener">https://arxiv.org/abs/2507.19457</a></li>
+        <li id="ref-scale" data-i18n-html data-i18n="references.scale">Choghari, Jade, Sansone, Agustin, Pasqualis, Nicolas, Mader, Conrado, Tiupikov, Aleks, Sivapurapu, Mouli. (2026). <em>The Path to Large Scale Dense Video Captioning</em>. Scale Labs. <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning</a></li>
+        <li id="ref-vitra" data-i18n-html data-i18n="references.vitra">Li, Qixiu, Deng, Yu, Liang, Yaobo, Luo, Lin, Zhou, Lei, Yao, Chengtang, et al. (2025). <em>VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos</em>. Project page. <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">https://microsoft.github.io/VITRA/</a></li>
+        <li id="ref-hawor" data-i18n-html data-i18n="references.hawor">Zhang, Jinglei, Deng, Jiankang, Ma, Chao, Potamias, Rolandos Alexandros. (2025). <em>HaWoR: World-Space Hand Motion Reconstruction from Egocentric Videos</em>. arXiv. <a href="https://arxiv.org/abs/2501.02973" target="_blank" rel="noopener">https://arxiv.org/abs/2501.02973</a></li>
+        <li id="ref-egodex" data-i18n-html data-i18n="references.egodex">Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href="https://arxiv.org/abs/2505.11709" target="_blank" rel="noopener">https://arxiv.org/abs/2505.11709</a></li>
+        <li id="ref-egoverse" data-i18n-html data-i18n="references.egoverse">EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href="https://egoverse.ai/" target="_blank" rel="noopener">https://egoverse.ai/</a></li>
+        <li id="ref-egolive" data-i18n-html data-i18n="references.egolive">Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href="https://doi.org/10.48550/arXiv.2604.23570" target="_blank" rel="noopener">https://doi.org/10.48550/arXiv.2604.23570</a></li>
       </ol>
     </section>
   </main>
