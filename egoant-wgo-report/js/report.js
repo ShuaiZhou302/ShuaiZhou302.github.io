@@ -556,8 +556,9 @@
       }).join("");
       return `<div class="lane"><div class="lane-title">${esc(title)}</div><div class="lane-track">${bits}</div></div>`;
     };
-    el.innerHTML = lane("Gold", toy.gold, "gold") + lane("Pred (after outer snap)", toy.after_snap, "pred") +
-      `<p style="font-size:0.85rem;color:var(--muted);margin:0.6rem 0 0">n_match=${toy.n_match} · F1≈${Number(toy.F1).toFixed(3)}</p>`;
+    el.innerHTML = lane(i18n("toy.lane.gold"), toy.gold, "gold") +
+      lane(i18n("toy.lane.pred"), toy.after_snap, "pred") +
+      `<p style="font-size:0.85rem;color:var(--muted);margin:0.6rem 0 0">${i18n("toy.lane.sum", { n: toy.n_match, f1: Number(toy.F1).toFixed(3) })}</p>`;
   }
 
   function isFailMethod(row, kind) {
@@ -1215,6 +1216,7 @@
       renderMethods(document.querySelector("#e2e-methods"), D.data.e2e, "e2e");
       if (D.walk) renderWalk(D.walk);
       if (D.boundary) renderBoundaryCompare(D.boundary);
+      renderTimeline(document.querySelector("#toy-timeline"), D.data.walkthrough_toy);
     }
     window.__rerenderTablesI18n = rerenderDynamicI18n;
     renderWalk(walk);

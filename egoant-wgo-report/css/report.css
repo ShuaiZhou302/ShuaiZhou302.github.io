@@ -1016,3 +1016,18 @@ pre.formula {
   padding: 0.2rem 0.55rem;
   color: var(--muted);
 }
+
+/* Visual-input comparison gallery (§2): five real renders of the same moment */
+.input-zoo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+}
+.input-zoo .figure { margin: 0; }
+.input-zoo .figure img { background: var(--card); }
+.input-zoo .figure:nth-child(3) { grid-column: 1 / -1; }
+@media (max-width: 700px) {
+  .input-zoo { grid-template-columns: 1fr; }
+  .input-zoo .figure:nth-child(3) { grid-column: auto; }
+}

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" role="img" aria-label="Visual inputs compared: raw frames, proxy overlay, temporal collage, neighbor sheets, and wrist-guided crop">
+  <style>
+    .bg{fill:#fffaf1}.card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}.title{font:700 18px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#141414}.sub{font:13px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#4f4a42}.tiny{font:11px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#554b40}.label{font:12px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#1f1d1a}.good{fill:#2f7d70}.gold{fill:#f2c84b}.pred{fill:#2f7d70}.muted{fill:#d9d5cb}.warn{fill:#c85e25}.ink{stroke:#2f7d70;stroke-width:4;fill:none;stroke-linecap:round}.arrow{stroke:#c85e25;stroke-width:4;fill:none;marker-end:url(#arrow)}
+  </style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#c85e25"/></marker></defs>
+  <rect class="bg" width="1180" height="390" rx="18"/>
+  <text x="38" y="44" class="title">这几种视觉输入不是同义词，而是不同的东西</text>
+  <text x="38" y="70" class="sub">消融实验的名字应当对应模型实际看到的画面。</text>
+
+  <g transform="translate(38,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">raw 原始帧</text>
+    <text x="18" y="58" class="sub">只看当前片段</text>
+    <g transform="translate(22,82)">
+      <rect x="0" y="0" width="46" height="34" fill="#e8e1d4"/><rect x="54" y="0" width="46" height="34" fill="#d9d5cb"/><rect x="108" y="0" width="46" height="34" fill="#cfc9bd"/>
+      <rect x="0" y="42" width="46" height="34" fill="#d9d5cb"/><rect x="54" y="42" width="46" height="34" fill="#e8e1d4"/><rect x="108" y="42" width="46" height="34" fill="#d9d5cb"/>
+    </g>
+    <text x="18" y="190" class="label">固定边界下最好的输入</text>
+    <text x="18" y="212" class="tiny">27B：Gemini 评判 55.7%</text>
+  </g>
+
+  <g transform="translate(263,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">proxy overlay 叠加</text>
+    <text x="18" y="58" class="sub">原帧 + 近似标记</text>
+    <g transform="translate(30,82)">
+      <rect x="0" y="0" width="145" height="88" rx="8" fill="#e8e1d4"/>
+      <circle cx="58" cy="47" r="18" fill="#c85e25" opacity=".22"/><circle cx="94" cy="48" r="18" fill="#c85e25" opacity=".22"/>
+      <path class="ink" d="M48 55 C62 30, 82 30, 99 55"/>
+      <path class="arrow" d="M35 26 C55 16, 72 20, 88 30"/>
+      <path class="arrow" d="M112 30 C98 18, 83 16, 68 24"/>
+    </g>
+    <text x="18" y="190" class="label">不是实测手部姿态</text>
+    <text x="18" y="212" class="tiny">27B 50.6%; 397B 48.5%</text>
+  </g>
+
+  <g transform="translate(488,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">temporal collage 拼贴</text>
+    <text x="18" y="58" class="sub">过去 / 当前 / 未来</text>
+    <g transform="translate(24,83)">
+      <rect x="0" y="0" width="45" height="82" rx="8" class="muted"/><rect x="55" y="0" width="45" height="82" rx="8" class="pred"/><rect x="110" y="0" width="45" height="82" rx="8" class="muted"/>
+      <text x="8" y="107" class="tiny">过去</text><text x="55" y="107" class="tiny">当前</text><text x="112" y="107" class="tiny">未来</text>
+    </g>
+    <text x="18" y="190" class="label">边界之外再加上下文</text>
+    <text x="18" y="212" class="tiny">常污染当前片段的描述</text>
+  </g>
+
+  <g transform="translate(713,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">邻段 sheet</text>
+    <text x="18" y="58" class="sub">上一段 / 当前 / 下一段</text>
+    <g transform="translate(22,84)">
+      <rect x="0" y="0" width="44" height="62" rx="7" class="muted"/><text x="13" y="84" class="tiny">上段</text>
+      <rect x="58" y="0" width="44" height="62" rx="7" class="pred"/><text x="62" y="84" class="tiny">当前</text>
+      <rect x="116" y="0" width="44" height="62" rx="7" class="muted"/><text x="125" y="84" class="tiny">下段</text>
+      <line x1="50" y1="31" x2="54" y2="31" stroke="#4f4a42"/><line x1="108" y1="31" x2="112" y2="31" stroke="#4f4a42"/>
+    </g>
+    <text x="18" y="190" class="label">看似有用，其实有风险</text>
+    <text x="18" y="212" class="tiny">可能写成邻段的动作</text>
+  </g>
+
+  <g transform="translate(938,105)">
+    <rect class="card" width="205" height="235" rx="12"/>
+    <text x="18" y="34" class="title">腕部引导裁剪</text>
+    <text x="18" y="58" class="sub">按估计腕轨迹裁剪</text>
+    <g transform="translate(31,82)">
+      <rect x="0" y="0" width="144" height="88" rx="8" fill="#e8e1d4"/>
+      <rect x="28" y="22" width="88" height="42" rx="7" fill="none" stroke="#2f7d70" stroke-width="4"/>
+      <circle cx="54" cy="43" r="18" fill="#c85e25"/><circle cx="96" cy="43" r="18" fill="#c85e25"/>
+    </g>
+    <text x="18" y="190" class="label">依赖可靠的手部信号</text>
+    <text x="18" y="212" class="tiny">HaWoR 裁剪：Gemini 评判 50.9%</text>
+  </g>
+</svg>

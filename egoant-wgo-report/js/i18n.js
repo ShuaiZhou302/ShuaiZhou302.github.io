@@ -26,17 +26,19 @@
       "en.banner": "",
       "intro.h2": "导读：为什么要给第一视角人类视频做子任务标注",
       "intro.ego": "第一视角（egocentric）人类视频指由佩戴在头部的相机记录的、以第一人称视角拍下的人类日常操作过程：一个人在真实厨房里切菜、在工位上装配零件、在超市里整理货架。相机跟着头动，双手在画面中央干活，物体、光照、失败与重试都来自真实环境而不是实验室布景。近两年 EgoVerse<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-egoverse\">8</a></sup>、EgoDex<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-egodex\">7</a></sup>、EgoLive<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-egolive\">9</a></sup> 等公开数据集把这类视频推到了千小时以上的规模。",
-      "intro.value": "对机器人学习和具身基础模型来说，这类数据的价值主要有三点。其一是<strong>分布外性能</strong>：真实人类视频覆盖的场景、物体和技能远比遥操作采集的机器人数据多样，用它做预训练可以直接改善策略在没见过的环境里的表现。其二是<strong>可迁移的操作结构</strong>：人手和机器人末端之间存在共享的「看到什么 → 该做什么」先验，人类视频可以先撑起视觉-语言-动作模型的预训练语料，再用少量真机数据对齐动作空间。其三是<strong>采集成本</strong>：拍这类数据不需要机器人本体、不需要遥操作员，一个头戴相机就能在真实环境里并行地、长时间地产出数据。",
-      "intro.why": "但原始视频本身不是训练数据。一段十几分钟的第一视角视频通常连续包含几十个动作，既没有时间边界，也没有语言标签。要把它变成结构化的监督信号，必须回答两个问题：<strong>每个动作在什么时候开始和结束</strong>，以及<strong>这一段在做什么</strong>。这两个问题合起来就是本文的任务——子任务分段与语义标注。",
-      "intro.task": "这件事并不容易：画面随头部晃动，手经常挡住被操作的物体，动作之间没有明显的停顿，细粒度操作一个接一个。而得到的动作边界与语义描述，正是 VLA 预训练、层级技能学习和奖励模型构建所需要的监督形式。人工逐小时标注显然覆盖不了千小时量级的语料，因此我们需要一条<strong>可审计、可复现、成本可控的自动标注管线</strong>。",
+      "intro.value": "这类数据对机器人学习有用，前提是它<strong>能迁移</strong>：人手和机器人末端的形态不同，但「看到什么 → 该做什么」这一层的操作语义是共享的，因此人类视频可以先撑起视觉-语言-动作（VLA）模型的预训练，再用少量真机数据把动作空间对齐到具体本体上<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-pi05\">1</a></sup>。这个前提成立之后，它的另外两个属性才开始起作用：一是<strong>覆盖面</strong>——真实人类视频里的场景、物体和技能远比遥操作采集的机器人数据多样，这正是策略在没见过的环境里仍然能工作（分布外泛化）的来源；二是<strong>采集成本</strong>——不需要机器人本体、不需要遥操作员，一个头戴相机就能在真实环境里长时间、并行地产出数据，覆盖面才有可能真的堆起来。",
+      "intro.why": "原始视频当然也能直接拿来训练：它可以喂给视频预测或世界模型，配上手部重建得到的腕部轨迹，还能充当一种弱动作监督。但这类监督只回答「画面接下来会变成什么样」，不回答<strong>「现在在做哪一件事、这件事做完了没有」</strong>。",
+      "intro.task": "而后者恰恰是现在主流机器人策略需要的东西。VLA 的训练样本是「观测 + 语言指令 + 动作」的三元组，指令必须和时间段对齐；π<sub>0.5</sub> 这类层级模型更是先预测一条高层子任务指令，再以它为条件生成低层动作<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-pi05\">1</a></sup>，训练高层那一段靠的就是子任务标签。分段边界本身也有用：它定义了「一次完整操作从哪里开始、到哪里算做完」，这是成功判定、奖励模型和技能检索的前提，也是预训练语料做筛选与配比时的基本单位。所以要把长视频变成可用的监督信号，必须回答两个问题：<strong>每个动作在什么时候开始和结束</strong>，以及<strong>这一段在做什么</strong>——这两个问题合起来就是本文的任务：子任务分段与语义标注。",
+      "intro.hard": "这件事并不容易：画面随头部晃动，手经常挡住被操作的物体，动作之间没有明显停顿，细粒度操作一个接一个。人工逐小时标注显然覆盖不了千小时量级的语料，因此需要一条<strong>可审计、可复现、成本可控的自动标注管线</strong>。",
       "intro.p3": "EgoANT 是我们针对这些缺口做的一套面向第一视角人类操作视频的自动标注管线：把长视频划分为动作级片段，并为每个片段生成简洁的操作描述。在 HomER 的 25 个视频 / 470 个参考片段上，最佳分段配置取得 Segment F1 <strong>0.2031</strong>；固定参考边界下的纯标注 Label Acc 达 <strong>55.7%</strong>；只以视频为输入的端到端方案取得 Semantic E2E F1 <strong>0.1542</strong>。据此形成了一套相对廉价、完全基于开源视觉语言模型的第一视角子任务自动标注系统。",
       "intro.scope": "<strong>评测范围：</strong>本页所有分数与推荐配置都锚定 HomER 的 25 个视频 / 470 个参考片段。Macrodata 报告的完整 WGO-Bench Segment F1 约 0.306 覆盖全部约 100 个 episode，不宜与本页数字直接比较；同范围的 HomER-only Gemini 参考约 <strong>0.227</strong>，才是本文合适的对照。",
       "tldr.h2": "结论速览（TL;DR）",
-      "tldr.pt1": "<strong>换更强的模型，比堆视觉 trick 更管用。</strong>固定参考边界的纯标注上，最朴素的 raw 抽帧 + Qwen3.6-27B 拿到最高的 55.7%，而 proxy overlay、temporal collage、邻段 sheet、手部裁剪这些额外视觉上下文全部低于它（39.2%–52.8%）。分段上同样如此：同一套 contact-sheet 配置，Qwen3.6-27B 是 0.1278，上一代更大的 Qwen3.5-397B 只有 0.0952。",
-      "tldr.pt2": "<strong>但换一种视频表示，确实能把开源模型和闭源模型的差距拉近。</strong>把整段视频改成带时间戳的 contact sheet，再做「整集粗分 + 局部精修」，Segment F1 从生产基线的 0.0953 提到 <strong>0.2031</strong>。Macrodata 公开报告里同一 recipe 换成非 Gemini 模型只有 0.11–0.14，而 Gemini 的 HomER-only 参考是 0.227——表示与搜索策略把开源栈从「差一倍」拉到了差 0.024。",
-      "tldr.pt3": "<strong>contact sheet 对分段特别有效，对标注却没有额外收益。</strong>时间戳拼贴让模型在一次调用里看到十秒级的时间结构，这正是判断「动作何时完成」所需要的信息；而一旦边界已经固定，模型只需要看清这一段里手在干什么，多余的时间上下文反而变成噪声。",
-      "tldr.pt4": "<strong>端到端的瓶颈在边界，不在句子。</strong>用参考边界时标注准确率有 55.7%，换成预测边界后端到端只剩 0.1542；分段的 Segment F1 0.2031 基本就是端到端分数的天花板。",
-      "tldr.pt5": "<strong>多候选 + selector 是目前最好的端到端配置，代价是额外调用。</strong>S2 预测边界 + Qwen3.5-397B 多候选选择得到 E2E 0.1542，高于分段模型自标（0.1234）和各种单次 relabel（0.1285–0.1491）。",
+      "tldr.scope": "以下结论都限定在同一个设定下：评测集是 WGO-Bench 的第一视角人类子集 HomER（25 个视频、470 个人工标注片段）；生成侧只使用开源 Qwen 视觉语言模型——分段用 Qwen3.6-27B，候选描述与选优用 Qwen3.5-397B；语义是否正确由 Gemini-3.5-Flash 作为离线评判给出。三类分数的定义见 <a href=\"#evaluate\">§1</a>。换一个数据子集或换一代模型，下面的相对关系不保证仍然成立。",
+      "tldr.pt1": "<strong>模型本身的代际差，比视觉输入上的技巧更能决定分数。</strong>在固定人工边界、只考语义描述的设置下，最朴素的输入——按片段均匀抽原始帧——配 Qwen3.6-27B 得到 55.7% 的 Label Acc，而四种更复杂的视觉输入都低于它（39.2%–52.8%）：在原帧上叠加启发式提示（proxy overlay）、把一段时间的多帧拼成一张图（temporal collage）、把相邻片段一起交给模型（邻段 sheet）、按估计的手部位置裁剪（hand crop）。分段一侧也一样：同一套 contact-sheet 输入、同一段 prompt，Qwen3.6-27B 的 Segment F1 为 0.1278，上一代更大的 Qwen3.5-397B 只有 0.0952。换句话说，预算允许换更强的模型时，那通常比在弱模型上叠视觉技巧更划算。本文刻意站在相反的约束里：只用便宜的开源模型，看这些技巧最远能把开源栈推到离闭源模型多近。",
+      "tldr.pt2": "<strong>模型固定时，改变视频的表示方式确实能缩小与闭源模型的差距。</strong>把整段视频渲染成带时间戳的图片网格（contact sheet），再采用「整集先粗切、每个粗边界附近局部重切」的两遍策略，Segment F1 从我们此前基于腕部速度的规则基线 0.0953 提高到 <strong>0.2031</strong>。同一 recipe 下，Macrodata 公开报告中非 Gemini 模型为 0.11–0.14，而 Gemini 在同一 HomER 范围的参考值为 0.227——表示方式与搜索策略把开源栈与它的差距从约一倍压到了 0.024。",
+      "tldr.pt3": "<strong>contact sheet 的收益集中在分段，对固定边界下的语义标注没有帮助。</strong>时间戳网格让模型在一次调用里看到十秒量级的时间结构，这正是判断「一个动作在哪里完成」所需要的信息。但当边界已经给定、只需要描述这一段时，模型需要的是这段里手与物体的细节，额外的时间上下文反而会带进相邻动作——人工检查错误样本时可以直接看到邻段动作被写进当前描述。这也解释了上一条中那些复杂视觉输入为什么反而掉分。",
+      "tldr.pt4": "<strong>端到端分数的瓶颈是时间边界，不是描述质量。</strong>使用人工边界时，语义描述的准确率为 55.7%；换成模型预测的边界后，端到端分数（时间与语义都要判对）只剩 0.1542。由于端到端要求先完成时间配对，分段的 0.2031 就是端到端分数的上限——在这条管线上，继续打磨句子的收益远小于继续改进边界。",
+      "tldr.pt5": "<strong>多路生成候选、再选一条定稿，是目前观察到的最好端到端配置，代价是额外调用。</strong>固定同一套预测边界后只改标注路径：分段模型顺手写下的标签为 0.1234，各种单次重标为 0.1285–0.1491，而让 Qwen3.5-397B 从多条候选中挑一条定稿得到 <strong>0.1542</strong>。这一增益（约 +0.005–0.03）需要与多出来的候选生成与一次选择调用一起衡量，成本见 <a href=\"#cost\">§5</a>。",
       "tldr.seg": "整集粗分 + 局部再切（窗口不外扩、盖住完整动作）· Qwen3.6-27B",
       "tldr.label": "raw 27B：固定参考边界下的最高 Label Acc",
       "tldr.e2e": "S2 预测边界 + 397B 多候选 selector",
@@ -55,7 +57,7 @@
       "cost.row.wgo": "EgoANT（本页 WGO）",
       "cost.row.wgo_scope": "raw / selector 工程估计 + 产物 API 次数",
       "cost.row.wgo_num": "见下表；非 Gemini 账单",
-      "cost.row.prod": "EgoANT 生产管线",
+      "cost.row.prod": "EgoANT 腕速基线",
       "cost.row.prod_scope": "同一 HomER 子集上的内部工程估计",
       "cost.row.prod_num": "仅保留聚合调用量级；不公开内部机器、路径或服务状态",
       "cost.recipe.h3": "WGO 两条标注路径（估计 tokens）",
@@ -64,7 +66,7 @@
       "cost.th.sel": "候选+selector（E2E 0.1542）",
       "cost.dyn.summary": "HomER {n} 集合计 {min} 分钟（均长约 {mean}s）。WGO token 为工程估计；API 次数为产物计数。{extra}",
       "cost.dyn.extra": "",
-      "cost.dyn.prod_h3": "生产管线：聚合成本说明",
+      "cost.dyn.prod_h3": "腕速基线：聚合成本说明",
       "cost.dyn.prod_p": "该路径与 contact-sheet selector 路径不同；公开页只保留聚合口径。",
       "cost.dyn.api": "API 请求",
       "cost.dyn.prompt": "prompt tokens",
@@ -89,47 +91,56 @@
       "demos.lede": "HomER 25 集各取一段第一人称人手动作（5×5）；字幕为自动标注短指令示意。",
       "load.error": "无法加载数据文件。请在本报告目录启动静态服务器后打开（例如 <code>python3 serve_report.py --port 8765</code>；需支持 HTTP Range 才能跳播视频片段），不要直接用受限的 <code>file://</code>。",
       "world.h2": "2. 相关工作与实验设置",
-      "world.p.lead": "在我们之前，已经有几条把长视频变成子任务标注的公开路线。它们各自解决了问题的一部分，也各自留下了缺口——这些缺口决定了我们要往哪里试。",
+      "world.p.lead": "在我们之前，已经有几条把长视频变成子任务标注的公开路线。它们各自解决了问题的一部分，也各自留下了空白；这些空白决定了本文选择往哪些方向尝试。",
       "world.h3.rule": "Rule-based 分段：VITRA 与固定时长切分",
-      "world.p.rule": "<a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">VITRA</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-vitra\">5</a></sup> 把单目第一视角视频处理成三维手部与相机运动、原子动作片段和语言指令，它的切段依据是手部运动信号——取腕部速度的局部极小值当作动作边界。另一类更简单的做法直接按固定时长切。我们把这两类统称为 <strong>rule-based 分段</strong>。它们共同的问题是<strong>过分割</strong>：一个动作内部的停顿、重新抓握、手腕微调都会产生速度低谷，于是「把胡萝卜放进碗里」被切成五六段。我们自己的生产管线正走这条路线（HaWoR 腕速 + minima 切段 + merge），在 HomER 上它预测出 810 段而参考只有 470 段，Segment F1 只有 <strong>0.0953</strong>。",
-      "world.h3.md": "Macrodata / WGO-Bench：把问题变成可评测的",
-      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata · Annotating Robot Video Subtasks</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-macrodata\">2</a></sup> 是目前最系统的公开工作：它把「长视频 → 动作级片段 + 短语义描述」定义成可打分的公开问题，发布了 WGO-Bench 与三类分数，给出了 contact sheet 一类的视觉输入设计和用 GEPA 搜索得到的分段 prompt，并在多个闭源与开源模型上做了对照。有两处留白与我们直接相关：其一，它报告了在强模型（Gemini）上各种 trick 的收益，但没有回答<strong>预算有限、只能用开源模型时该加哪些 trick</strong>——而这恰恰是我们要标几千小时视频时的真实约束；其二，它的标注实验建立在<strong>人工切好的边界</strong>之上，而分段本身同样重要，后面会看到它其实是端到端分数的瓶颈。",
+      "world.p.rule": "<a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">VITRA</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-vitra\">5</a></sup> 把单目第一视角视频处理成三维手部与相机运动、原子动作片段和语言指令，它的切段依据是手部运动信号——取腕部速度的局部极小值当作动作边界。另一类更简单的做法直接按固定时长切。我们把这两类统称为 <strong>rule-based 分段</strong>。它们共同的问题是<strong>过分割</strong>：一个动作内部的停顿、重新抓握、手腕微调都会产生速度低谷，于是「把胡萝卜放进碗里」被切成五六段。EgoANT 最早的一版分段也尝试过这条路线（HaWoR 腕速 + 低谷切段 + 相邻合并），本文把它保留为对照基线：在 HomER 上它切出 810 段，而参考只有 470 段，Segment F1 只有 <strong>0.0953</strong>。后面的 contact-sheet 方案正是为了替换掉这一版。",
+      "world.h3.md": "Macrodata / WGO-Bench：把子任务标注变成一个可以打分的公开问题",
+      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata · Annotating Robot Video Subtasks</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-macrodata\">2</a></sup> 是目前最系统的公开工作：它把「长视频 → 动作级片段 + 短语义描述」定义成可打分的公开问题，发布了 WGO-Bench 与三类分数（分段、固定边界标注、端到端都有报告），给出了 contact sheet 一类的视觉输入设计和用 GEPA 搜索得到的分段 prompt，并在多个闭源与开源模型上做了对照。它留下的空白与我们直接相关：各种 trick 的收益主要是在强模型（Gemini）上测出来的，报告没有回答<strong>预算有限、只能用开源模型时应该加哪些 trick</strong>——而这恰恰是我们要标几千小时视频时的真实约束。本文可以看作在这个约束下对它的一次补充。",
       "world.h3.scale": "Scale Labs：已切好的 clip 上的稠密描述",
-      "world.p.scale": "Scale Labs 的 <a href=\"https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning\" target=\"_blank\" rel=\"noopener\">The Path to Large Scale Dense Video Captioning</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-scale\">4</a></sup> 讨论的是在<strong>已经切分好的 clip</strong> 上写稠密描述，以及拼贴、时间戳、稳定抽帧这些具体工程做法。它对我们的视觉输入设计有直接启发，但同样跳过了「从原始长视频里预测边界」这一步。",
-      "world.h3.egoant": "生产管线与 WGO-Bench 评测管线",
-      "world.p.egoant": "<strong>EgoANT</strong> 是面向第一视角人类操作视频的自动标注系统。本文区分两条用途不同的管线：",
-      "world.li.prod": "<strong>生产管线</strong>：HaWoR 手部运动重建 → 腕部速度平滑与低谷候选边界 → 段内 raw 抽帧描述 → 相邻片段合并与重写。细节见 <a href=\"#app-prod\">附录 D</a>。该管线借鉴 VITRA 类 motion-first decomposition，但切段后端是 HaWoR 腕部运动信号，不是 VITRA 模型。",
-      "world.li.wgo": "<strong>WGO-Bench 评测管线</strong>：带时间戳的 contact sheets → Qwen3.6-27B 分段 → 固定预测边界后的语义标注与多候选选择。正文实验主要针对这条管线。",
-      "world.p.models": "模型角色如下：<strong>Qwen3.6-27B</strong> 用于分段，也可作为部分标注候选生成器；<strong>Qwen3.5-397B</strong> 用于候选描述生成和 candidate selector；<strong>Gemini-3.5-Flash</strong> 仅作为最终语义评测 judge，不参与生成标签或选择候选。早期 Qwen judge 结果仅作为敏感性实验，不进入主分数。",
+      "world.p.scale": "Scale Labs 的 <a href=\"https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning\" target=\"_blank\" rel=\"noopener\">The Path to Large Scale Dense Video Captioning</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-scale\">4</a></sup> 讨论的是在<strong>已经切分好的 clip</strong> 上写稠密描述，以及拼贴、时间戳、稳定抽帧这些具体工程做法。它对我们的视觉输入设计有直接启发，但它的设定默认边界已经给定，不涉及「从原始长视频里预测边界」这一步——而分段恰恰是后面会看到的端到端瓶颈。",
+      "world.h3.egoant": "EgoANT 的两条管线",
+      "world.p.egoant": "EgoANT 是我们面向第一视角人类操作视频的自动标注系统。本文涉及它的两条管线：",
+      "world.li.prod": "<strong>腕速基线（EgoANT 的第一版）</strong>：HaWoR 手部运动重建 → 腕部速度平滑与低谷候选边界 → 段内抽原始帧写短句 → 相邻片段合并与重写。它借鉴了 VITRA 一类「先运动、后描述」的思路，但切段依据是 HaWoR 的腕部运动信号，并没有使用 VITRA 模型。细节见 <a href=\"#app-prod\">附录 D</a>；本文只把它当作对照基线。",
+      "world.li.wgo": "<strong>contact-sheet 管线（本文的实验对象）</strong>：带时间戳的 contact sheets → Qwen3.6-27B 分段 → 固定预测边界后的语义标注与多候选选择。正文的实验都针对这条管线。",
+      "world.p.models": "三个模型的分工是：Qwen3.6-27B 负责分段，也可以顺带生成一部分标注候选；Qwen3.5-397B 负责生成候选描述并从中选出定稿；Gemini-3.5-Flash 只在离线评测时充当语义评判，不参与生成标签，也不参与选择候选。早期用 Qwen 做评判的结果只作为评判敏感性检查，不计入主分数。",
       "role.th.role": "角色",
       "role.th.model": "模型",
-      "role.th.gold": "是否读取 gold 信息",
       "role.th.use": "在本文中的作用",
-      "role.segmenter": "Segmenter",
-      "role.captioner": "Caption generator",
-      "role.selector": "Candidate selector",
-      "role.judge": "Primary evaluation judge",
-      "role.no": "否",
-      "role.gold_label": "只读取 gold 标签用于离线评分",
-      "role.segmenter.use": "生成预测时间边界",
-      "role.captioner.use": "生成候选语义标签",
-      "role.selector.use": "从候选标签中选择最终标签",
-      "role.judge.use": "计算 Label Acc 与 Semantic E2E F1",
-      "world.h3.gepa": "GEPA-derived prompt 在本文中的含义",
-      "world.gepa.1": "<strong>GEPA 本身</strong>：一种 reflective prompt evolution 方法<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>。Macrodata 使用 GEPA 在独立验证集上搜索分段 prompt。本文没有在推理阶段运行 GEPA。",
-      "world.gepa.2": "本文实际复用的是公开得到的 completed-event segmentation rules，也就是一组英文分段规则 prompt。",
-      "world.gepa.3": "因此，后文中的 “GEPA-derived prompt” 仅指这组规则文本；它不是新模型，也不是后处理脚本。",
-      "world.gepa.4": "使用方式是：整集 contact sheets + 由 GEPA 搜索得到的分段规则 prompt → 一次粗分。规则要求只标完成动作、偏好约 2–10 秒片段，并忽略靠近、微调和收回等非完成事件。",
+      "role.segmenter": "分段模型",
+      "role.captioner": "描述生成模型",
+      "role.selector": "候选选择器（selector）",
+      "role.judge": "语义评判模型（judge）",
+      "role.segmenter.use": "预测片段的时间边界",
+      "role.captioner.use": "为每个片段生成候选描述",
+      "role.selector.use": "从多条候选描述中选出定稿",
+      "role.judge.use": "离线计算 Label Acc 与 Semantic E2E F1",
+      "world.h3.gepa": "「GEPA-derived prompt」在本文里指什么",
+      "world.gepa.1": "<strong>GEPA 本身</strong>是一种用反馈自动改写 prompt 的方法<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>。Macrodata 用它在另外 15 个 episode 的验证集上搜索更贴合标注规范的分段规则。",
+      "world.gepa.2": "<strong>我们复用的是搜索的结果</strong>，也就是他们公开的那段英文分段规则（<code>completed_events_duration_prior_v1</code>）：只切已经完成的操作事件，片段长度偏好 2–10 秒，靠近、微调、收回这类动作不单独成段。",
+      "world.gepa.3": "<strong>我们没有重新跑 GEPA。</strong>后文写「GEPA-derived prompt」时，指的只是这段规则文本——它既不是模型，也不是后处理脚本，而是请求里的一段文字。",
+      "world.gepa.4": "<strong>怎么用：</strong>整集的 contact sheets 加上这段规则，一次调用完成粗分。相比不带规则的旧 prompt，它把 Segment F1 从 0.1230 提到 0.1369。英文全文见样例 Step 02 的折叠区；概念与实现见 <a href=\"#app-seg\">附录 B</a>，原文下载见 <a href=\"#app-prompts\">附录 F</a>。",
       "world.h3.terms": "常用术语",
-      "world.term.1": "<strong>时间窗口</strong>：视频时间轴上的一段连续区间（例如 84–94 秒），不是软件 UI 窗口。",
-      "world.term.2": "<strong>第一遍加密切（S1）</strong>：提高预测片段密度以提高召回率，但可能引入过分割。详见 <a href=\"#app-seg\">附录 B</a>。",
-      "world.term.3": "<strong>第二遍局部精修（S2）</strong>：在粗边界附近的一小段时间里再切一次。",
-      "world.term.4": "<strong>窗口不外扩（pad=0）</strong>：局部精修只使用粗分边界内部的视觉上下文，不引入窗口外相邻动作。",
-      "world.term.5": "<strong>盖住完整动作（full-cover）</strong>：要求模型覆盖窗口内可见的完成动作，同时避免把靠近、微调和收回拆成不完整微动作片段。",
-      "world.term.6": "<strong>selector / judge</strong>：selector 从多条候选标签中选择最终标签；judge 只用于评测，判断预测标签与 gold 标签是否描述同一完成动作。",
-      "world.term.7": "<strong>HaWoR</strong><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>：从第一视角视频中重建手部运动，用于得到估计腕部轨迹并生成 wrist-guided crops。它不是传感器 ground truth。",
-      "world.term.8": "<strong>Qwen3.6-27B</strong>：主要分段模型；<strong>Qwen3.5-397B</strong>：候选描述生成和 candidate selector；<strong>Gemini-3.5-Flash</strong>：主语义评测 judge。",
-      "world.callout": "<strong>易混淆的视觉输入：</strong> contact sheet（分段用时间戳拼图）≠ 整帧 temporal collage ≠ 邻段 sheet ≠ proxy hand-collage ≠ 基于 HaWoR 重建腕轨迹的手部裁剪。",
+      "world.terms.figcap": "同一段 40 秒视频的四种切法：人工参考、整集粗分、S1 加密切、S2 局部精修。绿色虚线框就是「时间窗口」，S2 只在框内重切。",
+      "world.term.1": "<strong>时间窗口</strong>：视频时间轴上的一段连续区间（例如 84–94 秒），不是软件界面里的窗口。",
+      "world.term.2": "<strong>第一遍加密切（S1）</strong>：把切段密度调高，让更多真实边界被覆盖到，代价是容易切碎。详见 <a href=\"#app-seg\">附录 B</a>。",
+      "world.term.3": "<strong>第二遍局部精修（S2）</strong>：只在粗分边界附近的一小段时间里重切一次。",
+      "world.term.4": "<strong>窗口不外扩（pad=0）</strong>：精修时只看窗口内部的画面，不把窗外的相邻动作纳入视野。",
+      "world.term.5": "<strong>盖住完整动作（full-cover）</strong>：窗口里看得见的完成动作都要切到，同时不要把靠近、微调、收回单独切成碎片。",
+      "world.term.6": "<strong>候选选择器（selector）</strong>：从多条候选描述里挑一条定稿，只在生成阶段使用。",
+      "world.term.7": "<strong>语义评判（judge）</strong>：只在评测阶段使用，判断预测描述与参考描述说的是不是同一个完成动作。",
+      "world.term.8": "<strong>HaWoR</strong><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>：从第一视角视频中重建手部运动的方法，用来估计腕部轨迹并裁出手部区域。它给出的是估计值，不是传感器真值。",
+      "fig.src.segterms": "assets/explain/seg_terms_zh.svg",
+      "fig.src.metric": "assets/explain/metric_iou_f1_zh.svg",
+      "fig.src.s2": "assets/explain/s2_no_pad_full_cover_zh.svg",
+      "fig.src.taxonomy": "assets/explain/visual_input_taxonomy_zh.svg",
+      "world.h3.inputs": "五种容易混淆的视觉输入",
+      "world.p.inputs": "后文反复出现 contact sheet、temporal collage、邻段 sheet、proxy overlay、手部裁剪这几个词，它们的差别只有看图才说得清。下面是同一段视频、同一个动作（homer_4 第 22.9–26.8 秒，「拉开床头柜抽屉」）分别渲染成五种输入的样子，参数与管线一致。",
+      "world.zoo.raw": "<strong>raw 原始帧</strong>：在片段内均匀抽 3 帧，作为 3 张<em>独立</em>图片提交。固定边界标注的默认输入，也是本文准确率最高的一种（55.7%）。",
+      "world.zoo.collage": "<strong>temporal collage 时间拼贴</strong>：同样几帧，但拼成<em>一张</em>图一次性给模型。省 token，画面里仍只有当前这一个动作。",
+      "world.zoo.contact": "<strong>contact sheet</strong>：每 0.5 秒一帧、缩到 224×144、20 格一张，格子左上打<em>黄色时间戳</em>，一张覆盖约 10 秒。这是分段用的输入，也是本文收益最大的那处改动。",
+      "world.zoo.neighbor": "<strong>邻段 sheet</strong>：把上一段（灰条）、当前段（绿条）、下一段（灰条）一起给模型。上下文更多，但模型经常把邻段的动作写进当前描述。",
+      "world.zoo.proxy": "<strong>proxy overlay 与手部裁剪</strong>：左边在画面中心偏下画一个<em>固定</em>方框（启发式猜测，不是手部检测），右边是裁出后真正送进模型的图。真正依据 HaWoR 腕部轨迹的裁剪见 <a href=\"#app-visual\">附录 E</a>。",
+      "world.zoo.note": "以上五张按管线参数重新渲染，用于说明差别本身。在固定边界的标注实验里，除 contact sheet 只用于分段外，其余四种都低于 raw；数字见 <a href=\"#story\">§6.2</a>。",
       "metrics.h2": "1. 我们如何评估这条管线",
       "eval.lead": "要比较不同的标注方案，需要一个公开、可复现、并且和我们的任务同构的基准——它必须同时考核「切得对不对」和「写得对不对」。本文用的是 <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">WGO-Bench</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-wgo\">1</a></sup>。",
       "eval.h3.bench": "WGO-Bench 与 HomER 子集",
@@ -139,8 +150,11 @@
       "metrics.li1": "<strong>Segment F1</strong>：仅衡量预测片段与参考片段之间的时间边界质量；时间 IoU≥0.75 时可形成一对一匹配。",
       "metrics.li2": "<strong>Fixed-boundary Label Acc</strong>：使用参考时间边界，仅评估预测描述是否表达了相同的完成动作。",
       "metrics.li3": "<strong>Semantic E2E F1</strong>：先进行时间匹配，再判断匹配片段的语义描述是否正确；只有时间和语义都正确才计入正确预测。",
-      "metrics.toy": "简化示例（与 scorer 逻辑一致）：",
-      "metrics.figcap": "该图展示如何先用 IoU 判断 pred/gold 时间段是否重叠足够，再由匹配数计算 precision、recall 和 F1。",
+      "metrics.toy": "下面用一个人造的小例子，把 Segment F1 完整走一遍。",
+      "metrics.figcap": "评分分两步：先用时间 IoU 判断预测片段与参考片段是否重叠得够多，再由配对成功的数量算出 precision、recall 与 F1。",
+      "toy.lane.gold": "参考（人工标注）",
+      "toy.lane.pred": "预测（首尾对齐后）",
+      "toy.lane.sum": "配对成功 {n} 个 · F1 ≈ {f1}",
       "legend.gold": "Gold / 人工标注",
       "legend.pred": "Pred / 模型预测",
       "legend.coarse": "Whole-episode coarse",
@@ -241,11 +255,11 @@
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "与 full-100 0.306 headline 直接比较",
-      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚公式、术语和实现边界。目录： <a href=\"#app-metrics\">A 得分</a> · <a href=\"#app-seg\">B 分段概念</a> · <a href=\"#app-e2e\">C 标注/E2E 术语</a> · <a href=\"#app-prod\">D 生产管线</a> · <a href=\"#app-visual\">E 视觉输入</a> · <a href=\"#app-prompts\">F Prompt</a> · <a href=\"#app-cost\">G 成本记账</a> · <a href=\"#audit\">H 效度</a>。",
-      "metrics.toy.g": "Gold：G0[0,3], G1[3,6], G2[6,10] · Pred：P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]",
-      "metrics.toy.1": "Outer snap：P0.start→0，P3.end→10",
-      "metrics.toy.2": "IoU：P0–G0≈0.933，P1–G1≈0.781",
-      "metrics.toy.3": "n_match=2 → P=0.50，R≈0.67，F1≈0.571",
+      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚公式、术语和实现边界。目录： <a href=\"#app-metrics\">A 得分</a> · <a href=\"#app-seg\">B 分段概念</a> · <a href=\"#app-e2e\">C 标注/E2E 术语</a> · <a href=\"#app-prod\">D 腕速基线</a> · <a href=\"#app-visual\">E 视觉输入</a> · <a href=\"#app-prompts\">F Prompt</a> · <a href=\"#app-cost\">G 成本记账</a> · <a href=\"#audit\">H 效度</a>。",
+      "metrics.toy.g": "参考片段（gold）：G0[0,3]、G1[3,6]、G2[6,10]；模型预测（pred）：P0[0.5,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,9.5]。",
+      "metrics.toy.1": "先把首尾对齐到视频两端，避免开头结尾少切的几帧影响判定：P0 的起点归到 0，P3 的终点归到 10。",
+      "metrics.toy.2": "逐对计算时间 IoU（交集 / 并集），只有 ≥0.75 才算配对成功：P0–G0≈0.933、P1–G1≈0.781 通过，P2 与 P3 和任何参考片段都不达标。",
+      "metrics.toy.3": "配对成功 2 个 → 精确率 = 2/4 = 0.50，召回率 = 2/3 ≈ 0.67，F1 ≈ 0.571。",
       "story.chart.label": "标注准确率",
       "story.chart.e2e": "E2E F1",
       "walk.s0.hint": "下方为整集预览。到 Step 06 点选时间轴或表格行，可只播该段并同步看标注。",
@@ -264,6 +278,7 @@
       "hero.grid.aria": "第一视角人手子任务视频墙",
       "nav.brand": "EgoANT",
       "references.h2": "参考文献",
+      "references.pi05": "Physical Intelligence, Black, Kevin, Brown, Noah, Darpinian, James, Dhabalia, Karan, Driess, Danny, et al. (2025). <em>&pi;<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization</em>. arXiv. <a href=\"https://arxiv.org/abs/2504.16054\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2504.16054</a>",
       "references.wgo": "Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">https://huggingface.co/datasets/macrodata/WGO-Bench</a>",
       "references.macrodata": "Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">https://macrodata.co/blog/annotating-robot-video-subtasks</a>",
       "references.gepa": "Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href=\"https://arxiv.org/abs/2507.19457\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2507.19457</a>",
@@ -301,17 +316,19 @@
       "en.banner": "",
       "intro.h2": "Introduction: why egocentric human video needs subtask annotation",
       "intro.ego": "Egocentric human video is first-person footage recorded by a head-mounted camera while someone performs everyday manipulation: chopping vegetables in a real kitchen, assembling parts at a workbench, restocking shelves in a store. The camera moves with the head, both hands work near the center of the frame, and the objects, lighting, failures, and retries all come from a real environment rather than a lab setup. Public datasets such as EgoVerse<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-egoverse\">8</a></sup>, EgoDex<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-egodex\">7</a></sup>, and EgoLive<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-egolive\">9</a></sup> have pushed this kind of footage past the thousand-hour scale.",
-      "intro.value": "For robot learning and embodied foundation models, this data matters for three reasons. First, <strong>out-of-distribution performance</strong>: real human video covers far more scenes, objects, and skills than teleoperated robot data, so pretraining on it directly improves how policies behave in environments they have never seen. Second, <strong>transferable manipulation structure</strong>: human hands and robot end-effectors share a \"what I see &rarr; what to do\" prior, so human video can carry the pretraining stage of a vision-language-action model, with a small amount of on-robot data used afterwards to align the action space. Third, <strong>collection cost</strong>: recording it needs no robot hardware and no teleoperator &mdash; a head-mounted camera alone produces data in real environments, in parallel, for hours at a time.",
-      "intro.why": "But raw video is not training data. A ten-minute egocentric clip typically contains dozens of consecutive actions with no temporal boundaries and no language labels. Turning it into structured supervision means answering two questions: <strong>when does each action start and end</strong>, and <strong>what is happening in that span</strong>. Together these two questions define the task in this report &mdash; subtask segmentation and semantic labeling.",
-      "intro.task": "This is not easy: the frame shakes with the head, hands frequently occlude the manipulated object, there is no clear pause between actions, and fine-grained operations follow one another without gaps. The resulting boundaries and descriptions are exactly the supervision format needed for VLA pretraining, hierarchical skill learning, and reward-model construction. Hour-by-hour human annotation cannot cover a thousand-hour corpus, so we need an <strong>auditable, reproducible, cost-controlled automatic annotation pipeline</strong>.",
+      "intro.value": "This data is useful for robot learning only because it <strong>transfers</strong>: human hands and robot end-effectors have different morphology, but the manipulation semantics at the \"what I see &rarr; what to do\" level are shared, so human video can carry the pretraining stage of a vision-language-action (VLA) model, with a small amount of on-robot data used afterwards to align the action space to a specific embodiment<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-pi05\">1</a></sup>. Once that holds, two other properties start to matter: <strong>coverage</strong> &mdash; real human video spans far more scenes, objects, and skills than teleoperated robot data, and that breadth is where out-of-distribution generalization comes from; and <strong>collection cost</strong> &mdash; recording needs no robot hardware and no teleoperator, so a head-mounted camera alone can produce data in real environments, in parallel, for hours at a time, which is what makes that coverage reachable at all.",
+      "intro.why": "Raw video can of course be trained on directly: it feeds video-prediction and world models, and paired with wrist trajectories from hand reconstruction it even serves as weak action supervision. But that kind of supervision only answers \"what will the picture look like next\", not <strong>\"which action is being performed right now, and is it finished\"</strong>.",
+      "intro.task": "The second question is exactly what today's robot policies need. A VLA training sample is an (observation, language instruction, action) triplet, and the instruction has to be aligned to a time span; hierarchical models such as &pi;<sub>0.5</sub> go further and predict a high-level subtask instruction before conditioning the low-level action on it<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-pi05\">1</a></sup> &mdash; training that high-level stage is precisely what subtask labels are for. The boundaries themselves are also useful: they define where one complete operation starts and where it counts as done, which is a prerequisite for success detection, reward models, and skill retrieval, and the natural unit for filtering and rebalancing a pretraining corpus. So turning long video into usable supervision means answering two questions: <strong>when does each action start and end</strong>, and <strong>what is happening in that span</strong> &mdash; together, the task of this report: subtask segmentation and semantic labeling.",
+      "intro.hard": "None of this is easy: the frame shakes with the head, hands frequently occlude the manipulated object, there is no clear pause between actions, and fine-grained operations follow one another without gaps. Hour-by-hour human annotation cannot cover a thousand-hour corpus, so we need an <strong>auditable, reproducible, cost-controlled automatic annotation pipeline</strong>.",
       "intro.p3": "EgoANT is our answer to those gaps: an automatic annotation pipeline for egocentric human manipulation video that cuts long videos into action-level segments and writes a short operation label for each. On the 25 videos / 470 reference segments of HomER, the best segmentation setup reaches Segment F1 <strong>0.2031</strong>; under fixed reference boundaries, pure labeling reaches Label Acc <strong>55.7%</strong>; the video-only end-to-end pipeline reaches Semantic E2E F1 <strong>0.1542</strong>. Together this yields a relatively inexpensive subtask annotation system built entirely on open-source vision-language models.",
       "intro.scope": "<strong>Evaluation scope:</strong> every score and recommendation on this page is anchored to the 25 videos / 470 reference segments of HomER. The full WGO-Bench Segment F1 of about 0.306 reported by Macrodata covers all ~100 episodes and should not be compared directly with the numbers here; the same-scope HomER-only Gemini reference of about <strong>0.227</strong> is the appropriate comparison.",
       "tldr.h2": "Key results (TL;DR)",
-      "tldr.pt1": "<strong>A stronger model beats a stack of visual tricks.</strong> On fixed-reference-boundary labeling, the plainest setup &mdash; raw sampled frames with Qwen3.6-27B &mdash; reaches the highest 55.7%, while every richer visual context (proxy overlay, temporal collage, neighbor sheet, hand crop) scores below it (39.2%&ndash;52.8%). Segmentation shows the same pattern: under an identical contact-sheet setup, Qwen3.6-27B reaches 0.1278 while the larger previous-generation Qwen3.5-397B only reaches 0.0952.",
-      "tldr.pt2": "<strong>But changing the video representation does narrow the gap between open and closed models.</strong> Turning the episode into timestamped contact sheets and running coarse segmentation followed by local refinement lifts Segment F1 from the 0.0953 production baseline to <strong>0.2031</strong>. Macrodata reports 0.11&ndash;0.14 for the same recipe with non-Gemini models, and a HomER-only Gemini reference of 0.227 &mdash; so representation and search strategy moved the open-source stack from roughly half the score to within 0.024 of it.",
-      "tldr.pt3": "<strong>Contact sheets help segmentation a lot and labeling not at all.</strong> A timestamped tile grid lets the model see ten seconds of temporal structure in a single call, which is exactly what deciding \"when did this action complete\" requires. Once boundaries are fixed, however, the model only needs to see what the hands are doing inside that span, and extra temporal context becomes noise.",
-      "tldr.pt4": "<strong>The end-to-end bottleneck is boundaries, not sentences.</strong> Labeling accuracy is 55.7% on reference boundaries, but the end-to-end score with predicted boundaries is only 0.1542; the Segment F1 of 0.2031 is effectively the ceiling for the end-to-end number.",
-      "tldr.pt5": "<strong>Multi-candidate generation plus a selector is the best end-to-end setup so far, at the cost of extra calls.</strong> S2 predicted boundaries with a Qwen3.5-397B multi-candidate selector reach E2E 0.1542, above the segmenter's own labels (0.1234) and above every single-pass relabel (0.1285&ndash;0.1491).",
+      "tldr.scope": "Every conclusion below is bound to one setup: the evaluation set is HomER, the egocentric human subset of WGO-Bench (25 videos, 470 human-annotated segments); the generation side uses only open-source Qwen vision-language models &mdash; Qwen3.6-27B for segmentation, Qwen3.5-397B for candidate captions and selection; and semantic correctness is decided offline by Gemini-3.5-Flash as judge. The three scores are defined in <a href=\"#evaluate\">&sect;1</a>. On a different subset or a different model generation, the relative ordering below is not guaranteed to hold.",
+      "tldr.pt1": "<strong>The generation gap between models decides more than any trick applied to the visual input.</strong> With boundaries fixed to the human annotation and only the description scored, the plainest input &mdash; raw frames sampled uniformly inside each segment &mdash; with Qwen3.6-27B reaches 55.7% Label Acc, while four richer visual inputs all score below it (39.2%&ndash;52.8%): heuristic hints drawn over the frame (proxy overlay), several frames tiled into one image (temporal collage), neighbouring segments handed to the model together (neighbor sheet), and crops around the estimated hand position (hand crop). Segmentation behaves the same way: with an identical contact-sheet input and identical prompt, Qwen3.6-27B reaches Segment F1 0.1278 while the larger previous-generation Qwen3.5-397B only reaches 0.0952. In other words, when the budget allows a stronger model, that usually pays off more than stacking visual tricks on a weaker one. This report deliberately takes the opposite constraint: only cheap open-source models, and the question is how close those tricks can push an open stack to a closed one.",
+      "tldr.pt2": "<strong>With the model fixed, changing the video representation does narrow the gap to closed models.</strong> Rendering the episode as timestamped image grids (contact sheets) and running a two-pass strategy &mdash; one coarse cut over the whole episode, then a local re-cut around each coarse boundary &mdash; lifts Segment F1 from 0.0953, our earlier wrist-speed rule baseline, to <strong>0.2031</strong>. Under the same recipe, Macrodata reports 0.11&ndash;0.14 for non-Gemini models, while their Gemini reference on the same HomER scope is 0.227 &mdash; so representation plus search strategy closed the gap from roughly a factor of two down to 0.024.",
+      "tldr.pt3": "<strong>The contact-sheet gain is concentrated in segmentation; it does nothing for labeling under fixed boundaries.</strong> A timestamped grid lets the model see ten seconds of temporal structure in a single call, which is exactly what deciding \"where does this action complete\" requires. Once the boundary is given and only the span has to be described, what the model needs is detail about hands and objects inside that span; extra temporal context instead drags in the neighbouring action &mdash; error inspection shows adjacent actions written into the current description. That is also why the richer visual inputs in the previous point lose accuracy.",
+      "tldr.pt4": "<strong>The end-to-end bottleneck is the temporal boundary, not description quality.</strong> On human boundaries, description accuracy is 55.7%; on model-predicted boundaries the end-to-end score (both time and semantics must be judged correct) drops to 0.1542. Because end-to-end scoring requires a temporal match first, the segmentation score of 0.2031 is the ceiling for it &mdash; on this pipeline, further polishing of sentences buys far less than further work on boundaries.",
+      "tldr.pt5": "<strong>Generating several candidates and picking one is the best end-to-end setup observed so far, at the cost of extra calls.</strong> Holding the same predicted boundaries and changing only the labeling path: labels written by the segmenter itself score 0.1234, single-pass relabels score 0.1285&ndash;0.1491, and letting Qwen3.5-397B pick one caption from several candidates reaches <strong>0.1542</strong>. That gain (roughly +0.005&ndash;0.03) has to be weighed against the extra candidate generation and one selection call; see <a href=\"#cost\">&sect;5</a> for cost.",
       "tldr.seg": "Whole-episode coarse + local re-cut (no pad-out, cover full actions) · Qwen3.6-27B",
       "tldr.label": "raw 27B: highest Label Acc under fixed reference boundaries",
       "tldr.e2e": "S2 predicted boundaries + 397B multi-candidate selector",
@@ -330,7 +347,7 @@
       "cost.row.wgo": "EgoANT (this page, WGO)",
       "cost.row.wgo_scope": "raw / selector estimate + artifact API counts",
       "cost.row.wgo_num": "See table below; not a Gemini invoice",
-      "cost.row.prod": "EgoANT production default",
+      "cost.row.prod": "EgoANT wrist-speed baseline",
       "cost.row.prod_scope": "Internal engineering estimate on the same HomER subset",
       "cost.row.prod_num": "Aggregated call scale only; no internal machines, paths, or service status disclosed",
       "cost.recipe.h3": "WGO labeling paths (estimated tokens)",
@@ -339,7 +356,7 @@
       "cost.th.sel": "Candidates+selector (E2E 0.1542)",
       "cost.dyn.summary": "HomER {n} episodes, {min} minutes total (mean ~{mean}s). WGO tokens are engineering estimates; API counts are artifact-counted. {extra}",
       "cost.dyn.extra": "",
-      "cost.dyn.prod_h3": "Production path: aggregated cost note",
+      "cost.dyn.prod_h3": "Wrist-speed baseline: aggregated cost note",
       "cost.dyn.prod_p": "This path differs from the contact-sheet selector path; the public page keeps only aggregate accounting.",
       "cost.dyn.api": "API requests",
       "cost.dyn.prompt": "prompt tokens",
@@ -364,47 +381,56 @@
       "demos.lede": "One first-person HomER clip per episode (5×5 = all 25); captions are short auto-annotation labels.",
       "load.error": "Could not load data files. Serve this folder with Range support (e.g. <code>python3 serve_report.py --port 8765</code>); do not open via restricted <code>file://</code>.",
       "world.h2": "2. Related pipelines and experimental setup",
-      "world.p.lead": "Several public pipelines already turn long video into subtask annotations. Each solves part of the problem and leaves a gap, and those gaps are what determined where we experimented.",
+      "world.p.lead": "Several public pipelines already turn long video into subtask annotations. Each solves part of the problem and leaves a gap open, and those gaps are what determined which directions this report explores.",
       "world.h3.rule": "Rule-based segmentation: VITRA and fixed-length cutting",
-      "world.p.rule": "<a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">VITRA</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-vitra\">5</a></sup> turns monocular egocentric video into 3D hand and camera motion, atomic action segments, and language instructions; its cuts come from the hand motion signal, taking local minima of wrist speed as action boundaries. A simpler family of methods just cuts at fixed intervals. We refer to both as <strong>rule-based segmentation</strong>. They share one failure mode: <strong>over-segmentation</strong>. Pauses inside a single action, regrasps, and small wrist adjustments all produce speed minima, so \"put the carrot in the bowl\" gets cut into five or six pieces. Our own production pipeline follows this route (HaWoR wrist speed + minima cuts + merge); on HomER it predicts 810 segments against 470 reference segments and reaches Segment F1 <strong>0.0953</strong> only.",
-      "world.h3.md": "Macrodata / WGO-Bench: making the problem measurable",
-      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata &middot; Annotating Robot Video Subtasks</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-macrodata\">2</a></sup> is the most systematic public treatment so far: it frames \"long video &rarr; action-level segments + short semantic descriptions\" as a scoreable public problem, releases WGO-Bench and the three scores, presents visual-input designs such as contact sheets and a GEPA-searched segmentation prompt, and compares several closed and open models. Two gaps matter for us. First, it reports how much each trick buys on a strong model (Gemini), but not <strong>which tricks to add when the budget only allows open-source models</strong> &mdash; which is exactly our constraint when labeling thousands of hours. Second, its labeling experiments sit on <strong>manually cut boundaries</strong>, yet segmentation matters just as much and, as shown later, is the actual bottleneck of the end-to-end score.",
+      "world.p.rule": "<a href=\"https://microsoft.github.io/VITRA/\" target=\"_blank\" rel=\"noopener\">VITRA</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-vitra\">5</a></sup> turns monocular egocentric video into 3D hand and camera motion, atomic action segments, and language instructions; its cuts come from the hand motion signal, taking local minima of wrist speed as action boundaries. A simpler family of methods just cuts at fixed intervals. We refer to both as <strong>rule-based segmentation</strong>. They share one failure mode: <strong>over-segmentation</strong>. Pauses inside a single action, regrasps, and small wrist adjustments all produce speed minima, so \"put the carrot in the bowl\" gets cut into five or six pieces. EgoANT's first segmentation version also tried this route (HaWoR wrist speed + valley cuts + adjacent merge), and this report keeps it as a comparison baseline: on HomER it cuts 810 segments against 470 reference segments and reaches Segment F1 <strong>0.0953</strong>. The contact-sheet approach below exists to replace that version.",
+      "world.h3.md": "Macrodata / WGO-Bench: turning subtask annotation into a scoreable public problem",
+      "world.p.md": "<a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata &middot; Annotating Robot Video Subtasks</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-macrodata\">2</a></sup> is the most systematic public treatment so far: it frames \"long video &rarr; action-level segments + short semantic descriptions\" as a scoreable public problem, releases WGO-Bench and the three scores (segmentation, fixed-boundary labeling, and end-to-end are all reported), presents visual-input designs such as contact sheets and a GEPA-searched segmentation prompt, and compares several closed and open models. The gap that matters for us: the reported gains from each trick were measured mostly on a strong model (Gemini), and the post does not answer <strong>which tricks to add when the budget only allows open-source models</strong> &mdash; which is exactly our constraint when labeling thousands of hours. This report can be read as a complement under that constraint.",
       "world.h3.scale": "Scale Labs: dense captioning on pre-cut clips",
-      "world.p.scale": "Scale Labs' <a href=\"https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning\" target=\"_blank\" rel=\"noopener\">The Path to Large Scale Dense Video Captioning</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-scale\">4</a></sup> covers dense descriptions over <strong>already-cut clips</strong>, together with concrete engineering choices such as tiling, timestamps, and stable frame sampling. It directly informed our visual-input design, but it likewise skips predicting boundaries from raw long video.",
-      "world.h3.egoant": "Production pipeline and WGO-Bench evaluation pipeline",
-      "world.p.egoant": "<strong>EgoANT</strong> is an automatic annotation system for egocentric human manipulation videos. This report separates two pipelines with different purposes:",
-      "world.li.prod": "<strong>Production pipeline</strong>: HaWoR hand-motion reconstruction → smoothed wrist-speed candidate boundaries → raw-frame segment captions → adjacent-segment merge and rewrite. Details are in <a href=\"#app-prod\">Appendix D</a>. This pipeline borrows the VITRA-style motion-first decomposition idea, but the segmentation signal is HaWoR wrist motion, not the VITRA model.",
-      "world.li.wgo": "<strong>WGO-Bench evaluation pipeline</strong>: timestamped contact sheets → Qwen3.6-27B segmentation → semantic labeling and multi-candidate selection under fixed predicted boundaries. The body experiments mainly cover this pipeline.",
-      "world.p.models": "Model roles are separated as follows: <strong>Qwen3.6-27B</strong> is the segmenter and can also generate some label candidates; <strong>Qwen3.5-397B</strong> generates candidate captions and acts as the candidate selector; <strong>Gemini-3.5-Flash</strong> is only the final semantic evaluation judge and does not generate labels or select candidates. Earlier Qwen-judge results are judge-sensitivity checks, not main scores.",
+      "world.p.scale": "Scale Labs' <a href=\"https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning\" target=\"_blank\" rel=\"noopener\">The Path to Large Scale Dense Video Captioning</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-scale\">4</a></sup> covers dense descriptions over <strong>already-cut clips</strong>, together with concrete engineering choices such as tiling, timestamps, and stable frame sampling. It directly informed our visual-input design, but its setting assumes boundaries are already given and never covers predicting them from raw long video &mdash; and segmentation, as shown later, is the end-to-end bottleneck.",
+      "world.h3.egoant": "The two EgoANT pipelines",
+      "world.p.egoant": "EgoANT is our automatic annotation system for egocentric human manipulation video. Two of its pipelines appear in this report:",
+      "world.li.prod": "<strong>Wrist-speed baseline (EgoANT's first version)</strong>: HaWoR hand-motion reconstruction → smoothed wrist-speed candidate boundaries → raw-frame segment captions → adjacent-segment merge and rewrite. It borrows the VITRA-style \"motion first, caption second\" idea, but the segmentation signal is HaWoR wrist motion and no VITRA model is used. Details are in <a href=\"#app-prod\">Appendix D</a>; here it serves only as a comparison baseline.",
+      "world.li.wgo": "<strong>Contact-sheet pipeline (what this report experiments on)</strong>: timestamped contact sheets → Qwen3.6-27B segmentation → semantic labeling and multi-candidate selection under fixed predicted boundaries. Every experiment in the body targets this pipeline.",
+      "world.p.models": "The three models divide up as follows: Qwen3.6-27B does the segmentation and can also produce some label candidates; Qwen3.5-397B generates candidate captions and picks the final one; Gemini-3.5-Flash acts as semantic judge during offline evaluation only, and never generates labels or selects candidates. Earlier Qwen-judge results are judge-sensitivity checks, not main scores.",
       "role.th.role": "Role",
       "role.th.model": "Model",
-      "role.th.gold": "Reads gold labels?",
       "role.th.use": "Role in this report",
       "role.segmenter": "Segmenter",
-      "role.no": "No",
-      "role.segmenter.use": "Produces predicted temporal boundaries",
+      "role.segmenter.use": "Predicts segment time boundaries",
       "role.captioner": "Caption generator",
-      "role.captioner.use": "Generates candidate semantic labels",
+      "role.captioner.use": "Writes candidate descriptions per segment",
       "role.selector": "Candidate selector",
-      "role.selector.use": "Chooses the final label from candidates",
-      "role.judge": "Primary evaluation judge",
-      "role.gold_label": "Reads gold labels only for offline scoring",
-      "role.judge.use": "Computes Label Acc and Semantic E2E F1",
-      "world.h3.gepa": "Meaning of GEPA-derived prompt in this report",
-      "world.gepa.1": "<strong>GEPA itself</strong>: a reflective prompt-evolution method<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>. Macrodata used GEPA to search segmentation prompts on a separate validation set. We do not run GEPA at inference time.",
-      "world.gepa.2": "What we reuse is the publicly described completed-event segmentation rules: an English segmentation-rule prompt.",
-      "world.gepa.3": "Thus, “GEPA-derived prompt” below refers only to that rule text; it is not a new model and not a post-processing script.",
-      "world.gepa.4": "Usage: whole-episode contact sheets + GEPA-derived segmentation prompt → one coarse segmentation pass. The rules ask for completed actions, prefer roughly 2–10s segments, and ignore approach, adjustment, and retraction when they do not complete an event.",
+      "role.selector.use": "Picks the final caption from the candidates",
+      "role.judge": "Semantic judge",
+      "role.judge.use": "Computes Label Acc and Semantic E2E F1 offline",
+      "world.h3.gepa": "What \"GEPA-derived prompt\" means here",
+      "world.gepa.1": "<strong>GEPA itself</strong> is a method that rewrites prompts automatically from feedback<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>. Macrodata used it on a separate 15-episode validation set to search for segmentation rules that follow their annotation protocol more closely.",
+      "world.gepa.2": "<strong>What we reuse is the result of that search</strong>: the English segmentation-rule text they published (<code>completed_events_duration_prior_v1</code>) &mdash; cut only completed manipulation events, prefer 2&ndash;10 second segments, and do not give approach, adjustment, or retraction segments of their own.",
+      "world.gepa.3": "<strong>We never re-ran GEPA.</strong> Where the text below says \"GEPA-derived prompt\", it means only that rule text &mdash; not a model, not a post-processing script, just words in the request.",
+      "world.gepa.4": "<strong>How it is used:</strong> whole-episode contact sheets plus that rule text, in a single coarse-segmentation call. Against the older prompt without the rules, it lifts Segment F1 from 0.1230 to 0.1369. The full English text is in the fold under Step 02 of the walkthrough; concepts and implementation are in <a href=\"#app-seg\">Appendix B</a> and the raw file in <a href=\"#app-prompts\">Appendix F</a>.",
       "world.h3.terms": "Recurring terms",
-      "world.term.1": "<strong>Time window</strong>: a contiguous interval on the video timeline (e.g. 84–94s)—not a UI window.",
-      "world.term.2": "<strong>Pass-1 denser cuts (S1)</strong>: increases predicted segment density to improve recall, but may introduce over-segmentation. See <a href=\"#app-seg\">Appendix B</a>.",
-      "world.term.3": "<strong>Pass-2 local refine (S2)</strong>: re-cut once inside a short window near coarse bounds.",
-      "world.term.4": "<strong>No pad-out (pad=0)</strong>: local refinement uses only visual context inside the coarse boundary and does not include neighboring actions outside the window.",
-      "world.term.5": "<strong>Cover full actions (full-cover)</strong>: asks the model to cover completed actions visible in the window while avoiding incomplete approach, adjustment, and retraction fragments.",
-      "world.term.6": "<strong>selector / judge</strong>: the selector picks the final label from candidate labels; the judge is used only for evaluation, deciding whether a predicted label and a gold label describe the same completed action.",
-      "world.term.7": "<strong>HaWoR</strong><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>: hand-motion reconstruction from egocentric video, used to obtain estimated wrist trajectories and generate wrist-guided crops. It is not sensor ground truth.",
-      "world.term.8": "<strong>Qwen3.6-27B</strong>: primary segmentation model; <strong>Qwen3.5-397B</strong>: candidate caption generator and candidate selector; <strong>Gemini-3.5-Flash</strong>: primary semantic evaluation judge.",
-      "world.callout": "<strong>Easy-to-confuse visual inputs:</strong> contact sheet (timestamped collage for segmentation) ≠ whole-frame temporal collage ≠ neighbor sheets ≠ proxy hand-collage ≠ HaWoR-reconstructed wrist-guided crop.",
+      "world.terms.figcap": "One 40-second episode cut four ways: human reference, whole-episode coarse pass, S1 denser cuts, S2 local refine. The dashed green box is the time window; S2 only re-cuts inside it.",
+      "world.term.1": "<strong>Time window</strong>: a contiguous interval on the video timeline (e.g. 84&ndash;94s) &mdash; not a window in a user interface.",
+      "world.term.2": "<strong>Pass-1 denser cuts (S1)</strong>: raise the cut density so more true boundaries get covered, at the cost of fragmenting segments. See <a href=\"#app-seg\">Appendix B</a>.",
+      "world.term.3": "<strong>Pass-2 local refine (S2)</strong>: re-cut once, inside a short window near a coarse boundary.",
+      "world.term.4": "<strong>No pad-out (pad=0)</strong>: refinement sees only what is inside the window, so neighbouring actions outside it stay out of view.",
+      "world.term.5": "<strong>Cover full actions (full-cover)</strong>: every completed action visible in the window must be cut, without splitting approach, adjustment, or retraction into fragments of their own.",
+      "world.term.6": "<strong>Candidate selector</strong>: picks one final caption from several candidates; used during generation only.",
+      "world.term.7": "<strong>Semantic judge</strong>: used during evaluation only, deciding whether a predicted description and the reference describe the same completed action.",
+      "world.term.8": "<strong>HaWoR</strong><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>: a method that reconstructs hand motion from egocentric video, used to estimate wrist trajectories and crop the hand region. It produces estimates, not sensor ground truth.",
+      "fig.src.segterms": "assets/explain/seg_terms_en.svg",
+      "fig.src.metric": "assets/explain/metric_iou_f1.svg",
+      "fig.src.s2": "assets/explain/s2_no_pad_full_cover.svg",
+      "fig.src.taxonomy": "assets/explain/visual_input_taxonomy.svg",
+      "world.h3.inputs": "Five visual inputs that are easy to confuse",
+      "world.p.inputs": "Contact sheet, temporal collage, neighbor sheet, proxy overlay, and hand crop recur throughout this report, and the differences only become clear in pictures. Below is one and the same moment &mdash; homer_4, 22.9&ndash;26.8s, \"open the nightstand drawer\" &mdash; rendered as each of the five inputs, with the pipeline\u2019s own parameters.",
+      "world.zoo.raw": "<strong>raw frames</strong>: three frames sampled uniformly inside the segment and submitted as three <em>separate</em> images. The default input for fixed-boundary labeling, and the most accurate one in this report (55.7%).",
+      "world.zoo.collage": "<strong>temporal collage</strong>: the same frames, tiled into a <em>single</em> image. Cheaper in tokens, and still shows only the current action.",
+      "world.zoo.contact": "<strong>contact sheet</strong>: one frame every 0.5s, scaled to 224&times;144, 20 tiles per sheet, a <em>yellow timestamp</em> in each tile corner, about 10 seconds per sheet. This is the segmentation input and the single change that bought the most in this report.",
+      "world.zoo.neighbor": "<strong>neighbor sheet</strong>: previous (grey bar), current (green bar), and next (grey bar) segment handed over together. More context, but the model often writes the neighbouring action into the current description.",
+      "world.zoo.proxy": "<strong>proxy overlay and hand crop</strong>: on the left a <em>fixed</em> box below frame centre (a heuristic guess, not hand detection); on the right the crop actually sent to the model. Crops that really follow HaWoR wrist trajectories are in <a href=\"#app-visual\">Appendix E</a>.",
+      "world.zoo.note": "These five are re-rendered with the pipeline parameters to show the difference itself. In the fixed-boundary labeling experiments, all but the contact sheet (which is only used for segmentation) score below raw; numbers are in <a href=\"#story\">&sect;6.2</a>.",
       "metrics.h2": "1. How we evaluate the pipeline",
       "eval.lead": "Comparing annotation designs needs a public, reproducible benchmark shaped like our own task &mdash; one that scores both where the cuts land and what the sentences say. We use <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">WGO-Bench</a><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-wgo\">1</a></sup>.",
       "eval.h3.bench": "WGO-Bench and the HomER subset",
@@ -414,8 +440,11 @@
       "metrics.li1": "<strong>Segment F1</strong>: measures temporal boundary quality only; a predicted segment can form a one-to-one match with a reference segment when temporal IoU is at least 0.75.",
       "metrics.li2": "<strong>Fixed-boundary Label Acc</strong>: uses reference time boundaries and evaluates only whether the predicted description expresses the same completed action.",
       "metrics.li3": "<strong>Semantic E2E F1</strong>: first performs temporal matching, then judges the label for matched pairs; a prediction is correct only when both time and semantics are correct.",
-      "metrics.toy": "Simplified example (matching the scorer logic):",
-      "metrics.figcap": "This figure shows how IoU first checks whether pred/gold time intervals overlap enough, then match counts become precision, recall, and F1.",
+      "metrics.toy": "A small synthetic example, walking Segment F1 end to end.",
+      "metrics.figcap": "Scoring has two steps: temporal IoU first decides whether a predicted segment overlaps a reference segment enough, then the number of successful matches gives precision, recall, and F1.",
+      "toy.lane.gold": "Reference (human)",
+      "toy.lane.pred": "Prediction (after outer snap)",
+      "toy.lane.sum": "{n} matches · F1 ≈ {f1}",
       "legend.gold": "Gold / human annotation",
       "legend.pred": "Pred / model prediction",
       "legend.coarse": "Whole-episode coarse",
@@ -517,10 +546,10 @@
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "Direct comparison to the full-100 0.306 headline",
       "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out implementation details and metric definitions. Contents: <a href=\"#app-metrics\">A metrics</a> · <a href=\"#app-seg\">B segmentation concepts</a> · <a href=\"#app-e2e\">C label/E2E terms</a> · <a href=\"#app-prod\">D production</a> · <a href=\"#app-visual\">E visuals</a> · <a href=\"#app-prompts\">F prompts</a> · <a href=\"#app-cost\">G cost</a> · <a href=\"#audit\">H validity</a>.",
-      "metrics.toy.g": "Gold: G0[0,3], G1[3,6], G2[6,10] · Pred: P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5]",
-      "metrics.toy.1": "Outer snap: P0.start→0, P3.end→10",
-      "metrics.toy.2": "IoU: P0–G0≈0.933, P1–G1≈0.781",
-      "metrics.toy.3": "n_match=2 → P=0.50, R≈0.67, F1≈0.571",
+      "metrics.toy.g": "Reference (gold): G0[0,3], G1[3,6], G2[6,10]. Prediction (pred): P0[0.5,2.8], P1[2.8,5.5], P2[5.5,8], P3[8,9.5].",
+      "metrics.toy.1": "First snap the outer ends to the episode bounds, so a few uncut frames at the start or end do not decide the match: P0.start goes to 0, P3.end goes to 10.",
+      "metrics.toy.2": "Compute temporal IoU (intersection / union) pairwise; only ≥0.75 counts as a match: P0–G0≈0.933 and P1–G1≈0.781 pass, while P2 and P3 clear the threshold against no reference segment.",
+      "metrics.toy.3": "Two matches → precision = 2/4 = 0.50, recall = 2/3 ≈ 0.67, F1 ≈ 0.571.",
       "story.chart.label": "Label accuracy",
       "story.chart.e2e": "E2E F1",
       "walk.s0.hint": "Full-episode preview below. In Step 06, click a timeline bar or table row to play just that clip with its annotation.",
@@ -539,6 +568,7 @@
       "hero.grid.aria": "Egocentric human subtask video wall",
       "nav.brand": "EgoANT",
       "references.h2": "References",
+      "references.pi05": "Physical Intelligence, Black, Kevin, Brown, Noah, Darpinian, James, Dhabalia, Karan, Driess, Danny, et al. (2025). <em>&pi;<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization</em>. arXiv. <a href=\"https://arxiv.org/abs/2504.16054\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2504.16054</a>",
       "references.wgo": "Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href=\"https://huggingface.co/datasets/macrodata/WGO-Bench\" target=\"_blank\" rel=\"noopener\">https://huggingface.co/datasets/macrodata/WGO-Bench</a>",
       "references.macrodata": "Macrodata Labs. (2026). <em>Segmenting Robot Video into Actionable Subtasks</em>. Macrodata Labs. <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">https://macrodata.co/blog/annotating-robot-video-subtasks</a>",
       "references.gepa": "Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href=\"https://arxiv.org/abs/2507.19457\" target=\"_blank\" rel=\"noopener\">https://arxiv.org/abs/2507.19457</a>",
@@ -558,13 +588,13 @@
       <h2>8. 附录：概念、公式、实现与成本记账</h2>
       <p class="plain">正文讲“试了什么、分数怎么变”；附录补清楚公式、术语和实现边界。目录：
         <a href="#app-metrics">A 得分</a> · <a href="#app-seg">B 分段概念</a> ·
-        <a href="#app-e2e">C 标注/E2E 术语</a> · <a href="#app-prod">D 生产管线</a> ·
+        <a href="#app-e2e">C 标注/E2E 术语</a> · <a href="#app-prod">D 腕速基线</a> ·
         <a href="#app-visual">E 视觉输入</a> · <a href="#app-prompts">F Prompt</a> ·
         <a href="#app-cost">G 成本</a> · <a href="#audit">H 效度</a>。</p>
 
       <h3 id="app-metrics">A. 得分方法：直觉 + 公式</h3>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1.svg" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg" alt="Temporal IoU and F1 scoring diagram" />
       <figcaption>IoU 衡量时间段重叠；<code>m</code> 是通过 IoU 阈值的一对一时间匹配数。</figcaption>
       </figure>
       <h4>A.1 Segment F1（只评时间切分）</h4>
@@ -587,7 +617,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
 
       <h3 id="app-seg">B. 分段概念卡</h3>
       <figure class="figure">
-        <img src="assets/explain/s2_no_pad_full_cover.svg" alt="S2 no-pad full-cover local refinement diagram" />
+        <img src="assets/explain/s2_no_pad_full_cover_zh.svg" alt="S2 no-pad full-cover local refinement diagram" />
         <figcaption>S2 的核心不是“再看更多”，而是在粗分窗口内重切，并要求覆盖窗口内完整完成事件。</figcaption>
       </figure>
       <article class="concept-card">
@@ -617,7 +647,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似能提供上下文，但在 Qwen 上常把邻段动作写进当前句，因此降低标注准确率。</p></article>
       <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；Gemini judge 下最高观察 E2E F1 为 0.1542。</p></article>
 
-      <h3 id="app-prod">D. EgoANT 生产原管线（澄清 VITRA）</h3>
+      <h3 id="app-prod">D. EgoANT 的腕速基线管线（并澄清与 VITRA 的关系）</h3>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → wrist 轨迹</div></div>
         <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">腕速滤波</div></div>
@@ -626,14 +656,14 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge → rewrite</div></div>
       </div>
       <figure class="figure">
-        <img src="assets/explain/wrist_speed_oversegmentation.svg" alt="Wrist-speed minima segmentation schematic" />
-        <figcaption>生产默认管线先用 HaWoR 重建左右手腕轨迹，再对腕速做平滑并在速度低谷切段。这个信号很有用，但停顿、微调、放手和收回也会形成低谷，所以容易把一个完成任务切成太多小段。</figcaption>
+        <img src="assets/explain/wrist_speed_oversegmentation_zh.svg" alt="Wrist-speed minima segmentation schematic" />
+        <figcaption>这一版管线先用 HaWoR 重建左右手腕轨迹，再对腕速做平滑并在速度低谷切段。这个信号很有用，但停顿、微调、放手和收回也会形成低谷，所以容易把一个完成任务切成太多小段。</figcaption>
       </figure>
-      <p>VITRA 启发的是“先手部/运动信号，再 caption”的问题设定；本系统实际用 HaWoR wrist-speed 作为生产切段信号，不把 VITRA 当作后端模型。它的主要失败模式是<strong>过分割</strong>：动作中途的犹豫或微调在速度曲线上也像边界，后续 merge judge 虽可合并一部分，但在 WGO 的 IoU 口径下仍会拉低 Segment F1。</p>
+      <p>VITRA 启发的是“先手部/运动信号，再 caption”的问题设定；本系统在这一版里用 HaWoR 腕速作为切段信号，不把 VITRA 当作后端模型。它的主要失败模式是<strong>过分割</strong>：动作中途的犹豫或微调在速度曲线上也像边界，后续 merge judge 虽可合并一部分，但在 WGO 的 IoU 口径下仍会拉低 Segment F1。</p>
 
       <h3 id="app-visual">E. 视觉输入对照</h3>
       <figure class="figure">
-        <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
+        <img src="assets/explain/visual_input_taxonomy_zh.svg" alt="Visual input taxonomy" />
         <figcaption>这些视觉输入的作用不同：contact sheet 让模型看完整时间轴，用于找边界；raw、proxy overlay、hand-crop、collage 则是在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
       </figure>
       <table><thead><tr><th>名称</th><th>模型看见什么</th><th>典型用途</th><th>HomER 上</th></tr></thead><tbody>
@@ -668,7 +698,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <h2>8. Appendix: concepts, formulas, implementation, and cost accounting</h2>
       <p class="plain">The body explains what we tried and how scores moved. This appendix spells out formulas, terminology, and implementation boundaries. Contents:
         <a href="#app-metrics">A metrics</a> · <a href="#app-seg">B segmentation concepts</a> ·
-        <a href="#app-e2e">C labeling/E2E terms</a> · <a href="#app-prod">D production pipeline</a> ·
+        <a href="#app-e2e">C labeling/E2E terms</a> · <a href="#app-prod">D wrist-speed baseline</a> ·
         <a href="#app-visual">E visual inputs</a> · <a href="#app-prompts">F prompts</a> ·
         <a href="#app-cost">G cost</a> · <a href="#audit">H validity</a>.</p>
 
@@ -712,7 +742,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, reducing Qwen labeling accuracy on HomER.</p></article>
       <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best Gemini-judged E2E F1 is 0.1542.</p></article>
 
-      <h3 id="app-prod">D. EgoANT production pipeline (VITRA clarification)</h3>
+      <h3 id="app-prod">D. The EgoANT wrist-speed baseline (and how it relates to VITRA)</h3>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">hand reconstruction to wrist tracks</div></div>
         <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">filter wrist speed</div></div>
@@ -722,9 +752,9 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       </div>
       <figure class="figure">
         <img src="assets/explain/wrist_speed_oversegmentation.svg" alt="Wrist-speed minima segmentation schematic" />
-        <figcaption>The production default first reconstructs left/right wrist tracks with HaWoR, smooths wrist speed, and cuts at speed valleys. The signal is useful, but pauses, adjustments, release, and hand retraction can also look like valleys, creating too many segments.</figcaption>
+        <figcaption>This version of the pipeline first reconstructs left/right wrist tracks with HaWoR, smooths wrist speed, and cuts at speed valleys. The signal is useful, but pauses, adjustments, release, and hand retraction can also look like valleys, creating too many segments.</figcaption>
       </figure>
-      <p>VITRA motivates the “motion/hand signal first, caption second” framing. EgoANT uses HaWoR wrist-speed signals for production segmentation; it does not use VITRA as a backend model. Its main failure mode is <strong>over-segmentation</strong>: hesitation and small adjustments often look like boundaries in the speed curve. A later merge judge can repair some of this, but the WGO IoU metric still penalizes fragmented boundaries.</p>
+      <p>VITRA motivates the “motion/hand signal first, caption second” framing. EgoANT used HaWoR wrist-speed signals for this first segmentation version; it does not use VITRA as a backend model. Its main failure mode is <strong>over-segmentation</strong>: hesitation and small adjustments often look like boundaries in the speed curve. A later merge judge can repair some of this, but the WGO IoU metric still penalizes fragmented boundaries.</p>
 
       <h3 id="app-visual">E. Visual input comparison</h3>
       <figure class="figure">
@@ -774,15 +804,32 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
     return I18N.zh[key] || key;
   }
 
+  // Number references by first appearance in the body, then reorder the
+  // reference list to match, so [1] is whatever the text cites first.
   function renumberCitations() {
+    const list = document.querySelector("#references .ref-list");
+    if (!list) return;
+    const items = new Map();
+    list.querySelectorAll(":scope > li[id]").forEach((li) => items.set(li.id, li));
+
     const order = {};
-    document.querySelectorAll("#references .ref-list > li[id]").forEach((li, i) => {
-      order[li.id] = i + 1;
-    });
+    let n = 0;
     document.querySelectorAll("a.cite-ref[href^='#ref-']").forEach((a) => {
-      const n = order[a.getAttribute("href").slice(1)];
-      if (n) a.textContent = String(n);
+      if (list.contains(a)) return;
+      const id = a.getAttribute("href").slice(1);
+      if (!items.has(id) || order[id]) return;
+      order[id] = ++n;
     });
+    // Entries never cited in the body keep their relative order at the end.
+    items.forEach((li, id) => { if (!order[id]) order[id] = ++n; });
+
+    document.querySelectorAll("a.cite-ref[href^='#ref-']").forEach((a) => {
+      const num = order[a.getAttribute("href").slice(1)];
+      if (num) a.textContent = String(num);
+    });
+    Array.from(items.entries())
+      .sort((a, b) => order[a[0]] - order[b[0]])
+      .forEach((entry) => list.appendChild(entry[1]));
   }
 
   function applyI18n(lang) {
@@ -803,6 +850,13 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
       const key = el.getAttribute("data-i18n-aria");
       if (!key) return;
       el.setAttribute("aria-label", t(key, lang));
+    });
+    // Diagrams carry their own text, so they ship as one file per language.
+    document.querySelectorAll("[data-i18n-src]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-src");
+      if (!key) return;
+      const src = t(key, lang);
+      if (src && src !== key && el.getAttribute("src") !== src) el.setAttribute("src", src);
     });
     const banner = document.querySelector("#en-body-note");
     if (banner) {
