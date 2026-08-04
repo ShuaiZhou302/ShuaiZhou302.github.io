@@ -383,6 +383,29 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   color: var(--accent);
 }
 
+#evaluate p,
+#evaluate li {
+  text-wrap: pretty;
+}
+.metric-snap {
+  margin: 1.1rem 0 1.4rem;
+}
+.metric-example-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+.metric-example-grid p {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+}
+@media (max-width: 760px) {
+  .metric-example-grid { grid-template-columns: 1fr; }
+}
+
 sup.cite {
   font-size: 0.68em;
   line-height: 0;

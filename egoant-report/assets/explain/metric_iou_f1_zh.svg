@@ -11,12 +11,12 @@
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
   <text x="42" y="48" class="txt label ink">评分示例：先做时间配对，再算精确率与召回率</text>
-  <text x="42" y="78" class="txt muted">IoU = 交集 / 并集；一个预测段与一个参考段的 IoU ≥ 0.75 时算配对成功。</text>
+  <text x="42" y="78" class="txt muted">IoU = 两段重叠的时长 ÷ 两段合起来覆盖的总时长；达到 0.75 才能配对。</text>
 
   <line x1="150" y1="132" x2="1030" y2="132" class="axis"/>
   <line x1="150" y1="244" x2="1030" y2="244" class="axis"/>
   <text x="54" y="138" class="txt label ink">参考</text>
-  <text x="54" y="250" class="txt label ink">预测</text>
+  <text x="34" y="250" class="txt label ink">预测（吸附后）</text>
   <g class="mono small muted">
     <text x="146" y="112">0s</text>
     <text x="410" y="112">3s</text>

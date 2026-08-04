@@ -11,12 +11,12 @@
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
   <text x="42" y="48" class="txt label ink">Toy segment scoring: match time first, then count precision and recall</text>
-  <text x="42" y="78" class="txt muted">IoU = overlap / union. One predicted segment can match one gold segment if IoU >= 0.75.</text>
+  <text x="42" y="78" class="txt muted">IoU = overlap duration / total duration covered by either span. A match requires IoU >= 0.75.</text>
 
   <line x1="150" y1="132" x2="1030" y2="132" class="axis"/>
   <line x1="150" y1="244" x2="1030" y2="244" class="axis"/>
   <text x="54" y="138" class="txt label ink">Gold</text>
-  <text x="54" y="250" class="txt label ink">Pred</text>
+  <text x="34" y="250" class="txt label ink">Pred (snapped)</text>
   <g class="mono small muted">
     <text x="146" y="112">0s</text>
     <text x="410" y="112">3s</text>
