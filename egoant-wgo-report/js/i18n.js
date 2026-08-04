@@ -3,7 +3,7 @@
   const I18N = {
     zh: {
       "nav.intro": "导读",
-      "nav.tldr": "结论速览",
+      "nav.tldr": "TLDR",
       "nav.world": "相关工作",
       "nav.evaluate": "如何评估",
       "nav.contact": "Contact sheet",
@@ -31,7 +31,7 @@
       "intro.hard": "自动完成这两项任务并不容易。第一视角画面随头部运动，手部经常遮挡操作对象；相邻动作之间缺少清晰停顿，细粒度操作又可能连续发生。人工逐段标注难以扩展至千小时规模，因此需要<strong>可审计、可复现且成本可控的自动标注流程</strong>。",
       "intro.p3": "EgoANT 是面向第一视角人类操作视频的自动标注流程：先将长视频划分为动作级片段，再为每个片段生成简洁的操作描述。在 HomER 的 25 个视频、470 个参考片段上，最佳分段配置的 Segment F1 为 <strong>0.2031</strong>；在固定参考边界上，语义标注的 Label Acc 为 <strong>55.7%</strong>；仅以视频为输入的最佳端到端配置取得 Semantic E2E F1 <strong>0.1542</strong>。这些结果表明，完全基于开放权重视觉语言模型构建可复现的第一视角子任务标注流程是可行的。",
       "intro.scope": "<strong>评测范围：</strong>本文所有实验结果与配置建议均基于 HomER 的 25 个视频、470 个参考片段。Macrodata 公布的完整 WGO-Bench Segment F1 约为 0.306，覆盖约 100 个 episode，不能与本文结果直接比较。其 HomER-only Gemini 结果约为 <strong>0.227</strong>，数据范围与本文一致，但仍属于外部报告值，并非在本文环境中复现的受控对照。",
-      "tldr.h2": "结论速览（TL;DR）",
+      "tldr.h2": "TLDR",
       "tldr.scope": "以下结论仅适用于本文的实验设置：评测集为 WGO-Bench 的第一视角人类子集 HomER，共 25 个视频、470 个人工标注片段；生成侧使用开放权重的 Qwen 视觉语言模型，其中 Qwen3.6-27B 负责分段，Qwen3.5-397B 负责生成和筛选候选描述；Gemini-3.5-Flash 仅作为离线语义评判模型。三类指标的定义见 <a href=\"#evaluate\">§1</a>。数据范围或模型版本发生变化时，本文观察到的相对关系未必保持不变。",
       "tldr.pt1": "<strong>在已测试的配置中，模型版本带来的影响大于视觉输入增强。</strong>在固定人工边界、仅评估语义描述的实验中，Qwen3.6-27B 使用均匀抽取的原始帧取得最高 Label Acc（55.7%）；同一模型使用 temporal collage 或 proxy overlay 时分别为 52.8% 和 50.6%。在分段实验中，保持 contact-sheet 输入与 prompt 不变，Qwen3.6-27B 的 Segment F1 为 0.1278，而 Qwen3.5-397B 为 0.0952。其他复杂输入的结果介于 39.2%–50.9%，但其中部分实验同时更换了模型，因此只能作为补充观察。总体而言，本组实验更支持优先选择能力更合适的模型，而不是依赖额外视觉提示弥补模型差异。",
       "tldr.pt2": "<strong>在模型固定后，视频表示与分段策略仍可显著改善边界质量。</strong>将整段视频转换为带时间戳的图片网格（contact sheet），先进行整集粗分，再在粗边界附近局部精修，使 Segment F1 从腕部速度规则基线的 0.0953 提升至 <strong>0.2031</strong>。Macrodata 公布的 HomER-only Gemini 参考值为 0.227，两者相差 0.024；这一数字可用于说明当前结果所处的量级，但由于模型栈与实验环境不同，不应视为严格的同条件比较。",
@@ -294,7 +294,7 @@
     },
     en: {
       "nav.intro": "Intro",
-      "nav.tldr": "Key results",
+      "nav.tldr": "TLDR",
       "nav.world": "Related work",
       "nav.evaluate": "Evaluation",
       "nav.contact": "Contact sheet",
@@ -322,7 +322,7 @@
       "intro.hard": "Automating both outputs is difficult. Egocentric footage moves with the wearer's head, hands often occlude the manipulated object, adjacent actions lack clean pauses, and fine-grained operations may unfold continuously. Manual segment-level annotation does not readily scale to thousand-hour corpora, motivating an <strong>auditable, reproducible, and cost-controlled annotation pipeline</strong>.",
       "intro.p3": "EgoANT is an automatic annotation pipeline for egocentric human manipulation video: it first divides a long video into action-level segments, then generates a concise operation description for each segment. On HomER's 25 videos and 470 reference segments, the best segmentation configuration reaches Segment F1 <strong>0.2031</strong>; semantic labeling on fixed reference boundaries reaches Label Acc <strong>55.7%</strong>; and the best video-only end-to-end configuration reaches Semantic E2E F1 <strong>0.1542</strong>. These results demonstrate the feasibility of a reproducible first-person subtask annotation pipeline built entirely on open-weight vision-language models.",
       "intro.scope": "<strong>Evaluation scope:</strong> all results and configuration recommendations in this report are based on HomER's 25 videos and 470 reference segments. Macrodata's full WGO-Bench Segment F1 of approximately 0.306 covers roughly 100 episodes and is not directly comparable. Its HomER-only Gemini result of approximately <strong>0.227</strong> uses the same data scope, but remains an externally reported reference rather than a controlled reproduction in this study.",
-      "tldr.h2": "Key results (TL;DR)",
+      "tldr.h2": "TLDR",
       "tldr.scope": "The conclusions below apply only to this study's setting: HomER, the egocentric human subset of WGO-Bench, with 25 videos and 470 human-annotated segments. Generation uses open-weight Qwen vision-language models: Qwen3.6-27B for segmentation and Qwen3.5-397B for candidate generation and selection. Gemini-3.5-Flash serves only as the offline semantic judge. The three metrics are defined in <a href=\"#evaluate\">&sect;1</a>. The observed ordering may not persist under a different dataset or model generation.",
       "tldr.pt1": "<strong>Across the tested configurations, model generation matters more than visual-input augmentation.</strong> With human boundaries fixed and only semantic descriptions evaluated, Qwen3.6-27B reaches the highest Label Acc (55.7%) with uniformly sampled raw frames; temporal collage and proxy overlay with the same model reach 52.8% and 50.6%. In segmentation, holding the contact-sheet input and prompt constant gives Segment F1 0.1278 for Qwen3.6-27B and 0.0952 for Qwen3.5-397B. Other richer inputs score between 39.2% and 50.9%, although some also change the model and should be treated as supporting observations rather than controlled comparisons. Within these experiments, choosing the more suitable model appears more effective than compensating with additional visual cues.",
       "tldr.pt2": "<strong>Once the model is fixed, video representation and segmentation strategy still improve boundary quality substantially.</strong> Converting each episode into timestamped contact sheets, making a coarse whole-episode pass, and then refining local windows raises Segment F1 from 0.0953 for the wrist-speed rule baseline to <strong>0.2031</strong>. Macrodata reports a HomER-only Gemini reference of 0.227, a difference of 0.024. This locates the result at a similar scale, but the different model stacks and experimental environments make it an external reference rather than a controlled head-to-head comparison.",
