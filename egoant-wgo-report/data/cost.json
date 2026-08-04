@@ -63,6 +63,29 @@
     "judge_text_tokens": 400,
     "status": "public_engineering_estimate"
   },
+  "pricing_assumptions": {
+    "currency": "USD",
+    "qwen3_6_27b_per_million_tokens": {
+      "input": 0.422,
+      "output": 2.532
+    },
+    "qwen3_5_397b_a17b_per_million_tokens": {
+      "input": 0.1644,
+      "output": 0.9864
+    },
+    "web_search_per_request": 0.000548,
+    "web_search_requests": 0,
+    "completion_tokens_per_call": {
+      "segmentation": [200, 600],
+      "labeling": [30, 100],
+      "selector": [50, 150]
+    },
+    "excludes": [
+      "offline Gemini-3.5-Flash judge",
+      "video preprocessing and storage"
+    ],
+    "note": "Input-token ranges follow the existing image-token estimate. Completion-token ranges are explicit scenario assumptions because measured WGO completion usage is unavailable."
+  },
   "recipes": {
     "raw_only": {
       "label": "S2 边界 + 单路 raw 标注",
@@ -98,6 +121,13 @@
         "total_high": 3446000,
         "per_video_minute_low": 51956,
         "per_video_minute_high": 86064
+      },
+      "usd_estimate": {
+        "kind": "pricing_scenario",
+        "total_low": 0.5602,
+        "total_high": 1.0624,
+        "per_video_hour_low": 0.84,
+        "per_video_hour_high": 1.59
       }
     },
     "selector": {
@@ -134,6 +164,13 @@
         "total_high": 11577200,
         "per_video_minute_low": 174263,
         "per_video_minute_high": 289141
+      },
+      "usd_estimate": {
+        "kind": "pricing_scenario",
+        "total_low": 1.4078,
+        "total_high": 2.5359,
+        "per_video_hour_low": 2.11,
+        "per_video_hour_high": 3.8
       }
     }
   },

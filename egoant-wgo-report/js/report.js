@@ -667,6 +667,13 @@
   function perMin(t) {
     return `${fmtInt(t.per_video_minute_low)} – ${fmtInt(t.per_video_minute_high)}`;
   }
+  function usdRange(u, perHour) {
+    if (!u) return "—";
+    const low = perHour ? u.per_video_hour_low : u.total_low;
+    const high = perHour ? u.per_video_hour_high : u.total_high;
+    if (low == null || high == null) return "—";
+    return `$${Number(low).toFixed(2)} – $${Number(high).toFixed(2)}`;
+  }
 
   function costCalls(recipe) {
     return recipe.api_calls || recipe.api_calls_estimate || {};
@@ -727,6 +734,8 @@
       [i18n("cost.row.api_tot"), fmtInt(rc.total || 0), fmtInt(sc.total || 0)],
       [i18n("cost.row.tok"), tokRange(rt), tokRange(st)],
       [i18n("cost.row.tok_min"), perMin(rt), perMin(st)],
+      [i18n("cost.row.usd"), usdRange(raw.usd_estimate, false), usdRange(sel.usd_estimate, false)],
+      [i18n("cost.row.usd_hour"), usdRange(raw.usd_estimate, true), usdRange(sel.usd_estimate, true)],
       [i18n("cost.row.e2e"), fmtF1(raw.e2e_f1), fmtF1(sel.e2e_f1)],
     ];
     body.innerHTML = rows.map((r) => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join("");
