@@ -338,7 +338,11 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   font-size: 2rem; margin: 0.25rem 0;
   letter-spacing: -0.03em;
 }
-.tldr .s { font-size: 0.88rem; color: var(--muted); }
+.tldr .s {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-wrap: pretty;
+}
 .tldr .config {
   margin-top: 0.65rem;
   padding-top: 0.65rem;
@@ -346,6 +350,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   font-size: 0.8rem;
   line-height: 1.45;
   color: var(--ink);
+  text-wrap: pretty;
 }
 
 .tldr-points {
