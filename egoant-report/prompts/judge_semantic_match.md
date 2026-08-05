@@ -1,6 +1,17 @@
-# Semantic judge
+# WGO Gemini Semantic Judge Prompt
 
-This is the rubric used by `scripts/wgo_gemini_rescore.py` for the Gemini-3.5-Flash rescore. It mirrors the public WGO-Bench / Macrodata label judge rubric.
+Source of truth: `JUDGE_RUBRIC` in `scripts/wgo_gemini_rescore.py`.
+
+This is the rubric used for the Gemini-3.5-Flash rescore of Label Acc and
+Semantic E2E F1. It mirrors the public WGO-Bench / Macrodata label judge rubric.
+
+## Image Inputs
+
+No images are sent to the judge. The judge receives text only: the gold label,
+the predicted label, and the episode instruction. Temporal matching is computed
+separately before this prompt is used.
+
+## User Prompt Template
 
 ```text
 You are judging whether a predicted subtask label matches a gold subtask label.

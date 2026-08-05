@@ -1,22 +1,32 @@
-# S2 full-cover local refine
+# WGO S2 Full-Cover Refinement Prompt
 
-You are refining subtask boundaries inside ONE local time window of an egocentric video.
+Source of truth: this prompt was used by the V5.1 HomER S2 local-refinement
+run. The local refinement job receives a coarse segment hypothesis and
+timestamped contact sheets for only that local window.
 
-You are given:
-1) Timestamped contact-sheet tiles for this window only (read the yellow timestamps).
-2) A coarse segment hint: [{coarse_start_sec}, {coarse_end_sec}] with optional coarse label.
+## System Prompt
 
-Task:
-- Re-segment ONLY events that fall inside this window.
-- Follow completed-events rules: completed manipulations only; do not split approach/adjust/retreat without world-state change; do not merge distinct pick/place/open/close events.
-- Prefer segments roughly 2-10s unless a fast atomic event is clearly shorter.
-- Cover the completed events inside this window (full-cover); do not leave large unexplained gaps when a completed manipulation is visible.
-- Output JSON only:
-{"segments":[{"start_sec":0.0,"end_sec":1.0,"subtask":"..."}]}
+```text
+You segment egocentric manipulation videos into completed atomic events. Reply with ONLY valid JSON.
+```
 
-Rules:
-- start_sec/end_sec must use visible tile timestamps and stay within the window.
-- Do not invent boundaries only because the contact sheet starts or ends.
-- If the coarse hint already matches one completed event, you may keep a single segment.
-- If the coarse hint merges multiple completed events, split them.
-- Ignore wording quality; prioritize correct temporal boundaries.
+## Image Inputs
+
+The request appends one or more timestamped contact sheets after the user text.
+The sheets cover only the current local window. Each tile is ordered by time and
+contains a visible timestamp in seconds.
+
+## User Prompt Template
+
+```text
+These contact sheets cover a SHORT local window of an egocentric manipulation video.
+Each tile is sampled every {sample_sec:.2f}s. Yellow text is the timestamp in seconds.
+Visible time range: [{t0:.2f}, {t1:.2f}] seconds.
+Episode instruction (context only): {instruction}
+Coarse hypothesis for this window (may be wrong on boundaries): {coarse_hint}
+
+Re-segment ONLY this local window into completed atomic events.
+Prefer shorter events (1-5s). Split if multiple state changes are visible.
+Return ONLY JSON:
+{{"segments":[{{"start_sec":0.0,"end_sec":1.0,"subtask":"..."}}]}}
+```
