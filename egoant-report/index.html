@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260804-4" />
+  <link rel="stylesheet" href="css/report.css?v=20260805-1" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -145,11 +145,10 @@
       <h3 data-i18n="eval.h3.bench">WGO-Bench 与 HomER 子集</h3>
       <p data-i18n-html data-i18n="eval.p.bench">
         WGO-Bench（What's Going On Benchmark）由 Macrodata 随其公开博客一同发布<sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup>，把「长视频 → 动作级片段 + 一句话描述」定义成一个可以打分的公开任务。它包含约 100 个 episode，每个 episode 提供人工标注的子任务时间边界，以及每段对应的一句短描述。
-        其中 <strong>HomER</strong> 是它的第一视角人类操作子集：画面随头动晃、手常挡住物体、动作连续且细，通常比第三人称桌面视频更难。
-        本报告的所有分数固定在 <strong>HomER 的 25 个视频 / 470 个参考片段</strong>上。
+        其中 <strong>HomER</strong> 是第一视角人类操作子集；本报告的所有分数固定在 <strong>HomER 的 25 个视频 / 470 个参考片段</strong>上。
       </p>
 
-      <h3 data-i18n="eval.h3.metrics">三类分数分别在考什么</h3>
+      <h3 data-i18n="eval.h3.metrics">三种分数分别测试什么能力</h3>
       <p class="plain" data-i18n-html data-i18n="metrics.lead">三类分数依次回答三个问题：<strong>边界切得是否准确</strong>、<strong>边界给定后描述是否正确</strong>，以及<strong>从原视频出发能否同时完成分段与描述</strong>。公式汇总见 <a href="#app-metrics">附录 A</a>。</p>
       <ol>
         <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1（分段得分）</strong>：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
@@ -159,21 +158,21 @@
       <p data-i18n="metrics.toy">下面用一个 10 秒视频说明时间匹配。人工将视频分为 3 段，模型预测了 4 段。</p>
       <p data-i18n="metrics.toy.g">参考片段（gold）：G0[0,3]、G1[3,6]、G2[6,10]；模型预测（pred）：P0[0.5,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,9.5]。</p>
       <div class="callout metric-snap" data-i18n-html data-i18n="metrics.snap">
-        <strong>首尾吸附（outer snap）只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点、片段长度关系和中间空隙均不移动、不缩放，也不会被强行铺满。
+        <strong>首尾吸附（outer snap）只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260804-4" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260805-1" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <ol>
         <li data-i18n="metrics.toy.1">吸附后，预测片段变为 P0[0,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,10]。只有 P0 和 P3 的外侧端点发生变化。</li>
         <li data-i18n="metrics.toy.2">计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU≈0.933；P1–G1 的 IoU≈0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。</li>
-        <li data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测中有 2 个匹配，精确率为 2/4=0.50；3 个参考片段中有 2 个被找回，召回率为 2/3≈0.67；Segment F1≈0.571。</li>
+        <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，<strong>预测命中率（precision）</strong>为 2/4=0.50；3 个人工片段中有 2 个被找回，<strong>参考找回率（recall）</strong>为 2/3≈0.67；Segment F1≈0.571。</li>
       </ol>
       <h3 data-i18n="metrics.h3.remaining">同一个例子如何得到另外两类分数</h3>
       <div class="metric-example-grid">
-        <p data-i18n-html data-i18n="metrics.label.example"><strong>固定分段标注得分：</strong>不使用上面的 4 个预测边界，而是直接采用 G0、G1、G2 的人工边界。假设模型为这 3 段生成的描述中有 2 条语义正确，Label Acc 就是 2/3≈66.7%。</p>
-        <p data-i18n-html data-i18n="metrics.e2e.example"><strong>端到端整流程得分：</strong>保留模型预测的 4 个片段。时间匹配得到 P0–G0 与 P1–G1 后，再检查两条预测描述；若只有 P0–G0 的描述正确，则最终只有 1 个正确结果。精确率为 1/4，召回率为 1/3，E2E F1=2/(4+3)≈0.286。</p>
+        <p data-i18n-html data-i18n="metrics.label.example"><strong>固定分段标注得分：</strong>直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge 方式</a>：将人工描述和模型描述交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数为 2，<strong>Label Acc = 正确描述数 / 人工分段数 = 2/3≈66.7%</strong>。本文实际使用的精简评判 prompt 见 <a href="#app-prompts">附录 F</a>。</p>
+        <p data-i18n-html data-i18n="metrics.e2e.example"><strong>端到端整流程得分：</strong>保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s=1。<strong>预测命中率 = s / 预测分段数 = 1/4</strong>，<strong>参考找回率 = s / 人工分段数 = 1/3</strong>，因此 <strong>E2E F1 = 2s / (预测分段数 + 人工分段数) = 2/(4+3)≈0.286</strong>。</p>
       </div>
     </section>
 
@@ -712,8 +711,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260804-4"></script>
-  <script src="js/report.js?v=20260804-4"></script>
+  <script src="js/i18n.js?v=20260805-1"></script>
+  <script src="js/report.js?v=20260805-1"></script>
   <script src="js/prompts_embed.js"></script>
   <script>
     async function loadPrompt(ids, file) {

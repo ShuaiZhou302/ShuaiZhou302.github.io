@@ -10,7 +10,7 @@
     </style>
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
-  <text x="42" y="48" class="txt label ink">Toy segment scoring: match time first, then count precision and recall</text>
+  <text x="42" y="48" class="txt label ink">Toy segment scoring: match time first, then compute the segment score</text>
   <text x="42" y="78" class="txt muted">IoU = overlap duration / total duration covered by either span. A match requires IoU >= 0.75.</text>
 
   <line x1="150" y1="132" x2="1030" y2="132" class="axis"/>
@@ -42,9 +42,10 @@
   <text x="704" y="198" class="txt small muted">P2/P3 do not pass threshold</text>
 
   <rect x="70" y="320" width="980" height="104" rx="14" class="box"/>
-  <text x="102" y="356" class="mono ink">m = 2 temporal matches</text>
-  <text x="102" y="386" class="mono ink">n_pred = 4, n_gold = 3</text>
-  <text x="438" y="356" class="mono ink">Precision = m / n_pred = 0.50</text>
-  <text x="438" y="386" class="mono ink">Recall = m / n_gold = 0.67</text>
-  <text x="790" y="372" class="mono label ink">F1 = 2PR/(P+R) = 0.571</text>
+  <text x="102" y="356" class="txt ink">Matched segments: <tspan class="mono">m = 2</tspan></text>
+  <text x="102" y="386" class="txt ink">Totals: <tspan class="mono">n</tspan><tspan class="mono" baseline-shift="sub" font-size="11">pred</tspan><tspan class="mono" baseline-shift="baseline"> = 4, n</tspan><tspan class="mono" baseline-shift="sub" font-size="11">gold</tspan><tspan class="mono" baseline-shift="baseline"> = 3</tspan></text>
+  <text x="438" y="356" class="txt ink">Prediction hit rate = <tspan class="mono">m / n</tspan><tspan class="mono" baseline-shift="sub" font-size="11">pred</tspan><tspan class="mono" baseline-shift="baseline"> = 0.50</tspan></text>
+  <text x="438" y="386" class="txt ink">Reference coverage = <tspan class="mono">m / n</tspan><tspan class="mono" baseline-shift="sub" font-size="11">gold</tspan><tspan class="mono" baseline-shift="baseline"> = 0.67</tspan></text>
+  <text x="790" y="356" class="txt label ink">Combined segment score</text>
+  <text x="790" y="386" class="mono label ink">F1 = 2m / (n<tspan baseline-shift="sub" font-size="11">pred</tspan><tspan baseline-shift="baseline"> + n</tspan><tspan baseline-shift="sub" font-size="11">gold</tspan><tspan baseline-shift="baseline">) = 0.571</tspan></text>
 </svg>

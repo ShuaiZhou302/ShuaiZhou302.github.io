@@ -392,7 +392,6 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .metric-example-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.9rem;
 }
 .metric-example-grid p {
@@ -402,10 +401,6 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   border-radius: 12px;
   background: var(--card);
 }
-@media (max-width: 760px) {
-  .metric-example-grid { grid-template-columns: 1fr; }
-}
-
 sup.cite {
   font-size: 0.68em;
   line-height: 0;
