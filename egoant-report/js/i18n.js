@@ -157,7 +157,7 @@
       "metrics.snap": "<strong>首尾吸附（outer snap）只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。",
       "metrics.figcap": "图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。",
       "metrics.h3.remaining": "同一个例子如何得到另外两类分数",
-      "metrics.label.example": "<strong>固定分段标注得分：</strong>直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge 方式</a>：将人工描述和模型描述交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数为 2，<strong>Label Acc = 正确描述数 / 人工分段数 = 2/3≈66.7%</strong>。本文实际使用的精简评判 prompt 见 <a href=\"#app-prompts\">附录 F</a>。",
+      "metrics.label.example": "<strong>固定分段标注得分：</strong>直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数为 2，<strong>Label Acc = 正确描述数 / 人工分段数 = 2/3≈66.7%</strong>。实际评判 prompt 见 <a href=\"#app-prompts\">附录 F</a>。",
       "metrics.e2e.example": "<strong>端到端整流程得分：</strong>保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s=1。<strong>预测命中率 = s / 预测分段数 = 1/4</strong>，<strong>参考找回率 = s / 人工分段数 = 1/3</strong>，因此 <strong>E2E F1 = 2s / (预测分段数 + 人工分段数) = 2/(4+3)≈0.286</strong>。",
       "toy.lane.gold": "参考（人工标注）",
       "toy.lane.pred": "预测（首尾对齐后）",
@@ -456,7 +456,7 @@
       "metrics.snap": "<strong>Outer snap replaces only two outer endpoints.</strong> Before scoring, the earliest predicted start is replaced by the outer start of the human annotation, and the latest predicted end is replaced by its outer end. Here, only P0.start changes from 0.5 to 0 and P3.end from 9.5 to 10. An endpoint outside the annotated range is likewise replaced by the corresponding human outer boundary. All other endpoints and internal gaps remain unchanged; the timeline is neither shifted nor rescaled.",
       "metrics.figcap": "The prediction lane is shown after outer snap. Green segments reach the 0.75 temporal-IoU threshold against a reference segment; gray segments do not.",
       "metrics.h3.remaining": "How the same example produces the other two scores",
-      "metrics.label.example": "<strong>Fixed-boundary Label Acc:</strong> use the human boundaries G0, G1, and G2 directly; the model only generates one description per segment. Following <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata's published LLM-as-judge setup</a>, Gemini-3.5-Flash compares each generated description with the human description and returns <code>match=true/false</code>. If the three results are <code>[true, true, false]</code>, two descriptions are correct, so <strong>Label Acc = correct descriptions / human segments = 2/3≈66.7%</strong>. See <a href=\"#app-prompts\">Appendix F</a> for the shorter judge prompt used in this report.",
+      "metrics.label.example": "<strong>Fixed-boundary Label Acc:</strong> use the human boundaries G0, G1, and G2 directly; the model only generates one description per segment. Following <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata's published LLM-as-judge rubric</a>, Gemini-3.5-Flash compares the human description, model description, and episode instruction, then returns <code>match=true/false</code>. If the three results are <code>[true, true, false]</code>, two descriptions are correct, so <strong>Label Acc = correct descriptions / human segments = 2/3≈66.7%</strong>. See <a href=\"#app-prompts\">Appendix F</a> for the actual judge prompt used in this report.",
       "metrics.e2e.example": "<strong>Semantic E2E F1:</strong> retain the four predicted spans and their descriptions. Temporal matching first yields P0–G0 and P1–G1. If semantic judging returns <code>true</code> only for P0–G0, the final true-positive count is s=1. <strong>Precision = s / predicted segments = 1/4</strong>, <strong>recall = s / human segments = 1/3</strong>, and therefore <strong>E2E F1 = 2s / (predicted segments + human segments) = 2/(4+3)≈0.286</strong>.",
       "toy.lane.gold": "Reference (human)",
       "toy.lane.pred": "Prediction (after outer snap)",
@@ -699,7 +699,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <li><a href="#walk-2">GEPA 搜索得到的切段规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>下载</a></li>
-        <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="prompts/judge_semantic_match.md" download>本文实际使用的精简 prompt</a>（核心标准相同，但不是逐字复制）</li>
+        <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="prompts/judge_semantic_match.md" download>本文实际使用的评判 prompt</a></li>
         <li><a href="#walk-5">Candidate selector</a> · <a href="prompts/candidate_selector.md" download>下载</a></li>
       </ul>
 
@@ -795,7 +795,7 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <li><a href="#walk-2">GEPA-searched segmentation rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>download</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>download</a></li>
-        <li>Judge: <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata's published rubric</a> · <a href="prompts/judge_semantic_match.md" download>shorter prompt used in this report</a> (same core criteria, not a verbatim copy)</li>
+        <li>Judge: <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata's published rubric</a> · <a href="prompts/judge_semantic_match.md" download>actual judge prompt used in this report</a></li>
         <li><a href="#walk-5">Candidate selector</a> · <a href="prompts/candidate_selector.md" download>download</a></li>
       </ul>
 
