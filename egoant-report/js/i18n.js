@@ -133,7 +133,7 @@
       "world.term.7": "<strong>语义评判（judge）</strong>：只在评测阶段使用，判断预测描述与参考描述说的是不是同一个完成动作。",
       "world.term.8": "<strong>HaWoR</strong><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>：从第一视角视频中重建手部运动的方法，用来估计腕部轨迹并裁出手部区域。它给出的是估计值，不是传感器真值。",
       "fig.src.segterms": "assets/explain/seg_terms_zh.svg",
-      "fig.src.metric": "assets/explain/metric_iou_f1_zh.svg?v=20260805-1",
+      "fig.src.metric": "assets/explain/metric_iou_f1_zh.svg?v=20260805-2",
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover_zh.svg",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy_zh.svg",
       "world.h3.inputs": "五种容易混淆的视觉输入",
@@ -268,7 +268,7 @@
       "metrics.toy.g": "参考片段（gold）：G0[0,3]、G1[3,6]、G2[6,10]；模型预测（pred）：P0[0.5,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,9.5]。",
       "metrics.toy.1": "吸附后，预测片段变为 P0[0,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,10]。只有 P0 和 P3 的外侧端点发生变化。",
       "metrics.toy.2": "计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU≈0.933；P1–G1 的 IoU≈0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。",
-      "metrics.toy.3": "一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，<strong>预测命中率（precision）</strong>为 2/4=0.50；3 个人工片段中有 2 个被找回，<strong>参考找回率（recall）</strong>为 2/3≈0.67；Segment F1≈0.571。",
+      "metrics.toy.3": "一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，<strong>预测命中率（precision）</strong>为 2/4=0.50；3 个人工片段中有 2 个被找回，<strong>参考找回率（recall）</strong>为 2/3≈0.67；<strong>Segment F1（综合分段得分）</strong>≈0.571。",
       "story.chart.label": "标注准确率",
       "story.chart.e2e": "E2E F1",
       "walk.s0.hint": "下方为整集预览。到 Step 06 点选时间轴或表格行，可只播该段并同步看标注。",
@@ -432,7 +432,7 @@
       "world.term.7": "<strong>Semantic judge</strong>: used during evaluation only, deciding whether a predicted description and the reference describe the same completed action.",
       "world.term.8": "<strong>HaWoR</strong><sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>: a method that reconstructs hand motion from egocentric video, used to estimate wrist trajectories and crop the hand region. It produces estimates, not sensor ground truth.",
       "fig.src.segterms": "assets/explain/seg_terms_en.svg",
-      "fig.src.metric": "assets/explain/metric_iou_f1.svg?v=20260805-1",
+      "fig.src.metric": "assets/explain/metric_iou_f1.svg?v=20260805-2",
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover.svg",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy.svg",
       "world.h3.inputs": "Five visual inputs that are easy to confuse",
@@ -699,7 +699,8 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <li><a href="#walk-2">GEPA 搜索得到的切段规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>下载</a></li>
-        <li><a href="#walk-5">Judge / Selector</a> · <a href="prompts/judge_semantic_match.md" download>judge</a> · <a href="prompts/candidate_selector.md" download>selector</a></li>
+        <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="prompts/judge_semantic_match.md" download>本文实际使用的精简 prompt</a>（核心标准相同，但不是逐字复制）</li>
+        <li><a href="#walk-5">Candidate selector</a> · <a href="prompts/candidate_selector.md" download>下载</a></li>
       </ul>
 
       <h3 id="app-cost">G. 成本：估计与公开数字对照</h3>
@@ -794,7 +795,8 @@ F1_e2e = 2·P_e2e·R_e2e / (P_e2e+R_e2e)</pre>
         <li><a href="#walk-2">GEPA-searched segmentation rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>download</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>download</a></li>
-        <li><a href="#walk-5">Judge / Selector</a> · <a href="prompts/judge_semantic_match.md" download>judge</a> · <a href="prompts/candidate_selector.md" download>selector</a></li>
+        <li>Judge: <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata's published rubric</a> · <a href="prompts/judge_semantic_match.md" download>shorter prompt used in this report</a> (same core criteria, not a verbatim copy)</li>
+        <li><a href="#walk-5">Candidate selector</a> · <a href="prompts/candidate_selector.md" download>download</a></li>
       </ul>
 
       <h3 id="app-cost">G. Cost: estimates and published numbers</h3>

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260805-1" />
+  <link rel="stylesheet" href="css/report.css?v=20260805-2" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -161,13 +161,13 @@
         <strong>首尾吸附（outer snap）只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260805-1" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260805-2" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <ol>
         <li data-i18n="metrics.toy.1">吸附后，预测片段变为 P0[0,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,10]。只有 P0 和 P3 的外侧端点发生变化。</li>
         <li data-i18n="metrics.toy.2">计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU≈0.933；P1–G1 的 IoU≈0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。</li>
-        <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，<strong>预测命中率（precision）</strong>为 2/4=0.50；3 个人工片段中有 2 个被找回，<strong>参考找回率（recall）</strong>为 2/3≈0.67；Segment F1≈0.571。</li>
+        <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，<strong>预测命中率（precision）</strong>为 2/4=0.50；3 个人工片段中有 2 个被找回，<strong>参考找回率（recall）</strong>为 2/3≈0.67；<strong>Segment F1（综合分段得分）</strong>≈0.571。</li>
       </ol>
       <h3 data-i18n="metrics.h3.remaining">同一个例子如何得到另外两类分数</h3>
       <div class="metric-example-grid">
@@ -711,8 +711,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260805-1"></script>
-  <script src="js/report.js?v=20260805-1"></script>
+  <script src="js/i18n.js?v=20260805-2"></script>
+  <script src="js/report.js?v=20260805-2"></script>
   <script src="js/prompts_embed.js"></script>
   <script>
     async function loadPrompt(ids, file) {
