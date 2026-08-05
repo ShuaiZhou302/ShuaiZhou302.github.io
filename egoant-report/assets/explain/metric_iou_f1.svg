@@ -6,7 +6,7 @@
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}
       .gold{fill:#f0c94d}.pred{fill:#2f6f66}.miss{fill:#bfc7ca}.mark{stroke:#c45c26;stroke-width:4}
       .box{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}.txt{font:16px "IBM Plex Sans",Arial,sans-serif}
-      .mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}.arrow{font:26px "IBM Plex Sans",sans-serif}
+      .mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}.flow{fill:none;stroke:#8a8378;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
     </style>
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
@@ -45,11 +45,11 @@
   <text x="96" y="340" class="txt ink">1  Count segments</text>
   <text x="96" y="373" class="txt ink">Matched segments: <tspan class="mono">m = 2</tspan></text>
   <text x="96" y="405" class="txt ink">Totals: <tspan class="mono">n</tspan><tspan class="mono" dy="4" style="font-size:9px">pred</tspan><tspan class="mono" dy="-4"> = 4, n</tspan><tspan class="mono" dy="4" style="font-size:9px">gold</tspan><tspan class="mono" dy="-4"> = 3</tspan></text>
-  <text x="351" y="380" class="arrow muted">→</text>
+  <path d="M350 375h26m-8-8 8 8-8 8" class="flow"/>
   <text x="392" y="340" class="txt ink">2  Compute two rates</text>
   <text x="392" y="373" class="txt ink">Prediction hit rate: <tspan class="mono">2 / 4 = 0.50</tspan></text>
   <text x="392" y="405" class="txt ink">Reference coverage: <tspan class="mono">2 / 3 = 0.67</tspan></text>
-  <text x="704" y="380" class="arrow muted">→</text>
+  <path d="M702 375h26m-8-8 8 8-8 8" class="flow"/>
   <text x="746" y="340" class="txt ink">3  Combine into Segment F1</text>
   <text x="746" y="373" class="txt ink">Segment F1</text>
   <text x="746" y="405" class="mono ink">2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
