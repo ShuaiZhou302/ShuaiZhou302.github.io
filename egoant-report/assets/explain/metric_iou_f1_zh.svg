@@ -6,7 +6,7 @@
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}
       .gold{fill:#f0c94d}.pred{fill:#2f6f66}.miss{fill:#bfc7ca}.mark{stroke:#c45c26;stroke-width:4}
       .box{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}.txt{font:16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
-      .mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}.flow{fill:none;stroke:#8a8378;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+      .mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}.sum{font-size:17px}.sumMono{font:16px "IBM Plex Mono",monospace}.flow{fill:none;stroke:#8a8378;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
     </style>
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
@@ -42,15 +42,15 @@
   <text x="704" y="198" class="txt small muted">P2、P3 未达阈值</text>
 
   <rect x="70" y="310" width="980" height="124" rx="14" class="box"/>
-  <text x="96" y="340" class="txt ink">① 统计分段数量</text>
-  <text x="96" y="373" class="txt ink">成功配对分段数：<tspan class="mono">m = 2</tspan></text>
-  <text x="96" y="405" class="txt ink">分段总数：<tspan class="mono">n</tspan><tspan class="mono" dy="4" style="font-size:9px">pred</tspan><tspan class="mono" dy="-4"> = 4，n</tspan><tspan class="mono" dy="4" style="font-size:9px">gold</tspan><tspan class="mono" dy="-4"> = 3</tspan></text>
-  <path d="M350 375h26m-8-8 8 8-8 8" class="flow"/>
-  <text x="392" y="340" class="txt ink">② 计算两个比例</text>
-  <text x="392" y="373" class="txt ink">预测命中率：<tspan class="mono">2 / 4 = 0.50</tspan></text>
-  <text x="392" y="405" class="txt ink">参考找回率：<tspan class="mono">2 / 3 = 0.67</tspan></text>
-  <path d="M702 375h26m-8-8 8 8-8 8" class="flow"/>
-  <text x="746" y="340" class="txt ink">③ 合并为综合分段得分</text>
-  <text x="746" y="373" class="txt ink">Segment F1（综合分段得分）</text>
-  <text x="746" y="405" class="mono ink">2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
+  <text x="96" y="340" class="txt sum ink">① 统计分段数量</text>
+  <text x="96" y="373" class="txt sum ink">成功配对分段数：<tspan class="sumMono">m = 2</tspan></text>
+  <text x="96" y="405" class="txt sum ink">分段总数：<tspan class="sumMono">n</tspan><tspan class="sumMono" dy="4" style="font-size:9px">pred</tspan><tspan class="sumMono" dy="-4"> = 4，n</tspan><tspan class="sumMono" dy="4" style="font-size:9px">gold</tspan><tspan class="sumMono" dy="-4"> = 3</tspan></text>
+  <path d="M335 375h26m-8-8 8 8-8 8" class="flow"/>
+  <text x="392" y="340" class="txt sum ink">② 计算两个比例</text>
+  <text x="392" y="373" class="txt sum ink">预测命中率：<tspan class="sumMono">2 / 4 = 0.50</tspan></text>
+  <text x="392" y="405" class="txt sum ink">参考找回率：<tspan class="sumMono">2 / 3 = 0.67</tspan></text>
+  <path d="M687 375h26m-8-8 8 8-8 8" class="flow"/>
+  <text x="746" y="340" class="txt sum ink">③ 合并为综合分段得分</text>
+  <text x="746" y="373" class="txt sum ink">Segment F1（综合分段得分）</text>
+  <text x="746" y="405" class="sumMono ink">2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
 </svg>
