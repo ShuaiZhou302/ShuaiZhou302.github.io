@@ -44,6 +44,7 @@
         <a href="#tldr" data-i18n="nav.tldr">结论</a>
         <a href="#evaluate" data-i18n="nav.evaluate">如何评估</a>
         <a href="#world" data-i18n="nav.world">相关工作</a>
+        <a href="#terms" data-i18n="nav.terms">术语约定</a>
         <a href="#contact" data-i18n="nav.contact">Contact sheet</a>
         <a href="#boundary" data-i18n="nav.boundary">边界对照</a>
         <a href="#walk" data-i18n="nav.walk">样例</a>
@@ -68,6 +69,7 @@
     <a href="#tldr" data-toc="tldr" data-i18n="nav.tldr">TL;DR</a>
     <a href="#evaluate" data-toc="evaluate" data-i18n="nav.evaluate">如何评估</a>
     <a href="#world" data-toc="world" data-i18n="nav.world">相关工作</a>
+    <a href="#terms" data-toc="terms" data-i18n="nav.terms">术语约定</a>
     <a href="#contact" data-toc="contact" data-i18n="nav.contact">Contact sheet</a>
     <a href="#boundary" data-toc="boundary" data-i18n="nav.boundary">边界对照</a>
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
@@ -179,13 +181,18 @@
     <section id="world">
       <h2 data-i18n="world.h2">2. 相关工作与实验设置</h2>
       <p data-i18n-html data-i18n="world.p.lead">
-        在我们之前，已经有几条把长视频变成子任务标注的公开路线。它们各自解决了问题的一部分，也各自留下了空白；这些空白决定了本文选择往哪些方向尝试。
+        现有工作已经提出多种自动化管线，用于从长视频中提取动作边界或生成片段级描述。其中较有代表性的路线包括基于运动信号或固定时长的规则分段、对预切片段进行稠密描述，以及同时评测分段与标注的完整流程。它们各自解决了问题的一部分，也留下了不同的空白；这些空白决定了本文重点探索的方向。
       </p>
 
-      <h3 data-i18n="world.h3.rule">Rule-based 分段：VITRA 与固定时长切分</h3>
+      <h3 data-i18n="world.h3.rule">基于规则的分段：运动边界与固定时长切分</h3>
       <p data-i18n-html data-i18n="world.p.rule">
-        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 把单目第一视角视频处理成三维手部与相机运动、原子动作片段和语言指令，它的切段依据是手部运动信号——取腕部速度的局部极小值当作动作边界。另一类更简单的做法直接按固定时长切。我们把这两类统称为 <strong>rule-based 分段</strong>。
-        它们共同的问题是<strong>过分割</strong>：一个动作内部的停顿、重新抓握、手腕微调都会产生速度低谷，于是「把胡萝卜放进碗里」被切成五六段。EgoANT 最早的一版分段也尝试过这条路线（HaWoR 腕速 + 低谷切段 + 相邻合并），本文把它保留为对照基线：在 HomER 上它切出 810 段，而参考只有 470 段，Segment F1 只有 <strong>0.0953</strong>。后面的 contact-sheet 方案正是为了替换掉这一版。
+        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长：Lin 等人的大行为模型协同训练研究<sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup>沿用 EgoVid 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。两类方法都不需要学习专门的边界预测器，但边界未必对应动作真正完成的时刻。
+        基于运动低谷的方案尤其容易<strong>过分割</strong>：动作内部的停顿、重新抓握和手腕微调都可能产生候选边界，使「把胡萝卜放进碗里」这样的简单原子动作也被切成五六段。本文也探索了这一路线，以 HaWoR 腕速低谷生成边界并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，Segment F1 为 <strong>0.0953</strong>，印证了过分割问题。为使边界更多地对应语义完整的动作，最终管线改用带时间戳的 contact sheet 进行分段。
+      </p>
+
+      <h3 data-i18n="world.h3.scale">Scale Labs：已切好的 clip 上的稠密描述</h3>
+      <p data-i18n-html data-i18n="world.p.scale">
+        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论的是在<strong>已经切分好的 clip</strong> 上写稠密描述，以及拼贴、时间戳、稳定抽帧这些具体工程做法。它对我们的视觉输入设计有直接启发，但它的设定默认边界已经给定，不涉及「从原始长视频里预测边界」这一步——而分段恰恰是后面会看到的端到端瓶颈。
       </p>
 
       <h3 data-i18n="world.h3.md">Macrodata / WGO-Bench：把子任务标注变成一个可以打分的公开问题</h3>
@@ -195,25 +202,12 @@
         它留下的空白与我们直接相关：各种 trick 的收益主要是在强模型（Gemini）上测出来的，报告没有回答<strong>预算有限、只能用开源模型时应该加哪些 trick</strong>——而这恰恰是我们要标几千小时视频时的真实约束。本文可以看作在这个约束下对它的一次补充。
       </p>
 
-      <h3 data-i18n="world.h3.scale">Scale Labs：已切好的 clip 上的稠密描述</h3>
-      <p data-i18n-html data-i18n="world.p.scale">
-        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论的是在<strong>已经切分好的 clip</strong> 上写稠密描述，以及拼贴、时间戳、稳定抽帧这些具体工程做法。它对我们的视觉输入设计有直接启发，但它的设定默认边界已经给定，不涉及「从原始长视频里预测边界」这一步——而分段恰恰是后面会看到的端到端瓶颈。
-      </p>
-
-      <p data-i18n-html data-i18n="intro.p3">
-        EgoANT 是面向第一视角人类操作视频的自动标注流程：先将长视频划分为动作级片段，再为每个片段生成简洁的操作描述。在 HomER 的 25 个视频、470 个参考片段上，最佳分段配置的 Segment F1 为 <strong>0.2031</strong>；在固定参考边界上，语义标注的 Label Acc 为 <strong>55.7%</strong>；仅以视频为输入的最佳端到端配置取得 Semantic E2E F1 <strong>0.1542</strong>。这些结果表明，完全基于开放权重视觉语言模型构建可复现的第一视角子任务标注流程是可行的。
-      </p>
-
-      <h3 data-i18n="world.h3.egoant">EgoANT 的两条管线</h3>
+      <h3 data-i18n="world.h3.egoant">EgoANT 的最终管线与模型分工</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
-        EgoANT 是我们面向第一视角人类操作视频的自动标注系统。本文涉及它的两条管线：
+        本文最终采用一条以视觉语言模型为核心的自动标注管线：<strong>带时间戳的 contact sheets → Qwen3.6-27B 分段 → 在预测边界上生成操作描述 → 可选的多候选判别</strong>。腕速规则方法仅作为分段消融与对照，不构成另一条 EgoANT 管线。
       </p>
-      <ul>
-        <li data-i18n-html data-i18n="world.li.prod"><strong>腕速基线（EgoANT 的第一版）</strong>：HaWoR 手部运动重建 → 腕部速度平滑与低谷候选边界 → 段内抽原始帧写短句 → 相邻片段合并与重写。它借鉴了 VITRA 一类「先运动、后描述」的思路，但切段依据是 HaWoR 的腕部运动信号，并没有使用 VITRA 模型。细节见 <a href="#app-prod">附录 D</a>；本文只把它当作对照基线。</li>
-        <li data-i18n-html data-i18n="world.li.wgo"><strong>contact-sheet 管线（本文的实验对象）</strong>：带时间戳的 contact sheets → Qwen3.6-27B 分段 → 固定预测边界后的语义标注与多候选选择。正文的实验都针对这条管线。</li>
-      </ul>
       <p data-i18n-html data-i18n="world.p.models">
-        三个模型的分工是：Qwen3.6-27B 负责分段，也可以顺带生成一部分标注候选；Qwen3.5-397B 负责生成候选描述并从中选出定稿；Gemini-3.5-Flash 只在离线评测时充当语义评判，不参与生成标签，也不参与选择候选。早期用 Qwen 做评判的结果只作为评判敏感性检查，不计入主分数。
+        生成与评测的角色分工如下：Qwen3.6-27B 负责分段，也可生成部分候选描述；Qwen3.5-397B-A17B 负责生成候选描述并由候选判别器选出定稿；Gemini-3.5-Flash 仅在离线评测时判断描述与人工标注是否语义一致，不参与边界预测、描述生成或候选选择。
       </p>
       <div style="overflow-x:auto">
         <table class="role-table">
@@ -232,12 +226,12 @@
             </tr>
             <tr>
               <td data-i18n="role.captioner">描述生成模型</td>
-              <td>Qwen3.6-27B / Qwen3.5-397B</td>
+              <td>Qwen3.6-27B / Qwen3.5-397B-A17B</td>
               <td data-i18n="role.captioner.use">为每个片段生成候选描述</td>
             </tr>
             <tr>
               <td data-i18n="role.selector">候选选择器（selector）</td>
-              <td>Qwen3.5-397B</td>
+              <td>Qwen3.5-397B-A17B</td>
               <td data-i18n="role.selector.use">从多条候选描述中选出定稿</td>
             </tr>
             <tr>
@@ -248,7 +242,10 @@
           </tbody>
         </table>
       </div>
+    </section>
 
+    <section id="terms">
+      <h2 data-i18n="terms.h2">3. 术语约定与输入形式</h2>
       <h3 data-i18n="world.h3.gepa">「GEPA-derived prompt」在本文里指什么</h3>
       <ol>
         <li data-i18n-html data-i18n="world.gepa.1"><strong>GEPA 本身</strong>是一种用反馈自动改写 prompt 的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata 用它在另外 15 个 episode 的验证集上搜索更贴合标注规范的分段规则。</li>
@@ -299,12 +296,12 @@
         </figure>
       </div>
       <p class="plain muted" data-i18n-html data-i18n="world.zoo.note">
-        以上五张按管线参数重新渲染，用于说明差别本身。在固定边界的标注实验里，除 contact sheet 只用于分段外，其余四种都低于 raw；数字见 <a href="#story">§6.2</a>。
+        以上五张按管线参数重新渲染，用于说明差别本身。在固定边界的标注实验里，除 contact sheet 只用于分段外，其余四种都低于 raw；数字见 <a href="#story">§7.2</a>。
       </p>
     </section>
 
     <section id="contact">
-      <h2 data-i18n="contact.h2">3. Contact-sheet 视觉输入</h2>
+      <h2 data-i18n="contact.h2">4. Contact-sheet 视觉输入</h2>
       <p data-i18n-html data-i18n="contact.p">
         我们不把整段 MP4 作为视觉输入直接提交给模型，而是每隔 <strong>0.5 秒</strong>抽一帧，缩到约 <strong>224×144</strong>，
         每张 sheet <strong>20 格（5×4）</strong>，格子上画<strong>黄色时间戳</strong>。
@@ -331,7 +328,7 @@
     </section>
 
     <section id="boundary">
-      <h2 data-i18n="boundary.h2">3.5 边界对照：同一视频上的三种分段结果</h2>
+      <h2 data-i18n="boundary.h2">4.5 边界对照：同一视频上的三种分段结果</h2>
       <p class="plain" data-i18n-html data-i18n="boundary.lead">
         对齐 Macrodata 博客的 Boundary comparison 交互：上方播视频，下方多轨时间轴；播放头随时间移动，点击色块可跳到该段。
       </p>
@@ -365,7 +362,7 @@
     </section>
 
     <section id="walk">
-      <h2 data-i18n="walk.h2">4. 样例：案例分析：homer_4 的端到端处理流程</h2>
+      <h2 data-i18n="walk.h2">5. 案例分析：homer_4 的端到端处理流程</h2>
       <p data-i18n-html data-i18n="walk.lead">
         下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；批量标注时可在同一边界下改用单路 raw 以省成本。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。
       </p>
@@ -469,7 +466,7 @@
           <div class="step-h"><span class="badge">06</span><h3 class="step-title" data-i18n="walk.s6.t">点选 pred 段：看视频 + 标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s6.p">
             这里只走 <strong>selector 预测轨</strong>（点色块或表格行 → 右侧播该段、左侧看标注）。
-            与 gold / 整集粗分 / contact sheet 的<strong>多轨边界对照</strong>见上方 <a href="#boundary">§3.5</a>，不再重复画 gold 时间轴。
+            与 gold / 整集粗分 / contact sheet 的<strong>多轨边界对照</strong>见上方 <a href="#boundary">§4.5</a>，不再重复画 gold 时间轴。
           </p>
           <div id="walk-timeline" class="timeline"></div>
           <div class="walk-explore">
@@ -492,7 +489,7 @@
     </section>
 
     <section id="cost">
-      <h2 data-i18n="cost.h2">5. 开销对照：Macrodata 公开数字 vs EgoANT</h2>
+      <h2 data-i18n="cost.h2">6. 开销对照：Macrodata 公开数字 vs EgoANT</h2>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
         两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 G。
@@ -543,10 +540,10 @@
     </section>
 
     <section id="story">
-      <h2 data-i18n="story.h2">6. 方法演进与组件比较</h2>
+      <h2 data-i18n="story.h2">7. 方法演进与组件比较</h2>
       <p data-i18n="story.lead">按时间线叙述；主表与图跟在后面。实验细节（做法卡、pad 消融）默认折叠。</p>
 
-      <h3 data-i18n="story.h3.seg">6.1 分段：从分片伪边界到局部精修</h3>
+      <h3 data-i18n="story.h3.seg">7.1 分段：从分片伪边界到局部精修</h3>
       <ol>
         <li data-i18n-html data-i18n="story.seg.1">原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
         <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处引入伪边界。</li>
@@ -585,7 +582,7 @@
         <div id="seg-methods" class="method-grid" style="margin-top:1rem"></div>
       </details>
 
-      <h3 data-i18n="story.h3.label">6.2 标注：更复杂的视觉输入未必提高准确率</h3>
+      <h3 data-i18n="story.h3.label">7.2 标注：更复杂的视觉输入未必提高准确率</h3>
       <p data-i18n-html data-i18n="story.label.p">
         固定参考边界后，Gemini judge 全量重评显示：<strong>raw 27B 最高，为 55.7%</strong>；
         temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR-reconstructed wrist-guided crop 397B 为 50.9%，raw 397B 为 50.2%。
@@ -623,7 +620,7 @@
         <div id="label-methods" class="method-grid"></div>
       </details>
 
-      <h3 data-i18n="story.h3.e2e">6.3 E2E：锁边界，单路生成与多候选选择</h3>
+      <h3 data-i18n="story.h3.e2e">7.3 预测边界上的语义标注：单路生成与多候选选择</h3>
       <p data-i18n-html data-i18n="story.e2e.p">
         分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
         <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然在固定参考边界 Label Acc 上最高，但在预测边界上 E2E 只有 0.1285；
@@ -652,7 +649,7 @@
     </section>
 
     <section id="recipe">
-      <h2 data-i18n="recipe.h2">7. 推荐配置与使用边界</h2>
+      <h2 data-i18n="recipe.h2">8. 推荐配置与使用边界</h2>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">Contact sheet</div><div class="d" data-i18n="recipe.p1.d">0.5s · 224×144 · 20 tiles · yellow stamps</div></div>
         <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
@@ -697,6 +694,7 @@
         <li id="ref-gepa" data-i18n-html data-i18n="references.gepa">Agrawal, Lakshya A., Tan, Shangyin, Soylu, Dilara, Ziems, Noah, Khare, Rishi, Opsahl-Ong, Krista, et al. (2026). <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em>. arXiv. <a href="https://arxiv.org/abs/2507.19457" target="_blank" rel="noopener">https://arxiv.org/abs/2507.19457</a></li>
         <li id="ref-scale" data-i18n-html data-i18n="references.scale">Choghari, Jade, Sansone, Agustin, Pasqualis, Nicolas, Mader, Conrado, Tiupikov, Aleks, Sivapurapu, Mouli. (2026). <em>The Path to Large Scale Dense Video Captioning</em>. Scale Labs. <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning</a></li>
         <li id="ref-vitra" data-i18n-html data-i18n="references.vitra">Li, Qixiu, Deng, Yu, Liang, Yaobo, Luo, Lin, Zhou, Lei, Yao, Chengtang, et al. (2025). <em>VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos</em>. Project page. <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">https://microsoft.github.io/VITRA/</a></li>
+        <li id="ref-cotraining" data-i18n-html data-i18n="references.cotraining">Lin, Fanqi, Arora, Kushal, Mercat, Jean, Nishimura, Haruki, Shah, Paarth, Xu, Chen, et al. (2026). <em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em>. arXiv. <a href="https://arxiv.org/abs/2602.01067" target="_blank" rel="noopener">https://arxiv.org/abs/2602.01067</a></li>
         <li id="ref-hawor" data-i18n-html data-i18n="references.hawor">Zhang, Jinglei, Deng, Jiankang, Ma, Chao, Potamias, Rolandos Alexandros. (2025). <em>HaWoR: World-Space Hand Motion Reconstruction from Egocentric Videos</em>. arXiv. <a href="https://arxiv.org/abs/2501.02973" target="_blank" rel="noopener">https://arxiv.org/abs/2501.02973</a></li>
         <li id="ref-egodex" data-i18n-html data-i18n="references.egodex">Hoque, Ryan, Huang, Peide, Yoon, David J., Sivapurapu, Mouli, Zhang, Jian. (2025). <em>EgoDex: Learning Dexterous Manipulation from Large-Scale Egocentric Video</em>. arXiv. <a href="https://arxiv.org/abs/2505.11709" target="_blank" rel="noopener">https://arxiv.org/abs/2505.11709</a></li>
         <li id="ref-egoverse" data-i18n-html data-i18n="references.egoverse">EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href="https://egoverse.ai/" target="_blank" rel="noopener">https://egoverse.ai/</a></li>
@@ -711,7 +709,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-2"></script>
+  <script src="js/i18n.js?v=20260810-3"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
