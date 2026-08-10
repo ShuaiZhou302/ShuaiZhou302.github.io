@@ -1075,9 +1075,10 @@ pre.formula {
 .input-zoo .figure > img {
   display: block;
   width: 100%;
-  max-height: none;
-  background: #f3f1ec;
-  border-radius: 8px;
+  height: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   object-fit: contain;
 }
 .input-zoo figcaption {
@@ -1089,17 +1090,22 @@ pre.formula {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  align-items: start;
 }
 .input-zoo-pair .figure > img {
-  max-height: 220px;
-  margin-inline: auto;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: cover;
+  aspect-ratio: 5 / 3;
+  background: transparent;
 }
 
 /* Flat three-frame strip for raw / neighbor samples */
 .frame-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 .frame-cell {
   display: flex;
@@ -1112,9 +1118,9 @@ pre.formula {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid rgba(40, 36, 30, 0.12);
-  background: #efece6;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 .frame-label {
   text-align: center;
@@ -1127,11 +1133,8 @@ pre.formula {
   .input-zoo-pair {
     grid-template-columns: 1fr;
   }
-  .input-zoo-pair .figure > img {
-    max-height: none;
-  }
   .frame-strip {
-    gap: 0.45rem;
+    gap: 0.4rem;
   }
   .frame-label {
     font-size: 0.78rem;
