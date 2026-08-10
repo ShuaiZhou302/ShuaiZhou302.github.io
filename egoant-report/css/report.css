@@ -1085,6 +1085,15 @@ pre.formula {
   line-height: 1.55;
   text-wrap: pretty;
 }
+.input-zoo-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.input-zoo-pair .figure > img {
+  max-height: 220px;
+  margin-inline: auto;
+}
 
 /* Flat three-frame strip for raw / neighbor samples */
 .frame-strip {
@@ -1115,6 +1124,12 @@ pre.formula {
 }
 
 @media (max-width: 700px) {
+  .input-zoo-pair {
+    grid-template-columns: 1fr;
+  }
+  .input-zoo-pair .figure > img {
+    max-height: none;
+  }
   .frame-strip {
     gap: 0.45rem;
   }

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260810-14" />
+  <link rel="stylesheet" href="css/report.css?v=20260810-15" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -273,19 +273,21 @@
           </div>
           <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>邻段拼贴</strong>：把上一段、当前段、下一段的抽样帧一并提交；底部分别用灰条、绿条、灰条标出所属片段。</figcaption>
         </figure>
-        <figure class="figure">
-          <img src="assets/explain/inputs/input_visual_hint.jpg" alt="Visual hint overlaid on the full frame" />
-          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在完整画面上叠加区域提示后提交。提示框的具体生成方式将另文核对。</figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/explain/inputs/input_hand_crop.jpg" alt="Local crop around the indicated hand region" />
-          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部裁剪</strong>：只把提示区域裁出后提交；与在完整画面上保留提示是两种不同输入。</figcaption>
-        </figure>
+        <div class="input-zoo-pair">
+          <figure class="figure">
+            <img src="assets/explain/inputs/input_visual_hint.jpg" alt="Visual hint overlaid on the full frame" />
+            <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在完整画面上叠加区域提示后提交。提示框的具体生成方式将另文核对。</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="assets/explain/inputs/input_hand_crop.jpg" alt="Local crop around the indicated hand region" />
+            <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部裁剪</strong>：只把提示区域裁出后提交；与在完整画面上保留提示是两种不同输入。</figcaption>
+          </figure>
+        </div>
       </div>
 
       <h3 data-i18n="world.h3.gepa">「GEPA-derived prompt」在本文里指什么</h3>
       <p data-i18n-html data-i18n="world.p.gepa">
-        GEPA 是一种根据反馈自动改写提示词的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。规则原文见案例分析 Step 02；概念与实现见 <a href="#app-seg">附录 B</a>，下载见 <a href="#app-prompts">附录 F</a>。
+        GEPA 是一种根据反馈自动改写提示词的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。
       </p>
     </section>
 
@@ -735,7 +737,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-14"></script>
+  <script src="js/i18n.js?v=20260810-15"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
