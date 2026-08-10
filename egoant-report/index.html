@@ -221,7 +221,7 @@
         <li data-i18n-html data-i18n="world.term.5"><strong>S1（加密切分配置）</strong>：本文对一类消融配置的简称。它仍对完整视频做一次分段，但要求输出更多、更短的候选片段；它不是最终管线中的处理步骤。实验结果见 <a href="#story">§7.1</a>。</li>
         <li data-i18n-html data-i18n="world.term.6"><strong>S2（局部精修配置）</strong>：本文对第二遍局部分段配置的简称。先由整集粗分得到粗边界，再围绕粗边界建立时间窗口，并让模型在窗口内重新输出动作边界。</li>
         <li data-i18n-html data-i18n="world.term.7"><strong>窗口不外扩（pad=0）</strong>：局部精修只使用时间窗口内的画面，不额外加入窗口之前或之后的帧。</li>
-        <li data-i18n-html data-i18n="world.term.8"><strong>覆盖完整动作（full-cover）</strong>：若窗口内完整出现了“拿起杯子”和“放下杯子”两个动作，模型应分别输出两段；仅出现伸手接近杯子或完成后收回手时，不单独输出片段。</li>
+        <li data-i18n-html data-i18n="world.term.8"><strong>覆盖完整动作（full-cover）</strong>：S2 局部精修提示词中的输出约束，不是评分指标。它要求模型完整覆盖窗口内从开始到结束都可见的操作事件；例如窗口内完整出现“拿起杯子”和“放下杯子”时，应分别输出两段。</li>
         <li data-i18n-html data-i18n="world.term.9"><strong>候选判别器（selector）</strong>：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
         <li data-i18n-html data-i18n="world.term.10"><strong>语义评判模型（judge）</strong>：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。</li>
         <li data-i18n-html data-i18n="world.term.11"><strong>HaWoR</strong><sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
@@ -715,7 +715,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-11"></script>
+  <script src="js/i18n.js?v=20260810-12"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
