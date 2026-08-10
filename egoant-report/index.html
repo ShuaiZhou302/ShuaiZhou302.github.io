@@ -200,9 +200,9 @@
         Macrodata Labs 的 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener"><em>Segmenting Robot Video into Actionable Subtasks</em></a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup> 是目前最系统的公开工作：它将「长视频 → 动作级片段 + 短语义描述」定义为可量化评测的任务，发布 WGO-Bench 及分段、固定边界标注和端到端三类指标，给出拼贴图与 GEPA 搜索分段规则等设计，并比较多个闭源和开源模型。本文聚焦另一类实际需求：在只使用成本相对较低、可私有部署的开放权重模型时，检验哪些设计仍然有效，以及这些设计能否组合成可扩展的自动标注流程。
       </p>
 
-      <h3 data-i18n="world.h3.egoant">EgoANT</h3>
+      <h3 data-i18n="world.h3.egoant">EgoANT：面向开放权重模型的端到端自动标注</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
-        EgoANT 面向可私有部署的开放权重模型，构建从长视频输入到动作边界与操作描述输出的端到端自动标注流程。本文围绕这条流程探索三个方面：如何借助带时间戳的拼贴图预测语义完整的动作边界，如何在给定边界后生成准确简洁的操作描述，以及分段与标注串联后的端到端总体效果。方法设计吸收了 Scale Labs 的拼贴图表示和 Macrodata Labs 的已完成动作分段规则，并采用 WGO-Bench 进行统一评测。后续章节将依次介绍术语与输入形式、分段方法、标注策略和端到端结果。
+        EgoANT 面向可私有部署的开放权重模型，构建从长视频输入到动作边界与操作描述输出的端到端自动标注流程。本文围绕这条流程探索三个方面：如何借助带时间戳的拼贴图预测语义完整的动作边界，如何在给定边界后生成准确简洁的操作描述，以及分段与标注串联后的端到端总体效果。方法设计吸收了 Scale Labs 的拼贴图表示和 Macrodata Labs 的已完成动作分段规则，并采用 WGO-Bench 进行统一评测。后续章节将介绍输入形式、分段方法、标注策略与端到端评测。
       </p>
     </section>
 
@@ -708,7 +708,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-6"></script>
+  <script src="js/i18n.js?v=20260810-7"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
