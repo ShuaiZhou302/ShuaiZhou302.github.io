@@ -481,7 +481,7 @@
       "recipe.h2": "7. Recommended configurations and usage boundaries",
       "appendix.h2": "8. Appendix: concepts, formulas, implementation, cost accounting",
       "tldr.k.seg": "Segment F1 (segmentation score)",
-      "tldr.k.label": "Label Acc (fixed-segment labeling)",
+      "tldr.k.label": "Label Acc (labeling score)",
       "tldr.k.e2e": "E2E F1 (full-pipeline score)",
       "walk.score": "<strong>Episode score:</strong> gold 15 / pred 11; IoU≥0.75 matches 4; semantic matches 3; episode E2E≈0.231 (HomER micro overall stays 0.1542).",
       "walk.task": "Task instruction:",
