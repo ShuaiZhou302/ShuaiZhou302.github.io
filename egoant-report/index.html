@@ -186,23 +186,23 @@
 
       <h3 data-i18n="world.h3.rule">基于规则的分段：运动边界与固定时长切分</h3>
       <p data-i18n-html data-i18n="world.p.rule">
-        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长。在 Toyota Research Institute 的 <a href="https://co-training-lbm.github.io/" target="_blank" rel="noopener"><em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em></a><sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup> 中，研究者构建人类视频语言标注数据时，沿用 <a href="https://egovid.github.io/" target="_blank" rel="noopener">EgoVid</a> 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。两类方法都不需要学习专门的边界预测器，但边界未必对应动作真正完成的时刻。
-        基于运动低谷的方案尤其容易<strong>过分割</strong>：动作内部的停顿、重新抓握和手腕微调都可能产生候选边界，使「把胡萝卜放进碗里」这样的简单原子动作也被切成五六段。本文也探索了这一路线，以 HaWoR 腕速低谷生成边界并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，Segment F1 为 <strong>0.0953</strong>，印证了过分割问题。为使边界更多地对应语义完整的动作，最终管线改用带时间戳的 contact sheet 进行分段。
+        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长。在 Toyota Research Institute 的 <a href="https://co-training-lbm.github.io/" target="_blank" rel="noopener"><em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em></a><sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup> 中，研究者构建人类视频语言标注数据时，沿用 <a href="https://egovid.github.io/" target="_blank" rel="noopener">EgoVid</a> 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。
+        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，<strong>分段得分为 0.0953</strong>，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
       </p>
 
-      <h3 data-i18n="world.h3.scale">Scale Labs：已切好的 clip 上的稠密描述</h3>
+      <h3 data-i18n="world.h3.scale">Scale Labs：已切分视频片段的稠密描述</h3>
       <p data-i18n-html data-i18n="world.p.scale">
-        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论在<strong>已经切分好的 clip</strong> 上生成稠密描述。其核心工程贡献之一是用 <strong>contact sheet 辅助标注</strong>：将多个稳定抽样帧拼成一张网格图，并结合时间信息提供紧凑的片段表示，从而减少逐帧输入的开销。该设计直接启发了本文的视觉输入形式。不过，该工作默认时间边界已经给定，因此没有涉及从完整长视频中定位动作起止这一更前置的分段问题。
+        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论在<strong>已经切分好的视频片段</strong>上生成稠密描述。其核心工程贡献之一是用<strong>拼贴图辅助标注</strong>：将多个稳定抽样帧拼成一张网格图，并结合时间信息提供紧凑的片段表示，从而减少逐帧输入的开销。该设计直接启发了本文的视觉输入形式。不过，该工作默认时间边界已经给定，因此没有涉及从完整长视频中定位动作起止这一更前置的分段问题。
       </p>
 
       <h3 data-i18n="world.h3.md">Macrodata Labs / WGO-Bench：完整流程与公开评测</h3>
       <p data-i18n-html data-i18n="world.p.md">
-        Macrodata Labs 的 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener"><em>Segmenting Robot Video into Actionable Subtasks</em></a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup> 是目前最系统的公开工作：它将「长视频 → 动作级片段 + 短语义描述」定义为可量化评测的任务，发布 WGO-Bench 及分段、固定边界标注和端到端三类指标，给出 contact sheet 与 GEPA 搜索分段规则等设计，并比较多个闭源和开源模型。与本文直接相关的不足是，各项设计的主要收益多在 Gemini 等强闭源模型上验证，尚未系统回答<strong>仅使用开放权重模型时，哪些设计仍然有效</strong>。
+        Macrodata Labs 的 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener"><em>Segmenting Robot Video into Actionable Subtasks</em></a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup> 是目前最系统的公开工作：它将「长视频 → 动作级片段 + 短语义描述」定义为可量化评测的任务，发布 WGO-Bench 及分段、固定边界标注和端到端三类指标，给出拼贴图与 GEPA 搜索分段规则等设计，并比较多个闭源和开源模型。本文聚焦另一类实际需求：在只使用成本相对较低、可私有部署的开放权重模型时，检验哪些设计仍然有效，以及这些设计能否组合成可扩展的自动标注流程。
       </p>
 
       <h3 data-i18n="world.h3.egoant">EgoANT</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
-        EgoANT 承接了上述工作的有效设计，同时针对尚未覆盖的问题展开：采用 Scale Labs 的 contact sheet 作为紧凑视觉表示，复用 Macrodata Labs 公开的 completed-event 分段规则，并使用 WGO-Bench 作为实验协议。在此基础上，本文构建仅依赖开放权重 Qwen 模型的完整「长视频 → 动作边界 + 操作描述」流程。与固定时长或腕速规则相比，EgoANT 让模型依据语义完整的动作预测边界；与只处理预切 clip 的方案相比，它从原始长视频开始；相较 Macrodata Labs 以强闭源模型为主的实验，本文重点检验这些设计在开放权重模型下是否仍然有效。后续章节将依次介绍输入形式、分段方法和标注路径。
+        EgoANT 面向可私有部署的开放权重模型，构建从长视频输入到动作边界与操作描述输出的端到端自动标注流程。本文围绕这条流程探索三个方面：如何借助带时间戳的拼贴图预测语义完整的动作边界，如何在给定边界后生成准确简洁的操作描述，以及分段与标注串联后的端到端总体效果。方法设计吸收了 Scale Labs 的拼贴图表示和 Macrodata Labs 的已完成动作分段规则，并采用 WGO-Bench 进行统一评测。后续章节将依次介绍术语与输入形式、分段方法、标注策略和端到端结果。
       </p>
     </section>
 
@@ -708,7 +708,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-5"></script>
+  <script src="js/i18n.js?v=20260810-6"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
