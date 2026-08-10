@@ -186,13 +186,13 @@
 
       <h3 data-i18n="world.h3.rule">基于规则的分段：运动边界与固定时长切分</h3>
       <p data-i18n-html data-i18n="world.p.rule">
-        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长：Lin 等人的大行为模型协同训练研究<sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup>沿用 EgoVid 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。两类方法都不需要学习专门的边界预测器，但边界未必对应动作真正完成的时刻。
+        <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长。在 Toyota Research Institute 的 <a href="https://co-training-lbm.github.io/" target="_blank" rel="noopener"><em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em></a><sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup> 中，研究者构建人类视频语言标注数据时，沿用 <a href="https://egovid.github.io/" target="_blank" rel="noopener">EgoVid</a> 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。两类方法都不需要学习专门的边界预测器，但边界未必对应动作真正完成的时刻。
         基于运动低谷的方案尤其容易<strong>过分割</strong>：动作内部的停顿、重新抓握和手腕微调都可能产生候选边界，使「把胡萝卜放进碗里」这样的简单原子动作也被切成五六段。本文也探索了这一路线，以 HaWoR 腕速低谷生成边界并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，Segment F1 为 <strong>0.0953</strong>，印证了过分割问题。为使边界更多地对应语义完整的动作，最终管线改用带时间戳的 contact sheet 进行分段。
       </p>
 
       <h3 data-i18n="world.h3.scale">Scale Labs：已切好的 clip 上的稠密描述</h3>
       <p data-i18n-html data-i18n="world.p.scale">
-        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论的是在<strong>已经切分好的 clip</strong> 上写稠密描述，以及拼贴、时间戳、稳定抽帧这些具体工程做法。它对我们的视觉输入设计有直接启发，但它的设定默认边界已经给定，不涉及「从原始长视频里预测边界」这一步——而分段恰恰是后面会看到的端到端瓶颈。
+        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论在<strong>已经切分好的 clip</strong> 上生成稠密描述。其核心工程贡献之一是用 <strong>contact sheet 辅助标注</strong>：将多个稳定抽样帧拼成一张网格图，并结合时间信息提供紧凑的片段表示，从而减少逐帧输入的开销。该设计直接启发了本文的视觉输入形式；但它默认边界已经给定，不涉及从原始长视频中预测动作边界。
       </p>
 
       <h3 data-i18n="world.h3.md">Macrodata / WGO-Bench：把子任务标注变成一个可以打分的公开问题</h3>
@@ -709,7 +709,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-3"></script>
+  <script src="js/i18n.js?v=20260810-4"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
