@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260810-11" />
+  <link rel="stylesheet" href="css/report.css?v=20260810-13" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -214,50 +214,58 @@
         <figcaption data-i18n="world.terms.figcap">图中按处理顺序展示：人工参考仅用于评测；模型先对完整视频做一次粗分，再选取一个局部时间窗口，并在窗口内执行 S2 局部精修。</figcaption>
       </figure>
       <ul class="term-list">
-        <li data-i18n-html data-i18n="world.term.1"><strong>参考分段（gold）</strong>：人工标注的完整动作片段，图中用黄色表示。它只用于评测，不会作为分段模型的输入。</li>
+        <li data-i18n-html data-i18n="world.term.1"><strong>参考分段（gold）</strong>：人工标注的完整动作片段，图中用黄色表示。</li>
         <li data-i18n-html data-i18n="world.term.2"><strong>整集粗分</strong>：将完整视频的全部带时间戳拼贴图一次性提交给模型，由一次模型调用输出初始分段序列。</li>
         <li data-i18n-html data-i18n="world.term.3"><strong>粗分片段与粗边界</strong>：整集粗分输出的初始片段及其起止时间。它们是后续精修的初始估计，还不是最终边界。</li>
         <li data-i18n-html data-i18n="world.term.4"><strong>局部时间窗口</strong>：围绕某个粗边界截取的一小段连续视频区间，图中用绿色虚线框表示。模型会重新检查这段区间内的动作起止。</li>
-        <li data-i18n-html data-i18n="world.term.5"><strong>S1（加密切分配置）</strong>：本文对一类消融配置的简称。它仍对完整视频做一次分段，但要求输出更多、更短的候选片段；它不是最终管线中的处理步骤。实验结果见 <a href="#story">§7.1</a>。</li>
+        <li data-i18n-html data-i18n="world.term.5"><strong>S1（加密切分配置）</strong>：后文消融里对「加密切分」这一配置的简称：仍对完整视频做一次分段，但要求输出更多、更短的候选片段。</li>
         <li data-i18n-html data-i18n="world.term.6"><strong>S2（局部精修配置）</strong>：本文对第二遍局部分段配置的简称。先由整集粗分得到粗边界，再围绕粗边界建立时间窗口，并让模型在窗口内重新输出动作边界。</li>
         <li data-i18n-html data-i18n="world.term.7"><strong>窗口不外扩（pad=0）</strong>：局部精修只使用时间窗口内的画面，不额外加入窗口之前或之后的帧。</li>
-        <li data-i18n-html data-i18n="world.term.8"><strong>覆盖完整动作（full-cover）</strong>：S2 局部精修提示词中的输出约束，不是评分指标。它要求模型完整覆盖窗口内从开始到结束都可见的操作事件；例如窗口内完整出现“拿起杯子”和“放下杯子”时，应分别输出两段。</li>
+        <li data-i18n-html data-i18n="world.term.8"><strong>覆盖完整动作（full-cover）</strong>：写入 S2 局部精修提示词的输出要求，不是评测指标。它规定窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。</li>
         <li data-i18n-html data-i18n="world.term.9"><strong>候选判别器（selector）</strong>：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
         <li data-i18n-html data-i18n="world.term.10"><strong>语义评判模型（judge）</strong>：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。</li>
         <li data-i18n-html data-i18n="world.term.11"><strong>HaWoR</strong><sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
       </ul>
       <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
-        后续实验使用六类视觉输入：原始帧、时序拼贴图、带时间戳的拼贴图、相邻片段拼贴图、视觉提示叠加和手部区域裁剪。下图使用同一视频片段（homer_4 第 22.9–26.8 秒，“拉开床头柜抽屉”）展示它们在图像组织方式和上下文范围上的差别。
+        后文实验用到六类视觉输入：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪。下图以同一片段（homer_4，22.9–26.8 秒，「拉开床头柜抽屉」）展示各自的画面组织形式。
       </p>
       <div class="input-zoo">
         <figure class="figure input-wide">
-          <img src="assets/explain/inputs/input_raw.jpg" alt="Three whole frames sampled inside one segment" />
-          <figcaption data-i18n-html data-i18n="world.zoo.raw"><strong>原始帧</strong>：在目标片段内均匀抽取 3 帧，以 3 张独立图片的形式提交给模型。</figcaption>
+          <div class="frame-fan" aria-hidden="false">
+            <img src="assets/explain/inputs/input_raw_1.jpg" alt="" />
+            <img src="assets/explain/inputs/input_raw_2.jpg" alt="" />
+            <img src="assets/explain/inputs/input_raw_3.jpg" alt="Three whole frames sampled inside one segment" />
+          </div>
+          <figcaption data-i18n-html data-i18n="world.zoo.raw"><strong>原始帧</strong>：在目标片段内均匀抽取 3 帧，作为 3 张独立图片提交。</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_collage.jpg" alt="The same frames tiled into a single image" />
-          <figcaption data-i18n-html data-i18n="world.zoo.collage"><strong>时序拼贴图</strong>：将目标片段内按时间顺序抽取的多帧图像拼成一张网格图，再作为单张图片提交。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.collage"><strong>时序拼贴</strong>：将同一片段内按时间顺序抽取的几帧拼成一张图，再一次性提交。</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_contact_sheet.jpg" alt="Contact sheet with yellow timestamps" />
-          <figcaption data-i18n-html data-i18n="world.zoo.contact"><strong>带时间戳的拼贴图</strong>：每 0.5 秒抽取一帧，缩放至 224×144，每 20 帧组成一张网格图，并在每格左上角标注黄色时间戳；一张图约覆盖 10 秒。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.contact"><strong>拼贴图</strong>：每 0.5 秒抽取一帧，缩放至 224×144，每 20 帧组成一张网格，并在每格左上角标注黄色时间戳；一张约覆盖 10 秒。</figcaption>
         </figure>
         <figure class="figure input-wide">
-          <img src="assets/explain/inputs/input_neighbor.jpg" alt="Previous, current, and next segment frames" />
-          <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>相邻片段拼贴图</strong>：同时排列前一片段、当前片段和后一片段的抽样帧，并用底部色条标出三者范围。</figcaption>
+          <div class="frame-fan frame-fan-neighbor" aria-hidden="false">
+            <img src="assets/explain/inputs/input_neighbor_1.jpg" alt="" />
+            <img src="assets/explain/inputs/input_neighbor_2.jpg" alt="" />
+            <img src="assets/explain/inputs/input_neighbor_3.jpg" alt="Previous, current, and next segment frames" />
+          </div>
+          <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>邻段拼贴</strong>：把上一段（灰条）、当前段（绿条）、下一段（灰条）的抽样帧一并提交，提供更多上下文。</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_visual_hint.jpg" alt="Visual hint overlaid on the full frame" />
-          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在原始画面上增加用于引导注意区域的视觉标记。具体提示生成方式将在后续消融部分进一步核对。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在完整画面上叠加区域提示后提交。提示框的具体生成方式将另文核对。</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_hand_crop.jpg" alt="Local crop around the indicated hand region" />
-          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部区域裁剪</strong>：根据视觉提示选取局部区域，仅将裁剪后的图像提交给模型；它与在完整画面上保留提示标记是两种不同输入。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部裁剪</strong>：只把提示区域裁出后提交；与在完整画面上保留提示是两种不同输入。</figcaption>
         </figure>
       </div>
       <p class="plain muted" data-i18n-html data-i18n="world.zoo.note">
-        以上示例仅说明六类输入的组织形式；对应实验结果见 <a href="#story">§7.2</a>。
+        以上示例只说明输入组织形式；对应实验结果见 <a href="#story">§7.2</a>。
       </p>
 
       <h3 data-i18n="world.h3.gepa">「GEPA-derived prompt」在本文里指什么</h3>
@@ -715,7 +723,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-12"></script>
+  <script src="js/i18n.js?v=20260810-13"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
