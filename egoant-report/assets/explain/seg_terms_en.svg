@@ -1,47 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 600" role="img" aria-labelledby="t d">
-  <title id="t">Segmentation terminology diagram</title>
-  <desc id="d">One timeline comparing reference segments, whole-episode coarse cuts, S1 denser cuts, and S2 local refinement, annotated with time window, pad=0, and full-cover.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 500" role="img" aria-labelledby="t d">
+  <title id="t">From whole-episode coarse segmentation to local refinement</title>
+  <desc id="d">Processing order from human reference through whole-episode coarse segmentation and local-window selection to S2 local refinement.</desc>
   <defs><style>
-      .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}
-      .gold{fill:#f0c94d}.coarse{fill:#9aa0a6}.frag{fill:#c45c26;opacity:.75}.good{fill:#2f6f66}
-      .win{fill:#2f6f66;opacity:.10}.winline{stroke:#2f6f66;stroke-width:3;stroke-dasharray:7 5}
-      .box{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}
-      .txt{font:16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}.mono{font:14px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}
-    </style></defs>
-  <rect width="1120" height="600" rx="18" class="bg"/>
-  <text x="42" y="48" class="txt label ink">Every segmentation term on one timeline</text>
-  <text x="42" y="76" class="txt muted">The same 40-second episode, cut four different ways.</text>
-  <rect x="432.2" y="360" width="263.2" height="48" rx="8" class="win"/>
-  <path d="M432.2 360v48M695.5 360v48" class="winline"/>
-  <text x="42" y="155" class="txt label ink">Reference</text>
-    <rect x="250.0" y="132" width="179.2" height="34" rx="6" class="gold"/>
-    <rect x="432.2" y="132" width="118.5" height="34" rx="6" class="gold"/>
-    <rect x="553.8" y="132" width="138.8" height="34" rx="6" class="gold"/>
-    <rect x="695.5" y="132" width="179.2" height="34" rx="6" class="gold"/>
-    <rect x="877.8" y="132" width="179.2" height="34" rx="6" class="gold"/>
-  <text x="250" y="118" class="txt small muted">Complete actions, annotated by hand</text>
-  <text x="42" y="233" class="txt label ink">Whole-episode coarse</text>
-    <rect x="250.0" y="210" width="300.8" height="34" rx="6" class="coarse"/>
-    <rect x="553.8" y="210" width="503.2" height="34" rx="6" class="coarse"/>
-  <text x="250" y="196" class="txt small muted">One call for the whole episode: few fake bounds, too coarse</text>
-  <text x="42" y="311" class="txt label ink">S1 denser cuts</text>
-    <rect x="250.0" y="288" width="78.0" height="34" rx="6" class="frag"/>
-    <rect x="331.0" y="288" width="98.2" height="34" rx="6" class="frag"/>
-    <rect x="432.2" y="288" width="57.8" height="34" rx="6" class="frag"/>
-    <rect x="493.0" y="288" width="57.8" height="34" rx="6" class="frag"/>
-    <rect x="553.8" y="288" width="57.8" height="34" rx="6" class="frag"/>
-    <rect x="614.5" y="288" width="78.0" height="34" rx="6" class="frag"/>
-    <rect x="695.5" y="288" width="78.0" height="34" rx="6" class="frag"/>
-    <rect x="776.5" y="288" width="98.2" height="34" rx="6" class="frag"/>
-    <rect x="877.8" y="288" width="78.0" height="34" rx="6" class="frag"/>
-    <rect x="958.8" y="288" width="98.2" height="34" rx="6" class="frag"/>
-  <text x="250" y="274" class="txt small muted">More cuts to lift recall: recall rises, segments fragment</text>
-  <text x="42" y="389" class="txt label ink">S2 local refine</text>
-    <rect x="250.0" y="366" width="179.2" height="34" rx="6" class="coarse"/>
-    <rect x="432.2" y="366" width="118.5" height="34" rx="6" class="good"/>
-    <rect x="553.8" y="366" width="138.8" height="34" rx="6" class="good"/>
-    <rect x="695.5" y="366" width="361.5" height="34" rx="6" class="coarse"/>
-  <text x="250" y="352" class="txt small muted">Re-cut once, inside a window near a coarse boundary</text>
+    .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}
+    .gold{fill:#f0c94d}.coarse{fill:#9aa0a6}.good{fill:#2f6f66}
+    .win{fill:#2f6f66;opacity:.10}.winline{stroke:#2f6f66;stroke-width:3;stroke-dasharray:7 5}
+    .txt{font:16px "IBM Plex Sans",Arial,sans-serif}.mono{font:14px "IBM Plex Mono",monospace}
+    .small{font-size:13px}.label{font-weight:700}
+  </style></defs>
+  <rect width="1120" height="500" rx="18" class="bg"/>
+  <text x="42" y="46" class="txt label ink">From whole-episode coarse segmentation to local refinement</text>
+  <text x="42" y="74" class="txt muted">Yellow is the human reference; gray is the initial result; green is re-estimated inside the local window.</text>
+
+  <text x="42" y="140" class="txt label ink">Reference (eval only)</text>
+  <text x="250" y="108" class="txt small muted">Yellow blocks = complete actions annotated by humans</text>
+  <rect x="250" y="118" width="179" height="34" rx="6" class="gold"/>
+  <rect x="432" y="118" width="119" height="34" rx="6" class="gold"/>
+  <rect x="554" y="118" width="139" height="34" rx="6" class="gold"/>
+  <rect x="696" y="118" width="179" height="34" rx="6" class="gold"/>
+  <rect x="878" y="118" width="179" height="34" rx="6" class="gold"/>
+
+  <text x="42" y="222" class="txt label ink">① Whole-episode pass</text>
+  <text x="250" y="190" class="txt small muted">All timestamped grids → one model call → initial segments</text>
+  <rect x="250" y="200" width="301" height="34" rx="6" class="coarse"/>
+  <rect x="554" y="200" width="503" height="34" rx="6" class="coarse"/>
+
+  <text x="42" y="304" class="txt label ink">② Select a window</text>
+  <text x="250" y="272" class="txt small muted">Choose a short interval around one coarse boundary (green dashed lines)</text>
+  <rect x="250" y="282" width="301" height="34" rx="6" class="coarse"/>
+  <rect x="554" y="282" width="503" height="34" rx="6" class="coarse"/>
+  <rect x="432" y="276" width="264" height="46" rx="8" class="win"/>
+  <path d="M432 276v46M696 276v46" class="winline"/>
+
+  <text x="42" y="386" class="txt label ink">③ S2 local refine</text>
+  <text x="250" y="354" class="txt small muted">The model re-estimates action boundaries only inside the window</text>
+  <rect x="250" y="364" width="179" height="34" rx="6" class="coarse"/>
+  <rect x="432" y="364" width="119" height="34" rx="6" class="good"/>
+  <rect x="554" y="364" width="139" height="34" rx="6" class="good"/>
+  <rect x="696" y="364" width="361" height="34" rx="6" class="coarse"/>
+  <path d="M432 358v46M696 358v46" class="winline"/>
+
   <line x1="250" y1="430" x2="1060" y2="430" class="axis"/>
   <text x="242" y="452" class="mono small muted">0</text>
   <text x="444" y="452" class="mono small muted">10</text>
@@ -49,8 +47,4 @@
   <text x="850" y="452" class="mono small muted">30</text>
   <text x="1052" y="452" class="mono small muted">40</text>
   <text x="1000" y="420" class="txt small muted">Time (s)</text>
-  <rect x="42" y="470" width="1036" height="94" rx="14" class="box"/>
-  <text x="72" y="500" class="txt small ink">Time window (here 9–22s)</text>
-  <text x="72" y="526" class="txt small ink">pad=0: no pad-out, neighbouring actions stay out of view</text>
-  <text x="72" y="552" class="txt small ink">full-cover: every completed action visible in the window must be cut</text>
 </svg>

@@ -390,6 +390,13 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 #world p {
   text-wrap: pretty;
 }
+#terms p,
+#terms li {
+  text-wrap: pretty;
+}
+.term-list li {
+  margin-bottom: 0.55rem;
+}
 .metric-snap {
   margin: 1.1rem 0 1.4rem;
 }
