@@ -1072,13 +1072,14 @@ pre.formula {
   border: 1px solid var(--line);
   border-radius: 14px;
 }
-.input-zoo .figure > img {
+.input-zoo .figure img {
   display: block;
   width: 100%;
   height: auto;
   background: transparent;
   border: 0;
   border-radius: 0;
+  box-shadow: none;
   object-fit: contain;
 }
 .input-zoo figcaption {
@@ -1092,13 +1093,9 @@ pre.formula {
   gap: 1rem;
   align-items: start;
 }
-.input-zoo-pair .figure > img {
-  width: 100%;
-  height: auto;
-  max-height: none;
+.input-zoo-pair .figure img {
   object-fit: cover;
   aspect-ratio: 5 / 3;
-  background: transparent;
 }
 
 /* Flat three-frame strip for raw / neighbor samples */
@@ -1113,14 +1110,9 @@ pre.formula {
   gap: 0.35rem;
   min-width: 0;
 }
-.frame-cell img {
-  display: block;
-  width: 100%;
+.input-zoo .frame-cell img {
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
 }
 .frame-label {
   text-align: center;
