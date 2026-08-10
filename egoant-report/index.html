@@ -149,7 +149,7 @@
       </p>
 
       <h3 data-i18n="eval.h3.metrics">三种分数分别测试什么能力</h3>
-      <p class="plain" data-i18n-html data-i18n="metrics.lead">三类分数依次回答三个问题：<strong>边界切得是否准确</strong>、<strong>边界给定后描述是否正确</strong>，以及<strong>从原视频出发能否同时完成分段与描述</strong>。公式汇总见 <a href="#app-metrics">附录 A</a>。</p>
+      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种分数依次衡量：<strong>时间边界是否准确</strong>、<strong>给定边界后的描述是否正确</strong>，以及<strong>端到端分段与标注的整体表现</strong>。公式汇总见 <a href="#app-metrics">附录 A</a>。</p>
       <ol>
         <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1（分段得分）</strong>：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
         <li data-i18n-html data-i18n="metrics.li2"><strong>Label Acc（固定分段标注得分）</strong>：直接使用人工边界，不让模型预测时间，只判断每个片段的描述是否与人工描述表达同一个完成动作。</li>
@@ -711,7 +711,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-1"></script>
+  <script src="js/i18n.js?v=20260810-2"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
