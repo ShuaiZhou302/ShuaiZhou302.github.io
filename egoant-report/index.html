@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260810-10" />
+  <link rel="stylesheet" href="css/report.css?v=20260810-11" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -210,7 +210,7 @@
       <h2 data-i18n="terms.h2">3. 术语约定与输入形式</h2>
       <h3 data-i18n="world.h3.terms">视频分段常用术语</h3>
       <figure class="figure">
-        <img src="assets/explain/seg_terms_zh.svg?v=20260810-1" data-i18n-src="fig.src.segterms" alt="Segmentation terminology on one timeline" />
+        <img src="assets/explain/seg_terms_zh.svg?v=20260810-2" data-i18n-src="fig.src.segterms" alt="Segmentation terminology on one timeline" />
         <figcaption data-i18n="world.terms.figcap">图中按处理顺序展示：人工参考仅用于评测；模型先对完整视频做一次粗分，再选取一个局部时间窗口，并在窗口内执行 S2 局部精修。</figcaption>
       </figure>
       <ul class="term-list">
@@ -226,34 +226,38 @@
         <li data-i18n-html data-i18n="world.term.10"><strong>语义评判模型（judge）</strong>：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。</li>
         <li data-i18n-html data-i18n="world.term.11"><strong>HaWoR</strong><sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
       </ul>
-      <h3 data-i18n="world.h3.inputs">五种容易混淆的视觉输入</h3>
+      <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
-        后文反复出现 contact sheet、temporal collage、邻段 sheet、proxy overlay、手部裁剪这几个词，它们的差别只有看图才说得清。下面是同一段视频、同一个动作（homer_4 第 22.9–26.8 秒，「拉开床头柜抽屉」）分别渲染成五种输入的样子，参数与管线一致。
+        后续实验使用六类视觉输入：原始帧、时序拼贴图、带时间戳的拼贴图、相邻片段拼贴图、视觉提示叠加和手部区域裁剪。下图使用同一视频片段（homer_4 第 22.9–26.8 秒，“拉开床头柜抽屉”）展示它们在图像组织方式和上下文范围上的差别。
       </p>
       <div class="input-zoo">
-        <figure class="figure">
+        <figure class="figure input-wide">
           <img src="assets/explain/inputs/input_raw.jpg" alt="Three whole frames sampled inside one segment" />
-          <figcaption data-i18n-html data-i18n="world.zoo.raw"><strong>raw 原始帧</strong>：在片段内均匀抽 3 帧，作为 3 张<em>独立</em>图片提交。固定边界标注的默认输入，也是本文准确率最高的一种（55.7%）。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.raw"><strong>原始帧</strong>：在目标片段内均匀抽取 3 帧，以 3 张独立图片的形式提交给模型。</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_collage.jpg" alt="The same frames tiled into a single image" />
-          <figcaption data-i18n-html data-i18n="world.zoo.collage"><strong>temporal collage 时间拼贴</strong>：同样几帧，但拼成<em>一张</em>图一次性给模型。省 token，画面里仍只有当前这一个动作。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.collage"><strong>时序拼贴图</strong>：将目标片段内按时间顺序抽取的多帧图像拼成一张网格图，再作为单张图片提交。</figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_contact_sheet.jpg" alt="Contact sheet with yellow timestamps" />
-          <figcaption data-i18n-html data-i18n="world.zoo.contact"><strong>contact sheet</strong>：每 0.5 秒一帧、缩到 224×144、20 格一张，格子左上打<em>黄色时间戳</em>，一张覆盖约 10 秒。这是分段用的输入，也是本文收益最大的那处改动。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.contact"><strong>带时间戳的拼贴图</strong>：每 0.5 秒抽取一帧，缩放至 224×144，每 20 帧组成一张网格图，并在每格左上角标注黄色时间戳；一张图约覆盖 10 秒。</figcaption>
         </figure>
-        <figure class="figure">
+        <figure class="figure input-wide">
           <img src="assets/explain/inputs/input_neighbor.jpg" alt="Previous, current, and next segment frames" />
-          <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>邻段 sheet</strong>：把上一段（灰条）、当前段（绿条）、下一段（灰条）一起给模型。上下文更多，但模型经常把邻段的动作写进当前描述。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>相邻片段拼贴图</strong>：同时排列前一片段、当前片段和后一片段的抽样帧，并用底部色条标出三者范围。</figcaption>
         </figure>
         <figure class="figure">
-          <img src="assets/explain/inputs/input_proxy_overlay.jpg" alt="Heuristic centre box and the resulting crop" />
-          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>proxy overlay 与手部裁剪</strong>：左边在画面中心偏下画一个<em>固定</em>方框（启发式猜测，不是手部检测），右边是裁出后真正送进模型的图。真正依据 HaWoR 腕部轨迹的裁剪见 <a href="#app-visual">附录 E</a>。</figcaption>
+          <img src="assets/explain/inputs/input_visual_hint.jpg" alt="Visual hint overlaid on the full frame" />
+          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在原始画面上增加用于引导注意区域的视觉标记。具体提示生成方式将在后续消融部分进一步核对。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="assets/explain/inputs/input_hand_crop.jpg" alt="Local crop around the indicated hand region" />
+          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部区域裁剪</strong>：根据视觉提示选取局部区域，仅将裁剪后的图像提交给模型；它与在完整画面上保留提示标记是两种不同输入。</figcaption>
         </figure>
       </div>
       <p class="plain muted" data-i18n-html data-i18n="world.zoo.note">
-        以上五张按管线参数重新渲染，用于说明差别本身。在固定边界的标注实验里，除 contact sheet 只用于分段外，其余四种都低于 raw；数字见 <a href="#story">§7.2</a>。
+        以上示例仅说明六类输入的组织形式；对应实验结果见 <a href="#story">§7.2</a>。
       </p>
 
       <h3 data-i18n="world.h3.gepa">「GEPA-derived prompt」在本文里指什么</h3>
@@ -711,7 +715,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-9"></script>
+  <script src="js/i18n.js?v=20260810-11"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>

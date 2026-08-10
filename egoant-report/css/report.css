@@ -1058,7 +1058,7 @@ pre.formula {
   color: var(--muted);
 }
 
-/* Visual-input comparison gallery (§2): five real renders of the same moment */
+/* Visual-input comparison gallery: six renders of the same moment */
 .input-zoo {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1067,8 +1067,13 @@ pre.formula {
 }
 .input-zoo .figure { margin: 0; }
 .input-zoo .figure img { background: var(--card); }
-.input-zoo .figure:nth-child(3) { grid-column: 1 / -1; }
+.input-zoo .input-wide { grid-column: 1 / -1; }
+.input-zoo .figure:not(.input-wide) img {
+  height: 220px;
+  object-fit: contain;
+}
 @media (max-width: 700px) {
   .input-zoo { grid-template-columns: 1fr; }
-  .input-zoo .figure:nth-child(3) { grid-column: auto; }
+  .input-zoo .input-wide { grid-column: auto; }
+  .input-zoo .figure:not(.input-wide) img { height: auto; }
 }
