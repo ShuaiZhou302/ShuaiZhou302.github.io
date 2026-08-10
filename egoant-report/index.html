@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260805-2" />
+  <link rel="stylesheet" href="css/report.css?v=20260810-5" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -192,56 +192,18 @@
 
       <h3 data-i18n="world.h3.scale">Scale Labs：已切好的 clip 上的稠密描述</h3>
       <p data-i18n-html data-i18n="world.p.scale">
-        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论在<strong>已经切分好的 clip</strong> 上生成稠密描述。其核心工程贡献之一是用 <strong>contact sheet 辅助标注</strong>：将多个稳定抽样帧拼成一张网格图，并结合时间信息提供紧凑的片段表示，从而减少逐帧输入的开销。该设计直接启发了本文的视觉输入形式；但它默认边界已经给定，不涉及从原始长视频中预测动作边界。
+        Scale Labs 的 <a href="https://labs.scale.com/blog/path-to-large-scale-dense-video-captioning" target="_blank" rel="noopener">The Path to Large Scale Dense Video Captioning</a><sup class="cite"><a class="cite-ref" href="#ref-scale">4</a></sup> 讨论在<strong>已经切分好的 clip</strong> 上生成稠密描述。其核心工程贡献之一是用 <strong>contact sheet 辅助标注</strong>：将多个稳定抽样帧拼成一张网格图，并结合时间信息提供紧凑的片段表示，从而减少逐帧输入的开销。该设计直接启发了本文的视觉输入形式。不过，该工作默认时间边界已经给定，因此没有涉及从完整长视频中定位动作起止这一更前置的分段问题。
       </p>
 
-      <h3 data-i18n="world.h3.md">Macrodata / WGO-Bench：把子任务标注变成一个可以打分的公开问题</h3>
+      <h3 data-i18n="world.h3.md">Macrodata Labs / WGO-Bench：完整流程与公开评测</h3>
       <p data-i18n-html data-i18n="world.p.md">
-        <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata · Annotating Robot Video Subtasks</a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup>
-        是目前最系统的公开工作：它把「长视频 → 动作级片段 + 短语义描述」定义成可打分的公开问题，发布了 WGO-Bench 与三类分数（分段、固定边界标注、端到端都有报告），给出了 contact sheet 一类的视觉输入设计和用 GEPA 搜索得到的分段 prompt，并在多个闭源与开源模型上做了对照。
-        它留下的空白与我们直接相关：各种 trick 的收益主要是在强模型（Gemini）上测出来的，报告没有回答<strong>预算有限、只能用开源模型时应该加哪些 trick</strong>——而这恰恰是我们要标几千小时视频时的真实约束。本文可以看作在这个约束下对它的一次补充。
+        Macrodata Labs 的 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener"><em>Segmenting Robot Video into Actionable Subtasks</em></a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup> 是目前最系统的公开工作：它将「长视频 → 动作级片段 + 短语义描述」定义为可量化评测的任务，发布 WGO-Bench 及分段、固定边界标注和端到端三类指标，给出 contact sheet 与 GEPA 搜索分段规则等设计，并比较多个闭源和开源模型。与本文直接相关的不足是，各项设计的主要收益多在 Gemini 等强闭源模型上验证，尚未系统回答<strong>仅使用开放权重模型时，哪些设计仍然有效</strong>。
       </p>
 
-      <h3 data-i18n="world.h3.egoant">EgoANT 的最终管线与模型分工</h3>
+      <h3 data-i18n="world.h3.egoant">EgoANT</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
-        本文最终采用一条以视觉语言模型为核心的自动标注管线：<strong>带时间戳的 contact sheets → Qwen3.6-27B 分段 → 在预测边界上生成操作描述 → 可选的多候选判别</strong>。腕速规则方法仅作为分段消融与对照，不构成另一条 EgoANT 管线。
+        EgoANT 承接了上述工作的有效设计，同时针对尚未覆盖的问题展开：采用 Scale Labs 的 contact sheet 作为紧凑视觉表示，复用 Macrodata Labs 公开的 completed-event 分段规则，并使用 WGO-Bench 作为实验协议。在此基础上，本文构建仅依赖开放权重 Qwen 模型的完整「长视频 → 动作边界 + 操作描述」流程。与固定时长或腕速规则相比，EgoANT 让模型依据语义完整的动作预测边界；与只处理预切 clip 的方案相比，它从原始长视频开始；相较 Macrodata Labs 以强闭源模型为主的实验，本文重点检验这些设计在开放权重模型下是否仍然有效。后续章节将依次介绍输入形式、分段方法和标注路径。
       </p>
-      <p data-i18n-html data-i18n="world.p.models">
-        生成与评测的角色分工如下：Qwen3.6-27B 负责分段，也可生成部分候选描述；Qwen3.5-397B-A17B 负责生成候选描述并由候选判别器选出定稿；Gemini-3.5-Flash 仅在离线评测时判断描述与人工标注是否语义一致，不参与边界预测、描述生成或候选选择。
-      </p>
-      <div style="overflow-x:auto">
-        <table class="role-table">
-          <thead>
-            <tr>
-              <th data-i18n="role.th.role">角色</th>
-              <th data-i18n="role.th.model">模型</th>
-              <th data-i18n="role.th.use">在本文中的作用</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-i18n="role.segmenter">分段模型</td>
-              <td>Qwen3.6-27B</td>
-              <td data-i18n="role.segmenter.use">预测片段的时间边界</td>
-            </tr>
-            <tr>
-              <td data-i18n="role.captioner">描述生成模型</td>
-              <td>Qwen3.6-27B / Qwen3.5-397B-A17B</td>
-              <td data-i18n="role.captioner.use">为每个片段生成候选描述</td>
-            </tr>
-            <tr>
-              <td data-i18n="role.selector">候选选择器（selector）</td>
-              <td>Qwen3.5-397B-A17B</td>
-              <td data-i18n="role.selector.use">从多条候选描述中选出定稿</td>
-            </tr>
-            <tr>
-              <td data-i18n="role.judge">语义评判模型（judge）</td>
-              <td>Gemini-3.5-Flash</td>
-              <td data-i18n="role.judge.use">离线计算 Label Acc 与 Semantic E2E F1</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
 
     <section id="terms">
@@ -307,6 +269,43 @@
         每张 sheet <strong>20 格（5×4）</strong>，格子上画<strong>黄色时间戳</strong>。
         一张 sheet 大约覆盖 10 秒；一集长视频会拆成多张 sheet。
       </p>
+      <h3 data-i18n="contact.h3.models">模型与处理阶段</h3>
+      <p data-i18n-html data-i18n="world.p.models">
+        生成与评测的角色分工如下：Qwen3.6-27B 负责分段，也可生成部分候选描述；Qwen3.5-397B-A17B 负责生成候选描述并由候选判别器选出定稿；Gemini-3.5-Flash 仅在离线评测时判断描述与人工标注是否语义一致，不参与边界预测、描述生成或候选选择。
+      </p>
+      <div style="overflow-x:auto">
+        <table class="role-table">
+          <thead>
+            <tr>
+              <th data-i18n="role.th.role">角色</th>
+              <th data-i18n="role.th.model">模型</th>
+              <th data-i18n="role.th.use">在本文中的作用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-i18n="role.segmenter">分段模型</td>
+              <td>Qwen3.6-27B</td>
+              <td data-i18n="role.segmenter.use">预测片段的时间边界</td>
+            </tr>
+            <tr>
+              <td data-i18n="role.captioner">描述生成模型</td>
+              <td>Qwen3.6-27B / Qwen3.5-397B-A17B</td>
+              <td data-i18n="role.captioner.use">为每个片段生成候选描述</td>
+            </tr>
+            <tr>
+              <td data-i18n="role.selector">候选选择器（selector）</td>
+              <td>Qwen3.5-397B-A17B</td>
+              <td data-i18n="role.selector.use">从多条候选描述中选出定稿</td>
+            </tr>
+            <tr>
+              <td data-i18n="role.judge">语义评判模型（judge）</td>
+              <td>Gemini-3.5-Flash</td>
+              <td data-i18n="role.judge.use">离线计算 Label Acc 与 Semantic E2E F1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="gallery">
         <figure class="figure">
           <img src="assets/homer4/contact_sheet_example.jpg" alt="uniform contact sheet example" />
@@ -709,7 +708,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-4"></script>
+  <script src="js/i18n.js?v=20260810-5"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
