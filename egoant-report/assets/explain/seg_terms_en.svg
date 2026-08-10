@@ -33,7 +33,7 @@
   <path d="M432 276v46M696 276v46" class="winline"/>
 
   <text x="42" y="386" class="txt label ink">③ S2 local refine</text>
-  <text x="250" y="354" class="txt small muted">The model re-estimates action boundaries only inside the window</text>
+  <text x="250" y="354" class="txt small muted">Still one window; green bars are re-cut segments inside it, not two windows</text>
   <rect x="250" y="364" width="179" height="34" rx="6" class="coarse"/>
   <rect x="432" y="364" width="119" height="34" rx="6" class="good"/>
   <rect x="554" y="364" width="139" height="34" rx="6" class="good"/>

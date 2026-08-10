@@ -33,7 +33,7 @@
   <path d="M432 276v46M696 276v46" class="winline"/>
 
   <text x="42" y="386" class="txt label ink">③ S2 局部精修</text>
-  <text x="250" y="354" class="txt small muted">模型只在窗口内重新判断动作边界</text>
+  <text x="250" y="354" class="txt small muted">仍是同一个窗口；绿色块是窗口内重切后的片段，不是两个窗口</text>
   <rect x="250" y="364" width="179" height="34" rx="6" class="coarse"/>
   <rect x="432" y="364" width="119" height="34" rx="6" class="good"/>
   <rect x="554" y="364" width="139" height="34" rx="6" class="good"/>
