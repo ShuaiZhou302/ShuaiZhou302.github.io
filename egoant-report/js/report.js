@@ -474,9 +474,9 @@
     s2_pad2_27b: { en: { goal: "Test 2.0s pad-out.", how: "Add 2.0 seconds of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1436", verdict: "This setting is below pad=0." } },
     s2_midpoint_post: { en: { goal: "Compare scripted coverage with a prompt constraint.", how: "Apply midpoint full-cover postprocessing after pad=0 predictions.", input: "predicted boundaries", result: "Segment F1 0.1635", verdict: "This postprocess is below putting full-cover directly in the prompt." } },
     s2_fullcover_qwen36: { en: { goal: "Refine local windows while covering completed actions.", how: "Use local timestamped contact sheets, pad=0, and a full-cover prompt after coarse segmentation.", input: "local timestamped contact sheets plus coarse-bound hints", result: "Segment F1 0.2031; 308 predictions", verdict: "Highest Segment F1 among evaluated segmentation settings." } },
-    merge_exact: { en: { goal: "Test adjacent identical-label merging.", how: "Merge adjacent predictions whose labels are exactly identical.", input: "S2 full-cover predictions", result: "Segment F1 0.1987", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
-    merge_verb: { en: { goal: "Test adjacent verb/object merging.", how: "Parse approximate verb/object matches and merge adjacent spans.", input: "S2 full-cover predictions", result: "Segment F1 0.1947", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
-    merge_bridge: { en: { goal: "Test short-gap bridge merging.", how: "Allow short temporal gaps before merging adjacent spans.", input: "S2 full-cover predictions", result: "Segment F1 0.1883", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
+    merge_exact: { en: { goal: "Test whether adjacent predictions with the same label should be merged.", how: "Scan time-sorted S2 predictions and merge neighboring spans only when their normalized subtask labels are identical. This is a JSON postprocess, not another model call.", input: "S2 full-cover predictions: start_sec, end_sec, subtask", result: "Segment F1 0.1987", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
+    merge_verb: { en: { goal: "Test whether adjacent predictions that describe the same verb/object should be merged.", how: "Extract approximate action verbs and salient objects from neighboring subtask strings, then merge compatible neighbors. This does not inspect video frames or gold annotations.", input: "S2 full-cover predictions: start_sec, end_sec, subtask", result: "Segment F1 0.1947", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
+    merge_bridge: { en: { goal: "Test whether very short temporal gaps should be bridged before merging.", how: "Treat very short gaps between neighboring S2 predictions as continuous, then apply label or verb/object compatibility before merging.", input: "S2 full-cover predictions: start_sec, end_sec, subtask", result: "Segment F1 0.1883", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
     raw_27b: { en: { goal: "Evaluate 27B labeling under fixed reference boundaries.", how: "Sample raw frames from each reference segment, label with Qwen3.6-27B, and score with Gemini-3.5-Flash.", input: "raw frames", result: "Label Acc 55.7%", verdict: "Highest observed value in the fixed-reference-boundary diagnostic setting." } },
     temporal_collage_27b: { en: { goal: "Evaluate past/current/future context with 27B.", how: "Build temporal collages for fixed reference segments and label with Qwen3.6-27B.", input: "temporal collage", result: "Label Acc 52.8%", verdict: "Below raw 27B." } },
     overlay_27b: { en: { goal: "Evaluate heuristic overlay cues with 27B.", how: "Draw optical-flow or heuristic visual marks on raw frames before labeling.", input: "proxy overlay frames", result: "Label Acc 50.6%", verdict: "Below raw 27B." } },
@@ -1614,9 +1614,9 @@
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "测试基于相同标签的相邻片段合并。",
-        "how": "相邻且标签完全相同时合并。",
-        "input": "S2 full-cover 预测",
+        "goal": "测试标签相同的相邻预测段是否应被合并。",
+        "how": "按时间顺序扫描 S2 预测段；只有相邻段的 subtask 规范化后完全一致时才合并。这是预测 JSON 后处理，不是新的模型调用。",
+        "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1987",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
@@ -1634,9 +1634,9 @@
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "测试基于近似动词/物体匹配的相邻片段合并。",
-        "how": "解析近似 verb/object 后合并相邻片段。",
-        "input": "S2 full-cover 预测",
+        "goal": "测试描述同一动词/物体的相邻预测段是否应被合并。",
+        "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。该步骤不看视频帧，也不读取人工 gold。",
+        "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1947",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
@@ -1654,9 +1654,9 @@
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "测试允许短时间间隔桥接的相邻片段合并。",
-        "how": "允许短间隙桥接后合并片段。",
-        "input": "S2 full-cover 预测",
+        "goal": "测试合并前先桥接很短时间空隙是否有帮助。",
+        "how": "把相邻 S2 预测段之间的很短空隙视作连续，再按标签或动词/物体兼容规则尝试合并。",
+        "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1883",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }

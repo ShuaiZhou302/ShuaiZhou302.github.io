@@ -355,9 +355,9 @@
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "测试基于相同标签的相邻片段合并。",
-        "how": "相邻且标签完全相同时合并。",
-        "input": "S2 full-cover 预测",
+        "goal": "测试标签相同的相邻预测段是否应被合并。",
+        "how": "按时间顺序扫描 S2 预测段；只有相邻段的 subtask 规范化后完全一致时才合并。这是预测 JSON 后处理，不是新的模型调用。",
+        "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1987",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
@@ -375,9 +375,9 @@
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "测试基于近似动词/物体匹配的相邻片段合并。",
-        "how": "解析近似 verb/object 后合并相邻片段。",
-        "input": "S2 full-cover 预测",
+        "goal": "测试描述同一动词/物体的相邻预测段是否应被合并。",
+        "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。该步骤不看视频帧，也不读取人工 gold。",
+        "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1947",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
@@ -395,9 +395,9 @@
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
-        "goal": "测试允许短时间间隔桥接的相邻片段合并。",
-        "how": "允许短间隙桥接后合并片段。",
-        "input": "S2 full-cover 预测",
+        "goal": "测试合并前先桥接很短时间空隙是否有帮助。",
+        "how": "把相邻 S2 预测段之间的很短空隙视作连续，再按标签或动词/物体兼容规则尝试合并。",
+        "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1883",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
       }
