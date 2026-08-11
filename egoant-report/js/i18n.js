@@ -222,7 +222,7 @@
       "metrics.h3.seg": "视频分段得分例子",
       "metrics.h3.label": "固定分段标注得分例子",
       "metrics.h3.e2e": "端到端整流程得分例子",
-      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href=\"#app-prompts\">附录 B</a>。",
+      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判提示词见 <a href=\"#app-prompts\">附录 B</a>。",
       "metrics.e2e.example": "仍用上述预测的 4 个片段及其描述。时间匹配先得到 P<sub>0</sub>–G<sub>0</sub> 与 P<sub>1</sub>–G<sub>1</sub>；若语义评判只有 P<sub>0</sub>–G<sub>0</sub> 返回 <code>true</code>，则最终正确结果数 s = 1。",
       "toy.lane.gold": "参考（人工标注）",
       "toy.lane.pred": "预测（首尾对齐后）",
@@ -256,7 +256,7 @@
       "walk.s1.p": "参数与术语约定中的拼贴图一致。模型后续只看这些带时间戳的拼图，而不是原始 MP4 字节流。",
       "walk.s1.note": "下方为首张拼贴图示例（同参数）。",
       "walk.s2.t": "粗分：整集一次 + 切段规则清单",
-      "walk.s2.p": "把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>（GEPA 搜索得到的英文规则：只标完成事件、偏好约 2–10 秒等——见 <a href=\"#term-gepa\">术语 · GEPA</a>）。这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。",
+      "walk.s2.p": "把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>（GEPA 搜索得到的英语规则：只标完成事件、偏好约 2–10 秒等——见 <a href=\"#term-gepa\">术语 · GEPA</a>）。这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。",
       "walk.s3.t": "局部再切一遍：窗口不外扩，盖住完整动作",
       "walk.s3.p": "在粗边界附近开一个<strong>短时间窗</strong>，用<strong>同一版式</strong>的 sheet 再切一次。<strong>窗口不外扩</strong>表示只使用粗边界内部的视觉上下文；<strong>盖住完整动作</strong>表示窗口内可见的完成动作都应被覆盖，同时避免不完整微动作片段。（技术名：S2 · pad=0 · full-cover）",
       "walk.s3.cap": "局部时间窗 contact sheet（第二遍精修输入）。",
@@ -777,7 +777,7 @@
         <li><a href="#term-gepa">GEPA 切段规则</a></li>
         <li><a href="#walk-3">S2 full-cover</a></li>
         <li><a href="#walk-4">Labeling</a></li>
-        <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="#walk-5">本文实际使用的评判 prompt</a></li>
+        <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="#walk-5">本文实际使用的评判提示词</a></li>
         <li><a href="#walk-5">Candidate selector</a></li>
       </ul>
 

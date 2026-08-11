@@ -197,7 +197,7 @@
       </div>
       <h3 data-i18n="metrics.h3.label">固定分段标注得分例子</h3>
       <div class="metric-example-card">
-        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 B</a>。</p>
+        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判提示词见 <a href="#app-prompts">附录 B</a>。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.label.formula">固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%</div>
       </div>
       <h3 data-i18n="metrics.h3.e2e">端到端整流程得分例子</h3>
@@ -634,7 +634,7 @@ def compatible(a, b, strategy):
           <div class="step-h"><span class="badge">02</span><h3 class="step-title" data-i18n="walk.s2.t">粗分：整集一次 + 切段规则清单</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s2.p">
             把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>
-            （GEPA 搜索得到的英文规则：只标完成事件、偏好约 2–10 秒等——见 <a href="#term-gepa">术语 · GEPA</a>）。
+            （GEPA 搜索得到的英语规则：只标完成事件、偏好约 2–10 秒等——见 <a href="#term-gepa">术语 · GEPA</a>）。
             这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。
           </p>
         </article>
