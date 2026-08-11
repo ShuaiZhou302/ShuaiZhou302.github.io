@@ -703,9 +703,31 @@ details.prompt-fold > summary::before {
   font-family: var(--mono);
 }
 details.prompt-fold[open] > summary::before { content: "▾ "; }
-details.prompt-fold .prompt-box { margin: 0; }
+details.prompt-fold .prompt-fold-body {
+  padding: 0 0.9rem 0.9rem;
+  border-top: 1px solid var(--line);
+}
+details.prompt-fold .prompt-note {
+  margin: 0.75rem 0 0.85rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+details.prompt-fold .prompt-sent-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.86rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+details.prompt-fold .prompt-box {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+}
 details.prompt-fold pre {
-  border-radius: 0 0 10px 10px;
+  border-radius: 0;
   margin: 0;
   max-height: 420px;
 }
