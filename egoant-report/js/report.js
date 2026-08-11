@@ -89,18 +89,18 @@
     "s2_full25_397b": {
       "zh": {
         "name": "S2 局部精修·窗外扩约 1 秒 · 397B",
-        "note": "窗外扩约 1 秒，未写入覆盖完整动作约束",
+        "note": "窗外扩约 1 秒，未加入完整动作覆盖提示词",
         "model": "Qwen3.5-397B"
       },
       "en": {
         "name": "S2 local refine · ≈1s pad-out · 397B",
-        "note": "About 1s pad-out; cover-full-actions not in prompt",
+        "note": "About 1s pad-out; no cover-full-actions prompt",
         "model": "Qwen3.5-397B"
       }
     },
     "s2_pad0_plain_27b": {
       "zh": {
-        "name": "S2 局部精修·窗口不外扩（未写入覆盖完整动作约束）· 27B",
+        "name": "S2 局部精修·窗口不外扩（未加入完整动作覆盖提示词）· 27B",
         "note": "窗口不外扩较好，但仍偏碎",
         "model": "Qwen3.6-27B"
       },
@@ -149,23 +149,23 @@
     "s2_midpoint_post": {
       "zh": {
         "name": "S2 局部精修·窗口不外扩 + 算法补覆盖 · 27B",
-        "note": "算法补覆盖不及提示词中的覆盖完整动作约束",
+        "note": "算法补覆盖不及完整动作覆盖提示词",
         "model": "Qwen3.6-27B"
       },
       "en": {
         "name": "S2 local refine · no pad-out + algorithmic cover · 27B",
-        "note": "Algorithmic cover underperforms prompt cover",
+        "note": "Algorithmic cover underperforms the cover-full-actions prompt",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_fullcover_qwen36": {
       "zh": {
-        "name": "S2 局部精修·窗口不外扩并覆盖完整动作 · 27B",
+        "name": "S2 局部精修·窗口不外扩 + 覆盖完整动作提示词 · 27B",
         "note": "已评测分段配置最高值",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 local refine · no pad-out + cover full actions · 27B",
+        "name": "S2 local refine · no pad-out + cover-full-actions prompt · 27B",
         "note": "Best segmentation so far",
         "model": "Qwen3.6-27B"
       }
@@ -1605,8 +1605,8 @@
       "id": "merge_exact",
       "name": "Postprocess: merge adjacent identical labels",
       "f1": 0.1987,
-      "p": 0.2525,
-      "r": 0.1638,
+      "p": null,
+      "r": null,
       "match": 77,
       "pred": 305,
       "gold": 470,
@@ -1625,8 +1625,8 @@
       "id": "merge_verb",
       "name": "Postprocess: merge adjacent verb/object matches",
       "f1": 0.1947,
-      "p": 0.2552,
-      "r": 0.1574,
+      "p": null,
+      "r": null,
       "match": 74,
       "pred": 290,
       "gold": 470,
@@ -1645,8 +1645,8 @@
       "id": "merge_bridge",
       "name": "Postprocess: bridge short gaps then merge",
       "f1": 0.1883,
-      "p": 0.2624,
-      "r": 0.1468,
+      "p": null,
+      "r": null,
       "match": 69,
       "pred": 263,
       "gold": 470,
