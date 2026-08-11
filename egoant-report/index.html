@@ -316,13 +316,30 @@
       </p>
       <p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
       <ol>
-        <li data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。</li>
+        <li>
+          <span data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。</span>
+          <details class="term-fold" id="app-prod">
+            <summary data-i18n="pipeline.wrist.fold">腕速基线管线示意</summary>
+            <div class="pipeline" data-i18n-html data-i18n="pipeline.wrist.steps">
+              <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → wrist 轨迹</div></div>
+              <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">腕速滤波</div></div>
+              <div class="step"><div class="n">03</div><div class="t">Cut</div><div class="d">速度 minima + 短段合并</div></div>
+              <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">段内 raw 抽帧写短句</div></div>
+              <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge → rewrite</div></div>
+            </div>
+            <figure class="figure">
+              <img src="assets/explain/wrist_speed_oversegmentation_zh.svg?v=20260811-26" data-i18n-src="fig.src.wrist" alt="Wrist-speed minima segmentation schematic" />
+              <figcaption data-i18n="pipeline.wrist.cap">这一版管线先用 HaWoR 重建左右手腕轨迹，再对腕速做平滑并在速度低谷切段。这个信号很有用，但停顿、微调、放手和收回也会形成低谷，所以容易把一个完成任务切成太多小段。</figcaption>
+            </figure>
+            <p data-i18n-html data-i18n="pipeline.wrist.note">VITRA 启发的是「先手部/运动信号，再 caption」的问题设定；本系统在这一版里用 HaWoR 腕速作为切段信号，不把 VITRA 当作后端模型。它的主要失败模式是<strong>过分割</strong>：动作中途的犹豫或微调在速度曲线上也像边界，后续 merge judge 虽可合并一部分，但在 WGO 的 IoU 口径下仍会拉低视频分段得分。</p>
+          </details>
+        </li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
         <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 D</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
         <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 D</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
-        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 B.2</a>。</li>
+        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 B</a>。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.seg">视频分段得分（Segment F1）</h4>
@@ -349,7 +366,7 @@
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
           <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
-          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 B.2</a>。</li>
+          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 B</a>。</li>
           <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
         </ol>
       </div>
