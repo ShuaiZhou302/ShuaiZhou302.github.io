@@ -4,7 +4,7 @@ Local follow-up for the video-segmentation section (§4.1, method 7).
 
 ## Current wording (already on main)
 - Method list now says: scripts on existing predictions → attached after
-  S2「窗口不外扩并覆盖完整动作」→ then the three merge rules.
+  S2「窗口不外扩 + 覆盖完整动作提示词」→ then the three merge rules.
 - Score-table / chart labels are prefixed with `S2 + 相邻片段规则合并`.
 
 ## Still needed
