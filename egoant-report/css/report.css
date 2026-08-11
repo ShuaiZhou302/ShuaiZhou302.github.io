@@ -1202,3 +1202,17 @@ ol > li > details.term-fold {
 @media (max-width: 1050px) {
   .pipeline.pipeline-4 { grid-template-columns: repeat(2, 1fr); }
 }
+
+
+details.term-fold pre.formula {
+  margin: 0.75rem 0 0.85rem;
+  max-height: 420px;
+  overflow: auto;
+}
+details.term-fold .plain ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.2rem;
+}
+details.term-fold .plain li {
+  margin: 0.35rem 0;
+}
