@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-3" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-5" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -45,12 +45,8 @@
         <a href="#evaluate" data-i18n="nav.evaluate">如何评估</a>
         <a href="#world" data-i18n="nav.world">相关工作</a>
         <a href="#terms" data-i18n="nav.terms">术语约定</a>
-        <a href="#contact" data-i18n="nav.contact">Contact sheet</a>
-        <a href="#boundary" data-i18n="nav.boundary">边界对照</a>
+        <a href="#pipeline" data-i18n="nav.pipeline">标注管线</a>
         <a href="#walk" data-i18n="nav.walk">样例</a>
-        <a href="#cost" data-i18n="nav.cost">成本</a>
-        <a href="#story" data-i18n="nav.story">消融</a>
-        <a href="#recipe" data-i18n="nav.recipe">推荐配置与使用边界</a>
         <a href="#appendix" data-i18n="nav.appendix">附录</a>
         <a href="#references" data-i18n="nav.references">参考文献</a>
       </div>
@@ -70,12 +66,8 @@
     <a href="#evaluate" data-toc="evaluate" data-i18n="nav.evaluate">如何评估</a>
     <a href="#world" data-toc="world" data-i18n="nav.world">相关工作</a>
     <a href="#terms" data-toc="terms" data-i18n="nav.terms">术语约定</a>
-    <a href="#contact" data-toc="contact" data-i18n="nav.contact">Contact sheet</a>
-    <a href="#boundary" data-toc="boundary" data-i18n="nav.boundary">边界对照</a>
+    <a href="#pipeline" data-toc="pipeline" data-i18n="nav.pipeline">标注管线</a>
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
-    <a href="#cost" data-toc="cost" data-i18n="nav.cost">成本</a>
-    <a href="#story" data-toc="story" data-i18n="nav.story">消融</a>
-    <a href="#recipe" data-toc="recipe" data-i18n="nav.recipe">推荐配置与使用边界</a>
     <a href="#appendix" data-toc="appendix" data-i18n="nav.appendix">附录</a>
     <a href="#references" data-toc="references" data-i18n="nav.references">参考文献</a>
   </aside>
@@ -289,14 +281,19 @@
       </p>
     </section>
 
-    <section id="contact">
-      <h2 data-i18n="contact.h2">4. Contact-sheet 视觉输入</h2>
-      <p data-i18n-html data-i18n="contact.p">
-        我们不把整段 MP4 作为视觉输入直接提交给模型，而是每隔 <strong>0.5 秒</strong>抽一帧，缩到约 <strong>224×144</strong>，
-        每张 sheet <strong>20 格（5×4）</strong>，格子上画<strong>黄色时间戳</strong>。
-        一张 sheet 大约覆盖 10 秒；一集长视频会拆成多张 sheet。
+    
+    <section id="pipeline">
+      <h2 data-i18n="pipeline.h2">4. 标注管线流程</h2>
+      <p data-i18n-html data-i18n="pipeline.lead">
+        本节按管线顺序说明：先分段、再标注，最后看端到端串联结果。每个阶段先交代尝试过的方法，再给出对应实验结果；读完即可看出当前最优路径，并落到推荐配置与成本。
       </p>
-      <h3 data-i18n="contact.h3.models">模型与处理阶段</h3>
+      <div class="pipeline" aria-label="Pipeline overview">
+        <div class="step"><div class="n">01</div><div class="t" data-i18n="pipeline.flow.1.t">分段</div><div class="d" data-i18n="pipeline.flow.1.d">拼贴图粗分 → 局部精修</div></div>
+        <div class="step"><div class="n">02</div><div class="t" data-i18n="pipeline.flow.2.t">标注</div><div class="d" data-i18n="pipeline.flow.2.d">固定边界或预测边界上的描述生成</div></div>
+        <div class="step"><div class="n">03</div><div class="t" data-i18n="pipeline.flow.3.t">端到端</div><div class="d" data-i18n="pipeline.flow.3.d">分段 + 标注串联评测</div></div>
+        <div class="step"><div class="n">04</div><div class="t" data-i18n="pipeline.flow.4.t">定稿配置</div><div class="d" data-i18n="pipeline.flow.4.d">推荐路径与成本</div></div>
+      </div>
+      <h3 data-i18n="pipeline.h3.roles">模型角色</h3>
       <p data-i18n-html data-i18n="world.p.models">
         生成与评测的角色分工如下：Qwen3.6-27B 负责分段，也可生成部分候选描述；Qwen3.5-397B-A17B 负责生成候选描述并由候选判别器选出定稿；Gemini-3.5-Flash 仅在离线评测时判断描述与人工标注是否语义一致，不参与边界预测、描述生成或候选选择。
       </p>
@@ -333,64 +330,206 @@
           </tbody>
         </table>
       </div>
+
+      <h3 data-i18n="pipeline.h3.seg">4.1 分段：尝试过的方法与结果</h3>
+      <p data-i18n="pipeline.seg.lead">分段阶段比较规则切分、拼贴图分片、整集粗分、加密切分与局部精修等路径；分数来自同一 HomER 子集上的 Segment F1。</p>
+      <ol>
+        <li data-i18n-html data-i18n="story.seg.1">原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
+        <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处引入伪边界。</li>
+        <li data-i18n-html data-i18n="story.seg.3"><strong>整集一次</strong> + legacy prompt（尚无切段规则清单）：假切点没了，却欠分割。</li>
+        <li data-i18n-html data-i18n="story.seg.4">换成 <strong>切段规则清单</strong>（GEPA）：到 0.137，仍偏少。</li>
+        <li data-i18n-html data-i18n="story.seg.5"><strong>第一遍加密切（S1）</strong>：召回上升，但过分割。</li>
+        <li data-i18n-html data-i18n="story.seg.6"><strong>第二遍局部精修</strong>：结果支持局部精修这一设计方向；最终 <strong>窗口不外扩 + 盖住完整动作</strong>（S2 · pad=0 · full-cover）到 <strong>0.2031</strong>。
+          （另测过用算法补覆盖的后处理：不如把「盖住完整动作」写进 prompt。）</li>
+        <li data-i18n-html data-i18n="story.seg.7">相邻 merge 三种<strong>规则后处理</strong>（不是再调模型）：时间轴更好看，但 均降低 Segment F1，因此不作为默认配置。</li>
+      </ol>
+      <div class="chart-box">
+        <h4 data-i18n="story.chart.seg">Segment F1（主路径）</h4>
+        <div id="seg-bars" class="bars"></div>
+      </div>
+      <p class="plain" data-i18n-html data-i18n="story.seg.legend">
+        表头：<strong>P（Precision）</strong>= match / pred（预测段里配对成功的比例）；
+        <strong>R（Recall）</strong>= match / gold（gold 段被找回的比例）；
+        <strong>match / pred / gold</strong>= 配对成功数 / 预测段数 / gold 段数（本子集 gold 恒为 470）。
+        「模型」列若写<strong>规则后处理</strong>，表示在已有预测上做脚本合并，不再调用 LLM。
+      </p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th data-i18n="th.cond">条件</th><th>F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th><th data-i18n="th.note">结果一句话</th></tr></thead>
+          <tbody id="seg-tbody"></tbody>
+        </table>
+      </div>
+      <p class="plain" data-i18n="story.seg.padnote">窗口外扩秒数（旧称 pad）的消融未进入主决策路径；细节见折叠区。</p>
+      <details class="prompt-fold">
+        <summary data-i18n="story.seg.fold">展开：分段实验细节</summary>
+        <div style="overflow-x:auto;margin-top:0.75rem">
+          <table>
+            <thead><tr><th data-i18n="th.cond">条件</th><th>F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th><th data-i18n="th.note">结果一句话</th></tr></thead>
+            <tbody id="seg-pad-tbody"></tbody>
+          </table>
+        </div>
+        <div id="seg-methods" class="method-grid" style="margin-top:1rem"></div>
+      </details>
+
+      
+
+      <h3 data-i18n="pipeline.h3.label">4.2 标注：尝试过的方法与结果</h3>
+      <p data-i18n="pipeline.label.lead">标注阶段在固定人工边界上比较不同视觉输入与模型；分数为 Label Acc（固定分段标注得分）。</p>
+      <p data-i18n-html data-i18n="story.label.p">
+        固定参考边界后，Gemini judge 全量重评显示：<strong>raw 27B 最高，为 55.7%</strong>；
+        temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR-reconstructed wrist-guided crop 397B 为 50.9%，raw 397B 为 50.2%。
+        397B 上，overlay 48.5%、temporal collage 45.1%、neighbor / proxy hand-collage 约 39–40%。
+        结论很朴素：在 HomER 这个子集上，复杂视觉输入常常污染当前动作描述；先固定 judge，再讨论输入设计。
+      </p>
+      <div class="chart-box">
+        <h4 data-i18n="story.chart.label">标注准确率</h4>
+        <div id="label-bars" class="bars"></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">Acc</th><th data-i18n="th.matchn">n_match/n</th><th data-i18n="th.model">模型</th><th data-i18n="th.delta">Δ vs raw</th><th data-i18n="th.remark">备注</th></tr></thead>
+          <tbody id="label-tbody"></tbody>
+        </table>
+      </div>
       <div class="gallery">
         <figure class="figure">
-          <img src="assets/homer4/contact_sheet_example.jpg" alt="uniform contact sheet example" />
-          <figcaption data-i18n="contact.cap1">同参数生成的一张 sheet（前 ~10 秒）。全片与局部时间窗口都用这一套 layout。</figcaption>
+          <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
+          <figcaption data-i18n-html data-i18n="story.label.cap1">
+            <strong>读图（三栏）：</strong>左=原帧；中=启发式框（画面中心偏下固定方框，<em>不是</em>手腕检测）；右=裁出后送给标注模型的图。
+            这是失败的 proxy 路径示意。固定边界上这类输入低于 raw。详见 <a href="#app-visual">附录 E</a>。
+          </figcaption>
         </figure>
         <figure class="figure">
-          <img src="assets/homer4/contact_window_sample.jpg" alt="local time-window contact sheet" />
-          <figcaption data-i18n="contact.cap2">局部时间窗口示例：版式相同，只换时间范围（第二遍精修看这种图）。</figcaption>
+          <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
+          <figcaption data-i18n-html data-i18n="story.label.cap2">
+            <strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。
+            HomER 早期无手重建时使用此类 proxy；Gemini 重评后，基于 HaWoR 重建腕轨迹的裁剪为 50.9%。
+          </figcaption>
         </figure>
       </div>
-      <figure class="figure">
-        <img src="assets/explain/visual_input_taxonomy_zh.svg" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy comparing raw frames, proxy overlays, temporal collages, neighbor sheets, and hand crops" />
-        <figcaption data-i18n="contact.taxonomy.cap">该图展示 raw frames、proxy overlay、temporal collage、neighbor sheet 和 wrist-guided crop 等视觉输入的差异。</figcaption>
-      </figure>
-      <p class="plain" data-i18n-html data-i18n="contact.taxonomy.explain">
-        <strong>读图：</strong>contact sheet 用来找边界；raw 是固定边界标注的最朴素输入；proxy overlay 是在原帧上叠加光流/启发式提示，<em>不是</em>真手部重建；
-        temporal collage 与 neighbor sheet 引入前后文；基于 HaWoR 重建腕轨迹的裁剪依赖估计腕部轨迹。Gemini 重评显示，增加视觉上下文并未提高 HomER 上的固定边界标注准确率。
+      <details class="prompt-fold">
+        <summary data-i18n="story.label.fold">展开：标注实验细节（做法卡）</summary>
+        <div id="label-methods" class="method-grid"></div>
+      </details>
+
+      
+
+      <h3 data-i18n="pipeline.h3.e2e">4.3 端到端：尝试过的方法与结果</h3>
+      <p data-i18n="pipeline.e2e.lead">端到端阶段固定较优分段边界，只改变标注路径，比较单路生成与多候选判别；分数为 E2E F1。</p>
+      <p data-i18n-html data-i18n="story.e2e.p">
+        分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
+        <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然在固定参考边界 Label Acc 上最高，但在预测边界上 E2E 只有 0.1285；
+        <strong>397B raw 重标</strong>到 0.1414；<strong>ffmpeg raw</strong>和<strong>397B-prior neighbor</strong>都到 0.1491；
+        <strong>candidate selector</strong>从多路候选中选择最终标签，取得最高观察值 <strong>0.1542</strong>。
       </p>
+      <div class="chart-box">
+        <h4 data-i18n="story.chart.e2e">E2E F1</h4>
+        <div id="e2e-bars" class="bars"></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">Seg F1</th><th data-i18n="th.e2ef1">E2E F1</th><th data-i18n="th.predgold">pred/gold</th><th data-i18n="th.remark">备注</th></tr></thead>
+          <tbody id="e2e-tbody"></tbody>
+        </table>
+      </div>
+      <details class="prompt-fold">
+        <summary data-i18n="story.e2e.fold">展开：E2E 实验细节（做法卡）</summary>
+        <div id="e2e-methods" class="method-grid"></div>
+      </details>
+      <div class="callout" data-i18n-html data-i18n="story.takeaway">
+        <strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；
+        三种规则合并策略均降低 Segment F1；Gemini 重评后，raw 27B 是固定参考边界下的最高标注配置，但端到端最高观察值仍来自 S2 预测边界 + 397B 多候选 selector。
+        换句话说，<strong>27B 是最好的 fixed-boundary captioner，但不是最好的 noisy predicted-segment label resolver</strong>。
+      </div>
+
+      <h3 data-i18n="pipeline.h3.recipe">4.4 推荐配置</h3>
+      <div class="pipeline">
+        <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">Contact sheet</div><div class="d" data-i18n="recipe.p1.d">0.5s · 224×144 · 20 tiles · yellow stamps</div></div>
+        <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
+        <div class="step"><div class="n">03</div><div class="t" data-i18n="recipe.p3.t">Local refine</div><div class="d" data-i18n="recipe.p3.d">No pad-out · cover actions · 27B → 0.2031</div></div>
+        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">Selector</div><div class="d" data-i18n="recipe.p4.d">397B multi-cand → Gemini E2E 0.1542</div></div>
+      </div>
+      <table>
+        <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">当前不推荐</th></tr></thead>
+        <tbody>
+          <tr>
+            <td data-i18n="recipe.r1.a">分段</td>
+            <td data-i18n="recipe.r1.b">Qwen3.6-27B + 切段规则清单 + 局部精修（窗口不外扩、盖住完整动作）</td>
+            <td data-i18n="recipe.r1.c">分片 max3；基于规则的相邻片段合并</td>
+          </tr>
+          <tr>
+            <td data-i18n="recipe.r2.a">标注（省钱）</td>
+            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B raw（Label Acc 55.7%）；预测边界 E2E 低成本配置：397B raw（0.1414）</td>
+            <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
+          </tr>
+          <tr>
+            <td data-i18n="recipe.r3.a">高准确率配置</td>
+            <td data-i18n="recipe.r3.b">同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）</td>
+            <td data-i18n="recipe.r3.c">分段小模型自标当终稿</td>
+          </tr>
+          <tr>
+            <td data-i18n="recipe.r4.a">对照</td>
+            <td data-i18n="recipe.r4.b">HomER-only vs Macrodata HomER≈0.227</td>
+            <td data-i18n="recipe.r4.c">用全量 0.306 headline 直接对比</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
+      <p id="cost-summary" class="plain">Loading…</p>
+      <p class="plain" id="cost-note" data-i18n="cost.note">
+        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 G。
+      </p>
+      <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
+      <table id="cost-compare-table">
+        <thead>
+          <tr>
+            <th data-i18n="cost.th.source">来源</th>
+            <th data-i18n="cost.th.scope">口径</th>
+            <th data-i18n="cost.th.num">数字</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-i18n="cost.row.md_e2e">Macrodata 公开</td>
+            <td data-i18n="cost.row.md_e2e_scope">E2E seeded relabel（batch）</td>
+            <td data-i18n="cost.row.md_e2e_num">~$2.64 / 视频小时；segmentation-only batch ~$0.43/h</td>
+          </tr>
+          <tr>
+            <td data-i18n="cost.row.md_cs">Macrodata 公开</td>
+            <td data-i18n="cost.row.md_cs_scope">contact sheet vs 逐帧输入</td>
+            <td data-i18n="cost.row.md_cs_num">约 12× 更便宜（文中有 token/价格示意）</td>
+          </tr>
+          <tr>
+            <td data-i18n="cost.row.wgo">EgoANT（本页 WGO）</td>
+            <td data-i18n="cost.row.wgo_scope">raw / selector 工程估计 + 产物 API 次数</td>
+            <td data-i18n="cost.row.wgo_num">raw 约 $0.84–$1.59/h；selector 约 $2.11–$3.80/h</td>
+          </tr>
+          <tr>
+            <td data-i18n="cost.row.prod">EgoANT 腕速基线</td>
+            <td data-i18n="cost.row.prod_scope">同一 HomER 子集上的内部工程估计</td>
+            <td data-i18n="cost.row.prod_num">仅保留聚合调用量级；不公开内部机器、路径或服务状态</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3 data-i18n="cost.recipe.h3">WGO 两条标注路径（token 与美元估算）</h3>
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="cost.th.item">项</th>
+            <th data-i18n="cost.th.raw">单路 raw（E2E 0.1414）</th>
+            <th data-i18n="cost.th.sel">候选+selector（E2E 0.1542）</th>
+          </tr>
+        </thead>
+        <tbody id="cost-tbody"></tbody>
+      </table>
     </section>
 
-    <section id="boundary">
-      <h2 data-i18n="boundary.h2">4.5 边界对照：同一视频上的三种分段结果</h2>
-      <p class="plain" data-i18n-html data-i18n="boundary.lead">
-        对齐 Macrodata 博客的 Boundary comparison 交互：上方播视频，下方多轨时间轴；播放头随时间移动，点击色块可跳到该段。
-      </p>
-      <div class="bc-card" id="boundary-card">
-        <div class="bc-head">
-          <div class="bc-title">
-            <span data-i18n="boundary.kicker">边界对照</span>
-            <strong id="bc-ep">HOMER_4</strong>
-          </div>
-          <div class="bc-now" id="bc-now">now 0.0s / 42s</div>
-        </div>
-        <p class="bc-instr" id="bc-instr">Instruction: …</p>
-        <div class="bc-video-wrap">
-          <video id="bc-video" controls preload="metadata" playsinline src="assets/boundary_homer4/homer_4_clip45_seek.mp4"></video>
-        </div>
-        <div class="bc-board" id="bc-board" aria-label="Boundary timeline">
-          <div class="bc-playhead" id="bc-playhead"></div>
-          <div id="bc-lanes"></div>
-          <div class="bc-axis" id="bc-axis"></div>
-        </div>
-        <div class="legend-row" aria-label="Boundary color legend">
-          <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
-          <span class="legend-key"><span class="legend-swatch coarse"></span><span data-i18n="legend.coarse">Whole-episode coarse</span></span>
-          <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.contact">Contact-sheet prediction</span></span>
-        </div>
-        <div class="bc-tip" id="bc-tip" hidden></div>
-        <p class="bc-caption" id="bc-caption" data-i18n="boundary.caption">
-          模型常能叫出粗事件，却漏掉更细的子任务边界。同集 homer_4（与下方样例走读一致）对照：人工 gold、整集粗分、contact sheet 粗分。悬停色块可看完整标注。
-        </p>
-      </div>
-    </section>
 
     <section id="walk">
-      <h2 data-i18n="walk.h2">5. 案例分析：homer_4 的端到端处理流程</h2>
+      <h2 data-i18n="walk.h2">5. 样例分析：HomER 样本上的端到端流程</h2>
       <p data-i18n-html data-i18n="walk.lead">
-        下列走读为 <strong>selector 路径</strong>（宽屏 1080p、擦桌子动作清楚）；批量标注时可在同一边界下改用单路 raw 以省成本。任务：用布擦桌面 / 柜面。折叠内 Prompt 为英文原文。
+        下列案例按第 4 章的推荐路径展示：先预测分段边界，再在固定预测边界下生成多个候选描述，并由候选判别器定稿。任务：用布擦桌面 / 柜面。折叠区保留英文 prompt 原文。
       </p>
       <div class="callout good" data-i18n-html data-i18n="walk.score">
         <strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231
@@ -492,7 +631,7 @@
           <div class="step-h"><span class="badge">06</span><h3 class="step-title" data-i18n="walk.s6.t">点选 pred 段：看视频 + 标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s6.p">
             这里只走 <strong>selector 预测轨</strong>（点色块或表格行 → 右侧播该段、左侧看标注）。
-            与 gold / 整集粗分 / contact sheet 的<strong>多轨边界对照</strong>见上方 <a href="#boundary">§4.5</a>，不再重复画 gold 时间轴。
+            与 gold / 整集粗分 / contact sheet 的<strong>多轨边界对照</strong>见 <a href="#walk-boundary">本节边界对照</a>，不再重复画 gold 时间轴。
           </p>
           <div id="walk-timeline" class="timeline"></div>
           <div class="walk-explore">
@@ -512,207 +651,45 @@
           </div>
         </article>
       </div>
-    </section>
 
-    <section id="cost">
-      <h2 data-i18n="cost.h2">6. 开销对照：Macrodata 公开数字 vs EgoANT</h2>
-      <p id="cost-summary" class="plain">Loading…</p>
-      <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 G。
+      <h3 id="walk-boundary" data-i18n="boundary.h2">边界对照：同一视频上的三种分段结果</h3>
+<p class="plain" data-i18n-html data-i18n="boundary.lead">
+        对齐 Macrodata 博客的 Boundary comparison 交互：上方播视频，下方多轨时间轴；播放头随时间移动，点击色块可跳到该段。
       </p>
-      <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
-      <table id="cost-compare-table">
-        <thead>
-          <tr>
-            <th data-i18n="cost.th.source">来源</th>
-            <th data-i18n="cost.th.scope">口径</th>
-            <th data-i18n="cost.th.num">数字</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-i18n="cost.row.md_e2e">Macrodata 公开</td>
-            <td data-i18n="cost.row.md_e2e_scope">E2E seeded relabel（batch）</td>
-            <td data-i18n="cost.row.md_e2e_num">~$2.64 / 视频小时；segmentation-only batch ~$0.43/h</td>
-          </tr>
-          <tr>
-            <td data-i18n="cost.row.md_cs">Macrodata 公开</td>
-            <td data-i18n="cost.row.md_cs_scope">contact sheet vs 逐帧输入</td>
-            <td data-i18n="cost.row.md_cs_num">约 12× 更便宜（文中有 token/价格示意）</td>
-          </tr>
-          <tr>
-            <td data-i18n="cost.row.wgo">EgoANT（本页 WGO）</td>
-            <td data-i18n="cost.row.wgo_scope">raw / selector 工程估计 + 产物 API 次数</td>
-            <td data-i18n="cost.row.wgo_num">raw 约 $0.84–$1.59/h；selector 约 $2.11–$3.80/h</td>
-          </tr>
-          <tr>
-            <td data-i18n="cost.row.prod">EgoANT 腕速基线</td>
-            <td data-i18n="cost.row.prod_scope">同一 HomER 子集上的内部工程估计</td>
-            <td data-i18n="cost.row.prod_num">仅保留聚合调用量级；不公开内部机器、路径或服务状态</td>
-          </tr>
-        </tbody>
-      </table>
-      <h3 data-i18n="cost.recipe.h3">WGO 两条标注路径（token 与美元估算）</h3>
-      <table>
-        <thead>
-          <tr>
-            <th data-i18n="cost.th.item">项</th>
-            <th data-i18n="cost.th.raw">单路 raw（E2E 0.1414）</th>
-            <th data-i18n="cost.th.sel">候选+selector（E2E 0.1542）</th>
-          </tr>
-        </thead>
-        <tbody id="cost-tbody"></tbody>
-      </table>
-    </section>
-
-    <section id="story">
-      <h2 data-i18n="story.h2">7. 方法演进与组件比较</h2>
-      <p data-i18n="story.lead">按时间线叙述；主表与图跟在后面。实验细节（做法卡、pad 消融）默认折叠。</p>
-
-      <h3 data-i18n="story.h3.seg">7.1 分段：从分片伪边界到局部精修</h3>
-      <ol>
-        <li data-i18n-html data-i18n="story.seg.1">原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
-        <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处引入伪边界。</li>
-        <li data-i18n-html data-i18n="story.seg.3"><strong>整集一次</strong> + legacy prompt（尚无切段规则清单）：假切点没了，却欠分割。</li>
-        <li data-i18n-html data-i18n="story.seg.4">换成 <strong>切段规则清单</strong>（GEPA）：到 0.137，仍偏少。</li>
-        <li data-i18n-html data-i18n="story.seg.5"><strong>第一遍加密切（S1）</strong>：召回上升，但过分割。</li>
-        <li data-i18n-html data-i18n="story.seg.6"><strong>第二遍局部精修</strong>：结果支持局部精修这一设计方向；最终 <strong>窗口不外扩 + 盖住完整动作</strong>（S2 · pad=0 · full-cover）到 <strong>0.2031</strong>。
-          （另测过用算法补覆盖的后处理：不如把「盖住完整动作」写进 prompt。）</li>
-        <li data-i18n-html data-i18n="story.seg.7">相邻 merge 三种<strong>规则后处理</strong>（不是再调模型）：时间轴更好看，但 均降低 Segment F1，因此不作为默认配置。</li>
-      </ol>
-      <div class="chart-box">
-        <h4 data-i18n="story.chart.seg">Segment F1（主路径）</h4>
-        <div id="seg-bars" class="bars"></div>
-      </div>
-      <p class="plain" data-i18n-html data-i18n="story.seg.legend">
-        表头：<strong>P（Precision）</strong>= match / pred（预测段里配对成功的比例）；
-        <strong>R（Recall）</strong>= match / gold（gold 段被找回的比例）；
-        <strong>match / pred / gold</strong>= 配对成功数 / 预测段数 / gold 段数（本子集 gold 恒为 470）。
-        「模型」列若写<strong>规则后处理</strong>，表示在已有预测上做脚本合并，不再调用 LLM。
-      </p>
-      <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th>F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th><th data-i18n="th.note">结果一句话</th></tr></thead>
-          <tbody id="seg-tbody"></tbody>
-        </table>
-      </div>
-      <p class="plain" data-i18n="story.seg.padnote">窗口外扩秒数（旧称 pad）的消融未进入主决策路径；细节见折叠区。</p>
-      <details class="prompt-fold">
-        <summary data-i18n="story.seg.fold">展开：分段实验细节</summary>
-        <div style="overflow-x:auto;margin-top:0.75rem">
-          <table>
-            <thead><tr><th data-i18n="th.cond">条件</th><th>F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th><th data-i18n="th.note">结果一句话</th></tr></thead>
-            <tbody id="seg-pad-tbody"></tbody>
-          </table>
+      <div class="bc-card" id="boundary-card">
+        <div class="bc-head">
+          <div class="bc-title">
+            <span data-i18n="boundary.kicker">边界对照</span>
+            <strong id="bc-ep">HOMER_4</strong>
+          </div>
+          <div class="bc-now" id="bc-now">now 0.0s / 42s</div>
         </div>
-        <div id="seg-methods" class="method-grid" style="margin-top:1rem"></div>
-      </details>
-
-      <h3 data-i18n="story.h3.label">7.2 标注：更复杂的视觉输入未必提高准确率</h3>
-      <p data-i18n-html data-i18n="story.label.p">
-        固定参考边界后，Gemini judge 全量重评显示：<strong>raw 27B 最高，为 55.7%</strong>；
-        temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR-reconstructed wrist-guided crop 397B 为 50.9%，raw 397B 为 50.2%。
-        397B 上，overlay 48.5%、temporal collage 45.1%、neighbor / proxy hand-collage 约 39–40%。
-        结论很朴素：在 HomER 这个子集上，复杂视觉输入常常污染当前动作描述；先固定 judge，再讨论输入设计。
-      </p>
-      <div class="chart-box">
-        <h4 data-i18n="story.chart.label">标注准确率</h4>
-        <div id="label-bars" class="bars"></div>
-      </div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">Acc</th><th data-i18n="th.matchn">n_match/n</th><th data-i18n="th.model">模型</th><th data-i18n="th.delta">Δ vs raw</th><th data-i18n="th.remark">备注</th></tr></thead>
-          <tbody id="label-tbody"></tbody>
-        </table>
-      </div>
-      <div class="gallery">
-        <figure class="figure">
-          <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
-          <figcaption data-i18n-html data-i18n="story.label.cap1">
-            <strong>读图（三栏）：</strong>左=原帧；中=启发式框（画面中心偏下固定方框，<em>不是</em>手腕检测）；右=裁出后送给标注模型的图。
-            这是失败的 proxy 路径示意。固定边界上这类输入低于 raw。详见 <a href="#app-visual">附录 E</a>。
-          </figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
-          <figcaption data-i18n-html data-i18n="story.label.cap2">
-            <strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。
-            HomER 早期无手重建时使用此类 proxy；Gemini 重评后，基于 HaWoR 重建腕轨迹的裁剪为 50.9%。
-          </figcaption>
-        </figure>
-      </div>
-      <details class="prompt-fold">
-        <summary data-i18n="story.label.fold">展开：标注实验细节（做法卡）</summary>
-        <div id="label-methods" class="method-grid"></div>
-      </details>
-
-      <h3 data-i18n="story.h3.e2e">7.3 预测边界上的语义标注：单路生成与多候选选择</h3>
-      <p data-i18n-html data-i18n="story.e2e.p">
-        分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
-        <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然在固定参考边界 Label Acc 上最高，但在预测边界上 E2E 只有 0.1285；
-        <strong>397B raw 重标</strong>到 0.1414；<strong>ffmpeg raw</strong>和<strong>397B-prior neighbor</strong>都到 0.1491；
-        <strong>candidate selector</strong>从多路候选中选择最终标签，取得最高观察值 <strong>0.1542</strong>。
-      </p>
-      <div class="chart-box">
-        <h4 data-i18n="story.chart.e2e">E2E F1</h4>
-        <div id="e2e-bars" class="bars"></div>
-      </div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">Seg F1</th><th data-i18n="th.e2ef1">E2E F1</th><th data-i18n="th.predgold">pred/gold</th><th data-i18n="th.remark">备注</th></tr></thead>
-          <tbody id="e2e-tbody"></tbody>
-        </table>
-      </div>
-      <details class="prompt-fold">
-        <summary data-i18n="story.e2e.fold">展开：E2E 实验细节（做法卡）</summary>
-        <div id="e2e-methods" class="method-grid"></div>
-      </details>
-      <div class="callout" data-i18n-html data-i18n="story.takeaway">
-        <strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；
-        三种规则合并策略均降低 Segment F1；Gemini 重评后，raw 27B 是固定参考边界下的最高标注配置，但端到端最高观察值仍来自 S2 预测边界 + 397B 多候选 selector。
-        换句话说，<strong>27B 是最好的 fixed-boundary captioner，但不是最好的 noisy predicted-segment label resolver</strong>。
+        <p class="bc-instr" id="bc-instr">Instruction: …</p>
+        <div class="bc-video-wrap">
+          <video id="bc-video" controls preload="metadata" playsinline src="assets/boundary_homer4/homer_4_clip45_seek.mp4"></video>
+        </div>
+        <div class="bc-board" id="bc-board" aria-label="Boundary timeline">
+          <div class="bc-playhead" id="bc-playhead"></div>
+          <div id="bc-lanes"></div>
+          <div class="bc-axis" id="bc-axis"></div>
+        </div>
+        <div class="legend-row" aria-label="Boundary color legend">
+          <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
+          <span class="legend-key"><span class="legend-swatch coarse"></span><span data-i18n="legend.coarse">Whole-episode coarse</span></span>
+          <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.contact">Contact-sheet prediction</span></span>
+        </div>
+        <div class="bc-tip" id="bc-tip" hidden></div>
+        <p class="bc-caption" id="bc-caption" data-i18n="boundary.caption">
+          模型常能叫出粗事件，却漏掉更细的子任务边界。同集 homer_4（与下方样例走读一致）对照：人工 gold、整集粗分、contact sheet 粗分。悬停色块可看完整标注。
+        </p>
       </div>
     </section>
 
-    <section id="recipe">
-      <h2 data-i18n="recipe.h2">8. 推荐配置与使用边界</h2>
-      <div class="pipeline">
-        <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">Contact sheet</div><div class="d" data-i18n="recipe.p1.d">0.5s · 224×144 · 20 tiles · yellow stamps</div></div>
-        <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
-        <div class="step"><div class="n">03</div><div class="t" data-i18n="recipe.p3.t">Local refine</div><div class="d" data-i18n="recipe.p3.d">No pad-out · cover actions · 27B → 0.2031</div></div>
-        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">Selector</div><div class="d" data-i18n="recipe.p4.d">397B multi-cand → Gemini E2E 0.1542</div></div>
-      </div>
-      <table>
-        <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">当前不推荐</th></tr></thead>
-        <tbody>
-          <tr>
-            <td data-i18n="recipe.r1.a">分段</td>
-            <td data-i18n="recipe.r1.b">Qwen3.6-27B + 切段规则清单 + 局部精修（窗口不外扩、盖住完整动作）</td>
-            <td data-i18n="recipe.r1.c">分片 max3；基于规则的相邻片段合并</td>
-          </tr>
-          <tr>
-            <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B raw（Label Acc 55.7%）；预测边界 E2E 低成本配置：397B raw（0.1414）</td>
-            <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
-          </tr>
-          <tr>
-            <td data-i18n="recipe.r3.a">高准确率配置</td>
-            <td data-i18n="recipe.r3.b">同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）</td>
-            <td data-i18n="recipe.r3.c">分段小模型自标当终稿</td>
-          </tr>
-          <tr>
-            <td data-i18n="recipe.r4.a">对照</td>
-            <td data-i18n="recipe.r4.b">HomER-only vs Macrodata HomER≈0.227</td>
-            <td data-i18n="recipe.r4.c">用全量 0.306 headline 直接对比</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
 
     <section id="appendix"></section>
 
     <section id="references">
-      <h2 data-i18n="references.h2">参考文献</h2>
+      <h2 data-i18n="references.h2">7. 参考文献</h2>
       <ol class="ref-list">
         <li id="ref-pi05" data-i18n-html data-i18n="references.pi05">Physical Intelligence, Black, Kevin, Brown, Noah, Darpinian, James, Dhabalia, Karan, Driess, Danny, et al. (2025). <em>&pi;<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization</em>. arXiv. <a href="https://arxiv.org/abs/2504.16054" target="_blank" rel="noopener">https://arxiv.org/abs/2504.16054</a></li>
         <li id="ref-wgo" data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
@@ -735,7 +712,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-3"></script>
+  <script src="js/i18n.js?v=20260811-5"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
