@@ -88,13 +88,13 @@
     },
     "s2_full25_397b": {
       "zh": {
-        "name": "S2 局部精修早期版（窗外扩约 1 秒）· 397B",
-        "note": "早期局部精修配置",
+        "name": "S2 局部精修·窗外扩约 1 秒 · 397B",
+        "note": "窗外扩约 1 秒，尚未要求盖住完整动作",
         "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "S2 early local refine (≈1s pad-out) · 397B",
-        "note": "Early local-refine setting",
+        "name": "S2 local refine · ≈1s pad-out · 397B",
+        "note": "About 1s pad-out; cover-full-actions not yet required",
         "model": "Qwen3.5-397B"
       }
     },
@@ -148,24 +148,24 @@
     },
     "s2_midpoint_post": {
       "zh": {
-        "name": "S2 窗口不外扩 + 算法补覆盖（后处理）· 27B",
+        "name": "S2 局部精修·窗口不外扩 + 算法补覆盖 · 27B",
         "note": "算法补覆盖不及提示词中的「盖住完整动作」",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 no pad-out + midpoint cover postprocess · 27B",
+        "name": "S2 local refine · no pad-out + midpoint cover · 27B",
         "note": "Algorithmic cover underperforms prompt cover",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_fullcover_qwen36": {
       "zh": {
-        "name": "S2 局部再切：窗口不外扩并盖住完整动作 · 27B",
+        "name": "S2 局部精修·窗口不外扩并盖住完整动作 · 27B",
         "note": "已评测分段配置最高值",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 local re-cut: no pad-out + cover full actions · 27B",
+        "name": "S2 local refine · no pad-out + cover full actions · 27B",
         "note": "Best segmentation so far",
         "model": "Qwen3.6-27B"
       }
