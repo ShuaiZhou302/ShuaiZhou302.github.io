@@ -415,6 +415,7 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 .metric-example-card {
   display: grid;
   gap: 0.75rem;
+  margin: 0.85rem 0 1.25rem;
 }
 .metric-example-card p {
   margin: 0;

@@ -155,33 +155,28 @@
         <strong>首尾吸附只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260806-3" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260811-15" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <ul>
         <li data-i18n="metrics.toy.1">吸附后，预测片段变为 P0[0,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,10]。只有 P0 和 P3 的外侧端点发生变化。</li>
-        <li data-i18n="metrics.toy.2">计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU = 2.8/3 ≈ 0.933；P1–G1 的 IoU ≈ 0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。</li>
-        <li data-i18n="metrics.toy.3">一对一时间匹配共 m = 2；预测段数 n_pred = 4，参考段数 n_gold = 3。预测命中率 P = 2/4 = 0.50，参考找回率 R = 2/3 ≈ 0.67，视频分段 F1 ≈ 0.571。</li>
+        <li data-i18n="metrics.toy.2">P0–G0、P1–G1 的时间 IoU 达到 0.75 阈值，形成一对一配对；P2、P3 未达到阈值。</li>
+        <li data-i18n="metrics.toy.3">一对一时间匹配数 m = 2，预测段数 n_pred = 4，参考段数 n_gold = 3。</li>
       </ul>
       <pre class="formula" data-i18n="metrics.seg.formula">IoU = 重叠时长 / 两段合起来覆盖的总时长
-P = m / n_pred
-R = m / n_gold
-视频分段 F1 = 2·P·R / (P + R) = 2m / (n_pred + n_gold)
-本例：2×2 / (4 + 3) = 4/7 ≈ 0.571</pre>
-      <h3 data-i18n="metrics.h3.remaining">同一个例子如何得到另外两类分数</h3>
-      <div class="metric-example-grid">
-        <div class="metric-example-card">
-          <p data-i18n-html data-i18n="metrics.label.example">固定分段标注得分：直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 F</a>。</p>
-          <pre class="formula" data-i18n="metrics.label.formula">固定分段标注得分 = c / n_gold
-本例：2 / 3 ≈ 66.7%</pre>
-        </div>
-        <div class="metric-example-card">
-          <p data-i18n-html data-i18n="metrics.e2e.example">端到端整流程得分：保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s = 1。</p>
-          <pre class="formula" data-i18n="metrics.e2e.formula">P = s / n_pred
-R = s / n_gold
-端到端整流程得分 = 2·P·R / (P + R) = 2s / (n_pred + n_gold)
-本例：2×1 / (4 + 3) = 2/7 ≈ 0.286</pre>
-        </div>
+本例：P0–G0 = 2.8 / 3 ≈ 0.933；P1–G1 ≈ 0.781（均 ≥ 0.75）
+预测命中率 = m / n_pred = 2 / 4 = 0.50
+参考找回率 = m / n_gold = 2 / 3 ≈ 0.67
+视频分段 F1 = 2m / (n_pred + n_gold) = 2×2 / (4 + 3) = 4/7 ≈ 0.571</pre>
+      <h3 data-i18n="metrics.h3.label">标注得分例子</h3>
+      <div class="metric-example-card">
+        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G0、G1、G2，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 E</a>。</p>
+        <pre class="formula" data-i18n="metrics.label.formula">固定分段标注得分 = c / n_gold = 2 / 3 ≈ 66.7%</pre>
+      </div>
+      <h3 data-i18n="metrics.h3.e2e">端到端得分例子</h3>
+      <div class="metric-example-card">
+        <p data-i18n-html data-i18n="metrics.e2e.example">仍用上述预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s = 1。</p>
+        <pre class="formula" data-i18n="metrics.e2e.formula">端到端整流程得分 = 2s / (n_pred + n_gold) = 2×1 / (4 + 3) = 2/7 ≈ 0.286</pre>
       </div>
     </section>
 
@@ -316,10 +311,10 @@ R = s / n_gold
         <li data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。</li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
-        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 F</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 E</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见术语约定）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 F</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
-        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 D.2</a>。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见术语约定）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 E</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 C.2</a>。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.seg">视频分段 F1（Segment F1）</h4>
@@ -346,7 +341,7 @@ R = s / n_gold
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
           <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段 F1 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
-          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 D.2</a>。</li>
+          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 C.2</a>。</li>
           <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段 F1 为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
         </ol>
       </div>
@@ -392,7 +387,7 @@ R = s / n_gold
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap1">
-            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。详见 <a href="#app-visual">附录 E</a>。
+            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。详见 <a href="#app-visual">附录 D</a>。
           </figcaption>
         </figure>
         <figure class="figure">
@@ -473,7 +468,7 @@ R = s / n_gold
       <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 G。
+        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 F。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">

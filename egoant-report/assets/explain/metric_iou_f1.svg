@@ -50,7 +50,7 @@
   <text x="392" y="373" class="txt sum ink">Prediction hit rate: <tspan class="sumMono">2 / 4 = 0.50</tspan></text>
   <text x="392" y="405" class="txt sum ink">Reference coverage: <tspan class="sumMono">2 / 3 = 0.67</tspan></text>
   <path d="M687 375h26m-8-8 8 8-8 8" class="flow"/>
-  <text x="746" y="340" class="txt sum ink">③ Combine into Segment F1</text>
-  <text x="746" y="373" class="txt sum ink">Segment F1</text>
+  <text x="746" y="340" class="txt sum ink">③ Combine into video-segmentation F1</text>
+  <text x="746" y="373" class="txt sum ink">Video-seg F1 (Segment F1)</text>
   <text x="746" y="405" class="sumMono ink">2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
 </svg>
