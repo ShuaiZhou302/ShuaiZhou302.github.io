@@ -1,14 +1,3 @@
-# WGO Candidate Selector Prompt
-
-Source of truth: `SYSTEM_PROMPT` and `USER_PROMPT_TEMPLATE` in
-`scripts/wgo_bench/run_wgo_candidate_selector.py`.
-
-## Image Inputs
-
-The selector is given the current segment visual evidence used for candidate
-generation, typically current-segment contact sheets or raw-frame evidence.
-Candidate labels are provided as text. Gold labels are never provided.
-
 ## System Prompt
 
 ```text

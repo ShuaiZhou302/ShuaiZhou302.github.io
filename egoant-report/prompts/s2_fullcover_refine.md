@@ -1,20 +1,8 @@
-# WGO S2 Full-Cover Refinement Prompt
-
-Source of truth: this prompt was used by the V5.1 HomER S2 local-refinement
-run. The local refinement job receives a coarse segment hypothesis and
-timestamped contact sheets for only that local window.
-
 ## System Prompt
 
 ```text
 You segment egocentric manipulation videos into completed atomic events. Reply with ONLY valid JSON.
 ```
-
-## Image Inputs
-
-The request appends one or more timestamped contact sheets after the user text.
-The sheets cover only the current local window. Each tile is ordered by time and
-contains a visible timestamp in seconds.
 
 ## User Prompt Template
 

@@ -1,20 +1,8 @@
-# GEPA-derived Contact-Sheet Segmentation Prompt
-
-Source of truth: the report coarse-segmentation path uses the same system prompt, image input layout, and completed-event rule list as `scripts/model_segment_contact_sheets.py`. The rule list is referred to in the report as the GEPA-derived segmentation rules because it follows the public Macrodata/WGO description; this report does not rerun GEPA.
-
 ## System Prompt
 
 ```text
 You are a careful egocentric video segmentation annotator.
 ```
-
-## Image Inputs
-
-The request appends timestamped contact-sheet images after the user text. Each
-sheet contains frames sampled from the full video at a fixed interval
-(`--sample-interval-sec`, default `0.5s`). Each tile contains a visible timestamp
-in seconds. By default, 20 frames form one sheet, so one image covers about
-10 seconds.
 
 ## User Prompt Template
 

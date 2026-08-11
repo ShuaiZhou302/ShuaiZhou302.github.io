@@ -313,7 +313,7 @@
         规则原文（English）：<a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>
       </p>
       <p class="plain" data-i18n-html data-i18n="world.gepa.prompt.note">
-        下面折叠里是调用文档：真正送给模型的是 <code>System Prompt</code> 与 <code>User Prompt Template</code> 两个代码块；模板里的 <code>{duration_sec}</code> 会替换成该视频时长，拼贴图图片接在 user 文本之后。Markdown 标题和 Image Inputs 说明文字不会进模型。
+        折叠内是实际送入模型的 System / User 文本；<code>{duration_sec}</code> 会替换成该视频时长，拼贴图接在 user 文本之后。
       </p>
       <details class="prompt-fold">
         <summary data-i18n="walk.prompt.gepa">Prompt (English only) — segmentation rules</summary>
@@ -785,7 +785,7 @@ def compatible(a, b, strategy):
 
   <script src="js/i18n.js?v=20260811-30"></script>
   <script src="js/report.js?v=20260811-30"></script>
-  <script src="js/prompts_embed.js?v=20260806-1"></script>
+  <script src="js/prompts_embed.js?v=20260811-32"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];
