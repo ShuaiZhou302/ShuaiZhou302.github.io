@@ -459,6 +459,43 @@
       }
     },
     {
+      "id": "l1_neighbor_27b",
+      "name": "neighbor sheet · Qwen3.6-27B",
+      "acc": 0.4085,
+      "n_match": 192,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": -0.09361702127659574,
+      "note": "192 / 470 semantic matches; neighbor context is still below raw 27B",
+      "method": {
+        "goal": "评估 27B 是否能更好利用上一/当前/下一段上下文。",
+        "how": "同时输入 previous/current/next segment sheets，由 Qwen3.6-27B 生成标签，再由 Gemini-3.5-Flash 评测。",
+        "input": "neighbor contact sheets",
+        "result": "Label Acc 40.9%",
+        "verdict": "该设置略高于 397B neighbor，但明显低于 raw 27B。"
+      }
+    },
+    {
+      "id": "l2_proxy_27b",
+      "name": "proxy hand-collage · Qwen3.6-27B",
+      "acc": 0.3851,
+      "n_match": 181,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": -0.11702127659574468,
+      "note": "181 / 470 semantic matches; proxy crop is not HaWoR wrist-guided crop",
+      "method": {
+        "goal": "评估 27B 在近似手部拼贴输入下的固定边界标注。",
+        "how": "使用 YOLO 或画面中心启发式裁剪手部附近区域后拼图提交；该路径不读取 HaWoR 腕轨迹。",
+        "input": "proxy hand-collage",
+        "result": "Label Acc 38.5%",
+        "verdict": "该近似裁剪路径低于 raw 27B，也低于 397B proxy hand-collage。"
+      },
+      "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
+    },
+    {
       "id": "l2_hawor",
       "name": "HaWoR-reconstructed wrist-guided crop · Qwen3.5-397B",
       "acc": 0.5085,

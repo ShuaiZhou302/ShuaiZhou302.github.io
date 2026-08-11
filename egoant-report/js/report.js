@@ -314,6 +314,18 @@
         "model": "Qwen3.5-397B"
       }
     },
+    "l1_neighbor_27b": {
+      "zh": {
+        "name": "邻段拼贴 · 27B",
+        "note": "略高于 397B 邻段，低于原始帧 · 27B",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "Neighbor sheet · 27B",
+        "note": "Slightly above 397B neighbor, below raw 27B",
+        "model": "Qwen3.6-27B"
+      }
+    },
     "l2_yolo_proxy": {
       "zh": {
         "name": "近似手部拼贴 · 397B",
@@ -353,12 +365,12 @@
     "l2_proxy_27b": {
       "zh": {
         "name": "近似手部拼贴 · 27B",
-        "note": "更差",
+        "note": "启发式裁剪，低于原始帧 · 27B",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "YOLO/proxy hand-collage · 27B",
-        "note": "Worse",
+        "name": "Proxy hand-collage · 27B",
+        "note": "Heuristic crop, below raw 27B",
         "model": "Qwen3.6-27B"
       }
     },
@@ -486,10 +498,11 @@
     temporal_collage: { en: { goal: "Evaluate whole-frame past/current/future context with 397B.", how: "Build a temporal collage for each fixed reference segment.", input: "whole-frame temporal collage", result: "Label Acc 45.1%", verdict: "Below raw 397B." } },
     l1_neighbor: { en: { goal: "Evaluate previous/current/next context.", how: "Feed previous, current, and next segment sheets to the labeler.", input: "neighbor contact sheets", result: "Label Acc 39.6%", verdict: "Below raw 397B." } },
     l1_ts_rerun: { en: { goal: "Evaluate neighbor sheets with second-level timestamps.", how: "Re-run previous/current/next sheets after adding second-level timestamps.", input: "timestamped neighbor sheets", result: "Label Acc 40.0%", verdict: "Below raw 397B." } },
+    l1_neighbor_27b: { en: { goal: "Test whether Qwen3.6-27B uses previous/current/next context better.", how: "Feed previous, current, and next segment sheets to Qwen3.6-27B and score with Gemini-3.5-Flash.", input: "neighbor contact sheets", result: "Label Acc 40.9%", verdict: "Slightly above 397B neighbor and far below raw 27B." } },
+    l2_proxy_27b: { en: { goal: "Evaluate approximate hand-crop collages with Qwen3.6-27B.", how: "Use YOLO or center-heuristic hand-adjacent crops rather than reconstructed wrist tracks.", input: "proxy hand-collage", result: "Label Acc 38.5%", verdict: "Below raw 27B and below 397B proxy hand-collage." } },
     l2_yolo_proxy: { en: { goal: "Evaluate approximate hand-crop collages.", how: "Use YOLO or center-heuristic crops rather than reconstructed wrist tracks.", input: "proxy hand-collage", result: "Label Acc 39.1%", verdict: "Below raw 397B." } },
     l2_hawor: { en: { goal: "Evaluate HaWoR-reconstructed wrist-guided crops.", how: "Estimate wrist tracks with HaWoR, crop around hands, and use raw fallback when crops are incomplete.", input: "HaWoR-reconstructed wrist-guided crop plus raw fallback", result: "Label Acc 50.9%", verdict: "Above raw 397B and below raw 27B." } },
     l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Main reports should keep the semantic judge fixed." } },
-    l2_proxy_27b: { en: { goal: "Legacy excluded ablation.", how: "Approximate hand-collage with Qwen3.6-27B was not part of the Gemini-rescored main table.", input: "approximate hand collage", result: "Excluded from main table", verdict: "Do not compare with Gemini-rescored rows." } },
     egovid_e2e: { en: { goal: "Evaluate the production one-pass output under WGO metrics.", how: "Generate wrist-speed boundaries and per-segment labels.", input: "production-style baseline output", result: "Semantic E2E F1 0.0641", verdict: "Below the WGO-Bench evaluation pipeline settings." } },
     s2_self: { en: { goal: "Evaluate segmenter self-labeling.", how: "Use S2 predicted boundaries and keep Qwen3.6-27B labels.", input: "S2 predicted segments", result: "Semantic E2E F1 0.1234", verdict: "Below relabel and selector settings." } },
     raw27b_e2e: { en: { goal: "Test whether fixed-boundary 27B labeling transfers to predicted-boundary E2E.", how: "Use S2 predicted boundaries and relabel each segment from raw frames with Qwen3.6-27B.", input: "raw frames within S2 predicted segments", result: "Semantic E2E F1 0.1285", verdict: "Above self-labeling and below 397B raw and selector." } },
@@ -660,7 +673,7 @@
     const tbody = document.querySelector("#label-tbody");
     if (!tbody) return;
     const best = data.meta.best.label_acc;
-    const rows = data.labeling.filter((row) => row.id !== "l2_proxy_27b" && row.id !== "predictions_labeling");
+    const rows = data.labeling.filter((row) => row.id !== "predictions_labeling");
     tbody.innerHTML = rows.map((row) => {
       const r = locRow(row);
       const bestCls = r.acc === best ? "best" : "";
@@ -1221,7 +1234,7 @@
     }
     const mainSeg = orderedSegRows(data);
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "l2_proxy_27b" && r.id !== "predictions_labeling"), "acc", 0.60, true);
+    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "predictions_labeling"), "acc", 0.60, true);
     renderBars(document.querySelector("#e2e-bars"), data.e2e, "e2e_f1", 0.18, true);
     fillSegTable(data);
     fillSegPadTable(data);
@@ -1234,7 +1247,7 @@
       if (!D || !D.data) return;
       const mainSeg = orderedSegRows(D.data);
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "l2_proxy_27b" && r.id !== "predictions_labeling"), "acc", 0.60, true);
+      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "predictions_labeling"), "acc", 0.60, true);
       renderBars(document.querySelector("#e2e-bars"), D.data.e2e, "e2e_f1", 0.18, true);
       fillSegTable(D.data);
       fillSegPadTable(D.data);
@@ -1587,13 +1600,13 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "Highest segmentation score among evaluated segmentation settings",
+      "note": "Highest Segment F1 among evaluated segmentation settings",
       "method": {
         "goal": "在局部时间窗口内重切并覆盖可见完成动作。",
         "how": "粗分后生成局部 timestamped contact sheets；pad=0；prompt 要求覆盖窗口内完成动作。",
         "input": "局部 timestamped contact sheets + coarse-bound hints",
         "result": "Segment F1 0.2031；308 个预测片段",
-        "verdict": "这是已评测分段配置中的最高视频分段得分。"
+        "verdict": "这是已评测分段配置中的最高 Segment F1。"
       }
     },
     {
@@ -1607,7 +1620,7 @@
       "gold": 470,
       "model": "基于规则的后处理",
       "full25": true,
-      "note": "Rule merge lowers segmentation score",
+      "note": "Rule merge lowers Segment F1",
       "method": {
         "goal": "测试标签相同的相邻预测段是否应被合并。",
         "how": "按时间顺序扫描 S2 预测段；只有相邻段的 subtask 规范化后完全一致时才合并。这是预测 JSON 后处理，不是新的模型调用。",
@@ -1627,7 +1640,7 @@
       "gold": 470,
       "model": "基于规则的后处理",
       "full25": true,
-      "note": "Rule merge lowers segmentation score",
+      "note": "Rule merge lowers Segment F1",
       "method": {
         "goal": "测试描述同一动词/物体的相邻预测段是否应被合并。",
         "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。按相邻段标签与时间间隙合并。",
@@ -1647,7 +1660,7 @@
       "gold": 470,
       "model": "基于规则的后处理",
       "full25": true,
-      "note": "Rule merge lowers segmentation score",
+      "note": "Rule merge lowers Segment F1",
       "method": {
         "goal": "测试合并前先桥接很短时间空隙是否有帮助。",
         "how": "把相邻 S2 预测段之间的很短空隙视作连续，再按标签或动词/物体兼容规则尝试合并。",
@@ -1664,7 +1677,7 @@
       "acc": 0.5574,
       "n_match": 262,
       "n": 470,
-      "model": "Qwen3.6-27B",
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.05531914889999989,
       "note": "262 / 470 semantic matches under fixed reference boundaries",
@@ -1682,7 +1695,7 @@
       "acc": 0.5277,
       "n_match": 248,
       "n": 470,
-      "model": "Qwen3.6-27B",
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.025531914899999952,
       "note": "248 / 470 semantic matches",
@@ -1700,7 +1713,7 @@
       "acc": 0.5064,
       "n_match": 238,
       "n": 470,
-      "model": "Qwen3.6-27B",
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.004255319099999988,
       "note": "238 / 470 semantic matches; overlay is heuristic, not hand reconstruction",
@@ -1713,12 +1726,49 @@
       }
     },
     {
+      "id": "l1_neighbor_27b",
+      "name": "neighbor sheet · Qwen3.6-27B",
+      "acc": 0.4085,
+      "n_match": 192,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": -0.09361702127659574,
+      "note": "192 / 470 semantic matches; neighbor context is still below raw 27B",
+      "method": {
+        "goal": "评估 27B 是否能更好利用上一/当前/下一段上下文。",
+        "how": "同时输入 previous/current/next segment sheets，由 Qwen3.6-27B 生成标签，再由 Gemini-3.5-Flash 评测。",
+        "input": "neighbor contact sheets",
+        "result": "Label Acc 40.9%",
+        "verdict": "该设置略高于 397B neighbor，但明显低于 raw 27B。"
+      }
+    },
+    {
+      "id": "l2_proxy_27b",
+      "name": "proxy hand-collage · Qwen3.6-27B",
+      "acc": 0.3851,
+      "n_match": 181,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": -0.11702127659574468,
+      "note": "181 / 470 semantic matches; proxy crop is not HaWoR wrist-guided crop",
+      "method": {
+        "goal": "评估 27B 在近似手部拼贴输入下的固定边界标注。",
+        "how": "使用 YOLO 或画面中心启发式裁剪手部附近区域后拼图提交；该路径不读取 HaWoR 腕轨迹。",
+        "input": "proxy hand-collage",
+        "result": "Label Acc 38.5%",
+        "verdict": "该近似裁剪路径低于 raw 27B，也低于 397B proxy hand-collage。"
+      },
+      "figure": "assets/demos/demo_handcrop_homer7_yolo_t1.jpg"
+    },
+    {
       "id": "l2_hawor",
       "name": "HaWoR-reconstructed wrist-guided crop · Qwen3.5-397B",
       "acc": 0.5085,
       "n_match": 239,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0063829786999999305,
       "note": "239 / 470 semantic matches; crop path uses raw fallback when needed",
@@ -1736,7 +1786,7 @@
       "acc": 0.5021,
       "n_match": 236,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0,
       "note": "236 / 470 semantic matches",
@@ -1754,7 +1804,7 @@
       "acc": 0.5021,
       "n_match": 236,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": 0.0,
       "note": "236 / 470 semantic matches",
@@ -1772,7 +1822,7 @@
       "acc": 0.4851,
       "n_match": 228,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.01702127660000008,
       "note": "228 / 470 semantic matches",
@@ -1790,7 +1840,7 @@
       "acc": 0.4511,
       "n_match": 212,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.05106382980000007,
       "note": "212 / 470 semantic matches",
@@ -1808,7 +1858,7 @@
       "acc": 0.4,
       "n_match": 188,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.10212765960000003,
       "note": "188 / 470 semantic matches",
@@ -1826,7 +1876,7 @@
       "acc": 0.3957,
       "n_match": 186,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.10638297870000007,
       "note": "186 / 470 semantic matches",
@@ -1844,7 +1894,7 @@
       "acc": 0.3915,
       "n_match": 184,
       "n": 470,
-      "model": "Qwen3.5-397B",
+      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.11063829790000007,
       "note": "184 / 470 semantic matches",
@@ -2043,356 +2093,6 @@
     "R": 0.667,
     "F1": 0.571
   }
-};
-  window.__WALK__ = {
-  "id": "homer_4",
-  "instruction": "Clean tables, desks, or shelves with a cloth",
-  "duration_sec": 130.03333333333333,
-  "video": "assets/homer4/homer_4_seek.mp4",
-  "gold_path": "assets/homer4/gold_homer_4.json",
-  "pred_path": "assets/homer4/pred_homer_4_candidate_selector.json",
-  "assets": {
-    "contact_sheet_example": "assets/homer4/contact_sheet_example.jpg",
-    "contact_window": "assets/homer4/contact_window_sample.jpg",
-    "video_seek": "assets/homer4/homer_4_seek.mp4"
-  },
-  "pipeline_meta": {
-    "n_sheets": 14,
-    "prompt_variant": "refine_local_v1",
-    "n_windows_refined": 8,
-    "contact_params": "sample_sec=0.5, tile_px=224, ~20 tiles/sheet, yellow timestamps"
-  },
-  "scores_episode": {
-    "n_gold": 15,
-    "n_pred": 11,
-    "temporal_iou075": 4,
-    "semantic_match": 3,
-    "e2e_f1_episode": 0.231,
-    "note_zh": "本集分数；全集 HomER micro E2E F1 = 0.1542",
-    "note_en": "Episode score; HomER micro E2E F1 = 0.1542 overall"
-  },
-  "candidate_demo_segment": {
-    "start_sec": 26.5,
-    "end_sec": 45.0,
-    "subtask": "Wipe the drawer interior with a cloth",
-    "candidate_labels": {
-      "raw": "Wipe the table with a cloth",
-      "rawprior": "Wipe the drawer interior with a cloth",
-      "seed": "Wipe the interior of the open drawer",
-      "ffmpeg": "Wipe the drawer with a cloth"
-    },
-    "candidate_select_source": "B",
-    "candidate_select_meta": {
-      "fps": 30.0,
-      "nframes": 3901,
-      "frames_per_sheet": 5,
-      "image_max_side": 1120
-    },
-    "index": 3
-  },
-  "gold_segments": [
-    {
-      "start_sec": 0.0,
-      "end_sec": 9.69,
-      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_00.mp4"
-    },
-    {
-      "start_sec": 9.69,
-      "end_sec": 22.898,
-      "subtask": "wipe the front surface and drawer of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_01.mp4"
-    },
-    {
-      "start_sec": 22.898,
-      "end_sec": 26.785,
-      "subtask": "open the nightstand drawer",
-      "clip": "assets/homer4/clips/gold_02.mp4"
-    },
-    {
-      "start_sec": 26.785,
-      "end_sec": 44.345,
-      "subtask": "wipe the inside of the nightstand drawer with a cloth",
-      "clip": "assets/homer4/clips/gold_03.mp4"
-    },
-    {
-      "start_sec": 44.345,
-      "end_sec": 47.292,
-      "subtask": "close the nightstand drawer",
-      "clip": "assets/homer4/clips/gold_04.mp4"
-    },
-    {
-      "start_sec": 47.292,
-      "end_sec": 53.789,
-      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_05.mp4"
-    },
-    {
-      "start_sec": 53.789,
-      "end_sec": 60.341,
-      "subtask": "fold the cloth",
-      "clip": "assets/homer4/clips/gold_06.mp4"
-    },
-    {
-      "start_sec": 60.341,
-      "end_sec": 66.365,
-      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_07.mp4"
-    },
-    {
-      "start_sec": 66.365,
-      "end_sec": 77.904,
-      "subtask": "wipe the front of wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_08.mp4"
-    },
-    {
-      "start_sec": 77.904,
-      "end_sec": 86.989,
-      "subtask": "wipe the drawer handle of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_09.mp4"
-    },
-    {
-      "start_sec": 86.989,
-      "end_sec": 96.318,
-      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_10.mp4"
-    },
-    {
-      "start_sec": 96.318,
-      "end_sec": 97.709,
-      "subtask": "fold the cloth",
-      "clip": "assets/homer4/clips/gold_11.mp4"
-    },
-    {
-      "start_sec": 97.709,
-      "end_sec": 114.862,
-      "subtask": "wipe the top surface of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_12.mp4"
-    },
-    {
-      "start_sec": 114.862,
-      "end_sec": 120.034,
-      "subtask": "wipe the front drawer of the wooden nightstand with a white cloth",
-      "clip": "assets/homer4/clips/gold_13.mp4"
-    },
-    {
-      "start_sec": 120.034,
-      "end_sec": 130.03,
-      "subtask": "wipe the top surface of the wooden table with a white cloth",
-      "clip": "assets/homer4/clips/gold_14.mp4"
-    }
-  ],
-  "pred_segments": [
-    {
-      "start_sec": 0.0,
-      "end_sec": 23.5,
-      "subtask": "Wipe the table with a cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with a cloth",
-        "rawprior": "Wipe the table with a cloth",
-        "seed": "Wipe the top surface and exterior sides of the wooden cabinet",
-        "ffmpeg": "Wipe the table with the cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_00.mp4"
-    },
-    {
-      "start_sec": 23.5,
-      "end_sec": 24.5,
-      "subtask": "Open the drawer",
-      "candidate_labels": {
-        "raw": "Open the drawer",
-        "rawprior": "Open the drawer",
-        "seed": "Open the top drawer of the cabinet",
-        "ffmpeg": "Open the drawer"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_01.mp4"
-    },
-    {
-      "start_sec": 24.5,
-      "end_sec": 26.5,
-      "subtask": "Wipe the table with the cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with the cloth",
-        "rawprior": "Wipe the table with the cloth",
-        "seed": "Wipe the inside of the drawer",
-        "ffmpeg": "Wipe the table with a cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_02.mp4"
-    },
-    {
-      "start_sec": 26.5,
-      "end_sec": 45.0,
-      "subtask": "Wipe the drawer interior with a cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with a cloth",
-        "rawprior": "Wipe the drawer interior with a cloth",
-        "seed": "Wipe the interior of the open drawer",
-        "ffmpeg": "Wipe the drawer with a cloth"
-      },
-      "candidate_select_source": "B",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_03.mp4"
-    },
-    {
-      "start_sec": 45.0,
-      "end_sec": 46.5,
-      "subtask": "Wipe the table with a cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with a cloth",
-        "rawprior": "Wipe the table with a cloth",
-        "seed": "Wipe the top of the table",
-        "ffmpeg": "Wipe the table with a cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_04.mp4"
-    },
-    {
-      "start_sec": 46.5,
-      "end_sec": 54.5,
-      "subtask": "Wipe the table with a cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with a cloth",
-        "rawprior": "Wipe the table with a cloth",
-        "seed": "Wipe the top surface of the cabinet",
-        "ffmpeg": "Wipe the table with the cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_05.mp4"
-    },
-    {
-      "start_sec": 54.5,
-      "end_sec": 59.5,
-      "subtask": "Unfold the cloth",
-      "candidate_labels": {
-        "raw": "Fold the cloth",
-        "rawprior": "Fold the cloth",
-        "seed": "Unfold and adjust the cleaning cloth",
-        "ffmpeg": "Unfold the cloth"
-      },
-      "candidate_select_source": "D",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_06.mp4"
-    },
-    {
-      "start_sec": 59.5,
-      "end_sec": 79.5,
-      "subtask": "Wipe the table with the cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with the cloth",
-        "rawprior": "Wipe the table with the cloth",
-        "seed": "Wipe the top surface and front exterior of the cabinet",
-        "ffmpeg": "Wipe the nightstand with a cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_07.mp4"
-    },
-    {
-      "start_sec": 79.5,
-      "end_sec": 87.5,
-      "subtask": "Wipe the drawer handle with a cloth",
-      "candidate_labels": {
-        "raw": "Wipe the drawer with a cloth",
-        "rawprior": "Wipe the drawer with a cloth",
-        "seed": "Open the middle drawer of the cabinet",
-        "ffmpeg": "Wipe the drawer handle with a cloth"
-      },
-      "candidate_select_source": "D",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_08.mp4"
-    },
-    {
-      "start_sec": 87.5,
-      "end_sec": 89.5,
-      "subtask": "Wipe the table with the cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with the cloth",
-        "rawprior": "Wipe the table with the cloth",
-        "seed": "Wipe the table with the cloth",
-        "ffmpeg": "Wipe the table with the cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_09.mp4"
-    },
-    {
-      "start_sec": 89.5,
-      "end_sec": 130.03,
-      "subtask": "Wipe the table with the cloth",
-      "candidate_labels": {
-        "raw": "Wipe the table with the cloth",
-        "rawprior": "Wipe the table with the cloth",
-        "seed": "Wipe the top surface of the cabinet thoroughly",
-        "ffmpeg": "Wipe the table with a cloth"
-      },
-      "candidate_select_source": "A",
-      "candidate_select_meta": {
-        "fps": 30.0,
-        "nframes": 3901,
-        "frames_per_sheet": 5,
-        "image_max_side": 1120
-      },
-      "clip": "assets/homer4/clips/pred_10.mp4"
-    }
-  ]
 };
   window.__COST__ = {
   "kind": "public_engineering_estimate",

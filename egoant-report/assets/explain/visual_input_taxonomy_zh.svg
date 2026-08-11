@@ -100,16 +100,22 @@
     </g>
   </g>
 
-  <!-- 6 手部裁剪 -->
+  <!-- 6 手部相关输入 -->
   <g transform="translate(790,292)">
     <rect class="card" width="352" height="200" rx="12"/>
-    <text x="20" y="34" class="name">手部裁剪</text>
-    <text x="20" y="58" class="sub">按估计腕轨迹裁剪手部</text>
-    <g transform="translate(88,78)">
-      <rect x="0" y="0" width="176" height="96" rx="8" fill="#e8e1d4"/>
-      <rect x="36" y="24" width="104" height="48" rx="7" fill="none" stroke="#2f7d70" stroke-width="3.5"/>
-      <circle cx="68" cy="48" r="16" fill="#c85e25"/>
-      <circle cx="108" cy="48" r="16" fill="#c85e25"/>
+    <text x="20" y="34" class="name">手部相关输入</text>
+    <text x="20" y="58" class="sub">近似裁剪 vs HaWoR 腕轨迹裁剪</text>
+    <g transform="translate(34,78)">
+      <rect x="0" y="0" width="126" height="82" rx="8" fill="#e8e1d4"/>
+      <rect x="28" y="22" width="72" height="38" rx="7" fill="none" stroke="#c85e25" stroke-width="3"/>
+      <circle cx="50" cy="42" r="12" fill="#c85e25" opacity=".72"/>
+      <circle cx="78" cy="42" r="12" fill="#c85e25" opacity=".72"/>
+      <text x="18" y="106" class="tiny">近似拼贴</text>
+      <rect x="154" y="0" width="126" height="82" rx="8" fill="#e8e1d4"/>
+      <rect x="182" y="22" width="72" height="38" rx="7" fill="none" stroke="#2f7d70" stroke-width="3"/>
+      <circle cx="204" cy="42" r="12" fill="#c85e25"/>
+      <circle cx="232" cy="42" r="12" fill="#c85e25"/>
+      <text x="166" y="106" class="tiny">HaWoR 裁剪</text>
     </g>
   </g>
 </svg>

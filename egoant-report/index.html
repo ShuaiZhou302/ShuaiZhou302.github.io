@@ -375,7 +375,7 @@ def compatible(a, b, strategy):
       
       <h4 data-i18n="world.h3.inputs">视觉输入</h4>
       <p data-i18n-html data-i18n="world.p.inputs">
-        固定边界标注会换不同视觉输入。先把六类输入各自「模型看见什么」做个概念预览，再用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。
+        固定边界标注会换不同视觉输入。先用六个预览面板说明「模型看见什么」；其中手部相关面板拆分为近似手部拼贴与 HaWoR 腕轨迹裁剪。随后用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。
       </p>
       <ul class="term-list">
         <li data-i18n-html data-i18n="world.input.1">原始帧：段内均匀抽取的原始帧，分张提交。</li>
@@ -387,7 +387,7 @@ def compatible(a, b, strategy):
         <li data-i18n-html data-i18n="world.term.11">HaWoR<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
       </ul>
       <figure class="figure" id="term-visual">
-        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-31" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
+        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260812-01" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
       </figure>
       <p class="plain" data-i18n="world.zoo.lead">下面是同一 HomER 片段上的实际画面例子。</p>
       <div class="input-zoo">
@@ -451,11 +451,9 @@ def compatible(a, b, strategy):
         <li data-i18n="story.label.4">原始帧 · 397B：同上文「原始帧」，改用 Qwen3.5-397B。</li>
         <li data-i18n="story.label.5">视觉提示叠加 · 397B：同上文「视觉提示叠加」，改用 Qwen3.5-397B。</li>
         <li data-i18n="story.label.6">时序拼贴 · 397B：同上文「时序拼贴」，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.7">邻段拼贴 · 397B：用上文「邻段拼贴」。</li>
+        <li data-i18n="story.label.7">邻段拼贴 · 27B / 397B：用上文「邻段拼贴」，分别由 Qwen3.6-27B 与 Qwen3.5-397B 生成描述。</li>
         <li data-i18n="story.label.8">邻段拼贴 + 秒级时间戳 · 397B：在上文「邻段拼贴」上为每格加入秒级时间戳后重跑。</li>
-        <!-- TODO(local-agent): 近似手部拼贴是 YOLO 还是画面中心启发式？二者是否做过 ablation，还是混用同一条件？ -->
-        <li data-i18n="story.label.9">近似手部拼贴 · 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交。</li>
-        <!-- TODO(local-agent): HaWoR 手部裁剪如何判定「裁剪不完整」？回退到原始帧的具体规则是什么？ -->
+        <li data-i18n="story.label.9">近似手部拼贴 · 27B / 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交；这不是 HaWoR 腕轨迹裁剪。</li>
         <li data-i18n="story.label.10">HaWoR 手部裁剪 · 397B：用上文「手部裁剪」（HaWoR 腕轨迹）；裁剪不完整时回退到原始帧。</li>
       </ol>
       <div class="chart-box">
@@ -473,7 +471,8 @@ def compatible(a, b, strategy):
         <ol>
           <li>原始帧 · 27B：在 470 个固定参考片段上配对成功 262，固定分段标注得分 55.7%，为本组最高。同一评测尺子下，复杂视觉输入均未超过该配置。</li>
           <li>时序拼贴与视觉提示叠加：在 27B 上分别得到 52.8% 与 50.6%；在 397B 上分别得到 45.1% 与 48.5%，均低于对应模型的原始帧。额外上下文没有提高当前片段描述准确率。</li>
-          <li>邻段拼贴与近似手部拼贴：邻段拼贴约 39.6%，加秒级时间戳后为 40.0%；近似手部拼贴为 39.1%。相邻片段信息容易被写进当前描述，启发式裁剪也未带来收益。</li>
+          <li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型只带来很小变化，相邻动作仍容易被写进当前描述。</li>
+          <li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%。这里的近似手部拼贴使用 YOLO 或画面中心启发式裁剪，不读取 HaWoR 腕轨迹，因此不等同于真正的手部重建裁剪。</li>
           <li>HaWoR 手部裁剪 · 397B：配对成功 239 / 470，得分 50.9%，略高于原始帧 · 397B 的 50.2%，仍低于原始帧 · 27B。手部裁剪不能替代模型选择。</li>
           <li>模型对比：原始帧输入下，27B（55.7%）高于 397B（50.2%）。固定边界标注的默认路径取原始帧 · 27B。</li>
         </ol>
