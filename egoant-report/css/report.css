@@ -711,8 +711,9 @@ details.prompt-fold pre {
 }
 
 /* appendix */
-pre.formula {
+.formula, pre.formula {
   font-family: var(--mono);
+  white-space: pre-wrap;
   font-size: 0.86rem;
   background: #f4f1ea;
   border: 1px solid var(--line);

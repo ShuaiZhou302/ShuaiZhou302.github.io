@@ -24,22 +24,22 @@
     <text x="1018" y="112">10s</text>
   </g>
 
-  <rect x="150" y="118" width="264" height="38" rx="7" class="gold"/><text x="268" y="142" class="mono ink">G0</text>
-  <rect x="414" y="118" width="264" height="38" rx="7" class="gold"/><text x="532" y="142" class="mono ink">G1</text>
-  <rect x="678" y="118" width="352" height="38" rx="7" class="gold"/><text x="838" y="142" class="mono ink">G2</text>
+  <rect x="150" y="118" width="264" height="38" rx="7" class="gold"/><text x="268" y="142" class="mono ink">G₀</text>
+  <rect x="414" y="118" width="264" height="38" rx="7" class="gold"/><text x="532" y="142" class="mono ink">G₁</text>
+  <rect x="678" y="118" width="352" height="38" rx="7" class="gold"/><text x="838" y="142" class="mono ink">G₂</text>
 
-  <rect x="150" y="230" width="246" height="38" rx="7" class="pred"/><text x="259" y="254" class="mono" fill="#fff">P0</text>
-  <rect x="396" y="230" width="238" height="38" rx="7" class="pred"/><text x="501" y="254" class="mono" fill="#fff">P1</text>
-  <rect x="634" y="230" width="220" height="38" rx="7" class="miss"/><text x="730" y="254" class="mono ink">P2</text>
-  <rect x="854" y="230" width="176" height="38" rx="7" class="miss"/><text x="928" y="254" class="mono ink">P3</text>
+  <rect x="150" y="230" width="246" height="38" rx="7" class="pred"/><text x="259" y="254" class="mono" fill="#fff">P₀</text>
+  <rect x="396" y="230" width="238" height="38" rx="7" class="pred"/><text x="501" y="254" class="mono" fill="#fff">P₁</text>
+  <rect x="634" y="230" width="220" height="38" rx="7" class="miss"/><text x="730" y="254" class="mono ink">P₂</text>
+  <rect x="854" y="230" width="176" height="38" rx="7" class="miss"/><text x="928" y="254" class="mono ink">P₃</text>
 
   <path d="M150 164v44M396 164v44" class="mark"/>
   <path d="M414 164v44M634 164v44" class="mark"/>
-  <text x="158" y="188" class="txt small ink">P0 与 G0 重叠足够</text>
+  <text x="158" y="188" class="txt small ink">P₀ 与 G₀ 重叠足够</text>
   <text x="158" y="206" class="txt small muted">IoU ≈ 0.93 → 配对成功</text>
-  <text x="424" y="188" class="txt small ink">P1 与 G1 重叠足够</text>
+  <text x="424" y="188" class="txt small ink">P₁ 与 G₁ 重叠足够</text>
   <text x="424" y="206" class="txt small muted">IoU ≈ 0.78 → 配对成功</text>
-  <text x="704" y="198" class="txt small muted">P2、P3 未达阈值</text>
+  <text x="704" y="198" class="txt small muted">P₂、P₃ 未达阈值</text>
 
   <rect x="70" y="310" width="980" height="124" rx="14" class="box"/>
   <text x="96" y="340" class="txt sum ink">① 统计分段数量</text>
