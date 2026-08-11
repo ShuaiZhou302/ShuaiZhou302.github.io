@@ -197,7 +197,7 @@
       </div>
       <h3 data-i18n="metrics.h3.label">固定分段标注得分例子</h3>
       <div class="metric-example-card">
-        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 C</a>。</p>
+        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 B</a>。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.label.formula">固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%</div>
       </div>
       <h3 data-i18n="metrics.h3.e2e">端到端整流程得分例子</h3>
@@ -312,6 +312,9 @@
       <p class="plain" data-i18n-html data-i18n="world.gepa.files">
         规则原文（English）：<a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>
       </p>
+      <p class="plain" data-i18n-html data-i18n="world.gepa.prompt.note">
+        下面折叠里是调用文档：真正送给模型的是 <code>System Prompt</code> 与 <code>User Prompt Template</code> 两个代码块；模板里的 <code>{duration_sec}</code> 会替换成该视频时长，拼贴图图片接在 user 文本之后。Markdown 标题和 Image Inputs 说明文字不会进模型。
+      </p>
       <details class="prompt-fold">
         <summary data-i18n="walk.prompt.gepa">Prompt (English only) — segmentation rules</summary>
         <div class="prompt-box"><pre id="p-gepa-term">Loading…</pre></div>
@@ -355,8 +358,45 @@
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
         <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#term-gepa">术语 · GEPA</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 C</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
-        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 B</a>。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 B</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
+        <li>
+          <span data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。</span>
+          <details class="term-fold" id="app-rule-merge">
+            <summary data-i18n="pipeline.merge.fold">相邻片段规则合并伪代码</summary>
+            <p class="plain" data-i18n="pipeline.merge.lead">这组实验不是新的模型调用，也不是 production merge judge。它只对最优 S2 分段输出做离线后处理，用来验证「把相邻预测段合并得更像完整动作」是否能提高视频分段得分。</p>
+            <div style="overflow-x:auto" data-i18n-html data-i18n="pipeline.merge.table">
+              <table><thead><tr><th>规则</th><th>输入</th><th>合并条件</th><th>结果</th></tr></thead><tbody>
+                <tr><td>完全相同标签</td><td>S2 预测段</td><td>相邻段的 <code>subtask</code> 规范化后完全相同</td><td>F1 0.1987，低于未合并 S2</td></tr>
+                <tr><td>动词/物体相同</td><td>S2 预测段</td><td>相邻段抽取到的主要动作词和关键物体一致或高度重合</td><td>F1 0.1947，低于未合并 S2</td></tr>
+                <tr><td>短间隙桥接</td><td>S2 预测段</td><td>先把很短时间空隙视作连续，再套用标签或动词/物体匹配</td><td>F1 0.1883，低于未合并 S2</td></tr>
+              </tbody></table>
+            </div>
+            <details class="prompt-fold">
+              <summary data-i18n="pipeline.merge.code.fold">伪代码</summary>
+              <pre class="formula">segments = sort_by_start_time(s2_predictions)
+merged = []
+
+for seg in segments:
+    prev = merged[-1] if merged else None
+    if prev and compatible(prev, seg, strategy):
+        prev.end_sec = seg.end_sec
+        prev.subtask = choose_representative_label(prev.subtask, seg.subtask)
+    else:
+        merged.append(copy(seg))
+
+def compatible(a, b, strategy):
+    if strategy == "exact_label":
+        return normalize(a.subtask) == normalize(b.subtask)
+    if strategy == "verb_object":
+        return same_main_verb(a, b) and overlapping_main_objects(a, b)
+    if strategy == "bridge_short_gap":
+        return small_gap(a.end_sec, b.start_sec) and (
+            exact_label_match(a, b) or verb_object_match(a, b)
+        )</pre>
+            </details>
+            <p class="plain" data-i18n-html data-i18n="pipeline.merge.note">实现边界：脚本只读取预测 JSON 的 <code>start_sec</code>、<code>end_sec</code>、<code>subtask</code>，按相邻段规则合并；不能新增边界，只能删除或移动已有预测段之间的边界。HomER 上三种规则都降低得分，说明 S2 的细边界已经比这些粗合并更适合 WGO 的 IoU 口径。</p>
+          </details>
+        </li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.seg">视频分段得分（Segment F1）</h4>
@@ -383,7 +423,7 @@
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
           <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
-          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 B</a>。</li>
+          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见上方 <a href="#app-rule-merge">伪代码折叠</a>。</li>
           <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
         </ol>
       </div>
@@ -510,7 +550,7 @@
       <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 D。
+        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 C。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
