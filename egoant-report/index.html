@@ -93,13 +93,13 @@
         第一视角（egocentric）人类视频通常由头戴相机拍摄，记录人在真实环境中完成日常操作的过程，例如在厨房切菜、在工位装配零件或在商店整理货架。相机随头部运动，双手及其操作对象构成画面的主体；场景、光照、遮挡以及操作中的失败与重试均自然发生，而非来自预设的实验室环境。近年来，EgoVerse<sup class="cite"><a class="cite-ref" href="#ref-egoverse">8</a></sup>、EgoDex<sup class="cite"><a class="cite-ref" href="#ref-egodex">7</a></sup> 和 EgoLive<sup class="cite"><a class="cite-ref" href="#ref-egolive">9</a></sup> 等公开数据集已将此类视频扩展到千小时量级。
       </p>
       <p data-i18n-html data-i18n="intro.value">
-        这类数据对机器人学习的潜在价值首先来自<strong>操作语义的可迁移性</strong>。尽管人手与机器人末端执行器的形态不同，物体状态、操作目标以及「根据观测选择动作」的高层语义仍有相通之处。因此，人类操作视频可用于视觉—语言—动作（VLA）模型的预训练，再通过真机数据将动作空间适配到具体机器人本体<sup class="cite"><a class="cite-ref" href="#ref-pi05">1</a></sup>。与遥操作采集的机器人数据相比，真实人类视频还具有两项优势：其一，覆盖的场景、物体和技能更为丰富，有助于提升策略在未见环境中的泛化能力；其二，采集不依赖机器人硬件和遥操作员，更容易在多个真实环境中并行扩展。
+        这类数据对机器人学习的潜在价值首先来自操作语义的可迁移性。尽管人手与机器人末端执行器的形态不同，物体状态、操作目标以及「根据观测选择动作」的高层语义仍有相通之处。因此，人类操作视频可用于视觉—语言—动作（VLA）模型的预训练，再通过真机数据将动作空间适配到具体机器人本体<sup class="cite"><a class="cite-ref" href="#ref-pi05">1</a></sup>。与遥操作采集的机器人数据相比，真实人类视频还具有两项优势：其一，覆盖的场景、物体和技能更为丰富，有助于提升策略在未见环境中的泛化能力；其二，采集不依赖机器人硬件和遥操作员，更容易在多个真实环境中并行扩展。
       </p>
       <p data-i18n-html data-i18n="intro.task">
-        原始第一视角视频本身可以用于视频生成和世界模型训练；结合手部重建得到的腕部轨迹，还可以提供弱动作监督。这里称为「弱监督」，是因为腕部轨迹只能近似描述手部运动，并不包含机器人控制指令、接触力或执行器状态，也未必能直接映射到具体机器人本体。然而，这些信号通常不显式说明<strong>当前正在执行哪项操作，以及该操作何时完成</strong>。这类时间对齐的高层语义正是许多机器人策略所需要的监督。VLA 训练样本通常由「观测、语言指令、动作」组成，其中语言指令必须与相应的时间区间对齐。π<sub>0.5</sub> 等层级模型还会先预测高层子任务指令，再以此为条件生成低层动作<sup class="cite"><a class="cite-ref" href="#ref-pi05">1</a></sup>；训练这一高层模块需要时间对齐的子任务标签。分段边界同样具有独立价值：它界定一次完整操作的起止，可作为成功判定、奖励建模、技能检索以及预训练数据筛选与配比的基本单位。因此，将长视频转化为可用监督，需要同时回答两个问题：<strong>每项操作何时开始、何时结束</strong>，以及<strong>该时间段内完成了什么操作</strong>。本文将这两个问题分别称为子任务分段与语义标注。
+        原始第一视角视频本身可以用于视频生成和世界模型训练；结合手部重建得到的腕部轨迹，还可以提供弱动作监督。这里称为「弱监督」，是因为腕部轨迹只能近似描述手部运动，并不包含机器人控制指令、接触力或执行器状态，也未必能直接映射到具体机器人本体。然而，这些信号通常不显式说明当前正在执行哪项操作，以及该操作何时完成。这类时间对齐的高层语义正是许多机器人策略所需要的监督。VLA 训练样本通常由「观测、语言指令、动作」组成，其中语言指令必须与相应的时间区间对齐。π<sub>0.5</sub> 等层级模型还会先预测高层子任务指令，再以此为条件生成低层动作<sup class="cite"><a class="cite-ref" href="#ref-pi05">1</a></sup>；训练这一高层模块需要时间对齐的子任务标签。分段边界同样具有独立价值：它界定一次完整操作的起止，可作为成功判定、奖励建模、技能检索以及预训练数据筛选与配比的基本单位。因此，将长视频转化为可用监督，需要同时回答两个问题：每项操作何时开始、何时结束，以及该时间段内完成了什么操作。本文将这两个问题分别称为子任务分段与语义标注。
       </p>
       <p data-i18n-html data-i18n="intro.hard">
-        自动完成这两项任务并不容易。第一视角画面随头部运动，手部经常遮挡操作对象；相邻动作之间缺少清晰停顿，细粒度操作又可能连续发生。人工逐段标注难以扩展至千小时规模，因此需要<strong>可审计、可复现且成本可控的自动标注流程</strong>。
+        自动完成这两项任务并不容易。第一视角画面随头部运动，手部经常遮挡操作对象；相邻动作之间缺少清晰停顿，细粒度操作又可能连续发生。人工逐段标注难以扩展至千小时规模，因此需要可审计、可复现且成本可控的自动标注流程。
       </p>
     </section>
 
@@ -151,12 +151,12 @@
       </p>
 
       <h3 data-i18n="eval.h3.metrics">三种分数分别测试什么能力</h3>
-      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种分数依次衡量：<strong>时间边界是否准确</strong>、<strong>给定边界后的描述是否正确</strong>，以及<strong>端到端分段与标注的整体表现</strong>。公式汇总见 <a href="#app-metrics">附录 A</a>。</p>
-      <ol>
-        <li data-i18n-html data-i18n="metrics.li1"><strong>Segment F1（分段得分）</strong>：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
-        <li data-i18n-html data-i18n="metrics.li2"><strong>Label Acc（固定分段标注得分）</strong>：直接使用人工边界，不让模型预测时间，只判断每个片段的描述是否与人工描述表达同一个完成动作。</li>
-        <li data-i18n-html data-i18n="metrics.li3"><strong>E2E F1（端到端整流程得分）</strong>：模型同时预测边界和描述。预测片段必须先通过时间匹配，其描述再通过语义匹配，才算一个正确结果。</li>
-      </ol>
+      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种分数依次衡量：时间边界是否准确、给定边界后的描述是否正确，以及端到端分段与标注的整体表现。公式汇总见 <a href="#app-metrics">附录 A</a>。</p>
+      <ul>
+        <li data-i18n-html data-i18n="metrics.li1">Segment F1（分段得分）：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
+        <li data-i18n-html data-i18n="metrics.li2">Label Acc（固定分段标注得分）：直接使用人工边界，不让模型预测时间，只判断每个片段的描述是否与人工描述表达同一个完成动作。</li>
+        <li data-i18n-html data-i18n="metrics.li3">E2E F1（端到端整流程得分）：模型同时预测边界和描述。预测片段必须先通过时间匹配，其描述再通过语义匹配，才算一个正确结果。</li>
+      </ul>
       <p data-i18n="metrics.toy">下面用一个 10 秒视频说明时间匹配。人工将视频分为 3 段，模型预测了 4 段。</p>
       <p data-i18n="metrics.toy.g">参考片段（gold）：G0[0,3]、G1[3,6]、G2[6,10]；模型预测（pred）：P0[0.5,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,9.5]。</p>
       <div class="callout metric-snap" data-i18n-html data-i18n="metrics.snap">
@@ -166,15 +166,15 @@
         <img src="assets/explain/metric_iou_f1_zh.svg?v=20260806-3" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
-      <ol>
+      <ul>
         <li data-i18n="metrics.toy.1">吸附后，预测片段变为 P0[0,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,10]。只有 P0 和 P3 的外侧端点发生变化。</li>
         <li data-i18n="metrics.toy.2">计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU≈0.933；P1–G1 的 IoU≈0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。</li>
-        <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，<strong>预测命中率（precision）</strong>为 2/4=0.50；3 个人工片段中有 2 个被找回，<strong>参考找回率（recall）</strong>为 2/3≈0.67；<strong>Segment F1（综合分段得分）</strong>≈0.571。</li>
-      </ol>
+        <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，预测命中率（precision）为 2/4=0.50；3 个人工片段中有 2 个被找回，参考找回率（recall）为 2/3≈0.67；Segment F1（综合分段得分）≈0.571。</li>
+      </ul>
       <h3 data-i18n="metrics.h3.remaining">同一个例子如何得到另外两类分数</h3>
       <div class="metric-example-grid">
-        <p data-i18n-html data-i18n="metrics.label.example"><strong>固定分段标注得分：</strong>直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数为 2，<strong>Label Acc = 正确描述数 / 人工分段数 = 2/3≈66.7%</strong>。实际评判 prompt 见 <a href="#app-prompts">附录 F</a>。</p>
-        <p data-i18n-html data-i18n="metrics.e2e.example"><strong>端到端整流程得分：</strong>保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s=1。<strong>预测命中率 = s / 预测分段数 = 1/4</strong>，<strong>参考找回率 = s / 人工分段数 = 1/3</strong>，因此 <strong>E2E F1 = 2s / (预测分段数 + 人工分段数) = 2/(4+3)≈0.286</strong>。</p>
+        <p data-i18n-html data-i18n="metrics.label.example">固定分段标注得分：直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数为 2，Label Acc（固定分段标注得分）= 正确描述数 / 人工分段数 = 2/3≈66.7%。实际评判 prompt 见 <a href="#app-prompts">附录 F</a>。</p>
+        <p data-i18n-html data-i18n="metrics.e2e.example">端到端整流程得分：保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s=1。预测命中率（precision）= s / 预测分段数 = 1/4，参考找回率（recall）= s / 人工分段数 = 1/3，因此 E2E F1（端到端整流程得分）= 2s / (预测分段数 + 人工分段数) = 2/(4+3)≈0.286。</p>
       </div>
     </section>
 
@@ -187,7 +187,7 @@
       <h3 data-i18n="world.h3.rule">基于规则的分段：运动边界与固定时长切分</h3>
       <p data-i18n-html data-i18n="world.p.rule">
         <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长。在 Toyota Research Institute 的 <a href="https://co-training-lbm.github.io/" target="_blank" rel="noopener"><em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em></a><sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup> 中，研究者构建人类视频语言标注数据时，沿用 <a href="https://egovid.github.io/" target="_blank" rel="noopener">EgoVid</a> 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。
-        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，<strong>分段得分为 0.0953</strong>，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
+        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，分段得分为 0.0953，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
       </p>
 
       <h3 data-i18n="world.h3.scale">Scale Labs：已切分视频片段的稠密描述</h3>
@@ -200,7 +200,7 @@
         Macrodata Labs 的 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener"><em>Segmenting Robot Video into Actionable Subtasks</em></a><sup class="cite"><a class="cite-ref" href="#ref-macrodata">2</a></sup> 是目前最系统的公开工作：它将「长视频 → 动作级片段 + 短语义描述」定义为可量化评测的任务，发布 WGO-Bench 及分段、固定边界标注和端到端三类指标，给出拼贴图与 GEPA 搜索分段规则等设计，并比较多个闭源和开源模型。本文聚焦另一类实际需求：在只使用成本相对较低、可私有部署的开放权重模型时，检验哪些设计仍然有效，以及这些设计能否组合成可扩展的自动标注流程。
       </p>
 
-      <h3 data-i18n="world.h3.egoant">本文方法 EgoANT：面向开放权重模型的端到端自动标注</h3>
+      <h3 data-i18n="world.h3.egoant">EgoANT：面向开放权重模型的端到端自动标注</h3>
       <p data-i18n-html data-i18n="world.p.egoant">
         本文提出的 EgoANT 面向可私有部署的开放权重模型，构建从长视频输入到动作边界与操作描述输出的端到端自动标注流程。本文围绕这条流程探索三个方面：如何借助带时间戳的拼贴图预测语义完整的动作边界，如何在给定边界后生成准确简洁的操作描述，以及分段与标注串联后的端到端总体效果。方法设计吸收了 Scale Labs 的拼贴图表示和 Macrodata Labs 的已完成动作分段规则，并采用 WGO-Bench 进行统一评测。后文将展开各阶段设计与评测。
       </p>
@@ -214,17 +214,17 @@
         <figcaption data-i18n="world.terms.figcap">图中按处理顺序展示：模型先对完整视频做一次粗分，再围绕某一粗边界选取一个局部时间窗口，并在该窗口内执行 S2 局部精修；③ 行里的两块绿色是同一窗口内重切后的片段。</figcaption>
       </figure>
       <ul class="term-list">
-        <li data-i18n-html data-i18n="world.term.1"><strong>参考分段（gold）</strong>：人工标注的完整动作片段，图中用黄色表示。</li>
-        <li data-i18n-html data-i18n="world.term.2"><strong>整集粗分</strong>：将完整视频的全部带时间戳拼贴图一次性提交给模型，由一次模型调用输出初始分段序列。</li>
-        <li data-i18n-html data-i18n="world.term.3"><strong>粗分片段与粗边界</strong>：整集粗分输出的初始片段及其起止时间。它们是后续精修的初始估计，还不是最终边界。</li>
-        <li data-i18n-html data-i18n="world.term.4"><strong>局部时间窗口</strong>：围绕某个粗边界截取的一小段连续视频区间，图中用绿色虚线框表示。</li>
-        <li data-i18n-html data-i18n="world.term.5"><strong>S1（加密切分配置）</strong>：仍对完整视频做一次分段，但通过修改提示词，要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="world.term.6"><strong>S2（局部精修配置）</strong>：先由整集粗分得到粗边界，再围绕粗边界建立时间窗口，让模型在窗口内重新输出动作边界。图中绿色虚线只围住一个窗口；窗口内两块绿色表示重切后可能把原先欠分的区域拆得更细。</li>
-        <li data-i18n-html data-i18n="world.term.7"><strong>窗口不外扩（pad=0）</strong>：局部精修所用画面严格限制在时间窗口内。</li>
-        <li data-i18n-html data-i18n="world.term.8"><strong>覆盖完整动作（full-cover）</strong>：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。</li>
-        <li data-i18n-html data-i18n="world.term.9"><strong>候选判别器（selector）</strong>：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
-        <li data-i18n-html data-i18n="world.term.10"><strong>语义评判模型（judge）</strong>：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。</li>
-        <li data-i18n-html data-i18n="world.term.11"><strong>HaWoR</strong><sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
+        <li data-i18n-html data-i18n="world.term.1">参考分段（gold）：人工标注的完整动作片段，图中用黄色表示。</li>
+        <li data-i18n-html data-i18n="world.term.2">整集粗分：将完整视频的全部带时间戳拼贴图一次性提交给模型，由一次模型调用输出初始分段序列。</li>
+        <li data-i18n-html data-i18n="world.term.3">粗分片段与粗边界：整集粗分输出的初始片段及其起止时间。它们是后续精修的初始估计，还不是最终边界。</li>
+        <li data-i18n-html data-i18n="world.term.4">局部时间窗口：围绕某个粗边界截取的一小段连续视频区间，图中用绿色虚线框表示。</li>
+        <li data-i18n-html data-i18n="world.term.5">S1（加密切分配置）：仍对完整视频做一次分段，但通过修改提示词，要求模型输出更多、更短的候选片段。</li>
+        <li data-i18n-html data-i18n="world.term.6">S2（局部精修配置）：先由整集粗分得到粗边界，再围绕粗边界建立时间窗口，让模型在窗口内重新输出动作边界。图中绿色虚线只围住一个窗口；窗口内两块绿色表示重切后可能把原先欠分的区域拆得更细。</li>
+        <li data-i18n-html data-i18n="world.term.7">窗口不外扩（pad=0）：局部精修所用画面严格限制在时间窗口内。</li>
+        <li data-i18n-html data-i18n="world.term.8">覆盖完整动作（full-cover）：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。</li>
+        <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
+        <li data-i18n-html data-i18n="world.term.10">语义评判模型（judge）：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。</li>
+        <li data-i18n-html data-i18n="world.term.11">HaWoR<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
       </ul>
       <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
@@ -737,7 +737,7 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260810-15"></script>
+  <script src="js/i18n.js?v=20260811-1"></script>
   <script src="js/report.js?v=20260805-4"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
