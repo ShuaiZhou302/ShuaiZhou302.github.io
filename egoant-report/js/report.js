@@ -173,7 +173,7 @@
     "merge_exact": {
       "zh": {
         "name": "S2 + 相邻片段规则合并：合并相邻完全相同标签段",
-        "note": "合并后视频分段 F1 下降",
+        "note": "合并后视频分段得分下降",
         "model": "规则后处理（非模型）"
       },
       "en": {
@@ -185,7 +185,7 @@
     "merge_verb": {
       "zh": {
         "name": "S2 + 相邻片段规则合并：按动词/物体合并相邻段",
-        "note": "更激进合并，视频分段 F1 再降",
+        "note": "更激进合并，视频分段得分再降",
         "model": "规则后处理（非模型）"
       },
       "en": {
@@ -197,7 +197,7 @@
     "merge_bridge": {
       "zh": {
         "name": "S2 + 相邻片段规则合并：跨短间隙桥接合并",
-        "note": "跨短间隙合并，视频分段 F1 降低最多",
+        "note": "跨短间隙合并，视频分段得分降低最多",
         "model": "规则后处理（非模型）"
       },
       "en": {
@@ -473,7 +473,7 @@
     s2_pad1_27b: { en: { goal: "Test 1.0s pad-out.", how: "Add 1.0 second of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1485", verdict: "This setting is below pad=0." } },
     s2_pad2_27b: { en: { goal: "Test 2.0s pad-out.", how: "Add 2.0 seconds of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1436", verdict: "This setting is below pad=0." } },
     s2_midpoint_post: { en: { goal: "Compare scripted coverage with a prompt constraint.", how: "Apply midpoint full-cover postprocessing after pad=0 predictions.", input: "predicted boundaries", result: "Segment F1 0.1635", verdict: "This postprocess is below putting full-cover directly in the prompt." } },
-    s2_fullcover_qwen36: { en: { goal: "Refine local windows while covering completed actions.", how: "Use local timestamped contact sheets, pad=0, and a full-cover prompt after coarse segmentation.", input: "local timestamped contact sheets plus coarse-bound hints", result: "Segment F1 0.2031; 308 predictions", verdict: "Highest Segment F1 among evaluated segmentation settings." } },
+    s2_fullcover_qwen36: { en: { goal: "Refine local windows while covering completed actions.", how: "Use local timestamped contact sheets, pad=0, and a full-cover prompt after coarse segmentation.", input: "local timestamped contact sheets plus coarse-bound hints", result: "Segment F1 0.2031; 308 predictions", verdict: "Highest segmentation score among evaluated segmentation settings." } },
     merge_exact: { en: { goal: "Test whether adjacent predictions with the same label should be merged.", how: "Scan time-sorted S2 predictions and merge neighboring spans only when their normalized subtask labels are identical. This is a JSON postprocess, not another model call.", input: "S2 full-cover predictions: start_sec, end_sec, subtask", result: "Segment F1 0.1987", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
     merge_verb: { en: { goal: "Test whether adjacent predictions that describe the same verb/object should be merged.", how: "Extract approximate action verbs and salient objects from neighboring subtask strings, then merge compatible neighbors. This does not inspect video frames or gold annotations.", input: "S2 full-cover predictions: start_sec, end_sec, subtask", result: "Segment F1 0.1947", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
     merge_bridge: { en: { goal: "Test whether very short temporal gaps should be bridged before merging.", how: "Treat very short gaps between neighboring S2 predictions as continuous, then apply label or verb/object compatibility before merging.", input: "S2 full-cover predictions: start_sec, end_sec, subtask", result: "Segment F1 0.1883", verdict: "This rule merge is below the unmerged S2 full-cover result." } },
@@ -1587,13 +1587,13 @@
       "gold": 470,
       "model": "Qwen3.6-27B",
       "full25": true,
-      "note": "Highest Segment F1 among evaluated segmentation settings",
+      "note": "Highest segmentation score among evaluated segmentation settings",
       "method": {
         "goal": "在局部时间窗口内重切并覆盖可见完成动作。",
         "how": "粗分后生成局部 timestamped contact sheets；pad=0；prompt 要求覆盖窗口内完成动作。",
         "input": "局部 timestamped contact sheets + coarse-bound hints",
         "result": "Segment F1 0.2031；308 个预测片段",
-        "verdict": "这是已评测分段配置中的最高 Segment F1。"
+        "verdict": "这是已评测分段配置中的最高视频分段得分。"
       }
     },
     {
@@ -1607,7 +1607,7 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "Rule merge lowers Segment F1",
+      "note": "Rule merge lowers segmentation score",
       "method": {
         "goal": "测试标签相同的相邻预测段是否应被合并。",
         "how": "按时间顺序扫描 S2 预测段；只有相邻段的 subtask 规范化后完全一致时才合并。这是预测 JSON 后处理，不是新的模型调用。",
@@ -1627,7 +1627,7 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "Rule merge lowers Segment F1",
+      "note": "Rule merge lowers segmentation score",
       "method": {
         "goal": "测试描述同一动词/物体的相邻预测段是否应被合并。",
         "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。按相邻段标签与时间间隙合并。",
@@ -1647,7 +1647,7 @@
       "gold": 470,
       "model": "规则后处理（非 LLM）",
       "full25": true,
-      "note": "Rule merge lowers Segment F1",
+      "note": "Rule merge lowers segmentation score",
       "method": {
         "goal": "测试合并前先桥接很短时间空隙是否有帮助。",
         "how": "把相邻 S2 预测段之间的很短空隙视作连续，再按标签或动词/物体兼容规则尝试合并。",

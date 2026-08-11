@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-17" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-20" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -99,19 +99,19 @@
       <h2 data-i18n="tldr.h2">TL;DR</h2>
       <div class="tldr">
         <div class="card">
-          <div class="k" data-i18n="tldr.k.seg">视频分段 F1（Segment F1）</div>
+          <div class="k" data-i18n="tldr.k.seg">视频分段得分（Segment F1）</div>
           <div class="v">0.2031</div>
           <div class="s" data-i18n="tldr.seg">470 个参考片段中，79 个与预测片段的配对通过时间匹配标准。</div>
           <div class="config" data-i18n="tldr.seg.config">配置：Qwen3.6-27B · 时间戳网格 · 粗分后局部精修</div>
         </div>
         <div class="card">
-          <div class="k" data-i18n="tldr.k.label">Label Acc（固定分段标注得分）</div>
+          <div class="k" data-i18n="tldr.k.label">固定分段标注得分（Label Acc）</div>
           <div class="v">55.7%</div>
           <div class="s" data-i18n="tldr.label">470 个固定分段中，262 个描述通过语义匹配标准。</div>
           <div class="config" data-i18n="tldr.label.config">配置：Qwen3.6-27B · 原始帧 · 固定人工分段</div>
         </div>
         <div class="card">
-          <div class="k" data-i18n="tldr.k.e2e">E2E F1（端到端整流程得分）</div>
+          <div class="k" data-i18n="tldr.k.e2e">端到端整流程得分（E2E F1）</div>
           <div class="v">0.1542</div>
           <div class="s" data-i18n="tldr.e2e">60 个片段同时通过时间匹配与语义匹配标准。</div>
           <div class="config" data-i18n="tldr.e2e.config">配置：Qwen3.6-27B 分段 + Qwen3.5-397B-A17B 候选判别器</div>
@@ -121,8 +121,8 @@
         <strong>实验范围：</strong>WGO-Bench 的第一视角人类子集 HomER，共 25 个视频、470 个人工标注片段。分段与描述均由开放权重 Qwen 视觉语言模型生成；Gemini-3.5-Flash 仅用于离线判断描述是否与人工标注语义一致。三类指标的完整定义见 <a href="#evaluate">§1</a>。
       </p>
       <ul class="tldr-points">
-        <li data-i18n-html data-i18n="tldr.pt1"><strong>先选对模型，再考虑复杂的视觉输入增强。</strong>给定人工分段、只评估片段描述时，Qwen3.6-27B 使用原始帧取得 55.7% 的固定分段标注得分；改用多帧拼图或叠加启发式视觉提示后，得分分别降至 52.8% 和 50.6%。在输入和提示词完全相同的分段实验中，Qwen3.6-27B 的视频分段 F1 为 0.1278，高于 Qwen3.5-397B-A17B 的 0.0952。就本组实验而言，模型选择带来的收益大于额外的视觉输入技巧。</li>
-        <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段 F1 从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段 F1 为 0.227，与本方案相差 0.024。</li>
+        <li data-i18n-html data-i18n="tldr.pt1"><strong>先选对模型，再考虑复杂的视觉输入增强。</strong>给定人工分段、只评估片段描述时，Qwen3.6-27B 使用原始帧取得 55.7% 的固定分段标注得分；改用多帧拼图或叠加启发式视觉提示后，得分分别降至 52.8% 和 50.6%。在输入和提示词完全相同的分段实验中，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B-A17B 的 0.0952。就本组实验而言，模型选择带来的收益大于额外的视觉输入技巧。</li>
+        <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段得分从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段得分为 0.227，与本方案相差 0.024。</li>
         <li data-i18n-html data-i18n="tldr.pt3"><strong>分段和描述需要不同的视觉输入。</strong>判断动作边界时，模型需要观察较长时间范围内的变化，因此带时间戳的图片网格更有效；边界已经给定后，模型需要看清片段内的手部和物体细节，此时原始帧更有效。加入相邻片段不但没有提高固定分段标注得分，还会把相邻动作误写进当前描述。</li>
         <li data-i18n-html data-i18n="tldr.pt4"><strong>端到端整流程目前首先受分段质量限制。</strong>最佳方案生成 308 个预测片段，但与 470 个人工参考片段完成时间匹配的只有 79 个；其中 60 个片段的描述进一步通过语义评判。换言之，大部分损失发生在描述生成之前。现阶段，改进动作边界比继续润色描述更可能提高端到端整流程得分。</li>
         <li data-i18n-html data-i18n="tldr.pt5"><strong>单路原始帧标注已接近多候选判别方案，且成本更低。</strong>在相同预测边界上，使用 Qwen3.5-397B-A17B 进行单路原始帧标注，端到端整流程得分为 <strong>0.1414</strong>；生成多条描述并由候选判别器定稿后，得分为 <strong>0.1542</strong>，相对提高约 9.1%。前者估计为 <strong>$0.84–$1.59 / 视频小时</strong>，后者为 <strong>$2.11–$3.80 / 视频小时</strong>，均不含离线语义评判费用。对成本敏感的批量处理，单路原始帧标注是更合适的默认方案。</li>
@@ -139,7 +139,7 @@
       <h3 data-i18n="world.h3.rule">基于规则的分段：运动边界与固定时长切分</h3>
       <p data-i18n-html data-i18n="world.p.rule">
         <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长。在 Toyota Research Institute 的 <a href="https://co-training-lbm.github.io/" target="_blank" rel="noopener"><em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em></a><sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup> 中，研究者构建人类视频语言标注数据时，沿用 <a href="https://egovid.github.io/" target="_blank" rel="noopener">EgoVid</a> 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。
-        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，视频分段 F1 为 0.0953，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
+        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，视频分段得分为 0.0953，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
       </p>
 
       <h3 data-i18n="world.h3.scale">Scale Labs：已切分视频片段的稠密描述</h3>
@@ -170,10 +170,10 @@
         其中 <strong>HomER</strong> 是第一视角人类操作子集；本报告的所有分数固定在 <strong>HomER 的 25 个视频 / 470 个参考片段</strong>上。
       </p>
 
-      <h3 data-i18n="eval.h3.metrics">三种分数分别测试什么能力</h3>
-      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种分数依次衡量：时间边界是否准确、给定边界后的描述是否正确，以及端到端分段与标注的整体表现。下面用同一个 10 秒例子给出计算步骤与公式。</p>
+      <h3 data-i18n="eval.h3.metrics">三种得分分别测试什么能力</h3>
+      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种得分依次衡量：时间边界是否准确、给定边界后的描述是否正确，以及端到端分段与标注的整体表现。下面用同一个 10 秒例子给出计算步骤与公式。</p>
       <ul>
-        <li data-i18n-html data-i18n="metrics.li1">视频分段 F1（Segment F1）：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
+        <li data-i18n-html data-i18n="metrics.li1">视频分段得分（Segment F1）：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
         <li data-i18n-html data-i18n="metrics.li2">固定分段标注得分（Label Acc）：直接使用人工边界，不让模型预测时间，只判断每个片段的描述是否与人工描述表达同一个完成动作。</li>
         <li data-i18n-html data-i18n="metrics.li3">端到端整流程得分（E2E F1）：模型同时预测边界和描述。预测片段必须先通过时间匹配，其描述再通过语义匹配，才算一个正确结果。</li>
       </ul>
@@ -183,7 +183,7 @@
         <strong>首尾吸附只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P<sub>0</sub>.start 从 0.5 改为 0、P<sub>3</sub>.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260811-17" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260811-20" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <ul>
@@ -191,17 +191,18 @@
         <li data-i18n-html data-i18n="metrics.toy.2">P<sub>0</sub>–G<sub>0</sub>、P<sub>1</sub>–G<sub>1</sub> 的时间 IoU 达到 0.75 阈值，形成一对一配对；P<sub>2</sub>、P<sub>3</sub> 未达到阈值。</li>
         <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配数 m = 2，预测段数 n<sub>pred</sub> = 4，参考段数 n<sub>gold</sub> = 3。</li>
       </ul>
+      <h3 data-i18n="metrics.h3.seg">视频分段得分例子</h3>
       <div class="formula" data-i18n-html data-i18n="metrics.seg.formula">IoU = 重叠时长 / 两段合起来覆盖的总时长
 本例：P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933；P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781（均 ≥ 0.75）
 预测命中率 = m / n<sub>pred</sub> = 2 / 4 = 0.50
 参考找回率 = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67
-视频分段 F1 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571</div>
-      <h3 data-i18n="metrics.h3.label">标注得分例子</h3>
+视频分段得分 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571</div>
+      <h3 data-i18n="metrics.h3.label">固定分段标注得分例子</h3>
       <div class="metric-example-card">
         <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 E</a>。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.label.formula">固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%</div>
       </div>
-      <h3 data-i18n="metrics.h3.e2e">端到端得分例子</h3>
+      <h3 data-i18n="metrics.h3.e2e">端到端整流程得分例子</h3>
       <div class="metric-example-card">
         <p data-i18n-html data-i18n="metrics.e2e.example">仍用上述预测的 4 个片段及其描述。时间匹配先得到 P<sub>0</sub>–G<sub>0</sub> 与 P<sub>1</sub>–G<sub>1</sub>；若语义评判只有 P<sub>0</sub>–G<sub>0</sub> 返回 <code>true</code>，则最终正确结果数 s = 1。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.e2e.formula">端到端整流程得分 = 2s / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×1 / (4 + 3) = 2/7 ≈ 0.286</div>
@@ -304,7 +305,7 @@
 
       <h3 data-i18n="pipeline.h3.seg">4.1 视频分段管线</h3>
       <p data-i18n-html data-i18n="pipeline.seg.lead">
-        视频分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频，输出是一组起止时间（例如 [12.0, 18.5]）；本阶段只评边界是否与人工参考对齐。分数统一为同一 HomER 子集上的视频分段 F1（Segment F1）。下面列举我们尝试过的分段标注管线方法以及对应分段效果得分。
+        视频分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频，输出是一组起止时间（例如 [12.0, 18.5]）；本阶段只评边界是否与人工参考对齐。得分统一为同一 HomER 子集上的视频分段得分（Segment F1）。下面列举我们尝试过的分段标注管线方法以及对应视频分段得分。
       </p>
       <p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
       <ol>
@@ -317,13 +318,13 @@
         <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 C.2</a>。</li>
       </ol>
       <div class="chart-box">
-        <h4 data-i18n="story.chart.seg">视频分段 F1（Segment F1）</h4>
+        <h4 data-i18n="story.chart.seg">视频分段得分（Segment F1）</h4>
         <div id="seg-bars" class="bars"></div>
       </div>
       <p class="plain" data-i18n-html data-i18n="story.seg.modelnote">条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。</p>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段 F1</th><th>P / R</th><th>配对/预测/参考</th><th data-i18n="th.model">模型或方法</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th>P / R</th><th>配对/预测/参考</th><th data-i18n="th.model">模型或方法</th></tr></thead>
           <tbody id="seg-tbody"></tbody>
         </table>
       </div>
@@ -340,16 +341,16 @@
           <li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守：预测片段仅 148 段（参考 470 段），配对成功 38，多数参考动作未被单独切出，整体表现为欠分割。</li>
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
-          <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段 F1 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
+          <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
           <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 C.2</a>。</li>
-          <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段 F1 为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
+          <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
         </ol>
       </div>
 
       
 
       <h3 data-i18n="pipeline.h3.label">4.2 固定边界标注</h3>
-      <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。分数统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
+      <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
       <p data-i18n="pipeline.label.methods">下列为我们尝试过的固定边界标注方法。</p>
       <ol>
         <li data-i18n="story.label.1">原始帧 · 27B：在参考片段内均匀抽帧，由 Qwen3.6-27B 生成描述。</li>
@@ -399,7 +400,7 @@
       </div>
 
       <h3 data-i18n="pipeline.h3.e2e">4.3 端到端</h3>
-      <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段 F1 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。分数统一为端到端整流程得分（E2E F1）。</p>
+      <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端标注路径。</p>
       <ol>
         <li data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。</li>
@@ -417,7 +418,7 @@
       </div>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段 F1</th><th data-i18n="th.e2ef1">端到端整流程得分</th><th data-i18n="th.predgold">预测段数 / 参考段数</th><th data-i18n="th.remark">备注</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th data-i18n="th.e2ef1">端到端整流程得分</th><th data-i18n="th.predgold">预测段数 / 参考段数</th><th data-i18n="th.remark">备注</th></tr></thead>
           <tbody id="e2e-tbody"></tbody>
         </table>
       </div>
@@ -468,7 +469,7 @@
       <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（视频分段 F1 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 F。
+        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 F。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
@@ -702,8 +703,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-17"></script>
-  <script src="js/report.js?v=20260811-17"></script>
+  <script src="js/i18n.js?v=20260811-20"></script>
+  <script src="js/report.js?v=20260811-20"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
     async function loadPrompt(ids, file) {

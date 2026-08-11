@@ -10,7 +10,7 @@
     </style>
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
-  <text x="42" y="48" class="txt label ink">Scoring example: temporal matching, then Segment F1</text>
+  <text x="42" y="48" class="txt label ink">Scoring example: temporal matching, then the segmentation score</text>
   <text x="42" y="78" class="txt muted">IoU = overlap duration / total duration covered by either span. A match requires IoU >= 0.75.</text>
 
   <line x1="150" y1="132" x2="1030" y2="132" class="axis"/>
@@ -50,7 +50,7 @@
   <text x="392" y="373" class="txt sum ink">Prediction hit rate: <tspan class="sumMono">2 / 4 = 0.50</tspan></text>
   <text x="392" y="405" class="txt sum ink">Reference coverage: <tspan class="sumMono">2 / 3 = 0.67</tspan></text>
   <path d="M687 375h26m-8-8 8 8-8 8" class="flow"/>
-  <text x="746" y="340" class="txt sum ink">③ Combine into Segment F1</text>
-  <text x="746" y="373" class="txt sum ink">Segment F1</text>
-  <text x="746" y="405" class="sumMono ink">F1 = 2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
+  <text x="746" y="340" class="txt sum ink">③ Combine into segmentation score</text>
+  <text x="746" y="373" class="txt sum ink">Segmentation score (Segment F1)</text>
+  <text x="746" y="405" class="sumMono ink">Segmentation score = 2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
 </svg>

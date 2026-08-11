@@ -711,6 +711,12 @@ details.prompt-fold pre {
 }
 
 /* appendix */
+.formula sub {
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: sub;
+  font-variant-numeric: normal;
+}
 .formula, pre.formula {
   font-family: var(--mono);
   white-space: pre-wrap;
