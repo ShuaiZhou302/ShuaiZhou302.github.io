@@ -1144,16 +1144,12 @@ details.prompt-fold pre {
   }
 }
 
-.term-list li.term-diagram {
-  list-style: none;
-  margin: 0.85rem 0 1.1rem;
-  padding-left: 0;
-}
 details.term-fold {
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--card);
   padding: 0.65rem 0.9rem 0.85rem;
+  margin: 0.85rem 0 1.1rem;
 }
 details.term-fold > summary {
   cursor: pointer;
