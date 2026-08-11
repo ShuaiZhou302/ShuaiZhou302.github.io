@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
-  <title id="title">腕速低谷切段示意</title>
-  <desc id="desc">腕速低谷可作切段信号，但停顿、微调和放手也会形成假边界，导致过分割。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 480" role="img" aria-labelledby="title desc">
+  <title id="title">腕速低谷切段</title>
+  <desc id="desc">在平滑后的腕速曲线低谷处放置切点，得到动作片段。</desc>
   <defs>
     <style>
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.grid{stroke:#e5ddd1;stroke-width:1}.axis{stroke:#b9afa1;stroke-width:2}
       .left{fill:none;stroke:#2f6f66;stroke-width:5}.right{fill:none;stroke:#c45c26;stroke-width:5}
-      .cut{stroke:#1c1914;stroke-width:2;stroke-dasharray:6 6}.gold{fill:#f0c94d}.pred{fill:#2f6f66}.bad{fill:#c45c26}
+      .cut{stroke:#1c1914;stroke-width:2;stroke-dasharray:6 6}.pred{fill:#2f6f66}.bad{fill:#c45c26}
       .swatch{stroke:#fff;stroke-width:1.5}
       .txt{font:16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}.mono{font:14px "IBM Plex Mono",monospace}.small{font-size:14px}.label{font-weight:700}
     </style>
   </defs>
-  <rect width="1120" height="560" rx="18" class="bg"/>
-  <text x="42" y="46" class="txt label ink">腕速低谷切段：信号有用，但很容易过分割</text>
-  <text x="42" y="74" class="txt muted">HaWoR 重建腕部轨迹后平滑腕速，并在速度低谷处切段。</text>
+  <rect width="1120" height="480" rx="18" class="bg"/>
+  <text x="42" y="46" class="txt label ink">腕速低谷切段</text>
+  <text x="42" y="74" class="txt muted">HaWoR 重建腕部轨迹后，在平滑腕速的低谷处放置切点。</text>
 
   <g transform="translate(820,34)">
     <rect x="0" y="0" width="14" height="14" rx="3" fill="#2f6f66" class="swatch"/>
@@ -30,25 +30,22 @@
     </g>
     <path class="left" d="M0 228 C38 60,85 65,128 216 S214 60,270 218 S370 64,430 208 S525 110,588 224 S710 44,780 216 S875 95,930 195"/>
     <path class="right" d="M0 215 C45 120,84 80,135 200 S220 110,285 210 S385 76,445 222 S520 150,605 208 S716 72,780 228 S878 130,930 205"/>
+    <!-- cut lines at visual valleys of the teal curve -->
     <g>
-      <line x1="132" y1="0" x2="132" y2="268" class="cut"/><line x1="282" y1="0" x2="282" y2="268" class="cut"/>
-      <line x1="448" y1="0" x2="448" y2="268" class="cut"/><line x1="608" y1="0" x2="608" y2="268" class="cut"/>
-      <line x1="785" y1="0" x2="785" y2="268" class="cut"/>
+      <line x1="158" y1="0" x2="158" y2="330" class="cut"/>
+      <line x1="305" y1="0" x2="305" y2="330" class="cut"/>
+      <line x1="462" y1="0" x2="462" y2="330" class="cut"/>
+      <line x1="625" y1="0" x2="625" y2="330" class="cut"/>
+      <line x1="805" y1="0" x2="805" y2="330" class="cut"/>
     </g>
     <text x="8" y="-12" class="txt small muted">平滑后的腕部速度</text>
-    <text x="900" y="278" class="txt small muted">时间 →</text>
-  </g>
+    <text x="888" y="278" class="txt small muted">时间 →</text>
 
-  <g transform="translate(88,430)">
-    <text x="0" y="0" class="txt label ink">实际意图</text>
-    <rect x="120" y="-18" width="700" height="28" rx="6" class="gold"/>
-    <text x="390" y="2" class="mono ink">一次完整操作</text>
-    <text x="0" y="52" class="txt label ink">低谷切段</text>
-    <rect x="120" y="34" width="130" height="28" rx="6" class="pred"/>
-    <rect x="255" y="34" width="145" height="28" rx="6" class="bad"/>
-    <rect x="405" y="34" width="145" height="28" rx="6" class="pred"/>
-    <rect x="555" y="34" width="125" height="28" rx="6" class="bad"/>
-    <rect x="685" y="34" width="135" height="28" rx="6" class="pred"/>
-    <text x="120" y="90" class="txt small muted">停顿、微调、放手都可能形成假边界</text>
+    <text x="0" y="312" class="txt label ink">低谷切段</text>
+    <rect x="8" y="292" width="142" height="28" rx="6" class="pred"/>
+    <rect x="166" y="292" width="131" height="28" rx="6" class="bad"/>
+    <rect x="313" y="292" width="141" height="28" rx="6" class="pred"/>
+    <rect x="470" y="292" width="147" height="28" rx="6" class="bad"/>
+    <rect x="633" y="292" width="164" height="28" rx="6" class="pred"/>
   </g>
 </svg>

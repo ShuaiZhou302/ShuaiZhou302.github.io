@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
-  <title id="title">Wrist-speed minima segmentation schematic</title>
-  <desc id="desc">Wrist-speed valleys can cut segments, but pauses, adjustments, and release can also create fake boundaries and over-segmentation.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 480" role="img" aria-labelledby="title desc">
+  <title id="title">Wrist-speed valley cuts</title>
+  <desc id="desc">Place cuts at valleys of the smoothed wrist-speed curve to obtain action segments.</desc>
   <defs>
     <style>
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.grid{stroke:#e5ddd1;stroke-width:1}.axis{stroke:#b9afa1;stroke-width:2}
       .left{fill:none;stroke:#2f6f66;stroke-width:5}.right{fill:none;stroke:#c45c26;stroke-width:5}
-      .cut{stroke:#1c1914;stroke-width:2;stroke-dasharray:6 6}.gold{fill:#f0c94d}.pred{fill:#2f6f66}.bad{fill:#c45c26}
+      .cut{stroke:#1c1914;stroke-width:2;stroke-dasharray:6 6}.pred{fill:#2f6f66}.bad{fill:#c45c26}
       .swatch{stroke:#fff;stroke-width:1.5}
       .txt{font:16px "IBM Plex Sans",Arial,sans-serif}.mono{font:14px "IBM Plex Mono",monospace}.small{font-size:14px}.label{font-weight:700}
     </style>
   </defs>
-  <rect width="1120" height="560" rx="18" class="bg"/>
-  <text x="42" y="46" class="txt label ink">Wrist-speed valley cuts: useful, but easy to over-segment</text>
-  <text x="42" y="74" class="txt muted">HaWoR reconstructs wrist tracks; we smooth wrist speed and cut at valleys.</text>
+  <rect width="1120" height="480" rx="18" class="bg"/>
+  <text x="42" y="46" class="txt label ink">Wrist-speed valley cuts</text>
+  <text x="42" y="74" class="txt muted">After HaWoR reconstructs wrist tracks, place cuts at valleys of the smoothed wrist-speed curve.</text>
 
   <g transform="translate(760,34)">
     <rect x="0" y="0" width="14" height="14" rx="3" fill="#2f6f66" class="swatch"/>
@@ -31,24 +31,20 @@
     <path class="left" d="M0 228 C38 60,85 65,128 216 S214 60,270 218 S370 64,430 208 S525 110,588 224 S710 44,780 216 S875 95,930 195"/>
     <path class="right" d="M0 215 C45 120,84 80,135 200 S220 110,285 210 S385 76,445 222 S520 150,605 208 S716 72,780 228 S878 130,930 205"/>
     <g>
-      <line x1="132" y1="0" x2="132" y2="268" class="cut"/><line x1="282" y1="0" x2="282" y2="268" class="cut"/>
-      <line x1="448" y1="0" x2="448" y2="268" class="cut"/><line x1="608" y1="0" x2="608" y2="268" class="cut"/>
-      <line x1="785" y1="0" x2="785" y2="268" class="cut"/>
+      <line x1="158" y1="0" x2="158" y2="330" class="cut"/>
+      <line x1="305" y1="0" x2="305" y2="330" class="cut"/>
+      <line x1="462" y1="0" x2="462" y2="330" class="cut"/>
+      <line x1="625" y1="0" x2="625" y2="330" class="cut"/>
+      <line x1="805" y1="0" x2="805" y2="330" class="cut"/>
     </g>
     <text x="8" y="-12" class="txt small muted">smoothed wrist speed</text>
-    <text x="880" y="278" class="txt small muted">time →</text>
-  </g>
+    <text x="868" y="278" class="txt small muted">time →</text>
 
-  <g transform="translate(88,430)">
-    <text x="0" y="0" class="txt label ink">Gold intent</text>
-    <rect x="120" y="-18" width="700" height="28" rx="6" class="gold"/>
-    <text x="370" y="2" class="mono ink">one completed task</text>
-    <text x="0" y="52" class="txt label ink">Minima cuts</text>
-    <rect x="120" y="34" width="130" height="28" rx="6" class="pred"/>
-    <rect x="255" y="34" width="145" height="28" rx="6" class="bad"/>
-    <rect x="405" y="34" width="145" height="28" rx="6" class="pred"/>
-    <rect x="555" y="34" width="125" height="28" rx="6" class="bad"/>
-    <rect x="685" y="34" width="135" height="28" rx="6" class="pred"/>
-    <text x="120" y="90" class="txt small muted">pause / adjust / release can become fake boundaries</text>
+    <text x="0" y="312" class="txt label ink">Valley cuts</text>
+    <rect x="8" y="292" width="142" height="28" rx="6" class="pred"/>
+    <rect x="166" y="292" width="131" height="28" rx="6" class="bad"/>
+    <rect x="313" y="292" width="141" height="28" rx="6" class="pred"/>
+    <rect x="470" y="292" width="147" height="28" rx="6" class="bad"/>
+    <rect x="633" y="292" width="164" height="28" rx="6" class="pred"/>
   </g>
 </svg>
