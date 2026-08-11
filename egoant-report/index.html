@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-37" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-38" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -44,7 +44,6 @@
         <a href="#tldr" data-i18n="nav.tldr">结论</a>
         <a href="#world" data-i18n="nav.world">相关工作</a>
         <a href="#evaluate" data-i18n="nav.evaluate">如何评估</a>
-        <a href="#terms" data-i18n="nav.terms">术语约定</a>
         <a href="#pipeline" data-i18n="nav.pipeline">标注管线</a>
         <a href="#walk" data-i18n="nav.walk">样例</a>
         <a href="#appendix" data-i18n="nav.appendix">附录</a>
@@ -65,7 +64,6 @@
     <a href="#tldr" data-toc="tldr" data-i18n="nav.tldr">TL;DR</a>
     <a href="#world" data-toc="world" data-i18n="nav.world">相关工作</a>
     <a href="#evaluate" data-toc="evaluate" data-i18n="nav.evaluate">如何评估</a>
-    <a href="#terms" data-toc="terms" data-i18n="nav.terms">术语约定</a>
     <a href="#pipeline" data-toc="pipeline" data-i18n="nav.pipeline">标注管线</a>
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
     <a href="#appendix" data-toc="appendix" data-i18n="nav.appendix">附录</a>
@@ -219,8 +217,19 @@
       </div>
     </section>
 
-    <section id="terms">
-      <h2 data-i18n="terms.h2">3. 术语约定与输入形式</h2>
+    <section id="pipeline">
+      <h2 data-i18n="pipeline.h2">3. 标注管线流程</h2>
+      <p data-i18n-html data-i18n="pipeline.lead">
+        本节按管线顺序说明：先分段、再标注，最后看端到端串联结果。每个阶段先交代尝试过的方法，再给出对应实验结果。
+      </p>
+      <h3 data-i18n="pipeline.h3.roles">模型与打分</h3>
+      <p data-i18n-html data-i18n="world.p.models">
+        管线实验会用到若干视觉语言模型。我们选用 Qwen3.6-27B 与 Qwen3.5-397B-A17B，主要因为它们是目前较常见、易于私有部署的开源模型，便于比较不同的分段策略与标注分工；下文图表会标明每一次实验实际调用了哪个模型。标注结果的语义评测使用 Gemini-3.5-Flash，打分设定遵循 Macrodata Labs 的 <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a>。
+      </p>
+
+      <h3 data-i18n="pipeline.h3.seg">3.1 视频分段管线</h3>
+      <p data-i18n-html data-i18n="pipeline.seg.lead">视频分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频，输出是一组起止时间（例如 [12.0, 18.5]）；本阶段只评边界是否与人工参考对齐。得分统一为同一 HomER 子集上的视频分段得分（Segment F1）。先把后面会用到的分段术语和 GEPA 说清楚，再列方法与得分。</p>
+      
       <h3 data-i18n="world.h3.terms">视频分段常用术语</h3>
       <figure class="figure">
         <img src="assets/explain/seg_terms_zh.svg?v=20260810-3" data-i18n-src="fig.src.segterms" alt="Segmentation terminology on one timeline" />
@@ -255,80 +264,6 @@
           <figcaption data-i18n="world.term.s2.cap">从上到下三行依次对应：粗分得到的时间窗（中间竖线为粗边界附近）、精修时是否外扩（本图取 pad=0，只看窗内）、以及窗内应切出的完整动作（E1–E3）。</figcaption>
         </figure>
       </details>
-      <ul class="term-list">
-        <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
-        <li data-i18n-html data-i18n="world.term.10">语义评判模型（judge）：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。</li>
-        <li data-i18n-html data-i18n="world.term.11">HaWoR<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
-      </ul>
-      <h3 data-i18n="world.h3.inputs">视觉输入</h3>
-      <p data-i18n-html data-i18n="world.p.inputs">
-        这一小节先把六类视觉输入各自「模型看见什么」做个概念预览，再用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。
-      </p>
-      <ul class="term-list">
-        <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交。</li>
-        <li data-i18n-html data-i18n="world.input.2"><strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交。</li>
-        <li data-i18n-html data-i18n="world.input.3"><strong>拼贴图</strong>：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
-        <li data-i18n-html data-i18n="world.input.4"><strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
-        <li data-i18n-html data-i18n="world.input.5"><strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示。</li>
-        <li data-i18n-html data-i18n="world.input.6"><strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交。</li>
-      </ul>
-      <figure class="figure" id="term-visual">
-        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-31" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
-      </figure>
-      <p class="plain" data-i18n="world.zoo.lead">下面是同一 HomER 片段上的实际画面例子。</p>
-      <div class="input-zoo">
-        <figure class="figure">
-          <div class="frame-strip">
-            <div class="frame-cell">
-              <img src="assets/explain/inputs/input_raw_1.jpg" alt="" />
-              <span class="frame-label" data-i18n="world.zoo.raw.l1">帧 1</span>
-            </div>
-            <div class="frame-cell">
-              <img src="assets/explain/inputs/input_raw_2.jpg" alt="" />
-              <span class="frame-label" data-i18n="world.zoo.raw.l2">帧 2</span>
-            </div>
-            <div class="frame-cell">
-              <img src="assets/explain/inputs/input_raw_3.jpg" alt="Three whole frames sampled inside one segment" />
-              <span class="frame-label" data-i18n="world.zoo.raw.l3">帧 3</span>
-            </div>
-          </div>
-          <figcaption data-i18n-html data-i18n="world.zoo.raw"><strong>原始帧</strong>：在目标片段内均匀抽取 3 帧，作为 3 张独立图片提交。</figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/explain/inputs/input_collage.jpg" alt="The same frames tiled into a single image" />
-          <figcaption data-i18n-html data-i18n="world.zoo.collage"><strong>时序拼贴</strong>：将同一片段内按时间顺序抽取的几帧拼成一张图再提交；图中为 2×2 网格，阅读顺序为左上 → 右上 → 左下 → 右下。</figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/explain/inputs/input_contact_sheet.jpg" alt="Contact sheet with yellow timestamps" />
-          <figcaption data-i18n-html data-i18n="world.zoo.contact"><strong>拼贴图</strong>：每 0.5 秒抽取一帧，缩放至 224×144，每 20 帧组成一张网格，并在每格左上角标注黄色时间戳；一张约覆盖 10 秒。</figcaption>
-        </figure>
-        <figure class="figure">
-          <div class="frame-strip">
-            <div class="frame-cell">
-              <img src="assets/explain/inputs/input_neighbor_1.jpg" alt="" />
-              <span class="frame-label" data-i18n="world.zoo.neighbor.l1">上一段</span>
-            </div>
-            <div class="frame-cell">
-              <img src="assets/explain/inputs/input_neighbor_2.jpg" alt="" />
-              <span class="frame-label" data-i18n="world.zoo.neighbor.l2">当前段</span>
-            </div>
-            <div class="frame-cell">
-              <img src="assets/explain/inputs/input_neighbor_3.jpg" alt="Previous, current, and next segment frames" />
-              <span class="frame-label" data-i18n="world.zoo.neighbor.l3">下一段</span>
-            </div>
-          </div>
-          <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>邻段拼贴</strong>：把上一段、当前段、下一段的抽样帧一并提交；底部分别用灰条、绿条、灰条标出所属片段。</figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/explain/inputs/input_proxy_overlay_frame.png?v=20260811-4" alt="Proxy motion cues overlaid on the HomER sample frame" />
-          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在完整帧上叠加估计的手部或运动提示点与短时轨迹后提交。</figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/explain/inputs/input_proxy_overlay.jpg" alt="Orange hand-crop region on the full frame and the resulting crop" />
-          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部裁剪</strong>：左图橙色框表示裁剪区域，右图是实际送入标注模型的局部图像。</figcaption>
-        </figure>
-      </div>
-
       <h3 id="term-gepa" data-i18n="world.h3.gepa">GEPA</h3>
       <p data-i18n-html data-i18n="world.p.gepa">
         GEPA 是一种根据反馈自动改写提示词的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。
@@ -345,24 +280,8 @@
           </div>
         </div>
       </details>
-    </section>
 
-    
-    <section id="pipeline">
-      <h2 data-i18n="pipeline.h2">4. 标注管线流程</h2>
-      <p data-i18n-html data-i18n="pipeline.lead">
-        本节按管线顺序说明：先分段、再标注，最后看端到端串联结果。每个阶段先交代尝试过的方法，再给出对应实验结果。
-      </p>
-      <h3 data-i18n="pipeline.h3.roles">模型与打分</h3>
-      <p data-i18n-html data-i18n="world.p.models">
-        管线实验会用到若干视觉语言模型。我们选用 Qwen3.6-27B 与 Qwen3.5-397B-A17B，主要因为它们是目前较常见、易于私有部署的开源模型，便于比较不同的分段策略与标注分工；下文图表会标明每一次实验实际调用了哪个模型。标注结果的语义评测使用 Gemini-3.5-Flash，打分设定遵循 Macrodata Labs 的 <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a>。
-      </p>
-
-      <h3 data-i18n="pipeline.h3.seg">4.1 视频分段管线</h3>
-      <p data-i18n-html data-i18n="pipeline.seg.lead">
-        视频分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频，输出是一组起止时间（例如 [12.0, 18.5]）；本阶段只评边界是否与人工参考对齐。得分统一为同一 HomER 子集上的视频分段得分（Segment F1）。下面列举我们尝试过的分段标注管线方法以及对应视频分段得分。
-      </p>
-      <p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
+<p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
       <ol>
         <li>
           <span data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再把过短的相邻段按时长规则合并。</span>
@@ -382,9 +301,9 @@
         </li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
-        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#term-gepa">术语 · GEPA</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#term-gepa">GEPA</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a> · <a href="#term-s2-prompt">提示词</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">S2 示意</a> · <a href="#term-s2-prompt">提示词</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词。</li>
         <li>
           <span data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：对最优 S2 预测片段列表做离线后处理。输入是最优 S2 的预测片段，输出是合并后的片段列表；脚本按时间顺序只比较相邻段。三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。</span>
           <details class="term-fold" id="app-rule-merge">
@@ -454,8 +373,79 @@ def compatible(a, b, strategy):
 
       
 
-      <h3 data-i18n="pipeline.h3.label">4.2 固定边界标注</h3>
+      <h3 data-i18n="pipeline.h3.label">3.2 固定边界标注</h3>
       <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
+      
+      <h3 data-i18n="world.h3.inputs">视觉输入</h3>
+      <p data-i18n-html data-i18n="world.p.inputs">
+        固定边界标注会换不同视觉输入。先把六类输入各自「模型看见什么」做个概念预览，再用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。
+      </p>
+      <ul class="term-list">
+        <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交。</li>
+        <li data-i18n-html data-i18n="world.input.2"><strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交。</li>
+        <li data-i18n-html data-i18n="world.input.3"><strong>拼贴图</strong>：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
+        <li data-i18n-html data-i18n="world.input.4"><strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
+        <li data-i18n-html data-i18n="world.input.5"><strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示。</li>
+        <li data-i18n-html data-i18n="world.input.6"><strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交。</li>
+        <li data-i18n-html data-i18n="world.term.11">HaWoR<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
+      </ul>
+      <figure class="figure" id="term-visual">
+        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-31" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
+      </figure>
+      <p class="plain" data-i18n="world.zoo.lead">下面是同一 HomER 片段上的实际画面例子。</p>
+      <div class="input-zoo">
+        <figure class="figure">
+          <div class="frame-strip">
+            <div class="frame-cell">
+              <img src="assets/explain/inputs/input_raw_1.jpg" alt="" />
+              <span class="frame-label" data-i18n="world.zoo.raw.l1">帧 1</span>
+            </div>
+            <div class="frame-cell">
+              <img src="assets/explain/inputs/input_raw_2.jpg" alt="" />
+              <span class="frame-label" data-i18n="world.zoo.raw.l2">帧 2</span>
+            </div>
+            <div class="frame-cell">
+              <img src="assets/explain/inputs/input_raw_3.jpg" alt="Three whole frames sampled inside one segment" />
+              <span class="frame-label" data-i18n="world.zoo.raw.l3">帧 3</span>
+            </div>
+          </div>
+          <figcaption data-i18n-html data-i18n="world.zoo.raw"><strong>原始帧</strong>：在目标片段内均匀抽取 3 帧，作为 3 张独立图片提交。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="assets/explain/inputs/input_collage.jpg" alt="The same frames tiled into a single image" />
+          <figcaption data-i18n-html data-i18n="world.zoo.collage"><strong>时序拼贴</strong>：将同一片段内按时间顺序抽取的几帧拼成一张图再提交；图中为 2×2 网格，阅读顺序为左上 → 右上 → 左下 → 右下。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="assets/explain/inputs/input_contact_sheet.jpg" alt="Contact sheet with yellow timestamps" />
+          <figcaption data-i18n-html data-i18n="world.zoo.contact"><strong>拼贴图</strong>：每 0.5 秒抽取一帧，缩放至 224×144，每 20 帧组成一张网格，并在每格左上角标注黄色时间戳；一张约覆盖 10 秒。</figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="frame-strip">
+            <div class="frame-cell">
+              <img src="assets/explain/inputs/input_neighbor_1.jpg" alt="" />
+              <span class="frame-label" data-i18n="world.zoo.neighbor.l1">上一段</span>
+            </div>
+            <div class="frame-cell">
+              <img src="assets/explain/inputs/input_neighbor_2.jpg" alt="" />
+              <span class="frame-label" data-i18n="world.zoo.neighbor.l2">当前段</span>
+            </div>
+            <div class="frame-cell">
+              <img src="assets/explain/inputs/input_neighbor_3.jpg" alt="Previous, current, and next segment frames" />
+              <span class="frame-label" data-i18n="world.zoo.neighbor.l3">下一段</span>
+            </div>
+          </div>
+          <figcaption data-i18n-html data-i18n="world.zoo.neighbor"><strong>邻段拼贴</strong>：把上一段、当前段、下一段的抽样帧一并提交；底部分别用灰条、绿条、灰条标出所属片段。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="assets/explain/inputs/input_proxy_overlay_frame.png?v=20260811-4" alt="Proxy motion cues overlaid on the HomER sample frame" />
+          <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加</strong>：在完整帧上叠加估计的手部或运动提示点与短时轨迹后提交。</figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="assets/explain/inputs/input_proxy_overlay.jpg" alt="Orange hand-crop region on the full frame and the resulting crop" />
+          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部裁剪</strong>：左图橙色框表示裁剪区域，右图是实际送入标注模型的局部图像。</figcaption>
+        </figure>
+      </div>
+
       <p data-i18n="pipeline.label.methods">下列为我们尝试过的固定边界标注方法。</p>
       <ol>
         <li data-i18n="story.label.1">原始帧 · 27B：在参考片段内均匀抽帧，由 Qwen3.6-27B 生成描述。</li>
@@ -493,7 +483,7 @@ def compatible(a, b, strategy):
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap1">
-            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。见 <a href="#term-visual">术语 · 视觉输入</a>。
+            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。见 <a href="#term-visual">视觉输入</a>。
           </figcaption>
         </figure>
         <figure class="figure">
@@ -504,8 +494,12 @@ def compatible(a, b, strategy):
         </figure>
       </div>
 
-      <h3 data-i18n="pipeline.h3.e2e">4.3 端到端</h3>
+      <h3 data-i18n="pipeline.h3.e2e">3.3 端到端</h3>
       <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
+      
+      <ul class="term-list">
+        <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
+      </ul>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端标注路径。</p>
       <ol>
         <li data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。</li>
@@ -538,7 +532,7 @@ def compatible(a, b, strategy):
         </ol>
       </div>
 
-      <h3 data-i18n="pipeline.h3.recipe">4.4 推荐配置</h3>
+      <h3 data-i18n="pipeline.h3.recipe">3.4 推荐配置</h3>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">拼贴图</div><div class="d" data-i18n="recipe.p1.d">0.5 秒 · 224×144 · 20 格 · 黄色时间戳</div></div>
         <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
@@ -571,7 +565,7 @@ def compatible(a, b, strategy):
         </tbody>
       </table>
 
-      <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
+      <h3 data-i18n="pipeline.h3.cost">3.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
         两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 C。
@@ -623,9 +617,9 @@ def compatible(a, b, strategy):
 
 
     <section id="walk">
-      <h2 data-i18n="walk.h2">5. 样例分析：HomER 样本上的端到端流程</h2>
+      <h2 data-i18n="walk.h2">4. 样例分析：HomER 样本上的端到端流程</h2>
       <p data-i18n-html data-i18n="walk.lead">
-        下列案例按第 4 章的推荐路径展示：先预测分段边界，再在固定预测边界下生成多个候选描述，并由候选判别器定稿。任务：用布擦桌面 / 柜面。折叠区保留英文 prompt 原文。
+        下列案例按第 3 章的推荐路径展示：先预测分段边界，再在固定预测边界下生成多个候选描述，并由候选判别器定稿。任务：用布擦桌面 / 柜面。折叠区保留英文 prompt 原文。
       </p>
       <div class="callout good" data-i18n-html data-i18n="walk.score">
         <strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231
@@ -644,7 +638,7 @@ def compatible(a, b, strategy):
 
         <article class="step-card" id="walk-1">
           <div class="step-h"><span class="badge">01</span><h3 class="step-title" data-i18n="walk.s1.t">生成拼贴图</h3></div>
-          <p class="plain" data-i18n="walk.s1.p">参数与术语约定中的拼贴图一致。模型后续只看这些带时间戳的拼图，而不是原始 MP4 字节流。</p>
+          <p class="plain" data-i18n="walk.s1.p">参数与上文拼贴图设定一致。模型后续只看这些带时间戳的拼图，而不是原始 MP4 字节流。</p>
           <div class="param-pills" id="walk-params"></div>
           <p class="plain muted" data-i18n="walk.s1.note">下方为首张 sheet 示例（同参数）。</p>
           <figure class="figure">
@@ -656,7 +650,7 @@ def compatible(a, b, strategy):
           <div class="step-h"><span class="badge">02</span><h3 class="step-title" data-i18n="walk.s2.t">粗分：整集一次 + 切段规则清单</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s2.p">
             把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>
-            （GEPA 搜索得到的英语规则：只标完成事件、偏好约 2–10 秒等——见 <a href="#term-gepa">术语 · GEPA</a>）。
+            （GEPA 搜索得到的英语规则：只标完成事件、偏好约 2–10 秒等——见 <a href="#term-gepa">GEPA</a>）。
             这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。
           </p>
         </article>
@@ -675,7 +669,7 @@ def compatible(a, b, strategy):
           </figure>
           <figure class="figure">
             <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-26" data-i18n-src="fig.src.s2" alt="S2 no-pad full-cover local refinement diagram" />
-            <figcaption data-i18n-html data-i18n="walk.s3.diagram.cap">同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。提示词见 <a href="#term-s2-prompt">术语 · 覆盖完整动作</a>。</figcaption>
+            <figcaption data-i18n-html data-i18n="walk.s3.diagram.cap">同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。提示词见 <a href="#term-s2-prompt">覆盖完整动作提示词</a>。</figcaption>
           </figure>
         </article>
 
@@ -773,7 +767,7 @@ def compatible(a, b, strategy):
     <section id="appendix"></section>
 
     <section id="references">
-      <h2 data-i18n="references.h2">7. 参考文献</h2>
+      <h2 data-i18n="references.h2">6. 参考文献</h2>
       <ol class="ref-list">
         <li id="ref-pi05" data-i18n-html data-i18n="references.pi05">Physical Intelligence, Black, Kevin, Brown, Noah, Darpinian, James, Dhabalia, Karan, Driess, Danny, et al. (2025). <em>&pi;<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization</em>. arXiv. <a href="https://arxiv.org/abs/2504.16054" target="_blank" rel="noopener">https://arxiv.org/abs/2504.16054</a></li>
         <li id="ref-wgo" data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
