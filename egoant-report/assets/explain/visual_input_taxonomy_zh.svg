@@ -1,75 +1,115 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="390" viewBox="0 0 1180 390" role="img" aria-label="Visual inputs compared: raw frames, proxy overlay, temporal collage, neighbor sheets, and wrist-guided crop">
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-label="视觉输入类型预览：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪">
   <style>
-    .bg{fill:#fffaf1}.card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}.title{font:700 18px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#141414}.sub{font:13px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#4f4a42}.tiny{font:11px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#554b40}.label{font:12px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#1f1d1a}.good{fill:#2f7d70}.gold{fill:#f2c84b}.pred{fill:#2f7d70}.muted{fill:#d9d5cb}.warn{fill:#c85e25}.ink{stroke:#2f7d70;stroke-width:4;fill:none;stroke-linecap:round}.arrow{stroke:#c85e25;stroke-width:4;fill:none;marker-end:url(#arrow)}
+    .bg{fill:#fffaf1}
+    .card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}
+    .title{font:700 20px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#141414}
+    .name{font:700 16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#141414}
+    .sub{font:12.5px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#4f4a42}
+    .tiny{font:11px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#554b40}
+    .pred{fill:#2f7d70}
+    .muted{fill:#d9d5cb}
+    .ink{stroke:#2f7d70;stroke-width:3.5;fill:none;stroke-linecap:round}
+    .arrow{stroke:#c85e25;stroke-width:3.5;fill:none;marker-end:url(#arrow)}
   </style>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#c85e25"/></marker></defs>
-  <rect class="bg" width="1180" height="390" rx="18"/>
-  <text x="38" y="44" class="title">这几种视觉输入不是同义词，而是不同的东西</text>
-  <text x="38" y="70" class="sub">消融实验的名字应当对应模型实际看到的画面。</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10z" fill="#c85e25"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1180" height="520" rx="18"/>
+  <text x="38" y="42" class="title">视觉输入类型预览</text>
 
-  <g transform="translate(38,105)">
-    <rect class="card" width="205" height="235" rx="12"/>
-    <text x="18" y="34" class="title">raw 原始帧</text>
-    <text x="18" y="58" class="sub">只看当前片段</text>
-    <g transform="translate(22,82)">
-      <rect x="0" y="0" width="46" height="34" fill="#e8e1d4"/><rect x="54" y="0" width="46" height="34" fill="#d9d5cb"/><rect x="108" y="0" width="46" height="34" fill="#cfc9bd"/>
-      <rect x="0" y="42" width="46" height="34" fill="#d9d5cb"/><rect x="54" y="42" width="46" height="34" fill="#e8e1d4"/><rect x="108" y="42" width="46" height="34" fill="#d9d5cb"/>
+  <!-- 1 原始帧：分张独立帧，不是拼网格 -->
+  <g transform="translate(38,68)">
+    <rect class="card" width="352" height="200" rx="12"/>
+    <text x="20" y="34" class="name">原始帧</text>
+    <text x="20" y="58" class="sub">段内均匀抽样，分张提交</text>
+    <g transform="translate(34,84)">
+      <rect x="0" y="0" width="78" height="72" rx="6" fill="#e8e1d4" stroke="#cfc6b6"/>
+      <rect x="98" y="0" width="78" height="72" rx="6" fill="#ddd6c8" stroke="#cfc6b6"/>
+      <rect x="196" y="0" width="78" height="72" rx="6" fill="#d2cbc0" stroke="#cfc6b6"/>
+      <text x="28" y="96" class="tiny">帧 1</text>
+      <text x="126" y="96" class="tiny">帧 2</text>
+      <text x="224" y="96" class="tiny">帧 3</text>
     </g>
-    <text x="18" y="190" class="label">固定边界下最好的输入</text>
-    <text x="18" y="212" class="tiny">27B：Gemini 评判 55.7%</text>
   </g>
 
-  <g transform="translate(263,105)">
-    <rect class="card" width="205" height="235" rx="12"/>
-    <text x="18" y="34" class="title">proxy overlay 叠加</text>
-    <text x="18" y="58" class="sub">原帧 + 近似标记</text>
-    <g transform="translate(30,82)">
-      <rect x="0" y="0" width="145" height="88" rx="8" fill="#e8e1d4"/>
-      <circle cx="58" cy="47" r="18" fill="#c85e25" opacity=".22"/><circle cx="94" cy="48" r="18" fill="#c85e25" opacity=".22"/>
-      <path class="ink" d="M48 55 C62 30, 82 30, 99 55"/>
-      <path class="arrow" d="M35 26 C55 16, 72 20, 88 30"/>
-      <path class="arrow" d="M112 30 C98 18, 83 16, 68 24"/>
+  <!-- 2 时序拼贴：同段多帧拼成一张 -->
+  <g transform="translate(414,68)">
+    <rect class="card" width="352" height="200" rx="12"/>
+    <text x="20" y="34" class="name">时序拼贴</text>
+    <text x="20" y="58" class="sub">同段多帧拼成一张</text>
+    <g transform="translate(88,78)">
+      <rect x="0" y="0" width="176" height="96" rx="8" fill="#f4eee4" stroke="#cfc6b6" stroke-width="2"/>
+      <rect x="8" y="8" width="76" height="36" rx="4" fill="#e8e1d4"/>
+      <rect x="92" y="8" width="76" height="36" rx="4" fill="#ddd6c8"/>
+      <rect x="8" y="52" width="76" height="36" rx="4" fill="#d2cbc0"/>
+      <rect x="92" y="52" width="76" height="36" rx="4" fill="#c8c1b6"/>
     </g>
-    <text x="18" y="190" class="label">不是实测手部姿态</text>
-    <text x="18" y="212" class="tiny">27B 50.6%; 397B 48.5%</text>
   </g>
 
-  <g transform="translate(488,105)">
-    <rect class="card" width="205" height="235" rx="12"/>
-    <text x="18" y="34" class="title">temporal collage 拼贴</text>
-    <text x="18" y="58" class="sub">过去 / 当前 / 未来</text>
-    <g transform="translate(24,83)">
-      <rect x="0" y="0" width="45" height="82" rx="8" class="muted"/><rect x="55" y="0" width="45" height="82" rx="8" class="pred"/><rect x="110" y="0" width="45" height="82" rx="8" class="muted"/>
-      <text x="8" y="107" class="tiny">过去</text><text x="55" y="107" class="tiny">当前</text><text x="112" y="107" class="tiny">未来</text>
+  <!-- 3 拼贴图：带时间戳的密网格 -->
+  <g transform="translate(790,68)">
+    <rect class="card" width="352" height="200" rx="12"/>
+    <text x="20" y="34" class="name">拼贴图</text>
+    <text x="20" y="58" class="sub">带时间戳的抽帧网格</text>
+    <g transform="translate(54,78)">
+      <rect x="0" y="0" width="244" height="100" rx="8" fill="#f4eee4" stroke="#cfc6b6" stroke-width="2"/>
+      <!-- 4x5 mini cells with yellow timestamp dots -->
+      <g fill="#e0d8cb">
+        <rect x="6" y="6" width="42" height="20" rx="2"/><rect x="54" y="6" width="42" height="20" rx="2"/><rect x="102" y="6" width="42" height="20" rx="2"/><rect x="150" y="6" width="42" height="20" rx="2"/><rect x="198" y="6" width="42" height="20" rx="2"/>
+        <rect x="6" y="30" width="42" height="20" rx="2"/><rect x="54" y="30" width="42" height="20" rx="2"/><rect x="102" y="30" width="42" height="20" rx="2"/><rect x="150" y="30" width="42" height="20" rx="2"/><rect x="198" y="30" width="42" height="20" rx="2"/>
+        <rect x="6" y="54" width="42" height="20" rx="2"/><rect x="54" y="54" width="42" height="20" rx="2"/><rect x="102" y="54" width="42" height="20" rx="2"/><rect x="150" y="54" width="42" height="20" rx="2"/><rect x="198" y="54" width="42" height="20" rx="2"/>
+        <rect x="6" y="78" width="42" height="16" rx="2"/><rect x="54" y="78" width="42" height="16" rx="2"/><rect x="102" y="78" width="42" height="16" rx="2"/><rect x="150" y="78" width="42" height="16" rx="2"/><rect x="198" y="78" width="42" height="16" rx="2"/>
+      </g>
+      <g fill="#f2c84b">
+        <rect x="8" y="8" width="14" height="5" rx="1"/><rect x="56" y="8" width="14" height="5" rx="1"/><rect x="104" y="8" width="14" height="5" rx="1"/><rect x="152" y="8" width="14" height="5" rx="1"/><rect x="200" y="8" width="14" height="5" rx="1"/>
+        <rect x="8" y="32" width="14" height="5" rx="1"/><rect x="56" y="32" width="14" height="5" rx="1"/><rect x="104" y="32" width="14" height="5" rx="1"/><rect x="152" y="32" width="14" height="5" rx="1"/><rect x="200" y="32" width="14" height="5" rx="1"/>
+        <rect x="8" y="56" width="14" height="5" rx="1"/><rect x="56" y="56" width="14" height="5" rx="1"/><rect x="104" y="56" width="14" height="5" rx="1"/><rect x="152" y="56" width="14" height="5" rx="1"/><rect x="200" y="56" width="14" height="5" rx="1"/>
+      </g>
     </g>
-    <text x="18" y="190" class="label">边界之外再加上下文</text>
-    <text x="18" y="212" class="tiny">常污染当前片段的描述</text>
   </g>
 
-  <g transform="translate(713,105)">
-    <rect class="card" width="205" height="235" rx="12"/>
-    <text x="18" y="34" class="title">邻段 sheet</text>
-    <text x="18" y="58" class="sub">上一段 / 当前 / 下一段</text>
-    <g transform="translate(22,84)">
-      <rect x="0" y="0" width="44" height="62" rx="7" class="muted"/><text x="13" y="84" class="tiny">上段</text>
-      <rect x="58" y="0" width="44" height="62" rx="7" class="pred"/><text x="62" y="84" class="tiny">当前</text>
-      <rect x="116" y="0" width="44" height="62" rx="7" class="muted"/><text x="125" y="84" class="tiny">下段</text>
-      <line x1="50" y1="31" x2="54" y2="31" stroke="#4f4a42"/><line x1="108" y1="31" x2="112" y2="31" stroke="#4f4a42"/>
+  <!-- 4 邻段拼贴 -->
+  <g transform="translate(38,292)">
+    <rect class="card" width="352" height="200" rx="12"/>
+    <text x="20" y="34" class="name">邻段拼贴</text>
+    <text x="20" y="58" class="sub">上一段 / 当前段 / 下一段</text>
+    <g transform="translate(40,84)">
+      <rect x="0" y="0" width="78" height="72" rx="7" class="muted"/>
+      <rect x="98" y="0" width="78" height="72" rx="7" class="pred"/>
+      <rect x="196" y="0" width="78" height="72" rx="7" class="muted"/>
+      <text x="18" y="96" class="tiny">上一段</text>
+      <text x="116" y="96" class="tiny">当前段</text>
+      <text x="214" y="96" class="tiny">下一段</text>
     </g>
-    <text x="18" y="190" class="label">看似有用，其实有风险</text>
-    <text x="18" y="212" class="tiny">可能写成邻段的动作</text>
   </g>
 
-  <g transform="translate(938,105)">
-    <rect class="card" width="205" height="235" rx="12"/>
-    <text x="18" y="34" class="title">腕部引导裁剪</text>
-    <text x="18" y="58" class="sub">按估计腕轨迹裁剪</text>
-    <g transform="translate(31,82)">
-      <rect x="0" y="0" width="144" height="88" rx="8" fill="#e8e1d4"/>
-      <rect x="28" y="22" width="88" height="42" rx="7" fill="none" stroke="#2f7d70" stroke-width="4"/>
-      <circle cx="54" cy="43" r="18" fill="#c85e25"/><circle cx="96" cy="43" r="18" fill="#c85e25"/>
+  <!-- 5 视觉提示叠加 -->
+  <g transform="translate(414,292)">
+    <rect class="card" width="352" height="200" rx="12"/>
+    <text x="20" y="34" class="name">视觉提示叠加</text>
+    <text x="20" y="58" class="sub">原帧 + 运动提示</text>
+    <g transform="translate(88,78)">
+      <rect x="0" y="0" width="176" height="96" rx="8" fill="#e8e1d4"/>
+      <circle cx="68" cy="54" r="18" fill="#c85e25" opacity=".22"/>
+      <circle cx="108" cy="54" r="18" fill="#c85e25" opacity=".22"/>
+      <path class="ink" d="M56 62 C72 34, 98 34, 118 62"/>
+      <path class="arrow" d="M42 28 C64 16, 86 20, 104 32"/>
+      <path class="arrow" d="M134 32 C116 18, 96 16, 78 26"/>
     </g>
-    <text x="18" y="190" class="label">依赖可靠的手部信号</text>
-    <text x="18" y="212" class="tiny">HaWoR 裁剪：Gemini 评判 50.9%</text>
+  </g>
+
+  <!-- 6 手部裁剪 -->
+  <g transform="translate(790,292)">
+    <rect class="card" width="352" height="200" rx="12"/>
+    <text x="20" y="34" class="name">手部裁剪</text>
+    <text x="20" y="58" class="sub">按估计腕轨迹裁剪手部</text>
+    <g transform="translate(88,78)">
+      <rect x="0" y="0" width="176" height="96" rx="8" fill="#e8e1d4"/>
+      <rect x="36" y="24" width="104" height="48" rx="7" fill="none" stroke="#2f7d70" stroke-width="3.5"/>
+      <circle cx="68" cy="48" r="16" fill="#c85e25"/>
+      <circle cx="108" cy="48" r="16" fill="#c85e25"/>
+    </g>
   </g>
 </svg>

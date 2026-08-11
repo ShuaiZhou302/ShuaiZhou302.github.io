@@ -238,12 +238,20 @@
       </ul>
       <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
-        后文实验用到六类视觉输入：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪。下图先给出概念对照；再以 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示各自的实际画面组织形式。
+        后文实验用到六类视觉输入。先说明模型各自看见什么、典型用在哪一步；再给概念预览，最后用 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示实际画面。
       </p>
+      <ul class="term-list">
+        <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交；固定边界标注的默认输入。</li>
+        <li data-i18n-html data-i18n="world.input.2"><strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交；标注消融对照。</li>
+        <li data-i18n-html data-i18n="world.input.3"><strong>拼贴图</strong>：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
+        <li data-i18n-html data-i18n="world.input.4"><strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交；标注消融对照。</li>
+        <li data-i18n-html data-i18n="world.input.5"><strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示；标注消融对照。</li>
+        <li data-i18n-html data-i18n="world.input.6"><strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交；标注候选输入。</li>
+      </ul>
       <figure class="figure" id="term-visual">
-        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-30" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
-        <figcaption data-i18n="world.taxonomy.cap">概念图：拼贴图用于看完整时间轴并找边界；其余输入多在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
+        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-31" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
       </figure>
+      <p class="plain" data-i18n="world.zoo.lead">下面是同一 HomER 片段上的实际画面例子。</p>
       <div class="input-zoo">
         <figure class="figure">
           <div class="frame-strip">
