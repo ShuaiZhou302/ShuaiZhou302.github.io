@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
   <title id="title">S2 局部精修 + 窗口设置 + 覆盖完整动作示意图</title>
-  <desc id="desc">三行示意：粗分窗口、pad=0 不外扩、以及窗口内应切出的完整动作。</desc>
+  <desc id="desc">三行示意：粗分窗口（中间为粗边界）、pad=0 不外扩、以及窗口内应切出的完整动作。</desc>
   <defs>
     <style>
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}.coarse{fill:#9aa0a6}
-      .pad{fill:#e8d4bf}.local{fill:#2f6f66}.event{fill:#f0c94d}
+      .pad{fill:#e8d4bf}.local{fill:#2f6f66}.event{fill:#f0c94d}.cut{stroke:#fff;stroke-width:3;stroke-dasharray:5 4}
       .txt{font:16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}.mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}
     </style>
   </defs>
@@ -14,7 +14,10 @@
   <line x1="110" y1="120" x2="900" y2="120" class="axis"/>
   <text x="36" y="126" class="txt label ink">① 粗分</text>
   <rect x="265" y="102" width="390" height="36" rx="7" class="coarse"/>
-  <text x="405" y="126" class="mono" fill="#fff">粗分窗口</text>
+  <line x1="460" y1="104" x2="460" y2="136" class="cut"/>
+  <text x="340" y="126" class="mono" fill="#fff">粗分片段</text>
+  <text x="478" y="126" class="mono" fill="#fff">粗分片段</text>
+  <text x="438" y="94" class="txt small muted">粗边界</text>
   <rect x="170" y="168" width="580" height="48" rx="9" class="pad"/>
   <rect x="265" y="174" width="390" height="36" rx="7" class="local"/>
   <text x="36" y="198" class="txt label ink">② 窗口</text>

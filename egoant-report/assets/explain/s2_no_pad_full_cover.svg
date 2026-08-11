@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 360" role="img" aria-labelledby="title desc">
   <title id="title">S2 local refinement + window setting + full-cover diagram</title>
-  <desc id="desc">Three rows: coarse window, pad=0 no pad-out, and completed actions to cut inside the window.</desc>
+  <desc id="desc">Three rows: coarse window with a mid boundary, pad=0 no pad-out, and completed actions to cut inside the window.</desc>
   <defs>
     <style>
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}.coarse{fill:#9aa0a6}
-      .pad{fill:#e8d4bf}.local{fill:#2f6f66}.event{fill:#f0c94d}
+      .pad{fill:#e8d4bf}.local{fill:#2f6f66}.event{fill:#f0c94d}.cut{stroke:#fff;stroke-width:3;stroke-dasharray:5 4}
       .txt{font:16px "IBM Plex Sans",Arial,sans-serif}.mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}
     </style>
   </defs>
@@ -14,7 +14,10 @@
   <line x1="110" y1="120" x2="900" y2="120" class="axis"/>
   <text x="36" y="126" class="txt label ink">① Coarse</text>
   <rect x="265" y="102" width="390" height="36" rx="7" class="coarse"/>
-  <text x="390" y="126" class="mono" fill="#fff">coarse window</text>
+  <line x1="460" y1="104" x2="460" y2="136" class="cut"/>
+  <text x="318" y="126" class="mono" fill="#fff">coarse seg</text>
+  <text x="488" y="126" class="mono" fill="#fff">coarse seg</text>
+  <text x="430" y="94" class="txt small muted">boundary</text>
   <rect x="170" y="168" width="580" height="48" rx="9" class="pad"/>
   <rect x="265" y="174" width="390" height="36" rx="7" class="local"/>
   <text x="36" y="198" class="txt label ink">② Window</text>
