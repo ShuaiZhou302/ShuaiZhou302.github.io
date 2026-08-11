@@ -179,6 +179,7 @@
       "world.term.s2.cap": "从上到下三行依次对应：粗分得到的时间窗（中间竖线为粗边界附近）、精修时是否外扩（本图取 pad=0，只看窗内）、以及窗内应切出的完整动作（E1–E3）。",
       "world.term.7": "窗口不外扩（pad=0）：局部精修所用画面严格限制在时间窗口内。",
       "world.term.8": "覆盖完整动作（full-cover）：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。",
+      "world.s2.prompt.note": "说明：下方就是提示词文本。System / User 两段会送给模型；其中 <code>{sample_sec}</code>、<code>{t0}</code>、<code>{t1}</code>、<code>{instruction}</code>、<code>{coarse_hint}</code> 会替换成该窗口的实际值；图像输入是窗内带时间戳的拼贴图，接在 User 提示词文本之后。",
       "world.term.9": "候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。",
       "world.term.10": "语义评判模型（judge）：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。",
       "world.term.11": "HaWoR<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。",
@@ -222,7 +223,7 @@
       "metrics.h3.seg": "视频分段得分例子",
       "metrics.h3.label": "固定分段标注得分例子",
       "metrics.h3.e2e": "端到端整流程得分例子",
-      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判提示词见 <a href=\"#app-prompts\">附录 B</a>。",
+      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。下方折叠为本文实际使用的评判提示词。",
       "metrics.e2e.example": "仍用上述预测的 4 个片段及其描述。时间匹配先得到 P<sub>0</sub>–G<sub>0</sub> 与 P<sub>1</sub>–G<sub>1</sub>；若语义评判只有 P<sub>0</sub>–G<sub>0</sub> 返回 <code>true</code>，则最终正确结果数 s = 1。",
       "toy.lane.gold": "参考（人工标注）",
       "toy.lane.pred": "预测（首尾对齐后）",
@@ -260,7 +261,7 @@
       "walk.s3.t": "局部再切一遍：窗口不外扩，盖住完整动作",
       "walk.s3.p": "在粗边界附近开一个<strong>短时间窗</strong>，用<strong>同一版式</strong>的 sheet 再切一次。<strong>窗口不外扩</strong>表示只使用粗边界内部的视觉上下文；<strong>盖住完整动作</strong>表示窗口内可见的完成动作都应被覆盖，同时避免不完整微动作片段。（技术名：S2 · pad=0 · full-cover）",
       "walk.s3.cap": "局部时间窗 contact sheet（第二遍精修输入）。",
-      "walk.s3.diagram.cap": "同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。",
+      "walk.s3.diagram.cap": "同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。提示词见 <a href=\"#term-s2-prompt\">术语 · 覆盖完整动作</a>。",
       "walk.s4.t": "多候选标注",
       "walk.s4.p": "固定分段边界后，对每个预测片段生成多条候选描述：<strong>raw</strong> 使用默认抽帧；<strong>ffmpeg</strong> 使用另一套解码/抽帧路径；<strong>seed</strong> 和 <strong>rawprior</strong> 使用先前模型输出作为文本先验。selector 在推理时只看候选及其来源，不看 gold 标签。",
       "walk.s5.t": "Candidate selector 定稿",
@@ -274,10 +275,10 @@
       "walk.th.time": "时间 (s)",
       "walk.th.sub": "子任务",
       "walk.prompt.gepa": "切段规则提示词（英语）",
-      "walk.prompt.s2": "提示词（英语）",
+      "walk.prompt.s2": "覆盖完整动作提示词（英语）",
       "walk.prompt.label": "标注提示词（英语）",
       "walk.prompt.sel": "判别器提示词（英语）",
-      "walk.prompt.judge": "评判提示词（英语，仅打分）",
+      "walk.prompt.judge": "评判提示词（英语）",
       "story.seg.1": "腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再把过短的相邻段按时长规则合并。",
       "pipeline.wrist.fold": "腕速规则切段示意",
       "pipeline.wrist.steps": "<div class=\"step\"><div class=\"n\">01</div><div class=\"t\">HaWoR</div><div class=\"d\">手重建 → 腕部轨迹</div></div><div class=\"step\"><div class=\"n\">02</div><div class=\"t\">平滑</div><div class=\"d\">腕速滤波</div></div><div class=\"step\"><div class=\"n\">03</div><div class=\"t\">切段</div><div class=\"d\">速度低谷切段</div></div><div class=\"step\"><div class=\"n\">04</div><div class=\"t\">短段合并</div><div class=\"d\">合并过短的相邻段</div></div>",
@@ -287,7 +288,7 @@
       "story.seg.3": "整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。",
       "story.seg.4": "整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href=\"#term-gepa\">术语 · GEPA</a>）。",
       "story.seg.5": "S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。",
-      "story.seg.6": "S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href=\"#term-s2-diagram\">术语 · S2 示意图</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href=\"#walk-3\">样例 · S2</a>）。",
+      "story.seg.6": "S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href=\"#term-s2-diagram\">术语 · S2 示意</a> · <a href=\"#term-s2-prompt\">提示词</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词。",
       "story.seg.7": "S2 + 相邻片段规则合并：对最优 S2 预测片段列表做离线后处理。输入是最优 S2 的预测片段，输出是合并后的片段列表；脚本按时间顺序只比较相邻段。三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。",
       "pipeline.merge.fold": "相邻片段规则合并伪代码",
       "pipeline.merge.note": "<p><strong>读码说明：</strong></p><ul><li><code>compatible(...)</code> 判定相邻两段是否合并为一段；三种 <code>strategy</code> 对应正文里的三条规则。</li><li><code>normalize</code> 先去掉大小写、空白等表面差异，再按规范化后的字符串比较标签。</li><li><code>choose_representative_label</code> 合并后保留一句代表标签，通常取较长或信息更完整的那句。</li><li><code>bridge_short_gap</code> 里的 <code>small_gap</code> 只处理很短的时间空隙，把它视为仍可合并的连续区间。</li><li>脚本读取 <code>start_sec</code> / <code>end_sec</code> / <code>subtask</code>，合并时调整已有边界（删除或挪动）。</li></ul>",
@@ -340,6 +341,7 @@
       "metrics.seg.example": "吸附后，预测片段变为 P<sub>0</sub>[0,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,10]；只有 P<sub>0</sub> 与 P<sub>3</sub> 的外侧端点发生变化。P<sub>0</sub>–G<sub>0</sub>、P<sub>1</sub>–G<sub>1</sub> 的时间 IoU 达到 0.75 阈值并形成一对一配对；P<sub>2</sub>、P<sub>3</sub> 未达到阈值。于是一对一时间匹配数 m = 2，预测段数 n<sub>pred</sub> = 4，参考段数 n<sub>gold</sub> = 3。",
       "metrics.seg.formula": "IoU = 重叠时长 / 两段合起来覆盖的总时长\n本例：P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933；P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781（均 ≥ 0.75）\n预测命中率 = m / n<sub>pred</sub> = 2 / 4 = 0.50\n参考找回率 = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\n视频分段得分 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
       "metrics.label.formula": "固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%",
+      "metrics.judge.note": "说明：下方就是提示词文本。评判只接收文本（人工描述、模型描述、episode instruction），不附带图像；<code>{gt_label}</code>、<code>{pred_label}</code>、<code>{instruction}</code> 会替换成该段的实际值。公开 rubric 见 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata</a>。",
       "metrics.e2e.formula": "端到端整流程得分 = 2s / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×1 / (4 + 3) = 2/7 ≈ 0.286",
       "story.chart.label": "固定分段标注得分（Label Acc）",
       "story.chart.e2e": "端到端整流程得分（E2E F1）",
@@ -551,6 +553,7 @@
       "world.term.s2.cap": "Top to bottom: the coarse time window (mid line = nearby coarse boundary), whether the refine window pads out (here pad=0, so only inside the window), and the completed actions that should be cut inside it (E1–E3).",
       "world.term.7": "No pad-out (pad=0): local refinement uses only frames inside the time window.",
       "world.term.8": "Cover full actions (full-cover): an output requirement written into the S2 local-refinement prompt. Every manipulation event whose start and completion are both visible in the window should be cut out; if both \"pick up the cup\" and \"put down the cup\" are fully shown, output two segments, while merely reaching toward the cup or withdrawing the hand afterward should not form a segment on its own.",
+      "world.s2.prompt.note": "Note: the block below is the prompt text. The System and User sections are sent to the model; <code>{sample_sec}</code>, <code>{t0}</code>, <code>{t1}</code>, <code>{instruction}</code>, and <code>{coarse_hint}</code> are filled for the local window; image inputs are in-window timestamped contact sheets appended after the User prompt text.",
       "world.term.9": "Candidate selector: chooses the final description when several candidates exist for the same predicted boundary; used only during description generation.",
       "world.term.10": "Semantic judge: used only during evaluation to decide whether the predicted and human descriptions express the same completed action.",
       "world.term.11": "HaWoR<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>: reconstructs hand motion from egocentric video; this report uses it to estimate wrist trajectories and crop hand regions.",
@@ -594,7 +597,7 @@
       "metrics.h3.seg": "Segmentation-score example",
       "metrics.h3.label": "Fixed-boundary labeling-score example",
       "metrics.h3.e2e": "End-to-end-score example",
-      "metrics.label.example": "Reuse the human boundaries G<sub>0</sub>, G<sub>1</sub>, and G<sub>2</sub> from the same 10-second example; the model only generates one description per segment. Following <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata's published LLM-as-judge rubric</a>, Gemini-3.5-Flash receives the human description, predicted description, and episode instruction, then returns one JSON match decision per segment, such as <code>{\"match\": true}</code>. If the three results are <code>[true, true, false]</code>, the correct-description count is c = 2. See <a href=\"#app-prompts\">Appendix B</a> for the actual judge prompt used in this report.",
+      "metrics.label.example": "Reuse the human boundaries G<sub>0</sub>, G<sub>1</sub>, and G<sub>2</sub> from the same 10-second example; the model only generates one description per segment. Following <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata's published LLM-as-judge rubric</a>, Gemini-3.5-Flash receives the human description, predicted description, and episode instruction, then returns one JSON match decision per segment, such as <code>{\"match\": true}</code>. If the three results are <code>[true, true, false]</code>, the correct-description count is c = 2. The fold below shows the actual judge prompt used in this report.",
       "metrics.e2e.example": "Keep the four predicted spans and their descriptions above. Temporal matching first yields P<sub>0</sub>–G<sub>0</sub> and P<sub>1</sub>–G<sub>1</sub>. If semantic judging returns <code>true</code> only for P<sub>0</sub>–G<sub>0</sub>, the final true-positive count is s = 1.",
       "toy.lane.gold": "Reference (human)",
       "toy.lane.pred": "Prediction (after outer snap)",
@@ -632,7 +635,7 @@
       "walk.s3.t": "Local re-cut: no pad-out, cover full actions",
       "walk.s3.p": "Open a <strong>short time window</strong> near coarse bounds and re-cut with the <strong>same sheet layout</strong>. <strong>No pad-out</strong> means using only visual context inside the coarse boundary. <strong>Cover full actions</strong> means covering completed events visible in the window while avoiding incomplete micro-action fragments. (Technical name: S2 · pad=0 · full-cover.)",
       "walk.s3.cap": "Local-window contact sheet (pass-2 refine input).",
-      "walk.s3.diagram.cap": "Same reading order: coarse window → pad=0 refine range → completed actions to cut inside the window.",
+      "walk.s3.diagram.cap": "Same reading order: coarse window → pad=0 refine range → completed actions to cut inside the window. Prompt: <a href=\"#term-s2-prompt\">Terminology · cover full actions</a>.",
       "walk.s4.t": "Multi-candidate labeling",
       "walk.s4.p": "After segment boundaries are fixed, each predicted segment receives multiple candidate descriptions: <strong>raw</strong> uses default sampled frames; <strong>ffmpeg</strong> uses an alternate decode/sampling path; <strong>seed</strong> and <strong>rawprior</strong> use previous model outputs as textual priors. At inference time, the selector sees candidates and their sources, not gold labels.",
       "walk.s5.t": "Candidate selector picks the final line",
@@ -646,10 +649,10 @@
       "walk.th.time": "Time (s)",
       "walk.th.sub": "Subtask",
       "walk.prompt.gepa": "Segmentation-rule prompt (English)",
-      "walk.prompt.s2": "Prompt (English only)",
+      "walk.prompt.s2": "Cover-full-actions prompt (English)",
       "walk.prompt.label": "Prompt (English only) — labeling",
       "walk.prompt.sel": "Prompt (English only) — selector",
-      "walk.prompt.judge": "Prompt (English only) — judge (scoring only)",
+      "walk.prompt.judge": "Judge prompt (English)",
       "story.seg.1": "Wrist-speed rule cuts + merge: reconstruct hand motion with HaWoR, estimate the wrist-speed curve, place candidate cuts at local speed minima, then merge adjacent spans that are too short.",
       "pipeline.wrist.fold": "Wrist-speed rule-cut schematic",
       "pipeline.wrist.steps": "<div class=\"step\"><div class=\"n\">01</div><div class=\"t\">HaWoR</div><div class=\"d\">hand reconstruction → wrist tracks</div></div><div class=\"step\"><div class=\"n\">02</div><div class=\"t\">Smooth</div><div class=\"d\">filter wrist speed</div></div><div class=\"step\"><div class=\"n\">03</div><div class=\"t\">Cut</div><div class=\"d\">cut at speed valleys</div></div><div class=\"step\"><div class=\"n\">04</div><div class=\"t\">Short-span merge</div><div class=\"d\">merge adjacent spans that are too short</div></div>",
@@ -659,7 +662,7 @@
       "story.seg.3": "Whole-episode request (no segmentation-rule list): send every contact sheet from the episode in one call; the prompt does not use the segmentation-rule list.",
       "story.seg.4": "Whole-episode request + segmentation-rule list: submit every contact sheet from the episode in one call, using the GEPA-searched rule text from Macrodata (see <a href=\"#term-gepa\">Terminology · GEPA</a>).",
       "story.seg.5": "S1 denser cuts: segment the whole episode once, changing the prompt so the model returns more, shorter candidate segments.",
-      "story.seg.6": "S2 local refinement: take coarse bounds from the whole-episode pass, open a local time window around each bound, and re-cut from the in-window contact sheets. The cover-full-actions prompt requires every completed operation whose start and end are visible in the window to be cut out (see <a href=\"#term-s2-diagram\">Terminology · S2 diagram</a>). Score-table variants include ≈1s pad-out, no pad-out (no cover-full-actions prompt), and 0.5/1/2s pad-out; separately, algorithmic cover runs a midpoint script on the no-cover-prompt predictions; the best setting is no pad-out + cover-full-actions prompt (refine prompt: <a href=\"#walk-3\">Walkthrough · S2</a>).",
+      "story.seg.6": "S2 local refinement: take coarse bounds from the whole-episode pass, open a local time window around each bound, and re-cut from the in-window contact sheets. The cover-full-actions prompt requires every completed operation whose start and end are visible in the window to be cut out (see <a href=\"#term-s2-diagram\">Terminology · S2 diagram</a> · <a href=\"#term-s2-prompt\">prompt</a>). Score-table variants include ≈1s pad-out, no pad-out (no cover-full-actions prompt), and 0.5/1/2s pad-out; separately, algorithmic cover runs a midpoint script on the no-cover-prompt predictions; the best setting is no pad-out + cover-full-actions prompt.",
       "story.seg.7": "S2 + adjacent-segment rule merges: an offline postprocess over the best S2 predicted segment list. The input is the best S2 predictions and the output is a merged list; the script only compares time-sorted neighbors. Three rules: merge after label normalization when identical; merge when the main verb/object agrees; or first bridge very short gaps, then apply the previous compatibility checks.",
       "pipeline.merge.fold": "Adjacent-segment rule-merge pseudocode",
       "pipeline.merge.note": "<p><strong>How to read the code:</strong></p><ul><li><code>compatible(...)</code> decides whether two neighboring spans merge into one; the three <code>strategy</code> values match the rules in the body text.</li><li><code>normalize</code> strips surface differences such as case and whitespace, then compares the normalized label strings.</li><li><code>choose_representative_label</code> keeps one label after a merge, usually the longer or more informative string.</li><li>In <code>bridge_short_gap</code>, <code>small_gap</code> covers only very short temporal holes and treats them as still continuous for merging.</li><li>The script reads <code>start_sec</code> / <code>end_sec</code> / <code>subtask</code> and adjusts existing boundaries on merge by deleting or moving them.</li></ul>",
@@ -712,6 +715,7 @@
       "metrics.seg.example": "After outer snap, the predictions become P<sub>0</sub>[0,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], and P<sub>3</sub>[8,10]; only the outer endpoints of P<sub>0</sub> and P<sub>3</sub> change. P<sub>0</sub>–G<sub>0</sub> and P<sub>1</sub>–G<sub>1</sub> clear the 0.75 temporal-IoU threshold and form one-to-one matches; P<sub>2</sub> and P<sub>3</sub> do not. Thus the one-to-one temporal match count is m = 2, with n<sub>pred</sub> = 4 predicted segments and n<sub>gold</sub> = 3 reference segments.",
       "metrics.seg.formula": "IoU = overlap duration / total duration covered by either span\nThis example: P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933; P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781 (both ≥ 0.75)\nPrecision = m / n<sub>pred</sub> = 2 / 4 = 0.50\nRecall = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\nSegmentation score = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
       "metrics.label.formula": "Fixed-boundary labeling score = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%",
+      "metrics.judge.note": "Note: the block below is the prompt text. The judge receives text only (gold label, predicted label, episode instruction) with no images; <code>{gt_label}</code>, <code>{pred_label}</code>, and <code>{instruction}</code> are filled per segment. Public rubric: <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata</a>.",
       "metrics.e2e.formula": "End-to-end score = 2s / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×1 / (4 + 3) = 2/7 ≈ 0.286",
       "story.chart.label": "Fixed-boundary labeling score (Label Acc)",
       "story.chart.e2e": "End-to-end score (E2E F1)",
@@ -768,10 +772,8 @@
       <h3 id="app-prompts">B. 提示词原文（英语）</h3>
       <p>英语提示词全文只在网页折叠区展示，不提供单独下载。</p>
       <ul>
-        <li><a href="#term-gepa">GEPA 切段规则</a></li>
-        <li><a href="#walk-3">S2 full-cover</a></li>
         <li><a href="#walk-4">Labeling</a></li>
-        <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="#walk-5">本文实际使用的评判提示词</a></li>
+        <li>Judge：<a href="#metrics-judge-prompt">如何评估 · 评判提示词</a></li>
         <li><a href="#walk-5">Candidate selector</a></li>
       </ul>
 
@@ -805,10 +807,8 @@
       <h3 id="app-prompts">B. Prompt originals (English)</h3>
       <p>Full English prompts are shown only in on-page folds; no separate downloads.</p>
       <ul>
-        <li><a href="#term-gepa">GEPA segmentation rules</a></li>
-        <li><a href="#walk-3">S2 full-cover</a></li>
         <li><a href="#walk-4">Labeling</a></li>
-        <li>Judge: <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata's published rubric</a> · <a href="#walk-5">actual judge prompt used in this report</a></li>
+        <li>Judge: <a href="#metrics-judge-prompt">Evaluation · judge prompt</a></li>
         <li><a href="#walk-5">Candidate selector</a></li>
       </ul>
 

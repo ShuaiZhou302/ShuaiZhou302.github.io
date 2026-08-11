@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-35" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-36" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -197,8 +197,20 @@
       </div>
       <h3 data-i18n="metrics.h3.label">固定分段标注得分例子</h3>
       <div class="metric-example-card">
-        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判提示词见 <a href="#app-prompts">附录 B</a>。</p>
+        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。下方折叠为本文实际使用的评判提示词。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.label.formula">固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%</div>
+        <details class="prompt-fold" id="metrics-judge-prompt">
+          <summary data-i18n="walk.prompt.judge">评判提示词（英语）</summary>
+          <div class="prompt-fold-body">
+            <p class="prompt-note" data-i18n-html data-i18n="metrics.judge.note">
+              说明：下方就是提示词文本。评判只接收文本（人工描述、模型描述、episode instruction），不附带图像；<code>{gt_label}</code>、<code>{pred_label}</code>、<code>{instruction}</code> 会替换成该段的实际值。公开 rubric 见 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata</a>。
+            </p>
+            <div class="prompt-sent">
+              <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
+              <div class="prompt-box"><pre id="p-judge-inline">Loading…</pre></div>
+            </div>
+          </div>
+        </details>
       </div>
       <h3 data-i18n="metrics.h3.e2e">端到端整流程得分例子</h3>
       <div class="metric-example-card">
@@ -224,6 +236,18 @@
         <li data-i18n-html data-i18n="world.term.7">窗口不外扩（pad=0）：局部精修所用画面严格限制在时间窗口内。</li>
         <li data-i18n-html data-i18n="world.term.8">覆盖完整动作（full-cover）：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。</li>
       </ul>
+      <details class="prompt-fold" id="term-s2-prompt">
+        <summary data-i18n="walk.prompt.s2">覆盖完整动作提示词（英语）</summary>
+        <div class="prompt-fold-body">
+          <p class="prompt-note" data-i18n-html data-i18n="world.s2.prompt.note">
+            说明：下方就是提示词文本。System / User 两段会送给模型；其中 <code>{sample_sec}</code>、<code>{t0}</code>、<code>{t1}</code>、<code>{instruction}</code>、<code>{coarse_hint}</code> 会替换成该窗口的实际值；图像输入是窗内带时间戳的拼贴图，接在 User 提示词文本之后。
+          </p>
+          <div class="prompt-sent">
+            <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
+            <div class="prompt-box"><pre id="p-s2-term">Loading…</pre></div>
+          </div>
+        </div>
+      </details>
       <details class="term-fold" open id="term-s2-diagram">
         <summary data-i18n="world.term.s2.fold">S2 局部精修 + 窗口设置 + 覆盖完整动作示意图</summary>
         <figure class="figure">
@@ -360,7 +384,7 @@
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
         <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#term-gepa">术语 · GEPA</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#walk-3">样例 · S2</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a> · <a href="#term-s2-prompt">提示词</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词。</li>
         <li>
           <span data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：对最优 S2 预测片段列表做离线后处理。输入是最优 S2 的预测片段，输出是合并后的片段列表；脚本按时间顺序只比较相邻段。三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。</span>
           <details class="term-fold" id="app-rule-merge">
@@ -651,12 +675,8 @@ def compatible(a, b, strategy):
           </figure>
           <figure class="figure">
             <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-25" data-i18n-src="fig.src.s2" alt="S2 no-pad full-cover local refinement diagram" />
-            <figcaption data-i18n="walk.s3.diagram.cap">同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。</figcaption>
+            <figcaption data-i18n-html data-i18n="walk.s3.diagram.cap">同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。提示词见 <a href="#term-s2-prompt">术语 · 覆盖完整动作</a>。</figcaption>
           </figure>
-          <details class="prompt-fold">
-            <summary data-i18n="walk.prompt.s2">提示词（英语）</summary>
-            <div class="prompt-box"><pre id="p-s2-inline">Loading…</pre></div>
-          </details>
         </article>
 
         <article class="step-card" id="walk-4">
@@ -688,10 +708,6 @@ def compatible(a, b, strategy):
           <details class="prompt-fold">
             <summary data-i18n="walk.prompt.sel">判别器提示词（英语）</summary>
             <div class="prompt-box"><pre id="p-sel-inline">Loading…</pre></div>
-          </details>
-          <details class="prompt-fold">
-            <summary data-i18n="walk.prompt.judge">评判提示词（英语，仅打分）</summary>
-            <div class="prompt-box"><pre id="p-judge-inline">Loading…</pre></div>
           </details>
         </article>
 
@@ -780,9 +796,9 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-35"></script>
-  <script src="js/report.js?v=20260811-35"></script>
-  <script src="js/prompts_embed.js?v=20260811-35"></script>
+  <script src="js/i18n.js?v=20260811-36"></script>
+  <script src="js/report.js?v=20260811-36"></script>
+  <script src="js/prompts_embed.js?v=20260811-36"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];
@@ -801,7 +817,7 @@ def compatible(a, b, strategy):
     }
     const promptMap = [
       [["p-gepa-term"], "gepa_completed_events_duration_prior_v1.md"],
-      [["p-s2-inline"], "s2_fullcover_refine.md"],
+      [["p-s2-term"], "s2_fullcover_refine.md"],
       [["p-label-inline"], "labeling_fixed_boundary.md"],
       [["p-judge-inline"], "judge_semantic_match.md"],
       [["p-sel-inline"], "candidate_selector.md"],
