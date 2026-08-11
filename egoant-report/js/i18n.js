@@ -165,8 +165,8 @@
       "role.judge.use": "离线计算固定分段标注得分与端到端整流程得分",
       "world.h3.gepa": "GEPA",
       "world.p.gepa": "GEPA 是一种根据反馈自动改写提示词的方法<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。",
-      "world.gepa.prompt.note": "说明：下方代码块才是实际送入模型的 System / User 文本；<code>{duration_sec}</code> 会替换成该视频时长，拼贴图接在 user 文本之后。",
-      "world.gepa.prompt.sent": "实际送入模型的文本",
+      "world.gepa.prompt.note": "说明：下方就是提示词文本。System / User 两段会送给模型；其中 <code>{duration_sec}</code> 会替换成该视频的实际时长；图像输入是带时间戳的拼贴图，接在 User 提示词文本之后，不写在下方文字里。",
+      "world.gepa.prompt.sent": "提示词文本",
       "world.h3.terms": "视频分段常用术语",
       "world.terms.figcap": "图中按处理顺序展示：模型先对完整视频做一次粗分，再围绕某一粗边界选取一个局部时间窗口，并在该窗口内执行 S2 局部精修；③ 行里的两块绿色是同一窗口内重切后的片段。",
       "world.term.1": "参考分段（gold）：人工标注的完整动作片段，图中用黄色表示。",
@@ -238,7 +238,7 @@
       "contact.taxonomy.cap": "该图展示 raw frames、proxy overlay、temporal collage、neighbor sheet 和 wrist-guided crop 等视觉输入的差异。",
       "contact.taxonomy.explain": "<strong>读图：</strong>contact sheet 用于时间分段；raw frames 是固定边界标注的基础输入；proxy overlay 是在原帧上叠加光流或启发式提示，不是手部重建；temporal collage 与 neighbor sheet 引入前后文；基于 HaWoR 重建腕轨迹的裁剪依赖估计腕部轨迹。Gemini 重评显示，增加视觉上下文并未提高 HomER 上的固定边界标注准确率。",
       "walk.h2": "5. 样例分析：HomER 样本上的端到端流程",
-      "walk.lead": "下列案例按第 4 章的推荐路径展示：先预测分段边界，再在固定预测边界下生成多个候选描述，并由候选判别器定稿。任务：用布擦桌面 / 柜面。折叠区保留英文 prompt 原文。",
+      "walk.lead": "下列案例按第 4 章的推荐路径展示：先预测分段边界，再在固定预测边界下生成多个候选描述，并由候选判别器定稿。任务：用布擦桌面 / 柜面。折叠区保留英语提示词原文。",
       "story.h2": "7. 方法演进与组件比较",
       "story.lead": "按方法演进顺序说明主要配置。部分实验同时改变模型、prompt 或窗口设计，因此应理解为迭代系统开发，而不是严格单变量消融。",
       "story.h3.seg": "7.1 分段：从分片伪边界到局部精修",
@@ -273,11 +273,11 @@
       "walk.th.track": "轨道",
       "walk.th.time": "时间 (s)",
       "walk.th.sub": "子任务",
-      "walk.prompt.gepa": "切段规则 Prompt（English）",
-      "walk.prompt.s2": "Prompt（English）",
-      "walk.prompt.label": "标注 Prompt（English）",
-      "walk.prompt.sel": "判别器 Prompt（English）",
-      "walk.prompt.judge": "评判 Prompt（English，仅打分）",
+      "walk.prompt.gepa": "切段规则提示词（英语）",
+      "walk.prompt.s2": "提示词（英语）",
+      "walk.prompt.label": "标注提示词（英语）",
+      "walk.prompt.sel": "判别器提示词（英语）",
+      "walk.prompt.judge": "评判提示词（英语，仅打分）",
       "story.seg.1": "腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再把过短的相邻段按时长规则合并。",
       "pipeline.wrist.fold": "腕速基线管线示意",
       "pipeline.wrist.steps": "<div class=\"step\"><div class=\"n\">01</div><div class=\"t\">HaWoR</div><div class=\"d\">手重建 → wrist 轨迹</div></div><div class=\"step\"><div class=\"n\">02</div><div class=\"t\">Smooth</div><div class=\"d\">腕速滤波</div></div><div class=\"step\"><div class=\"n\">03</div><div class=\"t\">Cut</div><div class=\"d\">速度 minima 切段</div></div><div class=\"step\"><div class=\"n\">04</div><div class=\"t\">短段合并</div><div class=\"d\">合并过短的相邻段</div></div>",
@@ -338,7 +338,7 @@
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "与 full-100 0.306 headline 直接比较",
-      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-e2e\">A 标注/E2E 术语</a> · <a href=\"#app-prompts\">B Prompt</a> · <a href=\"#app-cost\">C 成本记账</a> · <a href=\"#audit\">D 效度</a>。",
+      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-e2e\">A 标注/E2E 术语</a> · <a href=\"#app-prompts\">B 提示词</a> · <a href=\"#app-cost\">C 成本记账</a> · <a href=\"#audit\">D 效度</a>。",
       "metrics.toy.g": "参考片段：G<sub>0</sub>[0,3]、G<sub>1</sub>[3,6]、G<sub>2</sub>[6,10]；模型预测：P<sub>0</sub>[0.5,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,9.5]。",
       "metrics.seg.example": "吸附后，预测片段变为 P<sub>0</sub>[0,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,10]；只有 P<sub>0</sub> 与 P<sub>3</sub> 的外侧端点发生变化。P<sub>0</sub>–G<sub>0</sub>、P<sub>1</sub>–G<sub>1</sub> 的时间 IoU 达到 0.75 阈值并形成一对一配对；P<sub>2</sub>、P<sub>3</sub> 未达到阈值。于是一对一时间匹配数 m = 2，预测段数 n<sub>pred</sub> = 4，参考段数 n<sub>gold</sub> = 3。",
       "metrics.seg.formula": "IoU = 重叠时长 / 两段合起来覆盖的总时长\n本例：P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933；P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781（均 ≥ 0.75）\n预测命中率 = m / n<sub>pred</sub> = 2 / 4 = 0.50\n参考找回率 = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\n视频分段得分 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
@@ -540,8 +540,8 @@
       "role.judge.use": "Computes labeling score and end-to-end score offline",
       "world.h3.gepa": "GEPA",
       "world.p.gepa": "GEPA automatically rewrites a prompt from feedback<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>. Macrodata Labs used it on a separate 15-episode validation set to search for segmentation rules that better match the annotation protocol; this report reuses the published result <code>completed_events_duration_prior_v1</code> and does not rerun GEPA. In use, all timestamped grids for the complete video are submitted with the rule text, producing the whole-episode coarse pass in one call.",
-      "world.gepa.prompt.note": "Note: the code block below is the System / User text actually sent to the model; <code>{duration_sec}</code> is filled with the video duration, and contact-sheet images follow the user text.",
-      "world.gepa.prompt.sent": "Text sent to the model",
+      "world.gepa.prompt.note": "Note: the block below is the prompt text. The System and User sections are sent to the model; <code>{duration_sec}</code> is replaced with the video duration; image inputs are timestamped contact sheets appended after the User prompt text and are not written into the text below.",
+      "world.gepa.prompt.sent": "Prompt text",
       "world.h3.terms": "Common video-segmentation terms",
       "world.terms.figcap": "The diagram follows the processing order: a whole-episode coarse pass, then one local time window around a coarse boundary, then S2 refinement inside that window. The two green bars in row ③ are re-cut segments inside the same window.",
       "world.term.1": "Reference segments (gold): complete actions annotated by humans and shown in yellow.",
@@ -758,7 +758,7 @@
       <h2>6. 附录：概念、实现与成本记账</h2>
       <p class="plain">正文讲“试了什么、分数怎么变”；附录补清楚术语和实现边界。目录：
         <a href="#app-e2e">A 标注/E2E 术语</a> ·
-        <a href="#app-prompts">B Prompt</a> ·
+        <a href="#app-prompts">B 提示词</a> ·
         <a href="#app-cost">C 成本</a> · <a href="#audit">D 效度</a>。</p>
 
 
@@ -771,8 +771,8 @@
 
 
 
-      <h3 id="app-prompts">B. Prompt 原文（English）</h3>
-      <p>英文 prompt 全文只在网页折叠区展示，不提供单独下载。</p>
+      <h3 id="app-prompts">B. 提示词原文（英语）</h3>
+      <p>英语提示词全文只在网页折叠区展示，不提供单独下载。</p>
       <ul>
         <li><a href="#term-gepa">GEPA 切段规则</a></li>
         <li><a href="#walk-3">S2 full-cover</a></li>
