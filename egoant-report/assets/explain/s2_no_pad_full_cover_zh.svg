@@ -15,20 +15,20 @@
   <text x="36" y="126" class="txt label ink">① 粗分</text>
   <rect x="265" y="102" width="390" height="36" rx="7" class="coarse"/>
   <line x1="460" y1="104" x2="460" y2="136" class="cut"/>
-  <text x="340" y="126" class="mono" fill="#fff">粗分片段</text>
-  <text x="478" y="126" class="mono" fill="#fff">粗分片段</text>
-  <text x="438" y="94" class="txt small muted">粗边界</text>
+  <text x="362.5" y="126" text-anchor="middle" class="mono" fill="#fff">粗分片段</text>
+  <text x="557.5" y="126" text-anchor="middle" class="mono" fill="#fff">粗分片段</text>
+  <text x="460" y="94" text-anchor="middle" class="txt small muted">粗边界</text>
   <rect x="170" y="168" width="580" height="48" rx="9" class="pad"/>
   <rect x="265" y="174" width="390" height="36" rx="7" class="local"/>
   <text x="36" y="198" class="txt label ink">② 窗口</text>
-  <text x="285" y="198" class="mono" fill="#fff">pad=0：只看这一段</text>
-  <text x="176" y="161" class="txt small muted">外扩才会多看</text>
-  <text x="690" y="161" class="txt small muted">外扩才会多看</text>
+  <text x="460" y="198" text-anchor="middle" class="mono" fill="#fff">pad=0：只看这一段</text>
+  <text x="217.5" y="198" text-anchor="middle" class="txt small muted">向后看</text>
+  <text x="702.5" y="198" text-anchor="middle" class="txt small muted">向前看</text>
   <text x="36" y="268" class="txt label ink">③ 切段</text>
   <line x1="110" y1="262" x2="900" y2="262" class="axis"/>
-  <rect x="290" y="244" width="108" height="36" rx="7" class="event"/><text x="318" y="268" class="mono ink">E1</text>
-  <rect x="420" y="244" width="144" height="36" rx="7" class="event"/><text x="468" y="268" class="mono ink">E2</text>
-  <rect x="585" y="244" width="54" height="36" rx="7" class="event"/><text x="600" y="268" class="mono ink">E3</text>
+  <rect x="290" y="244" width="108" height="36" rx="7" class="event"/><text x="344" y="268" text-anchor="middle" class="mono ink">E1</text>
+  <rect x="420" y="244" width="144" height="36" rx="7" class="event"/><text x="492" y="268" text-anchor="middle" class="mono ink">E2</text>
+  <rect x="585" y="244" width="54" height="36" rx="7" class="event"/><text x="612" y="268" text-anchor="middle" class="mono ink">E3</text>
   <path d="M265 228v74M655 228v74" stroke="#2f6f66" stroke-width="4"/>
   <text x="276" y="330" class="txt small ink">绿色竖线标出 pad=0 窗口；黄色块是窗内应切出的完整动作。</text>
 </svg>

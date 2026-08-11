@@ -251,7 +251,7 @@
       <details class="term-fold" open id="term-s2-diagram">
         <summary data-i18n="world.term.s2.fold">S2 局部精修 + 窗口设置 + 覆盖完整动作示意图</summary>
         <figure class="figure">
-          <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-25" data-i18n-src="fig.src.s2" alt="S2 local refinement, window setting, and full-cover diagram" />
+          <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-26" data-i18n-src="fig.src.s2" alt="S2 local refinement, window setting, and full-cover diagram" />
           <figcaption data-i18n="world.term.s2.cap">从上到下三行依次对应：粗分得到的时间窗（中间竖线为粗边界附近）、精修时是否外扩（本图取 pad=0，只看窗内）、以及窗内应切出的完整动作（E1–E3）。</figcaption>
         </figure>
       </details>
@@ -262,7 +262,7 @@
       </ul>
       <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
-        后文实验用到六类视觉输入。先说明模型各自看见什么；再给概念预览，最后用 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示实际画面。
+        这一小节先把六类视觉输入各自「模型看见什么」做个概念预览，再用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。
       </p>
       <ul class="term-list">
         <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交。</li>
@@ -447,7 +447,7 @@ def compatible(a, b, strategy):
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
           <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
-          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见上方 <a href="#app-rule-merge">伪代码折叠</a>。</li>
+          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修。</li>
           <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
         </ol>
       </div>
@@ -674,7 +674,7 @@ def compatible(a, b, strategy):
             <figcaption data-i18n="walk.s3.cap">局部时间窗 contact sheet（第二遍精修输入）。</figcaption>
           </figure>
           <figure class="figure">
-            <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-25" data-i18n-src="fig.src.s2" alt="S2 no-pad full-cover local refinement diagram" />
+            <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-26" data-i18n-src="fig.src.s2" alt="S2 no-pad full-cover local refinement diagram" />
             <figcaption data-i18n-html data-i18n="walk.s3.diagram.cap">同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。提示词见 <a href="#term-s2-prompt">术语 · 覆盖完整动作</a>。</figcaption>
           </figure>
         </article>

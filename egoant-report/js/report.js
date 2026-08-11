@@ -174,36 +174,36 @@
       "zh": {
         "name": "S2 + 相邻片段规则合并：合并相邻完全相同标签段",
         "note": "合并后视频分段得分下降",
-        "model": "规则后处理（非模型）"
+        "model": "基于规则的后处理"
       },
       "en": {
         "name": "S2 + adjacent rule merge: identical labels",
         "note": "Segment F1 drops after merge",
-        "model": "Rule postprocess (no model)"
+        "model": "Rule-based post-processing"
       }
     },
     "merge_verb": {
       "zh": {
         "name": "S2 + 相邻片段规则合并：按动词/物体合并相邻段",
         "note": "更激进合并，视频分段得分再降",
-        "model": "规则后处理（非模型）"
+        "model": "基于规则的后处理"
       },
       "en": {
         "name": "S2 + adjacent rule merge: verb/object",
         "note": "More aggressive merge; Segment F1 falls further",
-        "model": "Rule postprocess (no model)"
+        "model": "Rule-based post-processing"
       }
     },
     "merge_bridge": {
       "zh": {
         "name": "S2 + 相邻片段规则合并：跨短间隙桥接合并",
         "note": "跨短间隙合并，视频分段得分降低最多",
-        "model": "规则后处理（非模型）"
+        "model": "基于规则的后处理"
       },
       "en": {
         "name": "S2 + adjacent rule merge: bridge short gaps",
         "note": "Largest drop among merges",
-        "model": "Rule postprocess (no model)"
+        "model": "Rule-based post-processing"
       }
     },
     "raw_397b": {
@@ -1605,7 +1605,7 @@
       "match": 77,
       "pred": 305,
       "gold": 470,
-      "model": "规则后处理（非 LLM）",
+      "model": "基于规则的后处理",
       "full25": true,
       "note": "Rule merge lowers segmentation score",
       "method": {
@@ -1625,7 +1625,7 @@
       "match": 74,
       "pred": 290,
       "gold": 470,
-      "model": "规则后处理（非 LLM）",
+      "model": "基于规则的后处理",
       "full25": true,
       "note": "Rule merge lowers segmentation score",
       "method": {
@@ -1645,7 +1645,7 @@
       "match": 69,
       "pred": 263,
       "gold": 470,
-      "model": "规则后处理（非 LLM）",
+      "model": "基于规则的后处理",
       "full25": true,
       "note": "Rule merge lowers segmentation score",
       "method": {

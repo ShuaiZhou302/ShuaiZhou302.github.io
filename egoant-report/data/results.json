@@ -351,7 +351,7 @@
       "match": 77,
       "pred": 305,
       "gold": 470,
-      "model": "规则后处理（非 LLM）",
+      "model": "基于规则的后处理",
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
@@ -371,7 +371,7 @@
       "match": 74,
       "pred": 290,
       "gold": 470,
-      "model": "规则后处理（非 LLM）",
+      "model": "基于规则的后处理",
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {
@@ -391,7 +391,7 @@
       "match": 69,
       "pred": 263,
       "gold": 470,
-      "model": "规则后处理（非 LLM）",
+      "model": "基于规则的后处理",
       "full25": true,
       "note": "Rule merge lowers Segment F1",
       "method": {

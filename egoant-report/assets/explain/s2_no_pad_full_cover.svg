@@ -15,20 +15,20 @@
   <text x="36" y="126" class="txt label ink">① Coarse</text>
   <rect x="265" y="102" width="390" height="36" rx="7" class="coarse"/>
   <line x1="460" y1="104" x2="460" y2="136" class="cut"/>
-  <text x="318" y="126" class="mono" fill="#fff">coarse seg</text>
-  <text x="488" y="126" class="mono" fill="#fff">coarse seg</text>
-  <text x="430" y="94" class="txt small muted">boundary</text>
+  <text x="362.5" y="126" text-anchor="middle" class="mono" fill="#fff">coarse seg</text>
+  <text x="557.5" y="126" text-anchor="middle" class="mono" fill="#fff">coarse seg</text>
+  <text x="460" y="94" text-anchor="middle" class="txt small muted">boundary</text>
   <rect x="170" y="168" width="580" height="48" rx="9" class="pad"/>
   <rect x="265" y="174" width="390" height="36" rx="7" class="local"/>
   <text x="36" y="198" class="txt label ink">② Window</text>
-  <text x="295" y="198" class="mono" fill="#fff">pad=0: stay inside</text>
-  <text x="176" y="161" class="txt small muted">pad-out only</text>
-  <text x="700" y="161" class="txt small muted">pad-out only</text>
+  <text x="460" y="198" text-anchor="middle" class="mono" fill="#fff">pad=0: stay inside</text>
+  <text x="217.5" y="198" text-anchor="middle" class="txt small muted">look back</text>
+  <text x="702.5" y="198" text-anchor="middle" class="txt small muted">look ahead</text>
   <text x="36" y="268" class="txt label ink">③ Cuts</text>
   <line x1="110" y1="262" x2="900" y2="262" class="axis"/>
-  <rect x="290" y="244" width="108" height="36" rx="7" class="event"/><text x="318" y="268" class="mono ink">E1</text>
-  <rect x="420" y="244" width="144" height="36" rx="7" class="event"/><text x="468" y="268" class="mono ink">E2</text>
-  <rect x="585" y="244" width="54" height="36" rx="7" class="event"/><text x="600" y="268" class="mono ink">E3</text>
+  <rect x="290" y="244" width="108" height="36" rx="7" class="event"/><text x="344" y="268" text-anchor="middle" class="mono ink">E1</text>
+  <rect x="420" y="244" width="144" height="36" rx="7" class="event"/><text x="492" y="268" text-anchor="middle" class="mono ink">E2</text>
+  <rect x="585" y="244" width="54" height="36" rx="7" class="event"/><text x="612" y="268" text-anchor="middle" class="mono ink">E3</text>
   <path d="M265 228v74M655 228v74" stroke="#2f6f66" stroke-width="4"/>
   <text x="276" y="330" class="txt small ink">Green guides mark the pad=0 window; yellow blocks are completed actions to cut inside it.</text>
 </svg>
