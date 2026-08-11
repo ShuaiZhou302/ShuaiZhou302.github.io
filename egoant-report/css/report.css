@@ -1087,18 +1087,6 @@ pre.formula {
   line-height: 1.55;
   text-wrap: pretty;
 }
-.input-zoo-pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  align-items: start;
-}
-.input-zoo-pair .figure img {
-  object-fit: contain;
-  aspect-ratio: 5 / 3;
-  background: color-mix(in srgb, var(--card) 70%, #fff);
-}
-
 /* Flat three-frame strip for raw / neighbor samples */
 .frame-strip {
   display: grid;
@@ -1123,9 +1111,6 @@ pre.formula {
 }
 
 @media (max-width: 700px) {
-  .input-zoo-pair {
-    grid-template-columns: 1fr;
-  }
   .frame-strip {
     gap: 0.4rem;
   }
