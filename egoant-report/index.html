@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-16" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-17" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -99,7 +99,7 @@
       <h2 data-i18n="tldr.h2">TL;DR</h2>
       <div class="tldr">
         <div class="card">
-          <div class="k" data-i18n="tldr.k.seg">Segment F1（分段得分）</div>
+          <div class="k" data-i18n="tldr.k.seg">视频分段 F1（Segment F1）</div>
           <div class="v">0.2031</div>
           <div class="s" data-i18n="tldr.seg">470 个参考片段中，79 个与预测片段的配对通过时间匹配标准。</div>
           <div class="config" data-i18n="tldr.seg.config">配置：Qwen3.6-27B · 时间戳网格 · 粗分后局部精修</div>
@@ -121,8 +121,8 @@
         <strong>实验范围：</strong>WGO-Bench 的第一视角人类子集 HomER，共 25 个视频、470 个人工标注片段。分段与描述均由开放权重 Qwen 视觉语言模型生成；Gemini-3.5-Flash 仅用于离线判断描述是否与人工标注语义一致。三类指标的完整定义见 <a href="#evaluate">§1</a>。
       </p>
       <ul class="tldr-points">
-        <li data-i18n-html data-i18n="tldr.pt1"><strong>先选对模型，再考虑复杂的视觉输入增强。</strong>给定人工分段、只评估片段描述时，Qwen3.6-27B 使用原始帧取得 55.7% 的固定分段标注得分；改用多帧拼图或叠加启发式视觉提示后，得分分别降至 52.8% 和 50.6%。在输入和提示词完全相同的分段实验中，Qwen3.6-27B 的分段得分为 0.1278，高于 Qwen3.5-397B-A17B 的 0.0952。就本组实验而言，模型选择带来的收益大于额外的视觉输入技巧。</li>
-        <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将分段得分从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 分段得分为 0.227，与本方案相差 0.024。</li>
+        <li data-i18n-html data-i18n="tldr.pt1"><strong>先选对模型，再考虑复杂的视觉输入增强。</strong>给定人工分段、只评估片段描述时，Qwen3.6-27B 使用原始帧取得 55.7% 的固定分段标注得分；改用多帧拼图或叠加启发式视觉提示后，得分分别降至 52.8% 和 50.6%。在输入和提示词完全相同的分段实验中，Qwen3.6-27B 的视频分段 F1 为 0.1278，高于 Qwen3.5-397B-A17B 的 0.0952。就本组实验而言，模型选择带来的收益大于额外的视觉输入技巧。</li>
+        <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段 F1 从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段 F1 为 0.227，与本方案相差 0.024。</li>
         <li data-i18n-html data-i18n="tldr.pt3"><strong>分段和描述需要不同的视觉输入。</strong>判断动作边界时，模型需要观察较长时间范围内的变化，因此带时间戳的图片网格更有效；边界已经给定后，模型需要看清片段内的手部和物体细节，此时原始帧更有效。加入相邻片段不但没有提高固定分段标注得分，还会把相邻动作误写进当前描述。</li>
         <li data-i18n-html data-i18n="tldr.pt4"><strong>端到端整流程目前首先受分段质量限制。</strong>最佳方案生成 308 个预测片段，但与 470 个人工参考片段完成时间匹配的只有 79 个；其中 60 个片段的描述进一步通过语义评判。换言之，大部分损失发生在描述生成之前。现阶段，改进动作边界比继续润色描述更可能提高端到端整流程得分。</li>
         <li data-i18n-html data-i18n="tldr.pt5"><strong>单路原始帧标注已接近多候选判别方案，且成本更低。</strong>在相同预测边界上，使用 Qwen3.5-397B-A17B 进行单路原始帧标注，端到端整流程得分为 <strong>0.1414</strong>；生成多条描述并由候选判别器定稿后，得分为 <strong>0.1542</strong>，相对提高约 9.1%。前者估计为 <strong>$0.84–$1.59 / 视频小时</strong>，后者为 <strong>$2.11–$3.80 / 视频小时</strong>，均不含离线语义评判费用。对成本敏感的批量处理，单路原始帧标注是更合适的默认方案。</li>
@@ -139,7 +139,7 @@
       <h3 data-i18n="world.h3.rule">基于规则的分段：运动边界与固定时长切分</h3>
       <p data-i18n-html data-i18n="world.p.rule">
         <a href="https://microsoft.github.io/VITRA/" target="_blank" rel="noopener">VITRA</a><sup class="cite"><a class="cite-ref" href="#ref-vitra">5</a></sup> 将单目第一视角视频转换为三维手部与相机运动、原子动作片段和语言指令，并以腕部速度的局部极小值作为候选动作边界。另一类方法直接使用预设时长。在 Toyota Research Institute 的 <a href="https://co-training-lbm.github.io/" target="_blank" rel="noopener"><em>A Systematic Study of Data Modalities and Strategies for Co-training Large Behavior Models for Robot Manipulation</em></a><sup class="cite"><a class="cite-ref" href="#ref-cotraining">10</a></sup> 中，研究者构建人类视频语言标注数据时，沿用 <a href="https://egovid.github.io/" target="_blank" rel="noopener">EgoVid</a> 的划分方式，将筛选后的 Ego4D 视频切成固定 4 秒片段，再按 1 秒间隔抽帧生成描述。
-        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，分段得分为 0.0953，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
+        两类方法都容易<strong>过分割</strong>：运动低谷会把动作内部的停顿、重新抓握和手腕微调误判为边界；固定时长切分则不考虑动作何时真正完成，可能在同一动作内部反复插入切点，使「把胡萝卜放进碗里」这样的简单原子动作也被拆成多个片段。本文探索了基于 HaWoR 腕速低谷的分段方法，并合并相邻片段；在 HomER 上，该方法预测 810 段，而人工参考为 470 段，视频分段 F1 为 0.0953，印证了过分割问题。一种应对方式是将连续抽帧拼成带时间戳的拼贴图，让模型从更完整的时间上下文中判断动作边界，从而减少不必要的切分。
       </p>
 
       <h3 data-i18n="world.h3.scale">Scale Labs：已切分视频片段的稠密描述</h3>
@@ -183,7 +183,7 @@
         <strong>首尾吸附只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P<sub>0</sub>.start 从 0.5 改为 0、P<sub>3</sub>.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260811-16" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260811-17" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <ul>
@@ -468,7 +468,7 @@
       <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（Seg F1=0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 F。
+        两种 WGO 路径共用同一套 S2 分段（视频分段 F1 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 F。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
@@ -702,8 +702,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-16"></script>
-  <script src="js/report.js?v=20260811-16"></script>
+  <script src="js/i18n.js?v=20260811-17"></script>
+  <script src="js/report.js?v=20260811-17"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
     async function loadPrompt(ids, file) {

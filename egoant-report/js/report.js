@@ -178,7 +178,7 @@
       },
       "en": {
         "name": "S2 + adjacent rule merge: identical labels",
-        "note": "Video-segmentation F1 drops after merge",
+        "note": "Segment F1 drops after merge",
         "model": "Rule postprocess (no model)"
       }
     },
@@ -190,7 +190,7 @@
       },
       "en": {
         "name": "S2 + adjacent rule merge: verb/object",
-        "note": "More aggressive merge; video-segmentation F1 falls further",
+        "note": "More aggressive merge; Segment F1 falls further",
         "model": "Rule postprocess (no model)"
       }
     },
