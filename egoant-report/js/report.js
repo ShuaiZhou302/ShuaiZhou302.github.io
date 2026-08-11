@@ -89,23 +89,23 @@
     "s2_full25_397b": {
       "zh": {
         "name": "S2 局部精修·窗外扩约 1 秒 · 397B",
-        "note": "窗外扩约 1 秒，尚未要求盖住完整动作",
+        "note": "窗外扩约 1 秒，未写入覆盖完整动作约束",
         "model": "Qwen3.5-397B"
       },
       "en": {
         "name": "S2 local refine · ≈1s pad-out · 397B",
-        "note": "About 1s pad-out; cover-full-actions not yet required",
+        "note": "About 1s pad-out; cover-full-actions not in prompt",
         "model": "Qwen3.5-397B"
       }
     },
     "s2_pad0_plain_27b": {
       "zh": {
-        "name": "S2 局部精修·窗口不外扩（尚未盖住完整动作）· 27B",
+        "name": "S2 局部精修·窗口不外扩（未写入覆盖完整动作约束）· 27B",
         "note": "窗口不外扩较好，但仍偏碎",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 local refine · no pad-out (no cover yet) · 27B",
+        "name": "S2 local refine · no pad-out (no cover-full-actions prompt) · 27B",
         "note": "No pad-out helps; still shreddy",
         "model": "Qwen3.6-27B"
       }
@@ -149,18 +149,18 @@
     "s2_midpoint_post": {
       "zh": {
         "name": "S2 局部精修·窗口不外扩 + 算法补覆盖 · 27B",
-        "note": "算法补覆盖不及提示词中的「盖住完整动作」",
+        "note": "算法补覆盖不及提示词中的覆盖完整动作约束",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 local refine · no pad-out + midpoint cover · 27B",
+        "name": "S2 local refine · no pad-out + algorithmic cover · 27B",
         "note": "Algorithmic cover underperforms prompt cover",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_fullcover_qwen36": {
       "zh": {
-        "name": "S2 局部精修·窗口不外扩并盖住完整动作 · 27B",
+        "name": "S2 局部精修·窗口不外扩并覆盖完整动作 · 27B",
         "note": "已评测分段配置最高值",
         "model": "Qwen3.6-27B"
       },
@@ -172,36 +172,36 @@
     },
     "merge_exact": {
       "zh": {
-        "name": "相邻片段规则合并：合并相邻完全相同标签段",
-        "note": "合并后 F1 下降",
+        "name": "S2 + 相邻片段规则合并：合并相邻完全相同标签段",
+        "note": "合并后视频分段 F1 下降",
         "model": "规则后处理（非模型）"
       },
       "en": {
-        "name": "Adjacent rule merge: identical labels",
-        "note": "F1 drops after merge",
+        "name": "S2 + adjacent rule merge: identical labels",
+        "note": "Video-segmentation F1 drops after merge",
         "model": "Rule postprocess (no model)"
       }
     },
     "merge_verb": {
       "zh": {
-        "name": "相邻片段规则合并：按动词/物体合并相邻段",
-        "note": "更激进合并，F1 再降",
+        "name": "S2 + 相邻片段规则合并：按动词/物体合并相邻段",
+        "note": "更激进合并，视频分段 F1 再降",
         "model": "规则后处理（非模型）"
       },
       "en": {
-        "name": "Adjacent rule merge: verb/object",
-        "note": "More aggressive merge; F1 falls further",
+        "name": "S2 + adjacent rule merge: verb/object",
+        "note": "More aggressive merge; video-segmentation F1 falls further",
         "model": "Rule postprocess (no model)"
       }
     },
     "merge_bridge": {
       "zh": {
-        "name": "相邻片段规则合并：跨短间隙桥接合并",
-        "note": "跨短间隙合并，F1 降低最多",
+        "name": "S2 + 相邻片段规则合并：跨短间隙桥接合并",
+        "note": "跨短间隙合并，视频分段 F1 降低最多",
         "model": "规则后处理（非模型）"
       },
       "en": {
-        "name": "Adjacent rule merge: bridge short gaps",
+        "name": "S2 + adjacent rule merge: bridge short gaps",
         "note": "Largest drop among merges",
         "model": "Rule postprocess (no model)"
       }
@@ -618,14 +618,25 @@
     }).join("");
   }
 
+  function segPrecisionRecall(row) {
+    let p = row.p;
+    let r = row.r;
+    if ((p == null || r == null) && row.match != null && row.pred != null && row.gold != null) {
+      p = row.pred ? row.match / row.pred : null;
+      r = row.gold ? row.match / row.gold : null;
+    }
+    return { p, r };
+  }
+
   function segRowHTML(row, best) {
-    const r = locRow(row);
-    const isBest = r.f1 === best || row.id === "s2_fullcover_qwen36";
+    const loc = locRow(row);
+    const isBest = loc.f1 === best || row.id === "s2_fullcover_qwen36";
     const bestCls = isBest ? "best" : "";
-    const name = isBest ? `<strong>${esc(r.name)}</strong>` : esc(r.name);
-    const pr = (r.p != null && r.r != null) ? `${Number(r.p).toFixed(3)} / ${Number(r.r).toFixed(3)}` : "—";
-    const mpg = (r.match != null) ? `${r.match}/${r.pred}/${r.gold}` : `—/—/${r.gold}`;
-    return `<tr class="${bestCls}"><td>${name}</td><td class="num">${fmtF1(r.f1)}</td><td class="num">${pr}</td><td class="num">${mpg}</td><td>${esc(r.model)}</td></tr>`;
+    const name = isBest ? `<strong>${esc(loc.name)}</strong>` : esc(loc.name);
+    const { p, r } = segPrecisionRecall({ ...row, ...loc });
+    const pr = (p != null && r != null) ? `${Number(p).toFixed(3)} / ${Number(r).toFixed(3)}` : "—";
+    const mpg = (loc.match != null) ? `${loc.match}/${loc.pred}/${loc.gold}` : `—/—/${loc.gold}`;
+    return `<tr class="${bestCls}"><td>${name}</td><td class="num">${fmtF1(loc.f1)}</td><td class="num">${pr}</td><td class="num">${mpg}</td><td>${esc(loc.model)}</td></tr>`;
   }
 
   function fillSegTable(data) {
@@ -1594,8 +1605,8 @@
       "id": "merge_exact",
       "name": "Postprocess: merge adjacent identical labels",
       "f1": 0.1987,
-      "p": null,
-      "r": null,
+      "p": 0.2525,
+      "r": 0.1638,
       "match": 77,
       "pred": 305,
       "gold": 470,
@@ -1614,8 +1625,8 @@
       "id": "merge_verb",
       "name": "Postprocess: merge adjacent verb/object matches",
       "f1": 0.1947,
-      "p": null,
-      "r": null,
+      "p": 0.2552,
+      "r": 0.1574,
       "match": 74,
       "pred": 290,
       "gold": 470,
@@ -1634,8 +1645,8 @@
       "id": "merge_bridge",
       "name": "Postprocess: bridge short gaps then merge",
       "f1": 0.1883,
-      "p": null,
-      "r": null,
+      "p": 0.2624,
+      "r": 0.1468,
       "match": 69,
       "pred": 263,
       "gold": 470,
