@@ -1094,8 +1094,9 @@ pre.formula {
   align-items: start;
 }
 .input-zoo-pair .figure img {
-  object-fit: cover;
+  object-fit: contain;
   aspect-ratio: 5 / 3;
+  background: color-mix(in srgb, var(--card) 70%, #fff);
 }
 
 /* Flat three-frame strip for raw / neighbor samples */
