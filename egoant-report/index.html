@@ -275,8 +275,8 @@
         </figure>
         <div class="input-zoo-pair">
           <figure class="figure">
-            <img src="assets/explain/inputs/input_proxy_overlay_frame.png" alt="Proxy wrist trajectory overlaid on the full frame" />
-            <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加 / proxy overlay</strong>：在完整帧上叠加估计的腕部点与短时运动轨迹后提交。它提供手部运动线索，但不是人工标注，也不是直接裁剪手部区域。</figcaption>
+            <img src="assets/explain/inputs/input_proxy_overlay_frame.png" alt="Proxy motion cues overlaid on the HomER sample frame" />
+            <figcaption data-i18n-html data-i18n="world.zoo.proxy"><strong>视觉提示叠加 / proxy overlay</strong>：在完整帧上叠加估计的手部或运动提示点与短时轨迹后提交。有手部重建时可画腕部轨迹；没有手部重建时使用 optical-flow proxy。本图使用同一 HomER 样本段的 proxy 可视化。</figcaption>
           </figure>
           <figure class="figure">
             <img src="assets/explain/inputs/input_proxy_overlay.jpg" alt="Orange hand-crop region on the full frame and the resulting crop" />
