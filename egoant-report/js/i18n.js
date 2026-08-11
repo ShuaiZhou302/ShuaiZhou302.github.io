@@ -682,7 +682,7 @@
       "metrics.label.formula": "Fixed-boundary labeling score = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%",
       "metrics.e2e.formula": "End-to-end score = 2s / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×1 / (4 + 3) = 2/7 ≈ 0.286",
       "story.chart.label": "Fixed-boundary labeling score (Label Acc)",
-      "story.chart.e2e": "Semantic E2E F1",
+      "story.chart.e2e": "End-to-end score (E2E F1)",
       "walk.s0.hint": "Full-episode preview below. In Step 06, click a timeline bar or table row to play just that clip with its annotation.",
       "walk.s6.clipidle": "No segment selected yet",
       "walk.s6.selected": "Selected",
