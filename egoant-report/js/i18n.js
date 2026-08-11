@@ -223,7 +223,7 @@
       "metrics.h3.seg": "视频分段得分例子",
       "metrics.h3.label": "固定分段标注得分例子",
       "metrics.h3.e2e": "端到端整流程得分例子",
-      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。下方折叠为本文实际使用的评判提示词。",
+      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和整集任务指令交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。下方折叠为本文实际使用的评判提示词。",
       "metrics.e2e.example": "仍用上述预测的 4 个片段及其描述。时间匹配先得到 P<sub>0</sub>–G<sub>0</sub> 与 P<sub>1</sub>–G<sub>1</sub>；若语义评判只有 P<sub>0</sub>–G<sub>0</sub> 返回 <code>true</code>，则最终正确结果数 s = 1。",
       "toy.lane.gold": "参考（人工标注）",
       "toy.lane.pred": "预测（首尾对齐后）",
@@ -336,12 +336,12 @@
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "与 full-100 0.306 headline 直接比较",
-      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-e2e\">A 标注/E2E 术语</a> · <a href=\"#app-prompts\">B 提示词</a> · <a href=\"#app-cost\">C 成本记账</a> · <a href=\"#audit\">D 效度</a>。",
+      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-e2e\">A 标注/E2E 术语</a> · <a href=\"#app-prompts\">B 提示词</a> · <a href=\"#app-cost\">C 成本记账</a>。",
       "metrics.toy.g": "参考片段：G<sub>0</sub>[0,3]、G<sub>1</sub>[3,6]、G<sub>2</sub>[6,10]；模型预测：P<sub>0</sub>[0.5,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,9.5]。",
       "metrics.seg.example": "吸附后，预测片段变为 P<sub>0</sub>[0,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,10]；只有 P<sub>0</sub> 与 P<sub>3</sub> 的外侧端点发生变化。P<sub>0</sub>–G<sub>0</sub>、P<sub>1</sub>–G<sub>1</sub> 的时间 IoU 达到 0.75 阈值并形成一对一配对；P<sub>2</sub>、P<sub>3</sub> 未达到阈值。于是一对一时间匹配数 m = 2，预测段数 n<sub>pred</sub> = 4，参考段数 n<sub>gold</sub> = 3。",
       "metrics.seg.formula": "IoU = 重叠时长 / 两段合起来覆盖的总时长\n本例：P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933；P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781（均 ≥ 0.75）\n预测命中率 = m / n<sub>pred</sub> = 2 / 4 = 0.50\n参考找回率 = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\n视频分段得分 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
       "metrics.label.formula": "固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%",
-      "metrics.judge.note": "说明：下方就是提示词文本。评判只接收文本（人工描述、模型描述、episode instruction），不附带图像；<code>{gt_label}</code>、<code>{pred_label}</code>、<code>{instruction}</code> 会替换成该段的实际值。公开 rubric 见 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata</a>。",
+      "metrics.judge.note": "说明：下方就是提示词文本。评判输入为人工描述、模型描述和整集任务指令；<code>{gt_label}</code>、<code>{pred_label}</code>、<code>{instruction}</code> 会替换成该段的实际值。公开 rubric 见 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata</a>。",
       "metrics.e2e.formula": "端到端整流程得分 = 2s / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×1 / (4 + 3) = 2/7 ≈ 0.286",
       "story.chart.label": "固定分段标注得分（Label Acc）",
       "story.chart.e2e": "端到端整流程得分（E2E F1）",
@@ -710,12 +710,12 @@
       "recipe.r4.a": "Comparison",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "Direct comparison to the full-100 0.306 headline",
-      "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out terminology and implementation details. Contents: <a href=\"#app-e2e\">A label/E2E terms</a> · <a href=\"#app-prompts\">B prompts</a> · <a href=\"#app-cost\">C cost</a> · <a href=\"#audit\">D validity</a>.",
+      "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out terminology and implementation details. Contents: <a href=\"#app-e2e\">A label/E2E terms</a> · <a href=\"#app-prompts\">B prompts</a> · <a href=\"#app-cost\">C cost</a>.",
       "metrics.toy.g": "Reference: G<sub>0</sub>[0,3], G<sub>1</sub>[3,6], G<sub>2</sub>[6,10]. Prediction: P<sub>0</sub>[0.5,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], P<sub>3</sub>[8,9.5].",
       "metrics.seg.example": "After outer snap, the predictions become P<sub>0</sub>[0,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], and P<sub>3</sub>[8,10]; only the outer endpoints of P<sub>0</sub> and P<sub>3</sub> change. P<sub>0</sub>–G<sub>0</sub> and P<sub>1</sub>–G<sub>1</sub> clear the 0.75 temporal-IoU threshold and form one-to-one matches; P<sub>2</sub> and P<sub>3</sub> do not. Thus the one-to-one temporal match count is m = 2, with n<sub>pred</sub> = 4 predicted segments and n<sub>gold</sub> = 3 reference segments.",
       "metrics.seg.formula": "IoU = overlap duration / total duration covered by either span\nThis example: P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933; P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781 (both ≥ 0.75)\nPrecision = m / n<sub>pred</sub> = 2 / 4 = 0.50\nRecall = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\nSegmentation score = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
       "metrics.label.formula": "Fixed-boundary labeling score = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%",
-      "metrics.judge.note": "Note: the block below is the prompt text. The judge receives text only (gold label, predicted label, episode instruction) with no images; <code>{gt_label}</code>, <code>{pred_label}</code>, and <code>{instruction}</code> are filled per segment. Public rubric: <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata</a>.",
+      "metrics.judge.note": "Note: the block below is the prompt text. Inputs are the gold label, predicted label, and episode instruction; <code>{gt_label}</code>, <code>{pred_label}</code>, and <code>{instruction}</code> are filled per segment. Public rubric: <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata</a>.",
       "metrics.e2e.formula": "End-to-end score = 2s / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×1 / (4 + 3) = 2/7 ≈ 0.286",
       "story.chart.label": "Fixed-boundary labeling score (Label Acc)",
       "story.chart.e2e": "End-to-end score (E2E F1)",
@@ -757,7 +757,7 @@
       <p class="plain">正文讲“试了什么、分数怎么变”；附录补清楚术语和实现边界。目录：
         <a href="#app-e2e">A 标注/E2E 术语</a> ·
         <a href="#app-prompts">B 提示词</a> ·
-        <a href="#app-cost">C 成本</a> · <a href="#audit">D 效度</a>。</p>
+        <a href="#app-cost">C 成本</a>。</p>
 
 
 
@@ -773,26 +773,18 @@
       <p>英语提示词全文只在网页折叠区展示，不提供单独下载。</p>
       <ul>
         <li><a href="#walk-4">Labeling</a></li>
-        <li>Judge：<a href="#metrics-judge-prompt">如何评估 · 评判提示词</a></li>
         <li><a href="#walk-5">Candidate selector</a></li>
       </ul>
 
       <h3 id="app-cost">C. 成本：估计与公开数字对照</h3>
       <p>Macrodata 公开 E2E batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；本页 Qwen 栈 token 为工程估计；新增 Gemini judge 重判开销另行记录。页面保留结构化比较，不公开内部机器、路径或服务状态。</p>
-
-      <h3 id="audit">D. 实验效度注意事项</h3>
-      <table><thead><tr><th>项</th><th>发现</th><th>处理</th></tr></thead><tbody>
-        <tr><td>复制目录产物</td><td>不能把文件时间戳接近当作重标证据</td><td>只报告可追溯实验输出</td></tr>
-        <tr><td>proxy overlay</td><td>光流/中心框不是真手部重建</td><td>与 HaWoR-reconstructed wrist-guided crop 分开汇报</td></tr>
-        <tr><td>neighbor sheet</td><td>补时间戳后仍降低准确率</td><td>结论是上下文设计本身容易污染当前动作描述</td></tr>
-      </tbody></table>
     `,
     en: `
       <h2>6. Appendix: concepts, implementation, and cost accounting</h2>
       <p class="plain">The body explains what we tried and how scores moved. This appendix spells out terminology and implementation boundaries. Contents:
         <a href="#app-e2e">A label/E2E terms</a> ·
         <a href="#app-prompts">B prompts</a> ·
-        <a href="#app-cost">C cost</a> · <a href="#audit">D validity</a>.</p>
+        <a href="#app-cost">C cost</a>.</p>
 
 
 
@@ -808,19 +800,11 @@
       <p>Full English prompts are shown only in on-page folds; no separate downloads.</p>
       <ul>
         <li><a href="#walk-4">Labeling</a></li>
-        <li>Judge: <a href="#metrics-judge-prompt">Evaluation · judge prompt</a></li>
         <li><a href="#walk-5">Candidate selector</a></li>
       </ul>
 
       <h3 id="app-cost">C. Cost: estimates and published numbers</h3>
       <p>Macrodata reports about $2.64/video-hour for batch end-to-end seeded relabeling and about $0.43/h for segmentation-only batch. This page keeps Qwen-stack token numbers as engineering estimates; the added Gemini judge rescore is reported separately. The public version removes internal machines, paths, and service-state details.</p>
-
-      <h3 id="audit">D. Validity notes</h3>
-      <table><thead><tr><th>Item</th><th>Observation</th><th>Treatment</th></tr></thead><tbody>
-        <tr><td>Copied prediction folders</td><td>Close file timestamps are not evidence of a fresh relabel run</td><td>Only traceable experiment outputs are reported</td></tr>
-        <tr><td>proxy overlay</td><td>Optical-flow or center-box proxies are not hand reconstruction</td><td>Reported separately from HaWoR-reconstructed wrist-guided crop</td></tr>
-        <tr><td>neighbor sheet</td><td>Adding timestamps did not recover accuracy</td><td>The context design itself appears to pollute the current action description</td></tr>
-      </tbody></table>
     `
   };
 

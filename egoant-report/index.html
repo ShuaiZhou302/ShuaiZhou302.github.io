@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-36" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-37" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -197,13 +197,13 @@
       </div>
       <h3 data-i18n="metrics.h3.label">固定分段标注得分例子</h3>
       <div class="metric-example-card">
-        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。下方折叠为本文实际使用的评判提示词。</p>
+        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和整集任务指令交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。下方折叠为本文实际使用的评判提示词。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.label.formula">固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%</div>
         <details class="prompt-fold" id="metrics-judge-prompt">
           <summary data-i18n="walk.prompt.judge">评判提示词（英语）</summary>
           <div class="prompt-fold-body">
             <p class="prompt-note" data-i18n-html data-i18n="metrics.judge.note">
-              说明：下方就是提示词文本。评判只接收文本（人工描述、模型描述、episode instruction），不附带图像；<code>{gt_label}</code>、<code>{pred_label}</code>、<code>{instruction}</code> 会替换成该段的实际值。公开 rubric 见 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata</a>。
+              说明：下方就是提示词文本。评判输入为人工描述、模型描述和整集任务指令；<code>{gt_label}</code>、<code>{pred_label}</code>、<code>{instruction}</code> 会替换成该段的实际值。公开 rubric 见 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata</a>。
             </p>
             <div class="prompt-sent">
               <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
@@ -796,9 +796,9 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-36"></script>
-  <script src="js/report.js?v=20260811-36"></script>
-  <script src="js/prompts_embed.js?v=20260811-36"></script>
+  <script src="js/i18n.js?v=20260811-37"></script>
+  <script src="js/report.js?v=20260811-37"></script>
+  <script src="js/prompts_embed.js?v=20260811-37"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];
