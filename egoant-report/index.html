@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-6" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-7" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -287,55 +287,54 @@
       <p data-i18n-html data-i18n="pipeline.lead">
         本节按管线顺序说明：先分段、再标注，最后看端到端串联结果。每个阶段先交代尝试过的方法，再给出对应实验结果。
       </p>
-      <h3 data-i18n="pipeline.h3.roles">所用模型</h3>
+      <h3 data-i18n="pipeline.h3.roles">模型与打分</h3>
       <p data-i18n-html data-i18n="world.p.models">
-        管线实验会用到若干视觉语言模型。我们选用 Qwen3.6-27B 与 Qwen3.5-397B-A17B，主要因为它们是目前较常见、易于私有部署的开源模型，便于在分段策略与标注分工上做对照；下文各表会标明每一次消融实际调用了哪个模型，这里不预先固定「谁负责分段、谁负责定稿」。Gemini-3.5-Flash 不参与边界预测、描述生成或候选选择，仅用于离线评测：按 Macrodata Labs 的 <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 设定，用它对描述与人工标注做语义一致性打分（见 <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Gemini 官方定价</a>）。
+        管线实验会用到若干视觉语言模型。我们选用 Qwen3.6-27B 与 Qwen3.5-397B-A17B，主要因为它们是目前较常见、易于私有部署的开源模型，便于比较不同的分段策略与标注分工；下文图表会标明每一次实验实际调用了哪个模型。标注结果的语义评测使用 Gemini-3.5-Flash，打分设定遵循 Macrodata Labs 的 <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a>。
       </p>
 
-      <h3 data-i18n="pipeline.h3.seg">4.1 分段：尝试过的方法与结果</h3>
+      <h3 data-i18n="pipeline.h3.seg">4.1 视频分段管线</h3>
       <p data-i18n-html data-i18n="pipeline.seg.lead">
-        分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频；实验中通常先按术语约定做成带时间戳的拼贴图序列，再交给模型或规则方法。输出是一组起止时间（例如 [12.0, 18.5]），本阶段只评边界是否与人工参考对齐。分数统一为同一 HomER 子集上的 Segment F1；下面先列尝试过的做法，数值见随后的得分图与表。
+        视频分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频，输出是一组起止时间（例如 [12.0, 18.5]）；本阶段只评边界是否与人工参考对齐。分数统一为同一 HomER 子集上的视频分段 F1（Segment F1）。下面列举我们尝试过的分段标注管线方法以及对应分段效果得分。
       </p>
-      <p data-i18n="pipeline.seg.methods">我们比较过的分段做法如下。</p>
+      <p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
       <ol>
-        <li data-i18n-html data-i18n="story.seg.1">腕速规则切段：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。这是原 EgoANT 生产管线中的启发式基线，不调用视觉语言模型。</li>
-        <li data-i18n-html data-i18n="story.seg.2">拼贴图分片提交：把整集拼贴图按请求拆开，每次最多送入 3 张，由模型只在该局部时间范围内预测边界。这样做外形接近公开报告中的输入形式，但一次请求只能看到视频的一段连续时间。</li>
-        <li data-i18n-html data-i18n="story.seg.3">整集一次提交 + 旧版提示词：把整集全部拼贴图放进同一次调用，不再分片；提示词尚未加入切段规则清单。</li>
-        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：仍是整集拼贴图一次提交，但提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（本文复用其公开规则文本，见术语约定）。</li>
-        <li data-i18n-html data-i18n="story.seg.5">第一遍加密切分：仍对整集做一次分段，但通过修改提示词要求模型输出更多、更短的候选片段（术语中的 S1）。</li>
-        <li data-i18n-html data-i18n="story.seg.6">第二遍局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。我们比较了窗口是否向外扩展，以及是否在提示词中要求「盖住完整动作」；另测过用算法中点覆盖补全边界的后处理。</li>
-        <li data-i18n-html data-i18n="story.seg.7">相邻片段规则合并：在已有模型预测上，用脚本按时间相邻、动词相同或短间隙桥接等规则合并片段，不再调用模型。</li>
+        <li data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。这是原 EgoANT 生产管线中的启发式基线，不调用视觉语言模型。</li>
+        <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张，由模型只在该局部时间范围内预测边界。</li>
+        <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：仍是整集拼贴图一次提交，但提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 F</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：仍对整集做一次分段，但通过修改提示词要求模型输出更多、更短的候选片段。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。我们比较了窗口是否向外扩展，以及是否在提示词中要求「盖住完整动作」；另测过用算法中点覆盖补全边界的后处理（精修提示词见 <a href="#app-prompts">附录 F</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.7">相邻片段规则合并：在 S2「窗口不外扩并盖住完整动作」的预测结果上，用规则脚本按时间相邻、标签完全相同、动词/物体相同或短间隙桥接等策略合并片段，不再调用模型。该后处理为内部脚本，附录未单独提供下载。</li>
       </ol>
       <div class="chart-box">
-        <h4 data-i18n="story.chart.seg">Segment F1（主路径）</h4>
+        <h4 data-i18n="story.chart.seg">视频分段 F1（Segment F1）</h4>
         <div id="seg-bars" class="bars"></div>
       </div>
-      <p class="plain" data-i18n-html data-i18n="pipeline.seg.analysis">
-        结合上图可以看出几条清晰趋势。腕速规则基线预测片段远多于人工参考，Segment F1 只有 0.0953，说明仅靠运动低谷很难对齐动作语义边界。拼贴图分片提交时，请求之间的接缝容易被当成动作边界，大模型分片版得分与腕速基线接近；同设置下较小模型略高，但仍受分片限制。改为整集一次提交后，这类接缝伪边界减少，但旧版提示词预测片段偏少；加入切段规则清单后得分升至 0.1369，仍偏保守。第一遍加密切分抬高了召回，也带来更多过细切分。第二遍局部精修是主要增益来源：在窗口不外扩、并在提示词中要求盖住完整动作时，Segment F1 达到已评测配置中的最高值 0.2031；把「盖住完整动作」写成算法后处理，效果不如写进提示词。三种相邻片段规则合并都会降低 Segment F1，因此不作为默认配置。
-      </p>
+      <p class="plain" data-i18n-html data-i18n="story.seg.modelnote">条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。</p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段 F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th></tr></thead>
+          <tbody id="seg-tbody"></tbody>
+        </table>
+      </div>
       <p class="plain" data-i18n-html data-i18n="story.seg.legend">
         表头：P（Precision）= match / pred（预测段里配对成功的比例）；
         R（Recall）= match / gold（人工参考段被找回的比例）；
         match / pred / gold = 配对成功数 / 预测段数 / 人工参考段数（本子集人工参考恒为 470）。
-        「模型」列若写「规则后处理」，表示在已有预测上做脚本合并，不再调用视觉语言模型。
       </p>
-      <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th>F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th><th data-i18n="th.note">结果一句话</th></tr></thead>
-          <tbody id="seg-tbody"></tbody>
-        </table>
+      <div data-i18n-html data-i18n="pipeline.seg.analysis">
+        <p>结合上图与表，对各方法简要评价如下：</p>
+        <ol>
+          <li>腕速规则切段并合并：预测片段远多于人工参考（810 vs 470），视频分段 F1 仅 0.0953，说明运动低谷信号难以对齐动作语义边界。</li>
+          <li>拼贴图分片：请求接缝容易被当成动作边界。同设置下 397B 为 0.0952、27B 为 0.1278；换更大模型并不能消解分片带来的伪边界。</li>
+          <li>整集一次提交（无切段规则清单）：去掉分片接缝后伪边界减少，但预测片段偏少（148），F1 为 0.1230。</li>
+          <li>整集一次提交 + 切段规则清单：F1 升至 0.1369，比无规则清单更好，整体仍偏保守。</li>
+          <li>S1 加密切分：召回上升（match 80），F1 到 0.1556，同时预测段数增至 558，切分更细。</li>
+          <li>S2 局部精修：是主要增益来源。早期窗外扩约 1 秒版为 0.1674；窗口不外扩但尚未写「盖住完整动作」时为 0.1711，外扩 0.5/1/2 秒均更低；算法补覆盖后处理为 0.1635，不及把约束写进提示词。最终「窗口不外扩并盖住完整动作」取得最高视频分段 F1 0.2031。</li>
+          <li>相邻片段规则合并：三种策略都基于上述最优 S2 预测做后处理，F1 分别降为 0.1987 / 0.1947 / 0.1883，因此不作为默认配置。</li>
+        </ol>
+        <p>模型对比：同一拼贴图分片设置下 27B 高于 397B；最终最优 S2 配置也落在 27B。说明在本组实验里，分段流程与提示词设计带来的增益，往往大于单纯换更大模型。</p>
       </div>
-      <p class="plain" data-i18n="story.seg.padnote">窗口外扩秒数（旧称 pad）的消融未进入主决策路径；细节见折叠区。</p>
-      <details class="prompt-fold">
-        <summary data-i18n="story.seg.fold">展开：分段实验细节</summary>
-        <div style="overflow-x:auto;margin-top:0.75rem">
-          <table>
-            <thead><tr><th data-i18n="th.cond">条件</th><th>F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th><th data-i18n="th.note">结果一句话</th></tr></thead>
-            <tbody id="seg-pad-tbody"></tbody>
-          </table>
-        </div>
-        <div id="seg-methods" class="method-grid" style="margin-top:1rem"></div>
-      </details>
 
       
 
@@ -678,8 +677,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-6"></script>
-  <script src="js/report.js?v=20260811-6"></script>
+  <script src="js/i18n.js?v=20260811-7"></script>
+  <script src="js/report.js?v=20260811-7"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
     async function loadPrompt(ids, file) {

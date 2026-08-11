@@ -1,11 +1,14 @@
 /* EgoANT HomER blog report renderer */
 (function () {
-  // Decision path only; pad ablations go to #seg-pad-tbody
-  const MAIN_SEG_IDS = new Set([
+  // Keep chart and table on the same ordered path, including pad-out and merges.
+  const MAIN_SEG_ORDER = [
     "egovid_baseline","cs_max3_397b","cs_max3_27b","whole_legacy_27b",
-    "aligned_gepa_27b","s1_full25_397b","s2_full25_397b","s2_fullcover_qwen36",
-    "s2_midpoint_post","merge_exact","merge_verb","merge_bridge"
-  ]);
+    "aligned_gepa_27b","s1_full25_397b","s2_full25_397b",
+    "s2_pad0_plain_27b","s2_pad05_27b","s2_pad1_27b","s2_pad2_27b",
+    "s2_midpoint_post","s2_fullcover_qwen36",
+    "merge_exact","merge_verb","merge_bridge"
+  ];
+  const MAIN_SEG_IDS = new Set(MAIN_SEG_ORDER);
   const PAD_SEG_IDS = new Set([
     "s2_pad0_plain_27b","s2_pad05_27b","s2_pad1_27b","s2_pad2_27b"
   ]);
@@ -13,194 +16,194 @@
   const ABLATION_I18N = {
     "egovid_baseline": {
       "zh": {
-        "name": "EgoANT 原管线：腕速规则切段并合并",
+        "name": "腕速规则切段并合并",
         "note": "预测片段明显多于人工参考",
         "model": "规则方法（腕速低谷 + 合并）"
       },
       "en": {
-        "name": "EgoANT baseline: wrist-speed rule cuts + merge",
+        "name": "Wrist-speed rule cuts + merge",
         "note": "Far more predictions than human reference",
         "model": "rule-based (wrist minima + merge)"
       }
     },
     "cs_max3_397b": {
       "zh": {
-        "name": "拼贴图分片（每次最多 3 张 · 397B）",
+        "name": "拼贴图分片（每次最多 3 张）· 397B",
         "note": "请求接缝处易出现伪边界",
         "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Contact sheet chunks (max 3 sheets/call)",
+        "name": "Chunked contact sheets (max 3) · 397B",
         "note": "Fake boundaries at chunk seams",
         "model": "Qwen3.5-397B"
       }
     },
     "cs_max3_27b": {
       "zh": {
-        "name": "拼贴图分片（每次最多 3 张 · 27B）",
+        "name": "拼贴图分片（每次最多 3 张）· 27B",
         "note": "同设置下小模型略优于大模型分片版",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Contact sheet chunks (max 3 sheets/call · 27B)",
+        "name": "Chunked contact sheets (max 3) · 27B",
         "note": "Smaller model beats large on same chunking",
         "model": "Qwen3.6-27B"
       }
     },
     "whole_legacy_27b": {
       "zh": {
-        "name": "整集一次 + 旧版提示词（无切段规则清单）",
+        "name": "整集一次提交（无切段规则清单）· 27B",
         "note": "预测片段偏少",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Whole-episode + legacy prompt (no rule list)",
+        "name": "Whole-episode (no rule list) · 27B",
         "note": "Too few predicted segments",
         "model": "Qwen3.6-27B"
       }
     },
     "aligned_gepa_27b": {
       "zh": {
-        "name": "整集一次 + 切段规则清单",
-        "note": "比旧版提示词更好，仍偏保守",
+        "name": "整集一次提交 + 切段规则清单 · 27B",
+        "note": "比无规则清单更好，仍偏保守",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Whole-episode + segmentation rule list (GEPA)",
-        "note": "Better than legacy; still conservative",
+        "name": "Whole-episode + rule list · 27B",
+        "note": "Better than no-rule prompt; still conservative",
         "model": "Qwen3.6-27B"
       }
     },
     "s1_full25_397b": {
       "zh": {
-        "name": "第一遍加密切分",
+        "name": "S1 加密切分 · 397B",
         "note": "召回上升，切分也更细",
         "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Pass-1 denser cuts (S1)",
+        "name": "S1 denser cuts · 397B",
         "note": "Recall up; cuts also finer",
         "model": "Qwen3.5-397B"
       }
     },
     "s2_full25_397b": {
       "zh": {
-        "name": "第二遍局部精修早期版（窗外扩约 1 秒，尚未盖住完整动作）",
+        "name": "S2 局部精修早期版（窗外扩约 1 秒）· 397B",
         "note": "早期局部精修配置",
         "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Early local refine (≈1s pad-out; no full-cover yet)",
-        "note": "Right direction; not final full-cover",
+        "name": "S2 early local refine (≈1s pad-out) · 397B",
+        "note": "Early local-refine setting",
         "model": "Qwen3.5-397B"
       }
     },
     "s2_pad0_plain_27b": {
       "zh": {
-        "name": "局部精修·窗口不外扩（尚未盖住完整动作）",
+        "name": "S2 局部精修·窗口不外扩（尚未盖住完整动作）· 27B",
         "note": "窗口不外扩较好，但仍偏碎",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Local refine · no pad-out (no full-cover yet)",
+        "name": "S2 local refine · no pad-out (no cover yet) · 27B",
         "note": "No pad-out helps; still shreddy",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_pad05_27b": {
       "zh": {
-        "name": "局部精修·窗外扩 0.5s",
-        "note": "向外多看 0.5s，不如不外扩",
+        "name": "S2 局部精修·窗外扩 0.5 秒 · 27B",
+        "note": "向外多看 0.5 秒，不如不外扩",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Local refine · pad-out 0.5s",
+        "name": "S2 local refine · pad-out 0.5s · 27B",
         "note": "Expanding 0.5s loses to no pad-out",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_pad1_27b": {
       "zh": {
-        "name": "局部精修·窗外扩 1.0s",
-        "note": "外扩 1s，不如不外扩",
+        "name": "S2 局部精修·窗外扩 1.0 秒 · 27B",
+        "note": "外扩 1 秒，不如不外扩",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Local refine · pad-out 1.0s",
+        "name": "S2 local refine · pad-out 1.0s · 27B",
         "note": "1s pad-out worse than none",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_pad2_27b": {
       "zh": {
-        "name": "局部精修·窗外扩 2.0s",
-        "note": "外扩 2s，不如不外扩",
+        "name": "S2 局部精修·窗外扩 2.0 秒 · 27B",
+        "note": "外扩 2 秒，不如不外扩",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Local refine · pad-out 2.0s",
+        "name": "S2 local refine · pad-out 2.0s · 27B",
         "note": "2s pad-out worse than none",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_midpoint_post": {
       "zh": {
-        "name": "窗口不外扩 + 算法补覆盖（后处理，非写进提示词）",
+        "name": "S2 窗口不外扩 + 算法补覆盖（后处理）· 27B",
         "note": "算法补覆盖不及提示词中的「盖住完整动作」",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "No pad-out + midpoint cover postprocess (not in prompt)",
-        "note": "Algorithmic cover ≠ full-cover in the prompt",
+        "name": "S2 no pad-out + midpoint cover postprocess · 27B",
+        "note": "Algorithmic cover underperforms prompt cover",
         "model": "Qwen3.6-27B"
       }
     },
     "s2_fullcover_qwen36": {
       "zh": {
-        "name": "局部再切：窗口不外扩并盖住完整动作",
+        "name": "S2 局部再切：窗口不外扩并盖住完整动作 · 27B",
         "note": "已评测分段配置最高值",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Local re-cut: no pad-out + cover full actions",
+        "name": "S2 local re-cut: no pad-out + cover full actions · 27B",
         "note": "Best segmentation so far",
         "model": "Qwen3.6-27B"
       }
     },
     "merge_exact": {
       "zh": {
-        "name": "后处理：合并相邻完全相同标签段",
+        "name": "相邻片段规则合并：合并相邻完全相同标签段",
         "note": "合并后 F1 下降",
-        "model": "规则后处理（非 LLM）"
+        "model": "规则后处理（非模型）"
       },
       "en": {
-        "name": "Postprocess: merge adjacent identical labels",
+        "name": "Adjacent rule merge: identical labels",
         "note": "F1 drops after merge",
-        "model": "Rule postprocess (no LLM)"
+        "model": "Rule postprocess (no model)"
       }
     },
     "merge_verb": {
       "zh": {
-        "name": "后处理：按动词/物体合并相邻段",
+        "name": "相邻片段规则合并：按动词/物体合并相邻段",
         "note": "更激进合并，F1 再降",
-        "model": "规则后处理（非 LLM）"
+        "model": "规则后处理（非模型）"
       },
       "en": {
-        "name": "Postprocess: merge by verb/object",
+        "name": "Adjacent rule merge: verb/object",
         "note": "More aggressive merge; F1 falls further",
-        "model": "Rule postprocess (no LLM)"
+        "model": "Rule postprocess (no model)"
       }
     },
     "merge_bridge": {
       "zh": {
-        "name": "后处理：跨短间隙桥接合并",
+        "name": "相邻片段规则合并：跨短间隙桥接合并",
         "note": "跨短间隙合并，F1 降低最多",
-        "model": "规则后处理（非 LLM）"
+        "model": "规则后处理（非模型）"
       },
       "en": {
-        "name": "Postprocess: bridge short gaps then merge",
+        "name": "Adjacent rule merge: bridge short gaps",
         "note": "Largest drop among merges",
-        "model": "Rule postprocess (no LLM)"
+        "model": "Rule postprocess (no model)"
       }
     },
     "raw_397b": {
@@ -531,18 +534,25 @@
     return Math.round(Number(n)).toLocaleString("en-US");
   }
 
-  function renderBars(el, rows, valueKey, maxVal, alt) {
+  function renderBars(el, rows, valueKey, maxVal, alt, bestId) {
     if (!el) return;
     el.innerHTML = rows.map((row) => {
       const r = locRow(row);
       const v = r[valueKey];
       const w = Math.max(2, Math.round((v / maxVal) * 100));
-      return `<div class="bar-row">
-        <div class="bar-label">${esc(r.name)}</div>
+      const isBest = bestId && row.id === bestId;
+      const label = isBest ? `<strong>${esc(r.name)}</strong>` : esc(r.name);
+      return `<div class="bar-row${isBest ? " best" : ""}">
+        <div class="bar-label">${label}</div>
         <div class="bar-track"><div class="bar-fill${alt ? " alt" : ""}" style="width:${w}%"></div></div>
         <div class="bar-val">${valueKey === "acc" ? pct(v) : fmtF1(v)}</div>
       </div>`;
     }).join("");
+  }
+
+  function orderedSegRows(data) {
+    const byId = new Map((data.segmentation || []).map((r) => [r.id, r]));
+    return MAIN_SEG_ORDER.map((id) => byId.get(id)).filter(Boolean);
   }
 
   function renderTimeline(el, toy) {
@@ -610,18 +620,19 @@
 
   function segRowHTML(row, best) {
     const r = locRow(row);
-    const bestCls = r.f1 === best ? "best" : "";
+    const isBest = r.f1 === best || row.id === "s2_fullcover_qwen36";
+    const bestCls = isBest ? "best" : "";
+    const name = isBest ? `<strong>${esc(r.name)}</strong>` : esc(r.name);
     const pr = (r.p != null && r.r != null) ? `${Number(r.p).toFixed(3)} / ${Number(r.r).toFixed(3)}` : "—";
     const mpg = (r.match != null) ? `${r.match}/${r.pred}/${r.gold}` : `—/—/${r.gold}`;
-    return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${fmtF1(r.f1)}</td><td class="num">${pr}</td><td class="num">${mpg}</td><td>${esc(r.model)}</td><td>${esc(r.note || "")}</td></tr>`;
+    return `<tr class="${bestCls}"><td>${name}</td><td class="num">${fmtF1(r.f1)}</td><td class="num">${pr}</td><td class="num">${mpg}</td><td>${esc(r.model)}</td></tr>`;
   }
 
   function fillSegTable(data) {
     const tbody = document.querySelector("#seg-tbody");
     if (!tbody) return;
     const best = data.meta.best.seg_f1;
-    const rows = data.segmentation.filter((r) => MAIN_SEG_IDS.has(r.id));
-    tbody.innerHTML = rows.map((r) => segRowHTML(r, best)).join("");
+    tbody.innerHTML = orderedSegRows(data).map((r) => segRowHTML(r, best)).join("");
   }
 
   function fillSegPadTable(data) {
@@ -631,7 +642,7 @@
     const rows = data.segmentation.filter((r) => PAD_SEG_IDS.has(r.id));
     tbody.innerHTML = rows.length
       ? rows.map((r) => segRowHTML(r, best)).join("")
-      : `<tr><td colspan="6">${lang()==="en" ? "No extra pad-out ablation rows." : "无额外窗口外扩消融行。"}</td></tr>`;
+      : `<tr><td colspan="5">${lang()==="en" ? "No extra pad-out ablation rows." : "无额外窗口外扩消融行。"}</td></tr>`;
   }
 
   function fillLabelTable(data) {
@@ -1196,8 +1207,8 @@
       if (err) err.hidden = false;
       return;
     }
-    const mainSeg = data.segmentation.filter((r) => ["egovid_baseline","cs_max3_397b","cs_max3_27b","whole_legacy_27b","aligned_gepa_27b","s1_full25_397b","s2_full25_397b","s2_fullcover_qwen36"].includes(r.id));
-    renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25);
+    const mainSeg = orderedSegRows(data);
+    renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
     renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.60, true);
     renderBars(document.querySelector("#e2e-bars"), data.e2e, "e2e_f1", 0.18, true);
     fillSegTable(data);
@@ -1212,8 +1223,8 @@
     function rerenderDynamicI18n() {
       const D = window.__REPORT_DATA__;
       if (!D || !D.data) return;
-      const mainSeg = D.data.segmentation.filter((r) => ["egovid_baseline","cs_max3_397b","cs_max3_27b","whole_legacy_27b","aligned_gepa_27b","s1_full25_397b","s2_full25_397b","s2_fullcover_qwen36"].includes(r.id));
-      renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25);
+      const mainSeg = orderedSegRows(D.data);
+      renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
       renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.60, true);
       renderBars(document.querySelector("#e2e-bars"), D.data.e2e, "e2e_f1", 0.18, true);
       fillSegTable(D.data);

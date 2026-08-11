@@ -501,6 +501,8 @@ tr.best td { background: #eaf5ee; font-weight: 600; }
 .bars { display: grid; gap: 0.45rem; }
 .bar-row { display: grid; grid-template-columns: minmax(140px, 2.2fr) 1fr 64px; gap: 0.6rem; align-items: center; }
 .bar-label { font-size: 0.82rem; color: var(--muted); }
+.bar-row.best .bar-label { color: var(--ink); }
+.bar-row.best .bar-val { font-weight: 600; color: var(--ink); }
 .bar-track {
   height: 12px; background: #ebe4d8; border-radius: 999px; overflow: hidden;
 }
