@@ -197,7 +197,7 @@
       </div>
       <h3 data-i18n="metrics.h3.label">固定分段标注得分例子</h3>
       <div class="metric-example-card">
-        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 D</a>。</p>
+        <p data-i18n-html data-i18n="metrics.label.example">沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 C</a>。</p>
         <div class="formula" data-i18n-html data-i18n="metrics.label.formula">固定分段标注得分 = c / n<sub>gold</sub> = 2 / 3 ≈ 66.7%</div>
       </div>
       <h3 data-i18n="metrics.h3.e2e">端到端整流程得分例子</h3>
@@ -238,8 +238,12 @@
       </ul>
       <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
-        后文实验用到六类视觉输入：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪。下图以 HomER 数据集中的一个样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示各自的画面组织形式。
+        后文实验用到六类视觉输入：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪。下图先给出概念对照；再以 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示各自的实际画面组织形式。
       </p>
+      <figure class="figure" id="term-visual">
+        <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-30" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
+        <figcaption data-i18n="world.taxonomy.cap">概念图：拼贴图用于看完整时间轴并找边界；其余输入多在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
+      </figure>
       <div class="input-zoo">
         <figure class="figure">
           <div class="frame-strip">
@@ -334,9 +338,9 @@
         </li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
-        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 D</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 C</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 D</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 C</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 B</a>。</li>
       </ol>
       <div class="chart-box">
@@ -410,7 +414,7 @@
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap1">
-            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。详见 <a href="#app-visual">附录 C</a>。
+            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。见 <a href="#term-visual">术语 · 视觉输入</a>。
           </figcaption>
         </figure>
         <figure class="figure">
@@ -491,7 +495,7 @@
       <h3 data-i18n="pipeline.h3.cost">4.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 E。
+        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 D。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
