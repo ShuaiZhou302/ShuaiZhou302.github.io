@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-26" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-27" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -320,18 +320,16 @@
           <span data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。</span>
           <details class="term-fold" id="app-prod">
             <summary data-i18n="pipeline.wrist.fold">腕速基线管线示意</summary>
-            <div class="pipeline" data-i18n-html data-i18n="pipeline.wrist.steps">
+            <div class="pipeline pipeline-4" data-i18n-html data-i18n="pipeline.wrist.steps">
               <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → wrist 轨迹</div></div>
               <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">腕速滤波</div></div>
-              <div class="step"><div class="n">03</div><div class="t">Cut</div><div class="d">速度 minima + 短段合并</div></div>
-              <div class="step"><div class="n">04</div><div class="t">Caption</div><div class="d">段内 raw 抽帧写短句</div></div>
-              <div class="step"><div class="n">05</div><div class="t">Merge</div><div class="d">judge → rewrite</div></div>
+              <div class="step"><div class="n">03</div><div class="t">Cut</div><div class="d">速度 minima 切段</div></div>
+              <div class="step"><div class="n">04</div><div class="t">规则合并</div><div class="d">合并相邻短段</div></div>
             </div>
             <figure class="figure">
-              <img src="assets/explain/wrist_speed_oversegmentation_zh.svg?v=20260811-26" data-i18n-src="fig.src.wrist" alt="Wrist-speed minima segmentation schematic" />
-              <figcaption data-i18n="pipeline.wrist.cap">这一版管线先用 HaWoR 重建左右手腕轨迹，再对腕速做平滑并在速度低谷切段。这个信号很有用，但停顿、微调、放手和收回也会形成低谷，所以容易把一个完成任务切成太多小段。</figcaption>
+              <img src="assets/explain/wrist_speed_oversegmentation_zh.svg?v=20260811-27" data-i18n-src="fig.src.wrist" alt="Wrist-speed minima segmentation schematic" />
+              <figcaption data-i18n="pipeline.wrist.cap">HaWoR 重建腕轨迹后平滑腕速，并在速度低谷处切段；停顿与微调也会形成低谷，因此容易过分割。</figcaption>
             </figure>
-            <p data-i18n-html data-i18n="pipeline.wrist.note">VITRA 启发的是「先手部/运动信号，再 caption」的问题设定；本系统在这一版里用 HaWoR 腕速作为切段信号，不把 VITRA 当作后端模型。它的主要失败模式是<strong>过分割</strong>：动作中途的犹豫或微调在速度曲线上也像边界，后续 merge judge 虽可合并一部分，但在 WGO 的 IoU 口径下仍会拉低视频分段得分。</p>
           </details>
         </li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
@@ -727,8 +725,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-26"></script>
-  <script src="js/report.js?v=20260811-26"></script>
+  <script src="js/i18n.js?v=20260811-27"></script>
+  <script src="js/report.js?v=20260811-27"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
     async function loadPrompt(ids, file) {
