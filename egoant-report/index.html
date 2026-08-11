@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-34" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-35" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -343,7 +343,7 @@
         <li>
           <span data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再把过短的相邻段按时长规则合并。</span>
           <details class="term-fold" id="app-prod">
-            <summary data-i18n="pipeline.wrist.fold">腕速基线管线示意</summary>
+            <summary data-i18n="pipeline.wrist.fold">腕速规则切段示意</summary>
             <div class="pipeline pipeline-4" data-i18n-html data-i18n="pipeline.wrist.steps">
               <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → 腕部轨迹</div></div>
               <div class="step"><div class="n">02</div><div class="t">平滑</div><div class="d">腕速滤波</div></div>
@@ -362,7 +362,7 @@
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
         <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#walk-3">样例 · S2</a>）。</li>
         <li>
-          <span data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：这是对最优 S2 预测片段列表的离线后处理，不是新的模型调用。输入是最优 S2 的预测片段，输出是合并后的片段列表；脚本按时间顺序只比较相邻段。三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。</span>
+          <span data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：对最优 S2 预测片段列表做离线后处理。输入是最优 S2 的预测片段，输出是合并后的片段列表；脚本按时间顺序只比较相邻段。三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。</span>
           <details class="term-fold" id="app-rule-merge">
             <summary data-i18n="pipeline.merge.fold">相邻片段规则合并伪代码</summary>
             <pre class="formula">segments = sort_by_start_time(s2_predictions)
@@ -388,11 +388,11 @@ def compatible(a, b, strategy):
             <div class="plain" data-i18n-html data-i18n="pipeline.merge.note">
               <p><strong>读码说明：</strong></p>
               <ul>
-                <li><code>compatible(...)</code> 决定相邻两段能不能并成一段；三种 <code>strategy</code> 对应正文里的三条规则。</li>
-                <li><code>normalize</code> 会去掉大小写、空白等表面差异后再比标签；不是语义相似度。</li>
-                <li><code>choose_representative_label</code> 合并后只保留一句代表标签，通常取较长或信息更完整的那句。</li>
-                <li><code>bridge_short_gap</code> 里的 <code>small_gap</code> 只把很短的时间空隙当成仍可合并，不会跨过大空洞。</li>
-                <li>脚本只读 <code>start_sec</code> / <code>end_sec</code> / <code>subtask</code>：合并时只能删掉或挪动已有边界，不能发明新切点。</li>
+                <li><code>compatible(...)</code> 判定相邻两段是否合并为一段；三种 <code>strategy</code> 对应正文里的三条规则。</li>
+                <li><code>normalize</code> 先去掉大小写、空白等表面差异，再按规范化后的字符串比较标签。</li>
+                <li><code>choose_representative_label</code> 合并后保留一句代表标签，通常取较长或信息更完整的那句。</li>
+                <li><code>bridge_short_gap</code> 里的 <code>small_gap</code> 只处理很短的时间空隙，把它视为仍可合并的连续区间。</li>
+                <li>脚本读取 <code>start_sec</code> / <code>end_sec</code> / <code>subtask</code>，合并时调整已有边界（删除或挪动）。</li>
               </ul>
             </div>
           </details>
@@ -780,9 +780,9 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-34"></script>
-  <script src="js/report.js?v=20260811-34"></script>
-  <script src="js/prompts_embed.js?v=20260811-34"></script>
+  <script src="js/i18n.js?v=20260811-35"></script>
+  <script src="js/report.js?v=20260811-35"></script>
+  <script src="js/prompts_embed.js?v=20260811-35"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];
