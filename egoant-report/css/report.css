@@ -390,8 +390,8 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 #world p {
   text-wrap: pretty;
 }
-#terms p,
-#terms li {
+#pipeline .term-list li,
+#pipeline .input-zoo figcaption {
   text-wrap: pretty;
 }
 .term-list li {
