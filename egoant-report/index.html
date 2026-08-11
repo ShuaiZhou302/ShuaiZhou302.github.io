@@ -238,15 +238,15 @@
       </ul>
       <h3 data-i18n="world.h3.inputs">视觉输入</h3>
       <p data-i18n-html data-i18n="world.p.inputs">
-        后文实验用到六类视觉输入。先说明模型各自看见什么、典型用在哪一步；再给概念预览，最后用 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示实际画面。
+        后文实验用到六类视觉输入。先说明模型各自看见什么；再给概念预览，最后用 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示实际画面。
       </p>
       <ul class="term-list">
-        <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交；固定边界标注的默认输入。</li>
-        <li data-i18n-html data-i18n="world.input.2"><strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交；标注消融对照。</li>
+        <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交。</li>
+        <li data-i18n-html data-i18n="world.input.2"><strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交。</li>
         <li data-i18n-html data-i18n="world.input.3"><strong>拼贴图</strong>：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
-        <li data-i18n-html data-i18n="world.input.4"><strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交；标注消融对照。</li>
-        <li data-i18n-html data-i18n="world.input.5"><strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示；标注消融对照。</li>
-        <li data-i18n-html data-i18n="world.input.6"><strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交；标注候选输入。</li>
+        <li data-i18n-html data-i18n="world.input.4"><strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
+        <li data-i18n-html data-i18n="world.input.5"><strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示。</li>
+        <li data-i18n-html data-i18n="world.input.6"><strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交。</li>
       </ul>
       <figure class="figure" id="term-visual">
         <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260811-31" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
@@ -305,10 +305,19 @@
         </figure>
       </div>
 
-      <h3 data-i18n="world.h3.gepa">GEPA</h3>
-      <p data-i18n-html data-i18n="world.p.gepa">
-        GEPA 是一种根据反馈自动改写提示词的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。
-      </p>
+      <details class="term-fold" id="term-gepa">
+        <summary data-i18n="world.h3.gepa">GEPA</summary>
+        <p class="plain" data-i18n-html data-i18n="world.p.gepa">
+          GEPA 是一种根据反馈自动改写提示词的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。
+        </p>
+        <p class="plain" data-i18n-html data-i18n="world.gepa.files">
+          规则原文（English）：<a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>
+        </p>
+        <details class="prompt-fold">
+          <summary data-i18n="walk.prompt.gepa">Prompt (English only) — segmentation rules</summary>
+          <div class="prompt-box"><pre id="p-gepa-term">Loading…</pre></div>
+        </details>
+      </details>
     </section>
 
     
@@ -346,7 +355,7 @@
         </li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
-        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 C</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#term-gepa">术语 · GEPA</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
         <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 C</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
         <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 B</a>。</li>
@@ -585,13 +594,12 @@
           <div class="step-h"><span class="badge">02</span><h3 class="step-title" data-i18n="walk.s2.t">粗分：整集一次 + 切段规则清单</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s2.p">
             把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>
-            （GEPA 搜索得到的英文规则：只标完成事件、偏好约 2–10 秒等——见下方折叠全文）。
+            （GEPA 搜索得到的英文规则：只标完成事件、偏好约 2–10 秒等——见 <a href="#term-gepa">术语 · GEPA</a>）。
             这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。
           </p>
-          <details class="prompt-fold">
-            <summary data-i18n="walk.prompt.gepa">Prompt (English only) — segmentation rules</summary>
-            <div class="prompt-box"><pre id="p-gepa-inline">Loading…</pre></div>
-          </details>
+          <p class="plain" data-i18n-html data-i18n="walk.s2.gepa.link">
+            规则全文与下载：<a href="#term-gepa">术语 · GEPA</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>
+          </p>
         </article>
 
         <article class="step-card" id="walk-3">
@@ -757,7 +765,7 @@
       }
     }
     const promptMap = [
-      [["p-gepa-inline"], "gepa_completed_events_duration_prior_v1.md"],
+      [["p-gepa-term"], "gepa_completed_events_duration_prior_v1.md"],
       [["p-s2-inline"], "s2_fullcover_refine.md"],
       [["p-label-inline"], "labeling_fixed_boundary.md"],
       [["p-judge-inline"], "judge_semantic_match.md"],

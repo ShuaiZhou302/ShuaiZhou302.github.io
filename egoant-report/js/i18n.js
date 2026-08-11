@@ -165,6 +165,7 @@
       "role.judge.use": "离线计算固定分段标注得分与端到端整流程得分",
       "world.h3.gepa": "GEPA",
       "world.p.gepa": "GEPA 是一种根据反馈自动改写提示词的方法<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。",
+      "world.gepa.files": "规则原文（English）：<a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>下载</a>",
       "world.h3.terms": "视频分段常用术语",
       "world.terms.figcap": "图中按处理顺序展示：模型先对完整视频做一次粗分，再围绕某一粗边界选取一个局部时间窗口，并在该窗口内执行 S2 局部精修；③ 行里的两块绿色是同一窗口内重切后的片段。",
       "world.term.1": "参考分段（gold）：人工标注的完整动作片段，图中用黄色表示。",
@@ -185,13 +186,13 @@
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-25",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy_zh.svg?v=20260811-31",
       "world.h3.inputs": "视觉输入",
-      "world.p.inputs": "后文实验用到六类视觉输入。先说明模型各自看见什么、典型用在哪一步；再给概念预览，最后用 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示实际画面。",
-      "world.input.1": "<strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交；固定边界标注的默认输入。",
-      "world.input.2": "<strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交；标注消融对照。",
+      "world.p.inputs": "后文实验用到六类视觉输入。先说明模型各自看见什么；再给概念预览，最后用 HomER 样本片段（22.9–26.8 秒，「拉开床头柜抽屉」）展示实际画面。",
+      "world.input.1": "<strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交。",
+      "world.input.2": "<strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交。",
       "world.input.3": "<strong>拼贴图</strong>：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。",
-      "world.input.4": "<strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交；标注消融对照。",
-      "world.input.5": "<strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示；标注消融对照。",
-      "world.input.6": "<strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交；标注候选输入。",
+      "world.input.4": "<strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交。",
+      "world.input.5": "<strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示。",
+      "world.input.6": "<strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交。",
       "world.zoo.lead": "下面是同一 HomER 片段上的实际画面例子。",
       "world.zoo.raw": "<strong>原始帧</strong>：在目标片段内均匀抽取 3 帧，作为 3 张独立图片提交。",
       "world.zoo.raw.l1": "帧 1",
@@ -254,7 +255,8 @@
       "walk.s1.p": "参数与术语约定中的拼贴图一致。模型后续只看这些带时间戳的拼图，而不是原始 MP4 字节流。",
       "walk.s1.note": "下方为首张拼贴图示例（同参数）。",
       "walk.s2.t": "粗分：整集一次 + 切段规则清单",
-      "walk.s2.p": "将整集 contact sheets 与<strong>分段规则 prompt</strong>一起提交给分段模型。规则来自 GEPA-derived completed-event segmentation prompt，要求只标完成动作、偏好约 2–10 秒片段，并避免把靠近、微调和收回标为独立事件。这样减少由分片请求边界引入的伪边界，但可能欠分割。",
+      "walk.s2.p": "把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>（GEPA 搜索得到的英文规则：只标完成事件、偏好约 2–10 秒等——见 <a href=\"#term-gepa\">术语 · GEPA</a>）。这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。",
+      "walk.s2.gepa.link": "规则全文与下载：<a href=\"#term-gepa\">术语 · GEPA</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>下载</a>",
       "walk.s3.t": "局部再切一遍：窗口不外扩，盖住完整动作",
       "walk.s3.p": "在粗边界附近开一个<strong>短时间窗</strong>，用<strong>同一版式</strong>的 sheet 再切一次。<strong>窗口不外扩</strong>表示只使用粗边界内部的视觉上下文；<strong>盖住完整动作</strong>表示窗口内可见的完成动作都应被覆盖，同时避免不完整微动作片段。（技术名：S2 · pad=0 · full-cover）",
       "walk.s3.cap": "局部时间窗 contact sheet（第二遍精修输入）。",
@@ -283,7 +285,7 @@
       "fig.src.wrist": "assets/explain/wrist_speed_oversegmentation_zh.svg?v=20260811-30",
       "story.seg.2": "拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。",
       "story.seg.3": "整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。",
-      "story.seg.4": "整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href=\"#app-prompts\">附录 C</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>下载</a>）。",
+      "story.seg.4": "整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href=\"#term-gepa\">术语 · GEPA</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>下载</a>）。",
       "story.seg.5": "S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。",
       "story.seg.6": "S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href=\"#term-s2-diagram\">术语 · S2 示意图</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href=\"#app-prompts\">附录 C</a> · <a href=\"prompts/s2_fullcover_refine.md\" download>下载</a>）。",
       "story.seg.7": "S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href=\"#app-rule-merge\">附录 B</a>。",
@@ -532,6 +534,7 @@
       "role.judge.use": "Computes labeling score and end-to-end score offline",
       "world.h3.gepa": "GEPA",
       "world.p.gepa": "GEPA automatically rewrites a prompt from feedback<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>. Macrodata Labs used it on a separate 15-episode validation set to search for segmentation rules that better match the annotation protocol; this report reuses the published result <code>completed_events_duration_prior_v1</code> and does not rerun GEPA. In use, all timestamped grids for the complete video are submitted with the rule text, producing the whole-episode coarse pass in one call.",
+      "world.gepa.files": "Rule text (English): <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>download</a>",
       "world.h3.terms": "Common video-segmentation terms",
       "world.terms.figcap": "The diagram follows the processing order: a whole-episode coarse pass, then one local time window around a coarse boundary, then S2 refinement inside that window. The two green bars in row ③ are re-cut segments inside the same window.",
       "world.term.1": "Reference segments (gold): complete actions annotated by humans and shown in yellow.",
@@ -552,13 +555,13 @@
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover.svg?v=20260811-25",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy.svg?v=20260811-31",
       "world.h3.inputs": "Visual inputs",
-      "world.p.inputs": "Later experiments use six visual-input formats. Below: what the model sees and where each is typically used, then a concept preview, then actual frames from a HomER sample clip (22.9&ndash;26.8s, \"open the nightstand drawer\").",
-      "world.input.1": "<strong>Raw frames</strong>: uniformly sampled frames from the segment, submitted as separate images; the default fixed-boundary labeling input.",
-      "world.input.2": "<strong>Temporal collage</strong>: several in-segment frames tiled into one image in temporal order; a labeling ablation.",
+      "world.p.inputs": "Later experiments use six visual-input formats. First, what the model sees; then a concept preview; then actual frames from a HomER sample clip (22.9&ndash;26.8s, \"open the nightstand drawer\").",
+      "world.input.1": "<strong>Raw frames</strong>: uniformly sampled frames from the segment, submitted as separate images.",
+      "world.input.2": "<strong>Temporal collage</strong>: several in-segment frames tiled into one image in temporal order.",
       "world.input.3": "<strong>Contact sheet</strong>: a dense timestamped frame grid; mainly used for segmentation to see the full timeline and find boundaries.",
-      "world.input.4": "<strong>Neighbor collage</strong>: sampled frames from the previous, current, and next segments submitted together; a labeling ablation.",
-      "world.input.5": "<strong>Visual-hint overlay</strong>: raw frames with optical-flow or heuristic motion cues drawn on top; a labeling ablation.",
-      "world.input.6": "<strong>Hand crop</strong>: a hand region cropped by the estimated wrist track; a labeling candidate input.",
+      "world.input.4": "<strong>Neighbor collage</strong>: sampled frames from the previous, current, and next segments submitted together.",
+      "world.input.5": "<strong>Visual-hint overlay</strong>: raw frames with optical-flow or heuristic motion cues drawn on top.",
+      "world.input.6": "<strong>Hand crop</strong>: a hand region cropped by the estimated wrist track.",
       "world.zoo.lead": "Actual frame examples from the same HomER clip follow.",
       "world.zoo.raw": "<strong>Raw frames</strong>: three frames sampled uniformly from the target segment and submitted as three separate images.",
       "world.zoo.raw.l1": "Frame 1",
@@ -621,7 +624,8 @@
       "walk.s1.p": "Same parameters as in the terminology section. The model only sees these timestamped collages—not raw MP4 bytes.",
       "walk.s1.note": "First contact-sheet example below (same params).",
       "walk.s2.t": "Coarse cut: whole episode + segmentation rule list",
-      "walk.s2.p": "Submit whole-episode contact sheets together with the <strong>segmentation-rule prompt</strong>. The rules come from the GEPA-derived completed-event segmentation prompt: completed actions only, roughly 2–10s segments, and no independent events for approach, adjustment, or retraction. This reduces pseudo-boundaries from chunked request seams, but may under-segment.",
+      "walk.s2.p": "Submit as many sheets from the episode as possible in one call, with a <strong>segmentation-rule list</strong> in the request text (GEPA-searched English rules: completed events only, roughly 2–10s segments, etc.—see <a href=\"#term-gepa\">Terminology · GEPA</a>). This removes chunk-seam pseudo-cuts but tends to under-segment.",
+      "walk.s2.gepa.link": "Full rule text and download: <a href=\"#term-gepa\">Terminology · GEPA</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>download</a>",
       "walk.s3.t": "Local re-cut: no pad-out, cover full actions",
       "walk.s3.p": "Open a <strong>short time window</strong> near coarse bounds and re-cut with the <strong>same sheet layout</strong>. <strong>No pad-out</strong> means using only visual context inside the coarse boundary. <strong>Cover full actions</strong> means covering completed events visible in the window while avoiding incomplete micro-action fragments. (Technical name: S2 · pad=0 · full-cover.)",
       "walk.s3.cap": "Local-window contact sheet (pass-2 refine input).",
@@ -650,7 +654,7 @@
       "fig.src.wrist": "assets/explain/wrist_speed_oversegmentation.svg?v=20260811-30",
       "story.seg.2": "Chunked contact sheets (max 3 per call): split the episode’s contact sheets across requests, sending at most three sheets each time; the model only sees the local time span covered by that request and predicts boundaries inside it.",
       "story.seg.3": "Whole-episode request (no segmentation-rule list): send every contact sheet from the episode in one call; the prompt does not use the segmentation-rule list.",
-      "story.seg.4": "Whole-episode request + segmentation-rule list: submit every contact sheet from the episode in one call, using the GEPA-searched rule text from Macrodata (see <a href=\"#app-prompts\">Appendix C</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>download</a>).",
+      "story.seg.4": "Whole-episode request + segmentation-rule list: submit every contact sheet from the episode in one call, using the GEPA-searched rule text from Macrodata (see <a href=\"#term-gepa\">Terminology · GEPA</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>download</a>).",
       "story.seg.5": "S1 denser cuts: segment the whole episode once, changing the prompt so the model returns more, shorter candidate segments.",
       "story.seg.6": "S2 local refinement: take coarse bounds from the whole-episode pass, open a local time window around each bound, and re-cut from the in-window contact sheets. The cover-full-actions prompt requires every completed operation whose start and end are visible in the window to be cut out (see <a href=\"#term-s2-diagram\">Terminology · S2 diagram</a>). Score-table variants include ≈1s pad-out, no pad-out (no cover-full-actions prompt), and 0.5/1/2s pad-out; separately, algorithmic cover runs a midpoint script on the no-cover-prompt predictions; the best setting is no pad-out + cover-full-actions prompt (refine prompt: <a href=\"#app-prompts\">Appendix C</a> · <a href=\"prompts/s2_fullcover_refine.md\" download>download</a>).",
       "story.seg.7": "S2 + adjacent-segment rule merges: the input is the best S2 predicted segment list and the output is a merged predicted segment list. The script scans time-sorted neighboring segments and tries three rules: merge normalized identical labels; merge when the main verb/object agrees; or first bridge very short temporal gaps, then apply the previous compatibility rules. See <a href=\"#app-rule-merge\">Appendix B</a> for pseudocode.",
@@ -790,7 +794,7 @@ def compatible(a, b, strategy):
       <h3 id="app-prompts">C. Prompt 原文（English）</h3>
       <p>英文 prompt 全文在样例章折叠区展示，此处保留下载入口。</p>
       <ul>
-        <li><a href="#walk-2">GEPA 搜索得到的切段规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
+        <li><a href="#term-gepa">GEPA 搜索得到的切段规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>下载</a></li>
         <li>Judge：<a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开 rubric</a> · <a href="prompts/judge_semantic_match.md" download>本文实际使用的评判 prompt</a></li>
@@ -859,7 +863,7 @@ def compatible(a, b, strategy):
       <h3 id="app-prompts">C. Prompt originals (English)</h3>
       <p>Full English prompts are shown once in the walkthrough folds; downloads remain here.</p>
       <ul>
-        <li><a href="#walk-2">GEPA-searched segmentation rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
+        <li><a href="#term-gepa">GEPA-searched segmentation rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
         <li><a href="#walk-3">S2 full-cover</a> · <a href="prompts/s2_fullcover_refine.md" download>download</a></li>
         <li><a href="#walk-4">Labeling</a> · <a href="prompts/labeling_fixed_boundary.md" download>download</a></li>
         <li>Judge: <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata's published rubric</a> · <a href="prompts/judge_semantic_match.md" download>actual judge prompt used in this report</a></li>

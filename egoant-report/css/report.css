@@ -1163,8 +1163,11 @@ details.term-fold[open] > summary::before { content: "▾ "; }
 details.term-fold .figure {
   margin: 0.75rem 0 0.2rem;
 }
-details.term-fold figcaption {
-  margin-top: 0.45rem;
+details.term-fold .prompt-fold {
+  margin-top: 0.75rem;
+}
+details.term-fold > .plain {
+  margin: 0.65rem 0 0;
 }
 
 ol > li > details.term-fold {
