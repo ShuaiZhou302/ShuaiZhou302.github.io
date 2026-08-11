@@ -10,7 +10,7 @@
     </style>
   </defs>
   <rect width="1120" height="470" rx="18" class="bg"/>
-  <text x="42" y="48" class="txt label ink">Toy segment scoring: match time first, then compute the segment score</text>
+  <text x="42" y="48" class="txt label ink">Scoring example: temporal matching, then Segment F1</text>
   <text x="42" y="78" class="txt muted">IoU = overlap duration / total duration covered by either span. A match requires IoU >= 0.75.</text>
 
   <line x1="150" y1="132" x2="1030" y2="132" class="axis"/>
