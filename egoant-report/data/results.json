@@ -236,7 +236,7 @@
       "note": "Pad=0 variant before full-cover prompt",
       "method": {
         "goal": "比较局部精修窗口的外扩宽度。",
-        "how": "pad_sec=0，尚未加入 full-cover 约束。",
+        "how": "pad_sec=0，无覆盖完整动作提示词。",
         "input": "局部 contact sheets",
         "result": "Segment F1 0.1711；582 个预测片段",
         "verdict": "pad=0 高于其他 pad-out 设置，但预测片段仍较多。"
@@ -376,7 +376,7 @@
       "note": "Rule merge lowers Segment F1",
       "method": {
         "goal": "测试描述同一动词/物体的相邻预测段是否应被合并。",
-        "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。该步骤不看视频帧，也不读取人工 gold。",
+        "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。按相邻段标签与时间间隙合并。",
         "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1947",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"

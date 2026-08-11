@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-8" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-13" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -298,13 +298,13 @@
       </p>
       <p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
       <ol>
-        <li data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。这是原 EgoANT 生产管线中的启发式基线，不调用视觉语言模型。</li>
+        <li data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。</li>
         <li data-i18n-html data-i18n="story.seg.2">拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。</li>
         <li data-i18n-html data-i18n="story.seg.3">整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。</li>
-        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：仍是整集拼贴图一次提交，但提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 F</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
-        <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：仍对整集做一次分段，但通过修改提示词要求模型输出更多、更短的候选片段。</li>
-        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见术语约定）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（未加入覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「未加入覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 F</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
-        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。该步骤不看视频帧、不看 gold，也不调用模型。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href="#app-prompts">附录 F</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.5">S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。</li>
+        <li data-i18n-html data-i18n="story.seg.6">S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见术语约定）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href="#app-prompts">附录 F</a> · <a href="prompts/s2_fullcover_refine.md" download>下载</a>）。</li>
+        <li data-i18n-html data-i18n="story.seg.7">S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href="#app-rule-merge">附录 D.2</a>。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.seg">视频分段 F1（Segment F1）</h4>
@@ -313,109 +313,121 @@
       <p class="plain" data-i18n-html data-i18n="story.seg.modelnote">条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。</p>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段 F1</th><th>P / R</th><th>match/pred/gold</th><th data-i18n="th.model">模型或方法</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段 F1</th><th>P / R</th><th>配对/预测/参考</th><th data-i18n="th.model">模型或方法</th></tr></thead>
           <tbody id="seg-tbody"></tbody>
         </table>
       </div>
       <p class="plain" data-i18n-html data-i18n="story.seg.legend">
         表头：P（预测命中率）= 配对成功数 / 预测段数；
         R（参考找回率）= 配对成功数 / 参考分段数；
-        match / pred / gold = 配对成功数 / 预测段数 / 参考分段数（本子集参考分段恒为 470）。
+        配对 / 预测 / 参考 = 配对成功数 / 预测段数 / 参考分段数（本子集参考分段恒为 470）。
       </p>
       <div data-i18n-html data-i18n="pipeline.seg.analysis">
         <p>结合上图与表，按实验路径可以归纳如下。</p>
         <ol>
           <li>腕速规则切段并合并：预测片段 810 段，远多于参考分段 470 段，配对成功仅 61。腕速低谷会把动作内部的停顿和微调也当成边界，因此整体呈过分割，难以对齐语义完整的动作。</li>
           <li>拼贴图分片（每次最多 3 张）：改用带时间戳拼贴图后，模型可以在局部时间上下文中判边界，但仍受请求长度限制。每次最多送入 3 张拼贴图，请求之间的接缝缺乏整集上下文，容易被误判为动作边界。</li>
-          <li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守，预测片段只有 148 段、配对成功 38，转为欠分割。</li>
+          <li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守：预测片段仅 148 段（参考 470 段），配对成功 38，多数参考动作未被单独切出，整体表现为欠分割。</li>
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
-          <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于未写入该提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段 F1 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
-          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理，不重跑模型、不读人工参考。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 D.2</a>。</li>
+          <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段 F1 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
+          <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href="#app-rule-merge">附录 D.2</a>。</li>
           <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段 F1 为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
         </ol>
-      </div>
-      <div class="callout" data-i18n-html data-i18n="pipeline.seg.merge.box">
-        <strong>相邻片段规则合并不是新的分段模型。</strong>它是对 S2 预测 JSON 的后处理：输入 <code>segments=[{start_sec,end_sec,subtask}, ...]</code>，输出较少的预测段。它只看相邻预测段的标签和时间间隙，不重跑 VLM，也不使用人工 gold。伪代码见 <a href="#app-rule-merge">附录 D.2</a>。
       </div>
 
       
 
-      <h3 data-i18n="pipeline.h3.label">4.2 标注：尝试过的方法与结果</h3>
-      <p data-i18n="pipeline.label.lead">标注阶段在固定人工边界上比较不同视觉输入与模型；分数为 Label Acc（固定分段标注得分）。</p>
-      <p data-i18n-html data-i18n="story.label.p">
-        固定参考边界后，Gemini judge 全量重评显示：<strong>raw 27B 最高，为 55.7%</strong>；
-        temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，HaWoR-reconstructed wrist-guided crop 397B 为 50.9%，raw 397B 为 50.2%。
-        397B 上，overlay 48.5%、temporal collage 45.1%、neighbor / proxy hand-collage 约 39–40%。
-        结论很朴素：在 HomER 这个子集上，复杂视觉输入常常污染当前动作描述；先固定 judge，再讨论输入设计。
-      </p>
+      <h3 data-i18n="pipeline.h3.label">4.2 固定边界标注</h3>
+      <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。分数统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
+      <p data-i18n="pipeline.label.methods">下列为我们尝试过的固定边界标注方法。</p>
+      <ol>
+        <li data-i18n="story.label.1">原始帧 · 27B：在参考片段内均匀抽帧，由 Qwen3.6-27B 生成描述。</li>
+        <li data-i18n="story.label.2">时序拼贴 · 27B：把过去 / 当前 / 未来片段的整帧网格一并提交给 Qwen3.6-27B。</li>
+        <li data-i18n="story.label.3">视觉提示叠加 · 27B：在原始帧上叠加光流或启发式运动提示后标注。</li>
+        <li data-i18n="story.label.4">原始帧 · 397B：与原始帧 · 27B 相同输入，改用 Qwen3.5-397B。</li>
+        <li data-i18n="story.label.5">视觉提示叠加 · 397B：与视觉提示叠加 · 27B 相同输入，改用 Qwen3.5-397B。</li>
+        <li data-i18n="story.label.6">时序拼贴 · 397B：与时序拼贴 · 27B 相同输入，改用 Qwen3.5-397B。</li>
+        <li data-i18n="story.label.7">邻段拼贴 · 397B：同时提交上一段、当前段、下一段的抽样帧。</li>
+        <li data-i18n="story.label.8">邻段拼贴 + 秒级时间戳 · 397B：在邻段拼贴基础上为每格加入秒级时间戳后重跑。</li>
+        <li data-i18n="story.label.9">近似手部拼贴 · 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交，不是重建腕轨迹裁剪。</li>
+        <li data-i18n="story.label.10">HaWoR 手部裁剪 · 397B：用 HaWoR 估计腕部轨迹并裁剪手部区域；裁剪不完整时回退到原始帧。</li>
+      </ol>
       <div class="chart-box">
-        <h4 data-i18n="story.chart.label">标注准确率</h4>
+        <h4 data-i18n="story.chart.label">固定分段标注得分（Label Acc）</h4>
         <div id="label-bars" class="bars"></div>
       </div>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">Acc</th><th data-i18n="th.matchn">n_match/n</th><th data-i18n="th.model">模型</th><th data-i18n="th.delta">Δ vs raw</th><th data-i18n="th.remark">备注</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">固定分段标注得分</th><th data-i18n="th.matchn">配对成功 / 参考段数</th><th data-i18n="th.model">模型</th><th data-i18n="th.delta">相对原始帧·397B</th></tr></thead>
           <tbody id="label-tbody"></tbody>
         </table>
+      </div>
+      <div data-i18n-html data-i18n="pipeline.label.analysis">
+        <p>结合上图与表，可以归纳如下。</p>
+        <ol>
+          <li>原始帧 · 27B：在 470 个固定参考片段上配对成功 262，固定分段标注得分 55.7%，为本组最高。同一评测尺子下，复杂视觉输入均未超过该配置。</li>
+          <li>时序拼贴与视觉提示叠加：在 27B 上分别得到 52.8% 与 50.6%；在 397B 上分别得到 45.1% 与 48.5%，均低于对应模型的原始帧。额外上下文没有提高当前片段描述准确率。</li>
+          <li>邻段拼贴与近似手部拼贴：邻段拼贴约 39.6%，加秒级时间戳后为 40.0%；近似手部拼贴为 39.1%。相邻片段信息容易被写进当前描述，启发式裁剪也未带来收益。</li>
+          <li>HaWoR 手部裁剪 · 397B：配对成功 239 / 470，得分 50.9%，略高于原始帧 · 397B 的 50.2%，仍低于原始帧 · 27B。手部裁剪不能替代模型选择。</li>
+          <li>模型对比：原始帧输入下，27B（55.7%）高于 397B（50.2%）。固定边界标注的默认路径取原始帧 · 27B。</li>
+        </ol>
       </div>
       <div class="gallery">
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap1">
-            <strong>读图（三栏）：</strong>左=原帧；中=启发式框（画面中心偏下固定方框，<em>不是</em>手腕检测）；右=裁出后送给标注模型的图。
-            这是失败的 proxy 路径示意。固定边界上这类输入低于 raw。详见 <a href="#app-visual">附录 E</a>。
+            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。详见 <a href="#app-visual">附录 E</a>。
           </figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap2">
-            <strong>读图（三栏）：</strong>左=原帧；中=YOLO person 框（仍非 HaWoR 腕轨）；右=模型实际看到的 crop。
-            HomER 早期无手重建时使用此类 proxy；Gemini 重评后，基于 HaWoR 重建腕轨迹的裁剪为 50.9%。
+            读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。早期无手重建时使用此类近似输入；HaWoR 手部裁剪的固定分段标注得分为 50.9%。
           </figcaption>
         </figure>
       </div>
-      <details class="prompt-fold">
-        <summary data-i18n="story.label.fold">展开：标注实验细节（做法卡）</summary>
-        <div id="label-methods" class="method-grid"></div>
-      </details>
 
-      
-
-      <h3 data-i18n="pipeline.h3.e2e">4.3 端到端：尝试过的方法与结果</h3>
-      <p data-i18n="pipeline.e2e.lead">端到端阶段固定较优分段边界，只改变标注路径，比较单路生成与多候选判别；分数为 E2E F1。</p>
-      <p data-i18n-html data-i18n="story.e2e.p">
-        分段锁在 0.2031 后，只改标注路径（时间 match 数不变，变的是语义 match）。
-        <strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然在固定参考边界 Label Acc 上最高，但在预测边界上 E2E 只有 0.1285；
-        <strong>397B raw 重标</strong>到 0.1414；<strong>ffmpeg raw</strong>和<strong>397B-prior neighbor</strong>都到 0.1491；
-        <strong>candidate selector</strong>从多路候选中选择最终标签，取得最高观察值 <strong>0.1542</strong>。
-      </p>
+      <h3 data-i18n="pipeline.h3.e2e">4.3 端到端</h3>
+      <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段 F1 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。分数统一为端到端整流程得分（E2E F1）。</p>
+      <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端标注路径。</p>
+      <ol>
+        <li data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。</li>
+        <li data-i18n="story.e2e.2">S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。</li>
+        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B：固定 S2 边界，用 Qwen3.6-27B 对每段原始帧重新生成描述。</li>
+        <li data-i18n="story.e2e.4">S2 边界 + 原始帧重标 · 397B：固定 S2 边界，用 Qwen3.5-397B 对每段原始帧重新生成描述。</li>
+        <li data-i18n="story.e2e.5">S2 边界 + ffmpeg 抽帧重标 · 397B：固定 S2 边界，改用另一套解码/抽帧路径后由 397B 标注。</li>
+        <li data-i18n="story.e2e.6">S2 边界 + 邻段重标 · 27B 先验：固定 S2 边界，提交邻段视觉上下文，并以 27B 描述为文本先验。</li>
+        <li data-i18n="story.e2e.7">S2 边界 + 邻段重标 · 397B 先验：固定 S2 边界，提交邻段视觉上下文，并以 397B 原始帧描述为文本先验。</li>
+        <li data-i18n="story.e2e.8">S2 边界 + 多候选判别 · 397B：在同一 S2 边界上生成多路候选描述，再由 Qwen3.5-397B 选出最终描述。</li>
+      </ol>
       <div class="chart-box">
-        <h4 data-i18n="story.chart.e2e">E2E F1</h4>
+        <h4 data-i18n="story.chart.e2e">端到端整流程得分（E2E F1）</h4>
         <div id="e2e-bars" class="bars"></div>
       </div>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">Seg F1</th><th data-i18n="th.e2ef1">E2E F1</th><th data-i18n="th.predgold">pred/gold</th><th data-i18n="th.remark">备注</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段 F1</th><th data-i18n="th.e2ef1">端到端整流程得分</th><th data-i18n="th.predgold">预测段数 / 参考段数</th><th data-i18n="th.remark">备注</th></tr></thead>
           <tbody id="e2e-tbody"></tbody>
         </table>
       </div>
-      <details class="prompt-fold">
-        <summary data-i18n="story.e2e.fold">展开：E2E 实验细节（做法卡）</summary>
-        <div id="e2e-methods" class="method-grid"></div>
-      </details>
-      <div class="callout" data-i18n-html data-i18n="story.takeaway">
-        <strong>要点：</strong>分片 contact sheet 易在接缝造假切点；切段规则定「切什么」、局部精修（盖住完整动作）定「切多细」；
-        三种规则合并策略均降低 Segment F1；Gemini 重评后，raw 27B 是固定参考边界下的最高标注配置，但端到端最高观察值仍来自 S2 预测边界 + 397B 多候选 selector。
-        换句话说，<strong>27B 是最好的 fixed-boundary captioner，但不是最好的 noisy predicted-segment label resolver</strong>。
+      <div data-i18n-html data-i18n="pipeline.e2e.analysis">
+        <p>结合上图与表，可以归纳如下。</p>
+        <ol>
+          <li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li>
+          <li>分段模型自标与 27B 原始帧重标：在同一 S2 边界上，自标为 0.1234（时间配对后语义匹配 48）；27B 原始帧重标为 0.1285（语义匹配 50）。固定边界上最优的 27B 原始帧标注，换到噪声预测边界后增益有限。</li>
+          <li>397B 原始帧重标：端到端整流程得分 0.1414（语义匹配 55），高于 27B 重标。预测边界上的描述纠错更依赖较大模型。</li>
+          <li>ffmpeg 抽帧与邻段重标：ffmpeg 抽帧重标与 397B 先验邻段重标均为 0.1491（语义匹配 58）；27B 先验邻段重标为 0.1234，未超过自标。邻段上下文不是稳定增益来源。</li>
+          <li>多候选判别 · 397B：在同一 S2 边界上从多路候选中定稿，端到端整流程得分 0.1542（语义匹配 60），为本组最高；相对 397B 单路原始帧重标提高约 9.1%，并伴随额外候选生成与判别调用。成本敏感场景可默认使用 397B 单路原始帧重标。</li>
+        </ol>
       </div>
 
       <h3 data-i18n="pipeline.h3.recipe">4.4 推荐配置</h3>
       <div class="pipeline">
-        <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">Contact sheet</div><div class="d" data-i18n="recipe.p1.d">0.5s · 224×144 · 20 tiles · yellow stamps</div></div>
+        <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">拼贴图</div><div class="d" data-i18n="recipe.p1.d">0.5 秒 · 224×144 · 20 格 · 黄色时间戳</div></div>
         <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
-        <div class="step"><div class="n">03</div><div class="t" data-i18n="recipe.p3.t">Local refine</div><div class="d" data-i18n="recipe.p3.d">No pad-out · cover actions · 27B → 0.2031</div></div>
-        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">Selector</div><div class="d" data-i18n="recipe.p4.d">397B multi-cand → Gemini E2E 0.1542</div></div>
+        <div class="step"><div class="n">03</div><div class="t" data-i18n="recipe.p3.t">局部精修</div><div class="d" data-i18n="recipe.p3.d">窗口不外扩 · 覆盖完整动作 · 27B → 0.2031</div></div>
+        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">多候选判别</div><div class="d" data-i18n="recipe.p4.d">397B 多候选 → 端到端整流程得分 0.1542</div></div>
       </div>
       <table>
         <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">当前不推荐</th></tr></thead>
@@ -680,8 +692,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-12"></script>
-  <script src="js/report.js?v=20260811-12"></script>
+  <script src="js/i18n.js?v=20260811-13"></script>
+  <script src="js/report.js?v=20260811-13"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
     async function loadPrompt(ids, file) {

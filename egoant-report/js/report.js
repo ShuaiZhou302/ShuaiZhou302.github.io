@@ -89,7 +89,7 @@
     "s2_full25_397b": {
       "zh": {
         "name": "S2 局部精修·窗外扩约 1 秒 · 397B",
-        "note": "窗外扩约 1 秒，未加入覆盖完整动作提示词",
+        "note": "窗外扩约 1 秒，无覆盖完整动作提示词",
         "model": "Qwen3.5-397B"
       },
       "en": {
@@ -100,7 +100,7 @@
     },
     "s2_pad0_plain_27b": {
       "zh": {
-        "name": "S2 局部精修·窗口不外扩（未加入覆盖完整动作提示词）· 27B",
+        "name": "S2 局部精修·窗口不外扩（无覆盖完整动作提示词）· 27B",
         "note": "窗口不外扩较好，但仍偏碎",
         "model": "Qwen3.6-27B"
       },
@@ -208,139 +208,139 @@
     },
     "raw_397b": {
       "zh": {
-        "name": "raw 原帧 · Qwen3.5-397B",
-        "note": "Gemini judge 基线",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "name": "原始帧 · 397B",
+        "note": "397B 原始帧基线",
+        "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Raw frames · Qwen3.5-397B",
+        "name": "Raw frames · 397B",
         "note": "Gemini-judge baseline",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "overlay_proxy": {
       "zh": {
-        "name": "proxy overlay · Qwen3.5-397B",
-        "note": "非真 hand；低于 raw",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "name": "视觉提示叠加 · 397B",
+        "note": "低于原始帧 · 397B",
+        "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Proxy overlay · Qwen3.5-397B",
+        "name": "Visual-hint overlay · 397B",
         "note": "Heuristic overlay; below raw",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "overlay_27b": {
       "zh": {
-        "name": "proxy overlay · Qwen3.6-27B",
-        "note": "近似叠图；未超过 raw 27B",
-        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+        "name": "视觉提示叠加 · 27B",
+        "note": "低于原始帧 · 27B",
+        "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Proxy overlay · Qwen3.6-27B",
+        "name": "Visual-hint overlay · 27B",
         "note": "Approximate overlay; below raw 27B",
-        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.6-27B"
       }
     },
     "temporal_collage": {
       "zh": {
-        "name": "temporal collage · Qwen3.5-397B",
-        "note": "低于 raw 397B",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "name": "时序拼贴 · 397B",
+        "note": "低于原始帧 · 397B",
+        "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Temporal collage · Qwen3.5-397B",
+        "name": "Temporal collage · 397B",
         "note": "Context pollutes current label",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "temporal_collage_27b": {
       "zh": {
-        "name": "temporal collage · Qwen3.6-27B",
-        "note": "低于 raw 27B",
-        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+        "name": "时序拼贴 · 27B",
+        "note": "低于原始帧 · 27B",
+        "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Temporal collage · Qwen3.6-27B",
+        "name": "Temporal collage · 27B",
         "note": "Below raw 27B",
-        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.6-27B"
       }
     },
     "raw_27b": {
       "zh": {
-        "name": "raw 原帧 · Qwen3.6-27B",
-        "note": "固定边界标注最高",
-        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+        "name": "原始帧 · 27B",
+        "note": "本组最高",
+        "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Raw frames · Qwen3.6-27B",
+        "name": "Raw frames · 27B",
         "note": "Best fixed-boundary labels",
-        "model": "Qwen3.6-27B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.6-27B"
       }
     },
     "predictions_labeling": {
       "zh": {
-        "name": "raw 原帧重复审计 · Qwen3.5-397B",
-        "note": "与 raw 397B 一致",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "name": "原始帧重复审计 · 397B",
+        "note": "与原始帧 · 397B 一致",
+        "model": "Qwen3.5-397B"
       },
       "en": {
         "name": "Raw-frame duplicate audit · Qwen3.5-397B",
         "note": "Matches raw 397B",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "l1_neighbor": {
       "zh": {
-        "name": "邻段 sheet（上一/当前/下一段）",
+        "name": "邻段拼贴 · 397B",
         "note": "容易写到邻段动作",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       },
       "en": {
         "name": "Neighbor contact sheets (prev/cur/next)",
         "note": "Often labels neighboring actions",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "l1_ts_rerun": {
       "zh": {
-        "name": "邻段 sheet + 秒级时间戳重跑",
+        "name": "邻段拼贴 + 秒级时间戳 · 397B",
         "note": "修时间戳仍低",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       },
       "en": {
         "name": "Neighbor sheets + second-level timestamps",
         "note": "Fixing timestamps still lowers accuracy",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "l2_yolo_proxy": {
       "zh": {
-        "name": "proxy hand-collage · Qwen3.5-397B",
-        "note": "近似 crop，不是真 hand-crop",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "name": "近似手部拼贴 · 397B",
+        "note": "启发式裁剪，低于原始帧",
+        "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Proxy hand-collage · Qwen3.5-397B",
+        "name": "Approximate hand collage · 397B",
         "note": "Approximate crop, not reconstructed wrist-track crop",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "l2_hawor": {
       "zh": {
-        "name": "HaWoR 真手部 crop",
-        "note": "略高于 raw 397B，低于 raw 27B",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "name": "HaWoR 手部裁剪 · 397B",
+        "note": "略高于原始帧 · 397B，低于原始帧 · 27B",
+        "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "HaWoR-reconstructed wrist-guided crop",
+        "name": "HaWoR hand crop · 397B",
         "note": "Slightly above raw 397B, below raw 27B",
-        "model": "Qwen3.5-397B · Gemini-3.5-Flash judge"
+        "model": "Qwen3.5-397B"
       }
     },
     "l4_strict_judge": {
       "zh": {
-        "name": "更严 judge 重判 raw",
+        "name": "更严评判重判原始帧",
         "note": "尺子变了",
         "model": "Qwen3.5-397B judge"
       },
@@ -352,7 +352,7 @@
     },
     "l2_proxy_27b": {
       "zh": {
-        "name": "YOLO/proxy hand-collage · 27B",
+        "name": "近似手部拼贴 · 27B",
         "note": "更差",
         "model": "Qwen3.6-27B"
       },
@@ -364,96 +364,96 @@
     },
     "egovid_e2e": {
       "zh": {
-        "name": "EgoANT one-pass",
-        "note": "切+标一体弱",
+        "name": "腕速一体产出",
+        "note": "一体基线较弱",
         "model": null
       },
       "en": {
-        "name": "EgoANT one-pass",
+        "name": "Wrist-speed one-pass",
         "note": "Joint cut+label is weak",
         "model": null
       }
     },
     "s2_self": {
       "zh": {
-        "name": "精修边界 + 分段模型自标",
-        "note": "边界已锁",
+        "name": "S2 边界 + 分段模型自标",
+        "note": "沿用分段描述",
         "model": null
       },
       "en": {
-        "name": "Refined bounds + self-label from seg model",
+        "name": "S2 bounds + segmenter self-label",
         "note": "Bounds locked",
         "model": null
       }
     },
     "raw397": {
       "zh": {
-        "name": "+ 397B 单路 raw 重标",
-        "note": "固定 0.2031 预测边界；Gemini E2E 0.1414；调用少于 selector",
+        "name": "S2 边界 + 原始帧重标 · 397B",
+        "note": "端到端整流程得分 0.1414",
         "model": null
       },
       "en": {
-        "name": "+ 397B raw-only relabel",
+        "name": "S2 bounds + raw relabel · 397B",
         "note": "Same 0.2031 predicted boundaries; Gemini E2E 0.1414; fewer calls than selector",
         "model": null
       }
     },
     "raw27b_e2e": {
       "zh": {
-        "name": "+ 27B 单路 raw 重标",
-        "note": "固定边界 Label Acc 最高，但 E2E 不是最高",
+        "name": "S2 边界 + 原始帧重标 · 27B",
+        "note": "固定边界最高，端到端非最高",
         "model": null
       },
       "en": {
-        "name": "+ 27B raw-only relabel",
+        "name": "S2 bounds + raw relabel · 27B",
         "note": "Best fixed-boundary Label Acc, but not best E2E",
         "model": null
       }
     },
     "ffmpeg397": {
       "zh": {
-        "name": "+ 397B ffmpeg 抽帧重标",
+        "name": "S2 边界 + ffmpeg 抽帧重标 · 397B",
         "note": "抽帧路径变体",
         "model": null
       },
       "en": {
-        "name": "+ 397B ffmpeg-frame relabel",
+        "name": "S2 bounds + ffmpeg relabel · 397B",
         "note": "Decode/sample path variant",
         "model": null
       }
     },
     "nb28": {
       "zh": {
-        "name": "+ 邻段重标（27B prior）",
+        "name": "S2 边界 + 邻段重标 · 27B 先验",
         "note": "得分下降",
         "model": null
       },
       "en": {
-        "name": "+ neighbor relabel (27B prior)",
+        "name": "S2 bounds + neighbor relabel · 27B prior",
         "note": "Hurts score",
         "model": null
       }
     },
     "nb397": {
       "zh": {
-        "name": "+ 邻段重标（raw397 prior）",
+        "name": "S2 边界 + 邻段重标 · 397B 先验",
         "note": "",
         "model": null
       },
       "en": {
-        "name": "+ neighbor relabel (raw397 prior)",
+        "name": "S2 bounds + neighbor relabel · 397B prior",
         "note": "",
         "model": null
       }
     },
     "selector397": {
       "zh": {
-        "name": "+ 397B 多候选 selector",
-        "note": "同一预测边界；Gemini E2E 0.1542；调用更多",
+        "name": "S2 边界 + 多候选判别 · 397B",
+        "note": "端到端整流程得分 0.1542",
         "model": null
       },
       "en": {
-        "name": "+ 397B multi-candidate selector",
+        "name": "S2 bounds + multi-candidate selector · 397B",
         "note": "Same predicted boundaries; Gemini E2E 0.1542; more calls",
         "model": null
       }
@@ -660,7 +660,8 @@
     const tbody = document.querySelector("#label-tbody");
     if (!tbody) return;
     const best = data.meta.best.label_acc;
-    tbody.innerHTML = data.labeling.map((row) => {
+    const rows = data.labeling.filter((row) => row.id !== "l2_proxy_27b" && row.id !== "predictions_labeling");
+    tbody.innerHTML = rows.map((row) => {
       const r = locRow(row);
       const bestCls = r.acc === best ? "best" : "";
       let delta = "—";
@@ -668,7 +669,7 @@
         const pp = r.delta_vs_raw * 100;
         delta = `<span class="${pp >= 0 ? "delta-up" : "delta-down"}">${pp >= 0 ? "+" : ""}${pp.toFixed(1)}pp</span>`;
       }
-      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${pct(r.acc)}</td><td class="num">${r.n_match}/${r.n}</td><td>${esc(r.model)}</td><td>${delta}</td><td>${esc(r.note || "")}</td></tr>`;
+      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${pct(r.acc)}</td><td class="num">${r.n_match}/${r.n}</td><td>${esc(r.model)}</td><td>${delta}</td></tr>`;
     }).join("");
   }
 
@@ -1220,31 +1221,25 @@
     }
     const mainSeg = orderedSegRows(data);
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.60, true);
+    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "l2_proxy_27b" && r.id !== "predictions_labeling"), "acc", 0.60, true);
     renderBars(document.querySelector("#e2e-bars"), data.e2e, "e2e_f1", 0.18, true);
     fillSegTable(data);
     fillSegPadTable(data);
     fillLabelTable(data);
     fillE2ETable(data);
     renderTimeline(document.querySelector("#toy-timeline"), data.walkthrough_toy);
-    renderMethods(document.querySelector("#seg-methods"), data.segmentation, "seg");
-    renderMethods(document.querySelector("#label-methods"), data.labeling, "label");
-    renderMethods(document.querySelector("#e2e-methods"), data.e2e, "e2e");
     window.__REPORT_DATA__ = { data, walk, boundary, cost, heroGrid };
     function rerenderDynamicI18n() {
       const D = window.__REPORT_DATA__;
       if (!D || !D.data) return;
       const mainSeg = orderedSegRows(D.data);
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "l2_proxy_27b"), "acc", 0.60, true);
+      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "l2_proxy_27b" && r.id !== "predictions_labeling"), "acc", 0.60, true);
       renderBars(document.querySelector("#e2e-bars"), D.data.e2e, "e2e_f1", 0.18, true);
       fillSegTable(D.data);
       fillSegPadTable(D.data);
       fillLabelTable(D.data);
       fillE2ETable(D.data);
-      renderMethods(document.querySelector("#seg-methods"), D.data.segmentation, "seg");
-      renderMethods(document.querySelector("#label-methods"), D.data.labeling, "label");
-      renderMethods(document.querySelector("#e2e-methods"), D.data.e2e, "e2e");
       if (D.walk) renderWalk(D.walk);
       if (D.boundary) renderBoundaryCompare(D.boundary);
       renderTimeline(document.querySelector("#toy-timeline"), D.data.walkthrough_toy);
@@ -1495,7 +1490,7 @@
       "note": "Pad=0 variant before full-cover prompt",
       "method": {
         "goal": "比较局部精修窗口的外扩宽度。",
-        "how": "pad_sec=0，尚未加入 full-cover 约束。",
+        "how": "pad_sec=0，无覆盖完整动作提示词。",
         "input": "局部 contact sheets",
         "result": "Segment F1 0.1711；582 个预测片段",
         "verdict": "pad=0 高于其他 pad-out 设置，但预测片段仍较多。"
@@ -1635,7 +1630,7 @@
       "note": "Rule merge lowers Segment F1",
       "method": {
         "goal": "测试描述同一动词/物体的相邻预测段是否应被合并。",
-        "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。该步骤不看视频帧，也不读取人工 gold。",
+        "how": "从相邻 subtask 文本中抽取近似动作词和关键物体；若两者兼容则合并。按相邻段标签与时间间隙合并。",
         "input": "S2 full-cover 预测：start_sec、end_sec、subtask",
         "result": "Segment F1 0.1947",
         "verdict": "该合并策略低于未合并的 S2 full-cover 结果。"
@@ -1669,7 +1664,7 @@
       "acc": 0.5574,
       "n_match": 262,
       "n": 470,
-      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.6-27B",
       "full25": true,
       "delta_vs_raw": 0.05531914889999989,
       "note": "262 / 470 semantic matches under fixed reference boundaries",
@@ -1687,7 +1682,7 @@
       "acc": 0.5277,
       "n_match": 248,
       "n": 470,
-      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.6-27B",
       "full25": true,
       "delta_vs_raw": 0.025531914899999952,
       "note": "248 / 470 semantic matches",
@@ -1705,7 +1700,7 @@
       "acc": 0.5064,
       "n_match": 238,
       "n": 470,
-      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.6-27B",
       "full25": true,
       "delta_vs_raw": 0.004255319099999988,
       "note": "238 / 470 semantic matches; overlay is heuristic, not hand reconstruction",
@@ -1723,7 +1718,7 @@
       "acc": 0.5085,
       "n_match": 239,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": 0.0063829786999999305,
       "note": "239 / 470 semantic matches; crop path uses raw fallback when needed",
@@ -1741,7 +1736,7 @@
       "acc": 0.5021,
       "n_match": 236,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": 0.0,
       "note": "236 / 470 semantic matches",
@@ -1759,7 +1754,7 @@
       "acc": 0.5021,
       "n_match": 236,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": 0.0,
       "note": "236 / 470 semantic matches",
@@ -1777,7 +1772,7 @@
       "acc": 0.4851,
       "n_match": 228,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.01702127660000008,
       "note": "228 / 470 semantic matches",
@@ -1795,7 +1790,7 @@
       "acc": 0.4511,
       "n_match": 212,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.05106382980000007,
       "note": "212 / 470 semantic matches",
@@ -1813,7 +1808,7 @@
       "acc": 0.4,
       "n_match": 188,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.10212765960000003,
       "note": "188 / 470 semantic matches",
@@ -1831,7 +1826,7 @@
       "acc": 0.3957,
       "n_match": 186,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.10638297870000007,
       "note": "186 / 470 semantic matches",
@@ -1849,7 +1844,7 @@
       "acc": 0.3915,
       "n_match": 184,
       "n": 470,
-      "model": "Qwen3.5-397B · Gemini-3.5-Flash judge",
+      "model": "Qwen3.5-397B",
       "full25": true,
       "delta_vs_raw": -0.11063829790000007,
       "note": "184 / 470 semantic matches",
