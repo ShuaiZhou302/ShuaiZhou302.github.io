@@ -143,16 +143,16 @@
       </p>
 
       <h3 data-i18n="eval.h3.metrics">三种分数分别测试什么能力</h3>
-      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种分数依次衡量：时间边界是否准确、给定边界后的描述是否正确，以及端到端分段与标注的整体表现。公式汇总见 <a href="#app-metrics">附录 A</a>。</p>
+      <p class="plain" data-i18n-html data-i18n="metrics.lead">三种分数依次衡量：时间边界是否准确、给定边界后的描述是否正确，以及端到端分段与标注的整体表现。下面用同一个 10 秒例子给出计算步骤与公式。</p>
       <ul>
-        <li data-i18n-html data-i18n="metrics.li1">Segment F1（分段得分）：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
-        <li data-i18n-html data-i18n="metrics.li2">Label Acc（固定分段标注得分）：直接使用人工边界，不让模型预测时间，只判断每个片段的描述是否与人工描述表达同一个完成动作。</li>
-        <li data-i18n-html data-i18n="metrics.li3">E2E F1（端到端整流程得分）：模型同时预测边界和描述。预测片段必须先通过时间匹配，其描述再通过语义匹配，才算一个正确结果。</li>
+        <li data-i18n-html data-i18n="metrics.li1">视频分段 F1（Segment F1）：只评时间边界。对一对预测片段与参考片段，时间 IoU 等于「两段重叠的时长 ÷ 两段合起来覆盖的总时长」；完全重合时为 1，完全不重合时为 0。IoU≥0.75 的片段对才有资格形成一对一时间匹配。</li>
+        <li data-i18n-html data-i18n="metrics.li2">固定分段标注得分（Label Acc）：直接使用人工边界，不让模型预测时间，只判断每个片段的描述是否与人工描述表达同一个完成动作。</li>
+        <li data-i18n-html data-i18n="metrics.li3">端到端整流程得分（E2E F1）：模型同时预测边界和描述。预测片段必须先通过时间匹配，其描述再通过语义匹配，才算一个正确结果。</li>
       </ul>
       <p data-i18n="metrics.toy">下面用一个 10 秒视频说明时间匹配。人工将视频分为 3 段，模型预测了 4 段。</p>
-      <p data-i18n="metrics.toy.g">参考片段（gold）：G0[0,3]、G1[3,6]、G2[6,10]；模型预测（pred）：P0[0.5,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,9.5]。</p>
+      <p data-i18n="metrics.toy.g">参考片段：G0[0,3]、G1[3,6]、G2[6,10]；模型预测：P0[0.5,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,9.5]。</p>
       <div class="callout metric-snap" data-i18n-html data-i18n="metrics.snap">
-        <strong>首尾吸附（outer snap）只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
+        <strong>首尾吸附只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P0.start 从 0.5 改为 0、P3.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
         <img src="assets/explain/metric_iou_f1_zh.svg?v=20260806-3" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
@@ -160,13 +160,28 @@
       </figure>
       <ul>
         <li data-i18n="metrics.toy.1">吸附后，预测片段变为 P0[0,2.8]、P1[2.8,5.5]、P2[5.5,8]、P3[8,10]。只有 P0 和 P3 的外侧端点发生变化。</li>
-        <li data-i18n="metrics.toy.2">计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU≈0.933；P1–G1 的 IoU≈0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。</li>
-        <li data-i18n-html data-i18n="metrics.toy.3">一对一时间匹配共 2 个。4 个预测片段中有 2 个匹配，预测命中率（precision）为 2/4=0.50；3 个人工片段中有 2 个被找回，参考找回率（recall）为 2/3≈0.67；Segment F1（综合分段得分）≈0.571。</li>
+        <li data-i18n="metrics.toy.2">计算每个候选片段对的时间 IoU：P0–G0 的重叠时长为 2.8 秒、合并覆盖时长为 3 秒，IoU = 2.8/3 ≈ 0.933；P1–G1 的 IoU ≈ 0.781。两者均通过 0.75 阈值，P2、P3 则没有可通过阈值的参考片段。</li>
+        <li data-i18n="metrics.toy.3">一对一时间匹配共 m = 2；预测段数 n_pred = 4，参考段数 n_gold = 3。预测命中率 P = 2/4 = 0.50，参考找回率 R = 2/3 ≈ 0.67，视频分段 F1 ≈ 0.571。</li>
       </ul>
+      <pre class="formula" data-i18n="metrics.seg.formula">IoU = 重叠时长 / 两段合起来覆盖的总时长
+P = m / n_pred
+R = m / n_gold
+视频分段 F1 = 2·P·R / (P + R) = 2m / (n_pred + n_gold)
+本例：2×2 / (4 + 3) = 4/7 ≈ 0.571</pre>
       <h3 data-i18n="metrics.h3.remaining">同一个例子如何得到另外两类分数</h3>
       <div class="metric-example-grid">
-        <p data-i18n-html data-i18n="metrics.label.example">固定分段标注得分：直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数为 2，Label Acc（固定分段标注得分）= 正确描述数 / 人工分段数 = 2/3≈66.7%。实际评判 prompt 见 <a href="#app-prompts">附录 F</a>。</p>
-        <p data-i18n-html data-i18n="metrics.e2e.example">端到端整流程得分：保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s=1。预测命中率（precision）= s / 预测分段数 = 1/4，参考找回率（recall）= s / 人工分段数 = 1/3，因此 E2E F1（端到端整流程得分）= 2s / (预测分段数 + 人工分段数) = 2/(4+3)≈0.286。</p>
+        <div class="metric-example-card">
+          <p data-i18n-html data-i18n="metrics.label.example">固定分段标注得分：直接采用 G0、G1、G2 的人工边界，模型只为每段生成描述。评测沿用 <a href="https://macrodata.co/blog/annotating-robot-video-subtasks" target="_blank" rel="noopener">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href="#app-prompts">附录 F</a>。</p>
+          <pre class="formula" data-i18n="metrics.label.formula">固定分段标注得分 = c / n_gold
+本例：2 / 3 ≈ 66.7%</pre>
+        </div>
+        <div class="metric-example-card">
+          <p data-i18n-html data-i18n="metrics.e2e.example">端到端整流程得分：保留模型预测的 4 个片段及其描述。时间匹配先得到 P0–G0 与 P1–G1；若语义评判只有 P0–G0 返回 <code>true</code>，则最终正确结果数 s = 1。</p>
+          <pre class="formula" data-i18n="metrics.e2e.formula">P = s / n_pred
+R = s / n_gold
+端到端整流程得分 = 2·P·R / (P + R) = 2s / (n_pred + n_gold)
+本例：2×1 / (4 + 3) = 2/7 ≈ 0.286</pre>
+        </div>
       </div>
     </section>
 

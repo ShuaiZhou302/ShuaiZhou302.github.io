@@ -404,12 +404,27 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   display: grid;
   gap: 0.9rem;
 }
-.metric-example-grid p {
+.metric-example-grid p,
+.metric-example-card {
   margin: 0;
   padding: 1rem 1.1rem;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--card);
+}
+.metric-example-card {
+  display: grid;
+  gap: 0.75rem;
+}
+.metric-example-card p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.metric-example-card .formula {
+  margin: 0;
 }
 sup.cite {
   font-size: 0.68em;
