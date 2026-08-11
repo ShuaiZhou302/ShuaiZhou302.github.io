@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-39" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-40" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -230,7 +230,7 @@
       <h3 data-i18n="pipeline.h3.seg">3.1 视频分段管线</h3>
       <p data-i18n-html data-i18n="pipeline.seg.lead">视频分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频，输出是一组起止时间（例如 [12.0, 18.5]）；本阶段只评边界是否与人工参考对齐。得分统一为同一 HomER 子集上的视频分段得分（Segment F1）。先把后面会用到的分段术语和 GEPA 说清楚，再列方法与得分。</p>
       
-      <h3 data-i18n="world.h3.terms">视频分段常用术语</h3>
+      <h4 data-i18n="world.h3.terms">视频分段常用术语</h4>
       <figure class="figure">
         <img src="assets/explain/seg_terms_zh.svg?v=20260810-3" data-i18n-src="fig.src.segterms" alt="Segmentation terminology on one timeline" />
         <figcaption data-i18n="world.terms.figcap">图中按处理顺序展示：模型先对完整视频做一次粗分，再围绕某一粗边界选取一个局部时间窗口，并在该窗口内执行 S2 局部精修；③ 行里的两块绿色是同一窗口内重切后的片段。</figcaption>
@@ -244,7 +244,21 @@
         <li data-i18n-html data-i18n="world.term.6">S2（局部精修配置）：先由整集粗分得到粗边界，再围绕粗边界建立时间窗口，让模型在窗口内重新输出动作边界。图中绿色虚线只围住一个窗口；窗口内两块绿色表示重切后可能把原先欠分的区域拆得更细。</li>
         <li data-i18n-html data-i18n="world.term.7">窗口不外扩（pad=0）：局部精修所用画面严格限制在时间窗口内。</li>
         <li data-i18n-html data-i18n="world.term.8">覆盖完整动作（full-cover）：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。</li>
+        <li id="term-gepa" data-i18n-html data-i18n="world.term.gepa">GEPA<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>：根据反馈自动改写提示词的方法。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。</li>
       </ul>
+      <details class="prompt-fold" id="term-gepa-prompt">
+        <summary data-i18n="walk.prompt.gepa">切段规则提示词（英语）</summary>
+        <div class="prompt-fold-body">
+          <p class="prompt-note" data-i18n-html data-i18n="world.gepa.prompt.note">
+            说明：下方就是提示词文本。System / User 两段会送给模型；其中 <code>{duration_sec}</code> 会替换成该视频的实际时长；图像输入是带时间戳的拼贴图，接在 User 提示词文本之后，不写在下方文字里。
+          </p>
+          <div class="prompt-sent">
+            <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
+            <div class="prompt-box"><pre id="p-gepa-term">Loading…</pre></div>
+          </div>
+        </div>
+      </details>
+
       <details class="prompt-fold" id="term-s2-prompt">
         <summary data-i18n="walk.prompt.s2">覆盖完整动作提示词（英语）</summary>
         <div class="prompt-fold-body">
@@ -264,25 +278,8 @@
           <figcaption data-i18n="world.term.s2.cap">从上到下三行依次对应：粗分得到的时间窗（中间竖线为粗边界附近）、精修时是否外扩（本图取 pad=0，只看窗内）、以及窗内应切出的完整动作（E1–E3）。</figcaption>
         </figure>
       </details>
-      <h3 id="term-gepa" data-i18n="world.h3.gepa">GEPA</h3>
-      <p data-i18n-html data-i18n="world.p.gepa">
-        GEPA 是一种根据反馈自动改写提示词的方法<sup class="cite"><a class="cite-ref" href="#ref-gepa">3</a></sup>。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。
-      </p>
-      <details class="prompt-fold">
-        <summary data-i18n="walk.prompt.gepa">切段规则提示词（英语）</summary>
-        <div class="prompt-fold-body">
-          <p class="prompt-note" data-i18n-html data-i18n="world.gepa.prompt.note">
-            说明：下方就是提示词文本。System / User 两段会送给模型；其中 <code>{duration_sec}</code> 会替换成该视频的实际时长；图像输入是带时间戳的拼贴图，接在 User 提示词文本之后，不写在下方文字里。
-          </p>
-          <div class="prompt-sent">
-            <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
-            <div class="prompt-box"><pre id="p-gepa-term">Loading…</pre></div>
-          </div>
-        </div>
-      </details>
-
-<p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
-      <ol>
+      <p data-i18n="pipeline.seg.methods">下列为我们尝试过的分段标注方法。</p>
+      <ol class="method-list">
         <li>
           <span data-i18n-html data-i18n="story.seg.1">腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再把过短的相邻段按时长规则合并。</span>
           <details class="term-fold" id="app-prod">
@@ -376,17 +373,17 @@ def compatible(a, b, strategy):
       <h3 data-i18n="pipeline.h3.label">3.2 固定边界标注</h3>
       <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
       
-      <h3 data-i18n="world.h3.inputs">视觉输入</h3>
+      <h4 data-i18n="world.h3.inputs">视觉输入</h4>
       <p data-i18n-html data-i18n="world.p.inputs">
         固定边界标注会换不同视觉输入。先把六类输入各自「模型看见什么」做个概念预览，再用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。
       </p>
       <ul class="term-list">
-        <li data-i18n-html data-i18n="world.input.1"><strong>原始帧</strong>：段内均匀抽取的原始帧，分张提交。</li>
-        <li data-i18n-html data-i18n="world.input.2"><strong>时序拼贴</strong>：同一片段内多帧按时间顺序拼成一张图再提交。</li>
-        <li data-i18n-html data-i18n="world.input.3"><strong>拼贴图</strong>：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
-        <li data-i18n-html data-i18n="world.input.4"><strong>邻段拼贴</strong>：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
-        <li data-i18n-html data-i18n="world.input.5"><strong>视觉提示叠加</strong>：在原始帧上叠加光流或启发式运动提示。</li>
-        <li data-i18n-html data-i18n="world.input.6"><strong>手部裁剪</strong>：按估计腕轨迹裁剪手部区域后提交。</li>
+        <li data-i18n-html data-i18n="world.input.1">原始帧：段内均匀抽取的原始帧，分张提交。</li>
+        <li data-i18n-html data-i18n="world.input.2">时序拼贴：同一片段内多帧按时间顺序拼成一张图再提交。</li>
+        <li data-i18n-html data-i18n="world.input.3">拼贴图：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
+        <li data-i18n-html data-i18n="world.input.4">邻段拼贴：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
+        <li data-i18n-html data-i18n="world.input.5">视觉提示叠加：在原始帧上叠加光流或启发式运动提示。</li>
+        <li data-i18n-html data-i18n="world.input.6">手部裁剪：按估计腕轨迹裁剪手部区域后提交。</li>
         <li data-i18n-html data-i18n="world.term.11">HaWoR<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
       </ul>
       <figure class="figure" id="term-visual">
@@ -447,17 +444,19 @@ def compatible(a, b, strategy):
       </div>
 
       <p data-i18n="pipeline.label.methods">下列为我们尝试过的固定边界标注方法。</p>
-      <ol>
-        <li data-i18n="story.label.1">原始帧 · 27B：在参考片段内均匀抽帧，由 Qwen3.6-27B 生成描述。</li>
-        <li data-i18n="story.label.2">时序拼贴 · 27B：把过去 / 当前 / 未来片段的整帧网格一并提交给 Qwen3.6-27B。</li>
-        <li data-i18n="story.label.3">视觉提示叠加 · 27B：在原始帧上叠加光流或启发式运动提示后标注。</li>
-        <li data-i18n="story.label.4">原始帧 · 397B：与原始帧 · 27B 相同输入，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.5">视觉提示叠加 · 397B：与视觉提示叠加 · 27B 相同输入，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.6">时序拼贴 · 397B：与时序拼贴 · 27B 相同输入，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.7">邻段拼贴 · 397B：同时提交上一段、当前段、下一段的抽样帧。</li>
-        <li data-i18n="story.label.8">邻段拼贴 + 秒级时间戳 · 397B：在邻段拼贴基础上为每格加入秒级时间戳后重跑。</li>
-        <li data-i18n="story.label.9">近似手部拼贴 · 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交，不是重建腕轨迹裁剪。</li>
-        <li data-i18n="story.label.10">HaWoR 手部裁剪 · 397B：用 HaWoR 估计腕部轨迹并裁剪手部区域；裁剪不完整时回退到原始帧。</li>
+      <ol class="method-list">
+        <li data-i18n="story.label.1">原始帧 · 27B：用上文「原始帧」，由 Qwen3.6-27B 生成描述。</li>
+        <li data-i18n="story.label.2">时序拼贴 · 27B：用上文「时序拼贴」，交给 Qwen3.6-27B。</li>
+        <li data-i18n="story.label.3">视觉提示叠加 · 27B：用上文「视觉提示叠加」后标注。</li>
+        <li data-i18n="story.label.4">原始帧 · 397B：同上文「原始帧」，改用 Qwen3.5-397B。</li>
+        <li data-i18n="story.label.5">视觉提示叠加 · 397B：同上文「视觉提示叠加」，改用 Qwen3.5-397B。</li>
+        <li data-i18n="story.label.6">时序拼贴 · 397B：同上文「时序拼贴」，改用 Qwen3.5-397B。</li>
+        <li data-i18n="story.label.7">邻段拼贴 · 397B：用上文「邻段拼贴」。</li>
+        <li data-i18n="story.label.8">邻段拼贴 + 秒级时间戳 · 397B：在上文「邻段拼贴」上为每格加入秒级时间戳后重跑。</li>
+        <!-- TODO(local-agent): 近似手部拼贴是 YOLO 还是画面中心启发式？二者是否做过 ablation，还是混用同一条件？ -->
+        <li data-i18n="story.label.9">近似手部拼贴 · 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交。</li>
+        <!-- TODO(local-agent): HaWoR 手部裁剪如何判定「裁剪不完整」？回退到原始帧的具体规则是什么？ -->
+        <li data-i18n="story.label.10">HaWoR 手部裁剪 · 397B：用上文「手部裁剪」（HaWoR 腕轨迹）；裁剪不完整时回退到原始帧。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.label">固定分段标注得分（Label Acc）</h4>
@@ -501,7 +500,7 @@ def compatible(a, b, strategy):
         <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
       </ul>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端标注路径。</p>
-      <ol>
+      <ol class="method-list">
         <li data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。</li>
         <li data-i18n="story.e2e.2">S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。</li>
         <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B：固定 S2 边界，用 Qwen3.6-27B 对每段原始帧重新生成描述。</li>
