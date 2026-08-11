@@ -12,7 +12,7 @@
       "pipeline.h3.e2e": "4.3 端到端",
       "pipeline.label.lead": "固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。",
       "pipeline.h3.label": "4.2 固定边界标注",
-      "pipeline.seg.analysis": "<p>结合上图与表，按实验路径可以归纳如下。</p><ol><li>腕速规则切段并合并：预测片段 810 段，远多于参考分段 470 段，配对成功仅 61。腕速低谷会把动作内部的停顿和微调也当成边界，因此整体呈过分割，难以对齐语义完整的动作。</li><li>拼贴图分片（每次最多 3 张）：改用带时间戳拼贴图后，模型可以在局部时间上下文中判边界，但仍受请求长度限制。每次最多送入 3 张拼贴图，请求之间的接缝缺乏整集上下文，容易被误判为动作边界。</li><li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守：预测片段仅 148 段（参考 470 段），配对成功 38，多数参考动作未被单独切出，整体表现为欠分割。</li><li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li><li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li><li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li><li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href=\"#app-rule-merge\">附录 C.2</a>。</li><li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li></ol>",
+      "pipeline.seg.analysis": "<p>结合上图与表，按实验路径可以归纳如下。</p><ol><li>腕速规则切段并合并：预测片段 810 段，远多于参考分段 470 段，配对成功仅 61。腕速低谷会把动作内部的停顿和微调也当成边界，因此整体呈过分割，难以对齐语义完整的动作。</li><li>拼贴图分片（每次最多 3 张）：改用带时间戳拼贴图后，模型可以在局部时间上下文中判边界，但仍受请求长度限制。每次最多送入 3 张拼贴图，请求之间的接缝缺乏整集上下文，容易被误判为动作边界。</li><li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守：预测片段仅 148 段（参考 470 段），配对成功 38，多数参考动作未被单独切出，整体表现为欠分割。</li><li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li><li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li><li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li><li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修；细节见 <a href=\"#app-rule-merge\">附录 B.2</a>。</li><li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li></ol>",
       "pipeline.seg.merge.box": "",
       "pipeline.seg.methods": "下列为我们尝试过的分段标注方法。",
       "pipeline.label.methods": "下列为我们尝试过的固定边界标注方法。",
@@ -90,7 +90,7 @@
       "tldr.e2e": "60 个片段同时通过时间匹配与语义匹配标准。",
       "tldr.e2e.config": "配置：Qwen3.6-27B 分段 + Qwen3.5-397B-A17B 候选判别器",
       "cost.h2": "6. 开销对照：Macrodata 公开数字 vs EgoANT",
-      "cost.note": "两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 F。",
+      "cost.note": "两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 E。",
       "cost.compare.h3": "与 Macrodata 公开开销对照",
       "cost.th.source": "来源",
       "cost.th.scope": "口径",
@@ -173,6 +173,8 @@
       "world.term.4": "局部时间窗口：围绕某个粗边界截取的一小段连续视频区间，图中用绿色虚线框表示。",
       "world.term.5": "S1（加密切分配置）：仍对完整视频做一次分段，但通过修改提示词，要求模型输出更多、更短的候选片段。",
       "world.term.6": "S2（局部精修配置）：先由整集粗分得到粗边界，再围绕粗边界建立时间窗口，让模型在窗口内重新输出动作边界。图中绿色虚线只围住一个窗口；窗口内两块绿色表示重切后可能把原先欠分的区域拆得更细。",
+      "world.term.s2.fold": "S2 示意：窗口不外扩 + 覆盖完整动作",
+      "world.term.s2.cap": "S2 只在粗分窗口内重切：pad=0 时第二遍看不到相邻动作；窗口内能看到的完成动作都要切到。",
       "world.term.7": "窗口不外扩（pad=0）：局部精修所用画面严格限制在时间窗口内。",
       "world.term.8": "覆盖完整动作（full-cover）：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。",
       "world.term.9": "候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。",
@@ -211,7 +213,7 @@
       "metrics.h3.seg": "视频分段得分例子",
       "metrics.h3.label": "固定分段标注得分例子",
       "metrics.h3.e2e": "端到端整流程得分例子",
-      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href=\"#app-prompts\">附录 E</a>。",
+      "metrics.label.example": "沿用同一 10 秒例子的人工边界 G<sub>0</sub>、G<sub>1</sub>、G<sub>2</sub>，模型只为每段生成描述。评测沿用 <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata 公开的 LLM-as-judge rubric</a>：将人工描述、模型描述和 episode instruction 交给 Gemini-3.5-Flash，逐段返回 <code>match=true/false</code>。若结果为 <code>[true, true, false]</code>，则正确描述数 c = 2。实际评判 prompt 见 <a href=\"#app-prompts\">附录 D</a>。",
       "metrics.e2e.example": "仍用上述预测的 4 个片段及其描述。时间匹配先得到 P<sub>0</sub>–G<sub>0</sub> 与 P<sub>1</sub>–G<sub>1</sub>；若语义评判只有 P<sub>0</sub>–G<sub>0</sub> 返回 <code>true</code>，则最终正确结果数 s = 1。",
       "toy.lane.gold": "参考（人工标注）",
       "toy.lane.pred": "预测（首尾对齐后）",
@@ -270,16 +272,16 @@
       "story.seg.1": "腕速规则切段并合并：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。",
       "story.seg.2": "拼贴图分片（每次最多 3 张）：把整集拼贴图按请求拆开，每次最多送入 3 张；模型只能看到该请求覆盖的局部时间范围，并在此范围内预测边界。",
       "story.seg.3": "整集一次提交（无切段规则清单）：把整集全部拼贴图放进同一次调用，提示词中不使用切段规则清单。",
-      "story.seg.4": "整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href=\"#app-prompts\">附录 E</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>下载</a>）。",
+      "story.seg.4": "整集一次提交 + 切段规则清单：整集拼贴图一次提交，提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（见 <a href=\"#app-prompts\">附录 D</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>下载</a>）。",
       "story.seg.5": "S1 加密切分：对整集做一次分段，通过修改提示词要求模型输出更多、更短的候选片段。",
-      "story.seg.6": "S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见术语约定）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href=\"#app-prompts\">附录 E</a> · <a href=\"prompts/s2_fullcover_refine.md\" download>下载</a>）。",
-      "story.seg.7": "S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href=\"#app-rule-merge\">附录 C.2</a>。",
+      "story.seg.6": "S2 局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。「覆盖完整动作提示词」要求窗口内看得见起止的完成操作都要切出（见 <a href="#term-s2-diagram">术语 · S2 示意</a>）。得分表中的变体包括：窗外扩约 1 秒、窗口不外扩（无覆盖完整动作提示词）、窗外扩 0.5/1/2 秒；另在「无覆盖完整动作提示词」的预测上，用脚本按中点规则事后补边界，记为「算法补覆盖」；最优设置为窗口不外扩 + 覆盖完整动作提示词（精修提示词见 <a href=\"#app-prompts\">附录 D</a> · <a href=\"prompts/s2_fullcover_refine.md\" download>下载</a>）。",
+      "story.seg.7": "S2 + 相邻片段规则合并：输入是最优 S2 产生的预测片段列表，输出是合并后的预测片段列表。脚本按时间顺序只比较相邻段，三种规则分别是：标签规范化后完全相同则合并；主要动词/物体相同则合并；先桥接很短的时间空隙，再按前两类规则尝试合并。伪代码见 <a href=\"#app-rule-merge\">附录 B.2</a>。",
       "story.chart.seg": "视频分段得分（Segment F1）",
       "story.seg.modelnote": "条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。",
       "story.seg.legend": "表头：P（预测命中率）= 配对成功数 / 预测段数；R（参考找回率）= 配对成功数 / 参考分段数；配对 / 预测 / 参考 = 配对成功数 / 预测段数 / 参考分段数（本子集参考分段恒为 470）。",
       "th.segf1": "视频分段得分",
       "story.label.p": "固定参考边界后，Gemini judge 全量重评显示：<strong>raw 27B 的观察值最高，为 55.7%</strong>；temporal collage 27B 为 52.8%，proxy overlay 27B 为 50.6%，基于 HaWoR 重建腕轨迹的手部裁剪（397B）为 50.9%，raw 397B 为 50.2%。在 397B 上，overlay 为 48.5%、temporal collage 为 45.1%、neighbor / proxy hand-collage 约为 39–40%。这些结果表明，在 HomER 上，增加视觉上下文并未提高固定边界标注准确率；错误检查显示相邻动作经常被写入当前片段描述。",
-      "story.label.cap1": "读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。详见 <a href=\"#app-visual\">附录 D</a>。",
+      "story.label.cap1": "读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。详见 <a href=\"#app-visual\">附录 C</a>。",
       "story.label.cap2": "读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。早期无手重建时使用此类近似输入；HaWoR 手部裁剪的固定分段标注得分为 50.9%。",
       "story.label.fold": "展开：标注实验细节（做法卡）",
       "story.e2e.p": "固定 S2 分段边界后，只改变语义标注路径。<strong>27B 自标</strong>为 0.1234；<strong>27B raw 重标</strong>虽然在固定参考边界 Label Acc 上最高，但在预测边界上 E2E 只有 0.1285；<strong>397B raw 重标</strong>为 0.1414；<strong>ffmpeg raw</strong> 和 <strong>397B-prior neighbor</strong> 均为 0.1491；<strong>candidate selector</strong> 从多路候选中选择最终标签，取得最高观察值 <strong>0.1542</strong>。该增益应与额外候选生成和 selector 调用成本一起理解。",
@@ -317,7 +319,7 @@
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "与 full-100 0.306 headline 直接比较",
-      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-seg\">A 分段概念</a> · <a href=\"#app-e2e\">B 标注/E2E 术语</a> · <a href=\"#app-prod\">C 腕速基线</a> · <a href=\"#app-rule-merge\">C.2 相邻片段合并</a> · <a href=\"#app-visual\">D 视觉输入</a> · <a href=\"#app-prompts\">E Prompt</a> · <a href=\"#app-cost\">F 成本记账</a> · <a href=\"#audit\">G 效度</a>。",
+      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-e2e\">A 标注/E2E 术语</a> · <a href=\"#app-prod\">B 腕速基线</a> · <a href=\"#app-rule-merge\">B.2 相邻片段合并</a> · <a href=\"#app-visual\">C 视觉输入</a> · <a href=\"#app-prompts\">D Prompt</a> · <a href=\"#app-cost\">E 成本记账</a> · <a href=\"#audit\">F 效度</a>。",
       "metrics.toy.g": "参考片段：G<sub>0</sub>[0,3]、G<sub>1</sub>[3,6]、G<sub>2</sub>[6,10]；模型预测：P<sub>0</sub>[0.5,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,9.5]。",
       "metrics.seg.example": "吸附后，预测片段变为 P<sub>0</sub>[0,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,10]；只有 P<sub>0</sub> 与 P<sub>3</sub> 的外侧端点发生变化。P<sub>0</sub>–G<sub>0</sub>、P<sub>1</sub>–G<sub>1</sub> 的时间 IoU 达到 0.75 阈值并形成一对一配对；P<sub>2</sub>、P<sub>3</sub> 未达到阈值。于是一对一时间匹配数 m = 2，预测段数 n<sub>pred</sub> = 4，参考段数 n<sub>gold</sub> = 3。",
       "metrics.seg.formula": "IoU = 重叠时长 / 两段合起来覆盖的总时长\n本例：P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933；P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781（均 ≥ 0.75）\n预测命中率 = m / n<sub>pred</sub> = 2 / 4 = 0.50\n参考找回率 = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\n视频分段得分 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
@@ -366,7 +368,7 @@
       "pipeline.h3.e2e": "4.3 End-to-end",
       "pipeline.label.lead": "Fixed-boundary labeling asks: given human reference time spans, write a short operation description for each segment. This stage does not predict time; it only scores whether each description names the same completed action as the human label. All scores are fixed-boundary labeling score (Label Acc) on the same HomER subset.",
       "pipeline.h3.label": "4.2 Fixed-boundary labeling",
-      "pipeline.seg.analysis": "<p>Reading the chart and table along the experimental path yields the following summary.</p><ol><li>Wrist-speed rule cuts + merge: 810 predicted segments versus 470 reference segments, with only 61 matches. Wrist-speed minima also fire on in-action pauses and micro-adjustments, so the baseline over-segments and poorly aligns with completed-action semantics.</li><li>Chunked contact sheets (max 3 per call): timestamped contact sheets give local temporal context, but each request is still length-limited. With at most three sheets per call, seams between requests lack whole-episode context and are often mistaken for action boundaries.</li><li>Whole-episode request (no segmentation-rule list): a single whole-episode call removes chunk-seam pseudo-boundaries, but the model becomes conservative—only 148 predicted segments and 38 matches—most reference actions are not cut out as separate segments, i.e. the run under-segments.</li><li>Whole-episode request + segmentation-rule list: predictions rise to 202 segments and 46 matches, better than the no-rule prompt, yet still far below 470 references. The rule list improves which completed events to cut, but alone cannot set the right granularity.</li><li>S1 denser cuts: denser-cut prompting lifts matches to 80 of 470 references and predictions to 558 segments. Recall improves while over-segmentation returns, so denser cuts help recovery but still need a second refine pass.</li><li>S2 local refinement: re-cutting near coarse bounds is the main gain. No pad-out beats expanding the window by 0.5/1/2 seconds; with no pad-out, the cover-full-actions prompt beats the no-cover-full-actions setting and also beats algorithmic midpoint cover. The final “no pad-out + cover-full-actions prompt” reaches the best Segment F1 of 0.2031 (79 matches, 308 predictions, 470 references).</li><li>S2 + adjacent-segment rule merges: all three rules postprocess that best S2 prediction using only neighboring labels and time gaps. All score below unmerged S2, so coarse merges cannot replace local refinement under the current IoU protocol; see <a href=\"#app-rule-merge\">Appendix C.2</a>.</li><li>Model comparison: under identical chunked contact sheets, Qwen3.6-27B reaches Segment F1 0.1278, above Qwen3.5-397B at 0.0952; the final best S2 setting also uses 27B.</li></ol>",
+      "pipeline.seg.analysis": "<p>Reading the chart and table along the experimental path yields the following summary.</p><ol><li>Wrist-speed rule cuts + merge: 810 predicted segments versus 470 reference segments, with only 61 matches. Wrist-speed minima also fire on in-action pauses and micro-adjustments, so the baseline over-segments and poorly aligns with completed-action semantics.</li><li>Chunked contact sheets (max 3 per call): timestamped contact sheets give local temporal context, but each request is still length-limited. With at most three sheets per call, seams between requests lack whole-episode context and are often mistaken for action boundaries.</li><li>Whole-episode request (no segmentation-rule list): a single whole-episode call removes chunk-seam pseudo-boundaries, but the model becomes conservative—only 148 predicted segments and 38 matches—most reference actions are not cut out as separate segments, i.e. the run under-segments.</li><li>Whole-episode request + segmentation-rule list: predictions rise to 202 segments and 46 matches, better than the no-rule prompt, yet still far below 470 references. The rule list improves which completed events to cut, but alone cannot set the right granularity.</li><li>S1 denser cuts: denser-cut prompting lifts matches to 80 of 470 references and predictions to 558 segments. Recall improves while over-segmentation returns, so denser cuts help recovery but still need a second refine pass.</li><li>S2 local refinement: re-cutting near coarse bounds is the main gain. No pad-out beats expanding the window by 0.5/1/2 seconds; with no pad-out, the cover-full-actions prompt beats the no-cover-full-actions setting and also beats algorithmic midpoint cover. The final “no pad-out + cover-full-actions prompt” reaches the best Segment F1 of 0.2031 (79 matches, 308 predictions, 470 references).</li><li>S2 + adjacent-segment rule merges: all three rules postprocess that best S2 prediction using only neighboring labels and time gaps. All score below unmerged S2, so coarse merges cannot replace local refinement under the current IoU protocol; see <a href=\"#app-rule-merge\">Appendix B.2</a>.</li><li>Model comparison: under identical chunked contact sheets, Qwen3.6-27B reaches Segment F1 0.1278, above Qwen3.5-397B at 0.0952; the final best S2 setting also uses 27B.</li></ol>",
       "pipeline.seg.merge.box": "",
       "pipeline.seg.methods": "The segmentation methods we tried are listed below.",
       "pipeline.label.methods": "The fixed-boundary labeling methods we tried are listed below.",
@@ -444,7 +446,7 @@
       "tldr.e2e": "60 segments pass both temporal and semantic matching.",
       "tldr.e2e.config": "Setup: Qwen3.6-27B segmentation + Qwen3.5-397B-A17B candidate selector",
       "cost.h2": "6. Cost: Macrodata published numbers vs EgoANT",
-      "cost.note": "Both WGO paths share the same S2 segmentation (segmentation score = 0.2031) and differ only in labeling calls. API counts come from report artifacts; input tokens are estimated from image counts and resolution, while output tokens use task-specific ranges. Pricing is $0.422/M input and $2.532/M output for Qwen3.6-27B, and $0.1644/M input and $0.9864/M output for Qwen3.5-397B-A17B. The pipeline does not use web search, so the $0.000548/request search fee is excluded. Dollar estimates exclude the offline Gemini judge and are not directly comparable to Macrodata's Gemini batch invoice. See Appendix F.",
+      "cost.note": "Both WGO paths share the same S2 segmentation (segmentation score = 0.2031) and differ only in labeling calls. API counts come from report artifacts; input tokens are estimated from image counts and resolution, while output tokens use task-specific ranges. Pricing is $0.422/M input and $2.532/M output for Qwen3.6-27B, and $0.1644/M input and $0.9864/M output for Qwen3.5-397B-A17B. The pipeline does not use web search, so the $0.000548/request search fee is excluded. Dollar estimates exclude the offline Gemini judge and are not directly comparable to Macrodata's Gemini batch invoice. See Appendix E.",
       "cost.compare.h3": "Vs Macrodata published cost",
       "cost.th.source": "Source",
       "cost.th.scope": "Scope",
@@ -527,6 +529,8 @@
       "world.term.4": "Local time window: a short continuous interval around one coarse boundary, shown by the dashed green box.",
       "world.term.5": "S1 (denser-cut configuration): still segments the full video in one pass, but changes the prompt so the model returns more, shorter candidate segments.",
       "world.term.6": "S2 (local-refinement configuration): a whole-episode pass first produces coarse boundaries; a window is then built around a coarse boundary, and the model predicts action boundaries again inside that window. The dashed green lines mark one window; the two green bars inside are finer segments after re-cutting an under-segmented region.",
+      "world.term.s2.fold": "S2 diagram: no pad-out + cover full actions",
+      "world.term.s2.cap": "S2 re-cuts only inside the coarse window: with pad=0 the second pass cannot see neighboring actions; every completed action visible in the window should be cut.",
       "world.term.7": "No pad-out (pad=0): local refinement uses only frames inside the time window.",
       "world.term.8": "Cover full actions (full-cover): an output requirement written into the S2 local-refinement prompt. Every manipulation event whose start and completion are both visible in the window should be cut out; if both \"pick up the cup\" and \"put down the cup\" are fully shown, output two segments, while merely reaching toward the cup or withdrawing the hand afterward should not form a segment on its own.",
       "world.term.9": "Candidate selector: chooses the final description when several candidates exist for the same predicted boundary; used only during description generation.",
@@ -565,7 +569,7 @@
       "metrics.h3.seg": "Segmentation-score example",
       "metrics.h3.label": "Fixed-boundary labeling-score example",
       "metrics.h3.e2e": "End-to-end-score example",
-      "metrics.label.example": "Reuse the human boundaries G<sub>0</sub>, G<sub>1</sub>, and G<sub>2</sub> from the same 10-second example; the model only generates one description per segment. Following <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata's published LLM-as-judge rubric</a>, Gemini-3.5-Flash receives the human description, predicted description, and episode instruction, then returns one JSON match decision per segment, such as <code>{\"match\": true}</code>. If the three results are <code>[true, true, false]</code>, the correct-description count is c = 2. See <a href=\"#app-prompts\">Appendix E</a> for the actual judge prompt used in this report.",
+      "metrics.label.example": "Reuse the human boundaries G<sub>0</sub>, G<sub>1</sub>, and G<sub>2</sub> from the same 10-second example; the model only generates one description per segment. Following <a href=\"https://macrodata.co/blog/annotating-robot-video-subtasks\" target=\"_blank\" rel=\"noopener\">Macrodata's published LLM-as-judge rubric</a>, Gemini-3.5-Flash receives the human description, predicted description, and episode instruction, then returns one JSON match decision per segment, such as <code>{\"match\": true}</code>. If the three results are <code>[true, true, false]</code>, the correct-description count is c = 2. See <a href=\"#app-prompts\">Appendix D</a> for the actual judge prompt used in this report.",
       "metrics.e2e.example": "Keep the four predicted spans and their descriptions above. Temporal matching first yields P<sub>0</sub>–G<sub>0</sub> and P<sub>1</sub>–G<sub>1</sub>. If semantic judging returns <code>true</code> only for P<sub>0</sub>–G<sub>0</sub>, the final true-positive count is s = 1.",
       "toy.lane.gold": "Reference (human)",
       "toy.lane.pred": "Prediction (after outer snap)",
@@ -624,16 +628,16 @@
       "story.seg.1": "Wrist-speed rule cuts + merge: reconstruct hand motion with HaWoR, estimate the wrist-speed curve, place candidate cuts at local speed minima, then merge adjacent segments with rules.",
       "story.seg.2": "Chunked contact sheets (max 3 per call): split the episode’s contact sheets across requests, sending at most three sheets each time; the model only sees the local time span covered by that request and predicts boundaries inside it.",
       "story.seg.3": "Whole-episode request (no segmentation-rule list): send every contact sheet from the episode in one call; the prompt does not use the segmentation-rule list.",
-      "story.seg.4": "Whole-episode request + segmentation-rule list: submit every contact sheet from the episode in one call, using the GEPA-searched rule text from Macrodata (see <a href=\"#app-prompts\">Appendix E</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>download</a>).",
+      "story.seg.4": "Whole-episode request + segmentation-rule list: submit every contact sheet from the episode in one call, using the GEPA-searched rule text from Macrodata (see <a href=\"#app-prompts\">Appendix D</a> · <a href=\"prompts/gepa_completed_events_duration_prior_v1.md\" download>download</a>).",
       "story.seg.5": "S1 denser cuts: segment the whole episode once, changing the prompt so the model returns more, shorter candidate segments.",
-      "story.seg.6": "S2 local refinement: take coarse bounds from the whole-episode pass, open a local time window around each bound, and re-cut from the in-window contact sheets. The cover-full-actions prompt requires every completed operation whose start and end are visible in the window to be cut out (see Terminology). Score-table variants include ≈1s pad-out, no pad-out (no cover-full-actions prompt), and 0.5/1/2s pad-out; separately, algorithmic cover runs a midpoint script on the no-cover-prompt predictions; the best setting is no pad-out + cover-full-actions prompt (refine prompt: <a href=\"#app-prompts\">Appendix E</a> · <a href=\"prompts/s2_fullcover_refine.md\" download>download</a>).",
-      "story.seg.7": "S2 + adjacent-segment rule merges: the input is the best S2 predicted segment list and the output is a merged predicted segment list. The script scans time-sorted neighboring segments and tries three rules: merge normalized identical labels; merge when the main verb/object agrees; or first bridge very short temporal gaps, then apply the previous compatibility rules. See <a href=\"#app-rule-merge\">Appendix C.2</a> for pseudocode.",
+      "story.seg.6": "S2 local refinement: take coarse bounds from the whole-episode pass, open a local time window around each bound, and re-cut from the in-window contact sheets. The cover-full-actions prompt requires every completed operation whose start and end are visible in the window to be cut out (see <a href="#term-s2-diagram">Terminology · S2 diagram</a>). Score-table variants include ≈1s pad-out, no pad-out (no cover-full-actions prompt), and 0.5/1/2s pad-out; separately, algorithmic cover runs a midpoint script on the no-cover-prompt predictions; the best setting is no pad-out + cover-full-actions prompt (refine prompt: <a href=\"#app-prompts\">Appendix D</a> · <a href=\"prompts/s2_fullcover_refine.md\" download>download</a>).",
+      "story.seg.7": "S2 + adjacent-segment rule merges: the input is the best S2 predicted segment list and the output is a merged predicted segment list. The script scans time-sorted neighboring segments and tries three rules: merge normalized identical labels; merge when the main verb/object agrees; or first bridge very short temporal gaps, then apply the previous compatibility rules. See <a href=\"#app-rule-merge\">Appendix B.2</a> for pseudocode.",
       "story.chart.seg": "Segmentation score (Segment F1)",
       "story.seg.modelnote": "In condition names, “· 27B / · 397B” means the run used Qwen3.6-27B / Qwen3.5-397B-A17B.",
       "story.seg.legend": "Headers: P (precision / prediction hit rate) = matches / predicted segments; R (recall / reference recovery rate) = matches / reference segments; match / pred / gold = matches / predicted segments / reference segments (reference segments fixed at 470 here).",
       "th.segf1": "Segmentation score",
       "story.label.p": "With reference boundaries fixed, the full Gemini rescore shows: <strong>raw 27B is highest at 55.7%</strong>; temporal collage 27B reaches 52.8%, proxy overlay 27B 50.6%, HaWoR-reconstructed wrist-guided crop with 397B 50.9%, and raw 397B 50.2%. On 397B, overlay reaches 48.5%, temporal collage 45.1%, and neighbor / proxy hand-collage about 39–40%. These results show that added visual context did not improve fixed-boundary label accuracy on HomER; error inspection suggests that neighboring actions are often incorporated into current-segment descriptions.",
-      "story.label.cap1": "How to read (3 panels): left = raw frame; middle = heuristic box (fixed lower-center square, not wrist detection); right = crop fed to the labeler. This approximate-crop path scores below raw frames on fixed bounds. See <a href=\"#app-visual\">Appendix D</a>.",
+      "story.label.cap1": "How to read (3 panels): left = raw frame; middle = heuristic box (fixed lower-center square, not wrist detection); right = crop fed to the labeler. This approximate-crop path scores below raw frames on fixed bounds. See <a href=\"#app-visual\">Appendix C</a>.",
       "story.label.cap2": "How to read (3 panels): left = raw frame; middle = YOLO person box; right = crop the model sees. Early runs without hand reconstruction used such approximate inputs; the HaWoR wrist-guided crop reaches 50.9% Label Acc.",
       "story.label.fold": "Expand: labeling method cards",
       "story.e2e.p": "With S2 segment boundaries fixed, only the semantic labeling path changes. <strong>27B self-label</strong> gives 0.1234. <strong>27B raw relabel</strong> has the highest fixed-boundary Label Acc, but reaches only 0.1285 E2E under predicted boundaries. <strong>397B raw relabel</strong> reaches 0.1414; <strong>ffmpeg raw</strong> and <strong>397B-prior neighbor</strong> both reach 0.1491. <strong>Candidate selector</strong> chooses the final label from multiple candidates and obtains the highest observed score, <strong>0.1542</strong>. This gain should be interpreted together with the additional cost of candidate generation and selector calls.",
@@ -671,7 +675,7 @@
       "recipe.r4.a": "Comparison",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "Direct comparison to the full-100 0.306 headline",
-      "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out terminology and implementation details. Contents: <a href=\"#app-seg\">A segmentation concepts</a> · <a href=\"#app-e2e\">B label/E2E terms</a> · <a href=\"#app-prod\">C production</a> · <a href=\"#app-rule-merge\">C.2 adjacent merges</a> · <a href=\"#app-visual\">D visuals</a> · <a href=\"#app-prompts\">E prompts</a> · <a href=\"#app-cost\">F cost</a> · <a href=\"#audit\">G validity</a>.",
+      "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out terminology and implementation details. Contents: <a href=\"#app-e2e\">A label/E2E terms</a> · <a href=\"#app-prod\">B production</a> · <a href=\"#app-rule-merge\">B.2 adjacent merges</a> · <a href=\"#app-visual\">C visuals</a> · <a href=\"#app-prompts\">D prompts</a> · <a href=\"#app-cost\">E cost</a> · <a href=\"#audit\">F validity</a>.",
       "metrics.toy.g": "Reference: G<sub>0</sub>[0,3], G<sub>1</sub>[3,6], G<sub>2</sub>[6,10]. Prediction: P<sub>0</sub>[0.5,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], P<sub>3</sub>[8,9.5].",
       "metrics.seg.example": "After outer snap, the predictions become P<sub>0</sub>[0,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], and P<sub>3</sub>[8,10]; only the outer endpoints of P<sub>0</sub> and P<sub>3</sub> change. P<sub>0</sub>–G<sub>0</sub> and P<sub>1</sub>–G<sub>1</sub> clear the 0.75 temporal-IoU threshold and form one-to-one matches; P<sub>2</sub> and P<sub>3</sub> do not. Thus the one-to-one temporal match count is m = 2, with n<sub>pred</sub> = 4 predicted segments and n<sub>gold</sub> = 3 reference segments.",
       "metrics.seg.formula": "IoU = overlap duration / total duration covered by either span\nThis example: P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933; P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781 (both ≥ 0.75)\nPrecision = m / n<sub>pred</sub> = 2 / 4 = 0.50\nRecall = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\nSegmentation score = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
@@ -715,47 +719,20 @@
     zh: `
       <h2>6. 附录：概念、实现与成本记账</h2>
       <p class="plain">正文讲“试了什么、分数怎么变”；附录补清楚术语和实现边界。目录：
-        <a href="#app-seg">A 分段概念</a> ·
-        <a href="#app-e2e">B 标注/E2E 术语</a> · <a href="#app-prod">C 腕速基线</a> ·
-        <a href="#app-rule-merge">C.2 相邻片段合并</a> ·
-        <a href="#app-visual">D 视觉输入</a> · <a href="#app-prompts">E Prompt</a> ·
-        <a href="#app-cost">F 成本</a> · <a href="#audit">G 效度</a>。</p>
+        <a href="#app-e2e">A 标注/E2E 术语</a> · <a href="#app-prod">B 腕速基线</a> ·
+        <a href="#app-rule-merge">B.2 相邻片段合并</a> ·
+        <a href="#app-visual">C 视觉输入</a> · <a href="#app-prompts">D Prompt</a> ·
+        <a href="#app-cost">E 成本</a> · <a href="#audit">F 效度</a>。</p>
 
-      
 
-      <h3 id="app-seg">A. 分段概念卡</h3>
-      <figure class="figure">
-        <img src="assets/explain/s2_no_pad_full_cover_zh.svg" alt="S2 no-pad full-cover local refinement diagram" />
-        <figcaption>S2 的核心不是“再看更多”，而是在粗分窗口内重切，并要求覆盖窗口内完整完成事件。</figcaption>
-      </figure>
-      <article class="concept-card">
-        <h4>欠分割 vs 第一遍加密切（S1）</h4>
-        <p><strong>欠分割</strong>是切太少、漏动作；<strong>S1</strong>故意提高切段密度来抬召回，但容易切碎。HomER 上 S1 到 F1 0.1556，pred 558。</p>
-      </article>
-      <article class="concept-card">
-        <h4>第二遍局部精修（S2）</h4>
-        <p>粗分之后，在每条粗边界附近开局部时间窗，再用同样的 timestamped contact sheet 细切一次。最终版本使用 <strong>pad=0 + full-cover prompt</strong>，视频分段得分到 0.2031。</p>
-      </article>
-      <article class="concept-card">
-        <h4>窗口不外扩（pad=0）</h4>
-        <p>精修窗口只等于粗边界区间，不向两侧多看 0.5/1/2 秒。这样减少邻段动作污染；pad-out 消融都低于 pad=0。</p>
-      </article>
-      <article class="concept-card">
-        <h4>盖住完整动作（full-cover）</h4>
-        <p>要求模型把窗口里看得见的完成事件都切出来，但不要把 approach、adjust、retract 拆成假事件。算法式 midpoint 后处理不如把 full-cover 写进 prompt。</p>
-      </article>
-      <article class="concept-card">
-        <h4>切段规则清单（GEPA 搜索得到的 prompt）</h4>
-        <p>这里不是新模型，也不是后处理脚本；更准确地说，是 Macrodata 用 GEPA 在验证集上搜索得到的一组英文分段规则。我们复用的是这份规则清单，而不是在本报告里重新运行 GEPA。</p>
-      </article>
 
-      <h3 id="app-e2e">B. 标注 / E2E 术语</h3>
+      <h3 id="app-e2e">A. 标注 / E2E 术语</h3>
       <article class="concept-card"><h4>raw relabel</h4><p>固定边界后，用 397B 看当前段 raw 帧重写一句 subtask。S2 边界 + 单路 raw 的 E2E F1 为 0.1414。</p></article>
       <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>边界相同，只把默认解码/抽帧实现换成 ffmpeg 路径。它不是新的标注策略，而是同一段视频的另一种候选标签来源；实验中略高于默认 raw，因此进入 selector 候选池。</p></article>
       <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似能提供上下文，但在 Qwen 上常把邻段动作写进当前句，因此降低标注准确率。</p></article>
       <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；Gemini judge 下最高观察 E2E F1 为 0.1542。</p></article>
 
-      <h3 id="app-prod">C. EgoANT 的腕速基线管线（并澄清与 VITRA 的关系）</h3>
+      <h3 id="app-prod">B. EgoANT 的腕速基线管线（并澄清与 VITRA 的关系）</h3>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">手重建 → wrist 轨迹</div></div>
         <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">腕速滤波</div></div>
@@ -769,7 +746,7 @@
       </figure>
       <p>VITRA 启发的是“先手部/运动信号，再 caption”的问题设定；本系统在这一版里用 HaWoR 腕速作为切段信号，不把 VITRA 当作后端模型。它的主要失败模式是<strong>过分割</strong>：动作中途的犹豫或微调在速度曲线上也像边界，后续 merge judge 虽可合并一部分，但在 WGO 的 IoU 口径下仍会拉低视频分段得分。</p>
 
-      <h3 id="app-rule-merge">C.2 相邻片段规则合并伪代码</h3>
+      <h3 id="app-rule-merge">B.2 相邻片段规则合并伪代码</h3>
       <p>这组实验不是新的模型调用，也不是 production merge judge。它只对最优 S2 分段输出做离线后处理，用来验证“把相邻预测段合并得更像完整动作”是否能提高视频分段得分。</p>
       <table><thead><tr><th>规则</th><th>输入</th><th>合并条件</th><th>结果</th></tr></thead><tbody>
         <tr><td>完全相同标签</td><td>S2 预测段</td><td>相邻段的 <code>subtask</code> 规范化后完全相同</td><td>F1 0.1987，低于未合并 S2</td></tr>
@@ -798,7 +775,7 @@ def compatible(a, b, strategy):
         )</pre>
       <p>实现边界：脚本只读取预测 JSON 的 <code>start_sec</code>、<code>end_sec</code>、<code>subtask</code>，按相邻段规则合并；不能新增边界，只能删除或移动已有预测段之间的边界。HomER 上三种规则都降低得分，说明 S2 的细边界已经比这些粗合并更适合 WGO 的 IoU 口径。</p>
 
-      <h3 id="app-visual">D. 视觉输入对照</h3>
+      <h3 id="app-visual">C. 视觉输入对照</h3>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy_zh.svg" alt="Visual input taxonomy" />
         <figcaption>这些视觉输入的作用不同：拼贴图让模型看完整时间轴，用于找边界；原始帧、视觉提示叠加、手部裁剪、时序/邻段拼贴则是在边界已固定时，比较哪种视觉证据更利于写对当前动作。</figcaption>
@@ -812,7 +789,7 @@ def compatible(a, b, strategy):
         <tr><td>HaWoR 手部裁剪</td><td>按 HaWoR 估计腕轨裁剪手部区域</td><td>标注候选</td><td>50.9%（397B）</td></tr>
       </tbody></table>
 
-      <h3 id="app-prompts">E. Prompt 原文（English）</h3>
+      <h3 id="app-prompts">D. Prompt 原文（English）</h3>
       <p>英文 prompt 全文在样例章折叠区展示，此处保留下载入口。</p>
       <ul>
         <li><a href="#walk-2">GEPA 搜索得到的切段规则</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>下载</a></li>
@@ -822,10 +799,10 @@ def compatible(a, b, strategy):
         <li><a href="#walk-5">Candidate selector</a> · <a href="prompts/candidate_selector.md" download>下载</a></li>
       </ul>
 
-      <h3 id="app-cost">F. 成本：估计与公开数字对照</h3>
+      <h3 id="app-cost">E. 成本：估计与公开数字对照</h3>
       <p>Macrodata 公开 E2E batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；本页 Qwen 栈 token 为工程估计；新增 Gemini judge 重判开销另行记录。页面保留结构化比较，不公开内部机器、路径或服务状态。</p>
 
-      <h3 id="audit">G. 实验效度注意事项</h3>
+      <h3 id="audit">F. 实验效度注意事项</h3>
       <table><thead><tr><th>项</th><th>发现</th><th>处理</th></tr></thead><tbody>
         <tr><td>复制目录产物</td><td>不能把文件时间戳接近当作重标证据</td><td>只报告可追溯实验输出</td></tr>
         <tr><td>proxy overlay</td><td>光流/中心框不是真手部重建</td><td>与 HaWoR-reconstructed wrist-guided crop 分开汇报</td></tr>
@@ -835,32 +812,20 @@ def compatible(a, b, strategy):
     en: `
       <h2>6. Appendix: concepts, implementation, and cost accounting</h2>
       <p class="plain">The body explains what we tried and how scores moved. This appendix spells out terminology and implementation boundaries. Contents:
-        <a href="#app-seg">A segmentation concepts</a> ·
-        <a href="#app-e2e">B label/E2E terms</a> · <a href="#app-prod">C production</a> ·
-        <a href="#app-rule-merge">C.2 adjacent merges</a> ·
-        <a href="#app-visual">D visuals</a> · <a href="#app-prompts">E prompts</a> ·
-        <a href="#app-cost">F cost</a> · <a href="#audit">G validity</a>.</p>
+        <a href="#app-e2e">A label/E2E terms</a> · <a href="#app-prod">B production</a> ·
+        <a href="#app-rule-merge">B.2 adjacent merges</a> ·
+        <a href="#app-visual">C visuals</a> · <a href="#app-prompts">D prompts</a> ·
+        <a href="#app-cost">E cost</a> · <a href="#audit">F validity</a>.</p>
 
-      
 
-      <h3 id="app-seg">A. Segmentation concept cards</h3>
-      <figure class="figure">
-        <img src="assets/explain/s2_no_pad_full_cover.svg" alt="S2 no-pad full-cover local refinement diagram" />
-        <figcaption>S2 is not about seeing more context; it re-cuts inside the coarse window and asks the model to cover completed events visible inside that window.</figcaption>
-      </figure>
-      <article class="concept-card"><h4>Under-segmentation vs S1 denser cuts</h4><p>Under-segmentation means too few cuts and missed actions. S1 increases cut density to raise recall, but can over-fragment. On HomER, S1 reaches F1 0.1556 with 558 predictions.</p></article>
-      <article class="concept-card"><h4>S2 local refinement</h4><p>After coarse segmentation, S2 opens a local time window near coarse bounds and re-cuts using the same timestamped contact-sheet layout. The final <strong>pad=0 + full-cover prompt</strong> reaches segmentation score 0.2031.</p></article>
-      <article class="concept-card"><h4>No pad-out (pad=0)</h4><p>The refine window equals the coarse interval and does not peek 0.5/1/2 extra seconds on either side. This reduces neighboring-action contamination; all pad-out ablations scored lower than pad=0.</p></article>
-      <article class="concept-card"><h4>Full-cover prompt</h4><p>The model must cover every completed event visible in the window, while avoiding fake approach/adjust/retract fragments. Scripted midpoint postprocessing was worse than writing this requirement into the prompt.</p></article>
-      <article class="concept-card"><h4>Segmentation rule list (GEPA-searched prompt)</h4><p>This is not a new model and not a postprocess. More precisely, Macrodata used GEPA on a validation set to search for an English rule list. We reuse that rule list; we do not rerun GEPA in this report.</p></article>
 
-      <h3 id="app-e2e">B. Labeling / E2E terms</h3>
+      <h3 id="app-e2e">A. Labeling / E2E terms</h3>
       <article class="concept-card"><h4>raw relabel</h4><p>With boundaries locked, Qwen3.5-397B rewrites one subtask label from raw frames inside the current segment. S2 bounds + raw-only relabel gives Gemini E2E F1 0.1414.</p></article>
       <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>Same boundaries, but the decode / frame-sampling implementation is switched to ffmpeg. It is not a new labeling strategy; it is another candidate label source for the same video segment, and it slightly beats the default raw path in this benchmark.</p></article>
       <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, reducing Qwen labeling accuracy on HomER.</p></article>
       <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best Gemini-judged E2E F1 is 0.1542.</p></article>
 
-      <h3 id="app-prod">C. The EgoANT wrist-speed baseline (and how it relates to VITRA)</h3>
+      <h3 id="app-prod">B. The EgoANT wrist-speed baseline (and how it relates to VITRA)</h3>
       <div class="pipeline">
         <div class="step"><div class="n">01</div><div class="t">HaWoR</div><div class="d">hand reconstruction to wrist tracks</div></div>
         <div class="step"><div class="n">02</div><div class="t">Smooth</div><div class="d">filter wrist speed</div></div>
@@ -874,7 +839,7 @@ def compatible(a, b, strategy):
       </figure>
       <p>VITRA motivates the “motion/hand signal first, caption second” framing. EgoANT used HaWoR wrist-speed signals for this first segmentation version; it does not use VITRA as a backend model. Its main failure mode is <strong>over-segmentation</strong>: hesitation and small adjustments often look like boundaries in the speed curve. A later merge judge can repair some of this, but the WGO IoU metric still penalizes fragmented boundaries.</p>
 
-      <h3 id="app-rule-merge">C.2 Adjacent rule-merge pseudocode</h3>
+      <h3 id="app-rule-merge">B.2 Adjacent rule-merge pseudocode</h3>
       <p>This experiment is not a new model call and is not the production merge judge. It is an offline postprocess over the best S2 segmentation output, testing whether merging neighboring predictions into larger completed actions improves the segmentation score.</p>
       <table><thead><tr><th>Rule</th><th>Input</th><th>Merge condition</th><th>Result</th></tr></thead><tbody>
         <tr><td>identical label</td><td>S2 predictions</td><td>neighboring <code>subtask</code> strings are identical after normalization</td><td>F1 0.1987, below unmerged S2</td></tr>
@@ -903,7 +868,7 @@ def compatible(a, b, strategy):
         )</pre>
       <p>Implementation boundary: the postprocess reads only <code>start_sec</code>, <code>end_sec</code>, and <code>subtask</code> from the prediction JSON and merges neighboring spans by rule. It cannot invent new boundaries; it can only remove or move boundaries between existing predictions. On HomER, all three variants lower the score, suggesting that S2's finer boundaries better match the WGO IoU protocol than these coarse merges.</p>
 
-      <h3 id="app-visual">D. Visual input comparison</h3>
+      <h3 id="app-visual">C. Visual input comparison</h3>
       <figure class="figure">
         <img src="assets/explain/visual_input_taxonomy.svg" alt="Visual input taxonomy" />
         <figcaption>These inputs serve different purposes: contact sheets expose the timeline for boundary finding; raw frames, proxy overlays, hand crops, and collages compare visual evidence after the boundary is fixed.</figcaption>
@@ -917,7 +882,7 @@ def compatible(a, b, strategy):
         <tr><td>HaWoR-reconstructed wrist-guided crop</td><td>crop around HaWoR-estimated wrist tracks</td><td>label candidate</td><td>Gemini Acc 50.9%</td></tr>
       </tbody></table>
 
-      <h3 id="app-prompts">E. Prompt originals (English)</h3>
+      <h3 id="app-prompts">D. Prompt originals (English)</h3>
       <p>Full English prompts are shown once in the walkthrough folds; downloads remain here.</p>
       <ul>
         <li><a href="#walk-2">GEPA-searched segmentation rules</a> · <a href="prompts/gepa_completed_events_duration_prior_v1.md" download>download</a></li>
@@ -927,10 +892,10 @@ def compatible(a, b, strategy):
         <li><a href="#walk-5">Candidate selector</a> · <a href="prompts/candidate_selector.md" download>download</a></li>
       </ul>
 
-      <h3 id="app-cost">F. Cost: estimates and published numbers</h3>
+      <h3 id="app-cost">E. Cost: estimates and published numbers</h3>
       <p>Macrodata reports about $2.64/video-hour for batch end-to-end seeded relabeling and about $0.43/h for segmentation-only batch. This page keeps Qwen-stack token numbers as engineering estimates; the added Gemini judge rescore is reported separately. The public version removes internal machines, paths, and service-state details.</p>
 
-      <h3 id="audit">G. Validity notes</h3>
+      <h3 id="audit">F. Validity notes</h3>
       <table><thead><tr><th>Item</th><th>Observation</th><th>Treatment</th></tr></thead><tbody>
         <tr><td>Copied prediction folders</td><td>Close file timestamps are not evidence of a fresh relabel run</td><td>Only traceable experiment outputs are reported</td></tr>
         <tr><td>proxy overlay</td><td>Optical-flow or center-box proxies are not hand reconstruction</td><td>Reported separately from HaWoR-reconstructed wrist-guided crop</td></tr>
