@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-5" />
+  <link rel="stylesheet" href="css/report.css?v=20260811-6" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -285,73 +285,39 @@
     <section id="pipeline">
       <h2 data-i18n="pipeline.h2">4. 标注管线流程</h2>
       <p data-i18n-html data-i18n="pipeline.lead">
-        本节按管线顺序说明：先分段、再标注，最后看端到端串联结果。每个阶段先交代尝试过的方法，再给出对应实验结果；读完即可看出当前最优路径，并落到推荐配置与成本。
+        本节按管线顺序说明：先分段、再标注，最后看端到端串联结果。每个阶段先交代尝试过的方法，再给出对应实验结果。
       </p>
-      <div class="pipeline" aria-label="Pipeline overview">
-        <div class="step"><div class="n">01</div><div class="t" data-i18n="pipeline.flow.1.t">分段</div><div class="d" data-i18n="pipeline.flow.1.d">拼贴图粗分 → 局部精修</div></div>
-        <div class="step"><div class="n">02</div><div class="t" data-i18n="pipeline.flow.2.t">标注</div><div class="d" data-i18n="pipeline.flow.2.d">固定边界或预测边界上的描述生成</div></div>
-        <div class="step"><div class="n">03</div><div class="t" data-i18n="pipeline.flow.3.t">端到端</div><div class="d" data-i18n="pipeline.flow.3.d">分段 + 标注串联评测</div></div>
-        <div class="step"><div class="n">04</div><div class="t" data-i18n="pipeline.flow.4.t">定稿配置</div><div class="d" data-i18n="pipeline.flow.4.d">推荐路径与成本</div></div>
-      </div>
-      <h3 data-i18n="pipeline.h3.roles">模型角色</h3>
+      <h3 data-i18n="pipeline.h3.roles">所用模型</h3>
       <p data-i18n-html data-i18n="world.p.models">
-        生成与评测的角色分工如下：Qwen3.6-27B 负责分段，也可生成部分候选描述；Qwen3.5-397B-A17B 负责生成候选描述并由候选判别器选出定稿；Gemini-3.5-Flash 仅在离线评测时判断描述与人工标注是否语义一致，不参与边界预测、描述生成或候选选择。
+        管线实验会用到若干视觉语言模型。我们选用 Qwen3.6-27B 与 Qwen3.5-397B-A17B，主要因为它们是目前较常见、易于私有部署的开源模型，便于在分段策略与标注分工上做对照；下文各表会标明每一次消融实际调用了哪个模型，这里不预先固定「谁负责分段、谁负责定稿」。Gemini-3.5-Flash 不参与边界预测、描述生成或候选选择，仅用于离线评测：按 Macrodata Labs 的 <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">WGO-Bench</a> 设定，用它对描述与人工标注做语义一致性打分（见 <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Gemini 官方定价</a>）。
       </p>
-      <div style="overflow-x:auto">
-        <table class="role-table">
-          <thead>
-            <tr>
-              <th data-i18n="role.th.role">角色</th>
-              <th data-i18n="role.th.model">模型</th>
-              <th data-i18n="role.th.use">在本文中的作用</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-i18n="role.segmenter">分段模型</td>
-              <td>Qwen3.6-27B</td>
-              <td data-i18n="role.segmenter.use">预测片段的时间边界</td>
-            </tr>
-            <tr>
-              <td data-i18n="role.captioner">描述生成模型</td>
-              <td>Qwen3.6-27B / Qwen3.5-397B-A17B</td>
-              <td data-i18n="role.captioner.use">为每个片段生成候选描述</td>
-            </tr>
-            <tr>
-              <td data-i18n="role.selector">候选选择器（selector）</td>
-              <td>Qwen3.5-397B-A17B</td>
-              <td data-i18n="role.selector.use">从多条候选描述中选出定稿</td>
-            </tr>
-            <tr>
-              <td data-i18n="role.judge">语义评判模型（judge）</td>
-              <td>Gemini-3.5-Flash</td>
-              <td data-i18n="role.judge.use">离线计算 Label Acc 与 Semantic E2E F1</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
       <h3 data-i18n="pipeline.h3.seg">4.1 分段：尝试过的方法与结果</h3>
-      <p data-i18n="pipeline.seg.lead">分段阶段比较规则切分、拼贴图分片、整集粗分、加密切分与局部精修等路径；分数来自同一 HomER 子集上的 Segment F1。</p>
+      <p data-i18n-html data-i18n="pipeline.seg.lead">
+        分段要解决的问题是：给定一段第一视角长视频，输出动作级片段的时间边界。输入是完整视频；实验中通常先按术语约定做成带时间戳的拼贴图序列，再交给模型或规则方法。输出是一组起止时间（例如 [12.0, 18.5]），本阶段只评边界是否与人工参考对齐。分数统一为同一 HomER 子集上的 Segment F1；下面先列尝试过的做法，数值见随后的得分图与表。
+      </p>
+      <p data-i18n="pipeline.seg.methods">我们比较过的分段做法如下。</p>
       <ol>
-        <li data-i18n-html data-i18n="story.seg.1">原 EgoANT <strong>rule-based</strong> 腕速切段：过碎（F1≈0.095）。</li>
-        <li data-i18n-html data-i18n="story.seg.2">Contact sheet <strong>分片</strong>（max_sheets=3，每次最多送 3 张）：外形接近公开报告做法，但接缝处引入伪边界。</li>
-        <li data-i18n-html data-i18n="story.seg.3"><strong>整集一次</strong> + legacy prompt（尚无切段规则清单）：假切点没了，却欠分割。</li>
-        <li data-i18n-html data-i18n="story.seg.4">换成 <strong>切段规则清单</strong>（GEPA）：到 0.137，仍偏少。</li>
-        <li data-i18n-html data-i18n="story.seg.5"><strong>第一遍加密切（S1）</strong>：召回上升，但过分割。</li>
-        <li data-i18n-html data-i18n="story.seg.6"><strong>第二遍局部精修</strong>：结果支持局部精修这一设计方向；最终 <strong>窗口不外扩 + 盖住完整动作</strong>（S2 · pad=0 · full-cover）到 <strong>0.2031</strong>。
-          （另测过用算法补覆盖的后处理：不如把「盖住完整动作」写进 prompt。）</li>
-        <li data-i18n-html data-i18n="story.seg.7">相邻 merge 三种<strong>规则后处理</strong>（不是再调模型）：时间轴更好看，但 均降低 Segment F1，因此不作为默认配置。</li>
+        <li data-i18n-html data-i18n="story.seg.1">腕速规则切段：用 HaWoR 从视频重建手部运动并估计腕部速度曲线，在速度局部低谷处放置候选切点，再对相邻片段做规则合并。这是原 EgoANT 生产管线中的启发式基线，不调用视觉语言模型。</li>
+        <li data-i18n-html data-i18n="story.seg.2">拼贴图分片提交：把整集拼贴图按请求拆开，每次最多送入 3 张，由模型只在该局部时间范围内预测边界。这样做外形接近公开报告中的输入形式，但一次请求只能看到视频的一段连续时间。</li>
+        <li data-i18n-html data-i18n="story.seg.3">整集一次提交 + 旧版提示词：把整集全部拼贴图放进同一次调用，不再分片；提示词尚未加入切段规则清单。</li>
+        <li data-i18n-html data-i18n="story.seg.4">整集一次提交 + 切段规则清单：仍是整集拼贴图一次提交，但提示词改用 Macrodata 用 GEPA 搜索得到的切段规则（本文复用其公开规则文本，见术语约定）。</li>
+        <li data-i18n-html data-i18n="story.seg.5">第一遍加密切分：仍对整集做一次分段，但通过修改提示词要求模型输出更多、更短的候选片段（术语中的 S1）。</li>
+        <li data-i18n-html data-i18n="story.seg.6">第二遍局部精修：先由整集粗分得到粗边界，再围绕每个粗边界开局部时间窗，把窗内拼贴图交回模型重切。我们比较了窗口是否向外扩展，以及是否在提示词中要求「盖住完整动作」；另测过用算法中点覆盖补全边界的后处理。</li>
+        <li data-i18n-html data-i18n="story.seg.7">相邻片段规则合并：在已有模型预测上，用脚本按时间相邻、动词相同或短间隙桥接等规则合并片段，不再调用模型。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.seg">Segment F1（主路径）</h4>
         <div id="seg-bars" class="bars"></div>
       </div>
+      <p class="plain" data-i18n-html data-i18n="pipeline.seg.analysis">
+        结合上图可以看出几条清晰趋势。腕速规则基线预测片段远多于人工参考，Segment F1 只有 0.0953，说明仅靠运动低谷很难对齐动作语义边界。拼贴图分片提交时，请求之间的接缝容易被当成动作边界，大模型分片版得分与腕速基线接近；同设置下较小模型略高，但仍受分片限制。改为整集一次提交后，这类接缝伪边界减少，但旧版提示词预测片段偏少；加入切段规则清单后得分升至 0.1369，仍偏保守。第一遍加密切分抬高了召回，也带来更多过细切分。第二遍局部精修是主要增益来源：在窗口不外扩、并在提示词中要求盖住完整动作时，Segment F1 达到已评测配置中的最高值 0.2031；把「盖住完整动作」写成算法后处理，效果不如写进提示词。三种相邻片段规则合并都会降低 Segment F1，因此不作为默认配置。
+      </p>
       <p class="plain" data-i18n-html data-i18n="story.seg.legend">
-        表头：<strong>P（Precision）</strong>= match / pred（预测段里配对成功的比例）；
-        <strong>R（Recall）</strong>= match / gold（gold 段被找回的比例）；
-        <strong>match / pred / gold</strong>= 配对成功数 / 预测段数 / gold 段数（本子集 gold 恒为 470）。
-        「模型」列若写<strong>规则后处理</strong>，表示在已有预测上做脚本合并，不再调用 LLM。
+        表头：P（Precision）= match / pred（预测段里配对成功的比例）；
+        R（Recall）= match / gold（人工参考段被找回的比例）；
+        match / pred / gold = 配对成功数 / 预测段数 / 人工参考段数（本子集人工参考恒为 470）。
+        「模型」列若写「规则后处理」，表示在已有预测上做脚本合并，不再调用视觉语言模型。
       </p>
       <div style="overflow-x:auto">
         <table>
@@ -712,8 +678,8 @@
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-5"></script>
-  <script src="js/report.js?v=20260805-4"></script>
+  <script src="js/i18n.js?v=20260811-6"></script>
+  <script src="js/report.js?v=20260811-6"></script>
   <script src="js/prompts_embed.js?v=20260806-1"></script>
   <script>
     async function loadPrompt(ids, file) {

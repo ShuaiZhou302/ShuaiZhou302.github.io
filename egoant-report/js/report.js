@@ -13,20 +13,20 @@
   const ABLATION_I18N = {
     "egovid_baseline": {
       "zh": {
-        "name": "EgoANT 原管线：腕速规则切段 + merge",
-        "note": "过分割：预测段远多于 gold",
-        "model": "rule-based（腕速 minima + merge）"
+        "name": "EgoANT 原管线：腕速规则切段并合并",
+        "note": "预测片段明显多于人工参考",
+        "model": "规则方法（腕速低谷 + 合并）"
       },
       "en": {
         "name": "EgoANT baseline: wrist-speed rule cuts + merge",
-        "note": "Over-segmentation: far more preds than gold",
+        "note": "Far more predictions than human reference",
         "model": "rule-based (wrist minima + merge)"
       }
     },
     "cs_max3_397b": {
       "zh": {
-        "name": "Contact sheet 分片（每次最多 3 张）",
-        "note": "分片接缝处出现假边界",
+        "name": "拼贴图分片（每次最多 3 张 · 397B）",
+        "note": "请求接缝处易出现伪边界",
         "model": "Qwen3.5-397B"
       },
       "en": {
@@ -37,55 +37,55 @@
     },
     "cs_max3_27b": {
       "zh": {
-        "name": "Contact sheet 分片（max_sheets=3）",
-        "note": "同设置下小模型优于大模型分片版",
+        "name": "拼贴图分片（每次最多 3 张 · 27B）",
+        "note": "同设置下小模型略优于大模型分片版",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Contact sheet chunks (max_sheets=3)",
+        "name": "Contact sheet chunks (max 3 sheets/call · 27B)",
         "note": "Smaller model beats large on same chunking",
         "model": "Qwen3.6-27B"
       }
     },
     "whole_legacy_27b": {
       "zh": {
-        "name": "整集一次 + 旧版 prompt（无切段规则清单）",
-        "note": "欠分割：预测段过少",
+        "name": "整集一次 + 旧版提示词（无切段规则清单）",
+        "note": "预测片段偏少",
         "model": "Qwen3.6-27B"
       },
       "en": {
         "name": "Whole-episode + legacy prompt (no rule list)",
-        "note": "Under-segmentation: too few preds",
+        "note": "Too few predicted segments",
         "model": "Qwen3.6-27B"
       }
     },
     "aligned_gepa_27b": {
       "zh": {
-        "name": "整集一次 + 切段规则清单（GEPA）",
-        "note": "仍欠分割，但比旧版略好",
+        "name": "整集一次 + 切段规则清单",
+        "note": "比旧版提示词更好，仍偏保守",
         "model": "Qwen3.6-27B"
       },
       "en": {
         "name": "Whole-episode + segmentation rule list (GEPA)",
-        "note": "Still under-segments; better than legacy",
+        "note": "Better than legacy; still conservative",
         "model": "Qwen3.6-27B"
       }
     },
     "s1_full25_397b": {
       "zh": {
-        "name": "第一遍加密切（S1）：抬召回",
-        "note": "召回上升，但又切得过碎",
+        "name": "第一遍加密切分",
+        "note": "召回上升，切分也更细",
         "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "Pass-1 denser cuts (S1): lift recall",
-        "note": "Recall up, but over-cuts",
+        "name": "Pass-1 denser cuts (S1)",
+        "note": "Recall up; cuts also finer",
         "model": "Qwen3.5-397B"
       }
     },
     "s2_full25_397b": {
       "zh": {
-        "name": "第二遍局部精修早期版（窗外扩≈1s，尚未盖住完整动作）",
+        "name": "第二遍局部精修早期版（窗外扩约 1 秒，尚未盖住完整动作）",
         "note": "早期局部精修配置",
         "model": "Qwen3.5-397B"
       },
@@ -145,8 +145,8 @@
     },
     "s2_midpoint_post": {
       "zh": {
-        "name": "窗口不外扩 + 算法补覆盖（后处理，非写进 prompt）",
-        "note": "用算法补覆盖 ≠ 写进 prompt 的「盖住完整动作」",
+        "name": "窗口不外扩 + 算法补覆盖（后处理，非写进提示词）",
+        "note": "算法补覆盖不及提示词中的「盖住完整动作」",
         "model": "Qwen3.6-27B"
       },
       "en": {
@@ -157,12 +157,12 @@
     },
     "s2_fullcover_qwen36": {
       "zh": {
-        "name": "局部再切：窗口不外扩 + 盖住完整动作（S2 · pad=0 · full-cover）",
+        "name": "局部再切：窗口不外扩并盖住完整动作",
         "note": "已评测分段配置最高值",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "Local re-cut: no pad-out + cover full actions (S2 · pad=0 · full-cover)",
+        "name": "Local re-cut: no pad-out + cover full actions",
         "note": "Best segmentation so far",
         "model": "Qwen3.6-27B"
       }
