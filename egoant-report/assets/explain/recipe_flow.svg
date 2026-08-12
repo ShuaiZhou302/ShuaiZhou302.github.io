@@ -1,87 +1,91 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 520" role="img" aria-labelledby="title desc">
   <title id="title">EgoANT recommended recipe flowchart</title>
-  <desc id="desc">Raw video is segmented, then labeled: raw frames can go alone, or join ffmpeg / seed / prior candidates into a selector, yielding segments with subtask labels.</desc>
+  <desc id="desc">After segmentation, all four labeling inputs receive the predicted bounds; raw frames can go alone or join the other candidates into the selector.</desc>
   <defs>
     <style>
       .bg{fill:#fffdf8}
       .ink{fill:#1c1914}
       .muted{fill:#5c564c}
-      .arrow{stroke:#5c564c;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .arrow{stroke:#5c564c;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
       .seg{fill:#f4f0e8;stroke:#cbbfae;stroke-width:1.6}
       .lab{fill:#f7faf8;stroke:#b7cfc7;stroke-width:1.6}
       .box{fill:#fffdf8;stroke:#d9d0c2;stroke-width:1.4}
       .cand{fill:#eaf5ee;stroke:#0f6b5c;stroke-width:1.6}
       .inner{fill:#fff;stroke:#d9d0c2;stroke-width:1.2}
-      .txt{font:14px "IBM Plex Sans",Arial,sans-serif}
-      .small{font-size:12px}
-      .tiny{font-size:11px}
+      .txt{font:16px "IBM Plex Sans",Arial,sans-serif}
+      .small{font-size:13.5px}
+      .tiny{font-size:12.5px}
       .label{font-weight:700}
     </style>
-    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-      <path d="M1.2 1.8 L8.8 5 L1.2 8.2 z" fill="#5c564c"/>
+    <marker id="arr" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M1 1.5 L11 6 L1 10.5 z" fill="#5c564c"/>
     </marker>
   </defs>
 
   <rect width="1180" height="520" rx="18" class="bg"/>
 
-  <rect x="24" y="230" width="100" height="48" rx="10" class="box"/>
-  <text x="74" y="259" text-anchor="middle" class="txt label ink">Raw video</text>
-  <line x1="124" y1="254" x2="160" y2="254" class="arrow" marker-end="url(#arr)"/>
+  <rect x="24" y="230" width="108" height="52" rx="10" class="box"/>
+  <text x="78" y="262" text-anchor="middle" class="txt label ink">Raw video</text>
+  <line x1="132" y1="256" x2="168" y2="256" class="arrow" marker-end="url(#arr)"/>
 
-  <rect x="160" y="150" width="300" height="208" rx="14" class="seg"/>
-  <text x="310" y="178" text-anchor="middle" class="txt label ink">Segmentation</text>
-  <text x="310" y="198" text-anchor="middle" class="txt tiny muted">sheets · coarse + refine</text>
+  <rect x="168" y="146" width="300" height="220" rx="14" class="seg"/>
+  <text x="318" y="176" text-anchor="middle" class="txt label ink">Segmentation</text>
+  <text x="318" y="198" text-anchor="middle" class="txt tiny muted">sheets · coarse + refine</text>
 
-  <rect x="180" y="230" width="72" height="72" rx="9" class="inner"/>
-  <text x="216" y="262" text-anchor="middle" class="txt small label ink">Sheets</text>
-  <text x="216" y="280" text-anchor="middle" class="txt tiny muted">0.5s</text>
-  <line x1="252" y1="266" x2="272" y2="266" class="arrow" marker-end="url(#arr)"/>
+  <rect x="188" y="232" width="74" height="78" rx="9" class="inner"/>
+  <text x="225" y="266" text-anchor="middle" class="txt small label ink">Sheets</text>
+  <text x="225" y="286" text-anchor="middle" class="txt tiny muted">0.5s</text>
+  <line x1="262" y1="271" x2="282" y2="271" class="arrow" marker-end="url(#arr)"/>
 
-  <rect x="272" y="230" width="72" height="72" rx="9" class="inner"/>
-  <text x="308" y="262" text-anchor="middle" class="txt small label ink">Coarse</text>
-  <text x="308" y="280" text-anchor="middle" class="txt tiny muted">+ rules</text>
-  <line x1="344" y1="266" x2="364" y2="266" class="arrow" marker-end="url(#arr)"/>
+  <rect x="282" y="232" width="74" height="78" rx="9" class="inner"/>
+  <text x="319" y="266" text-anchor="middle" class="txt small label ink">Coarse</text>
+  <text x="319" y="286" text-anchor="middle" class="txt tiny muted">+ rules</text>
+  <line x1="356" y1="271" x2="376" y2="271" class="arrow" marker-end="url(#arr)"/>
 
-  <rect x="364" y="230" width="72" height="72" rx="9" class="inner"/>
-  <text x="400" y="262" text-anchor="middle" class="txt small label ink">Refine</text>
-  <text x="400" y="280" text-anchor="middle" class="txt tiny muted">no pad</text>
+  <rect x="376" y="232" width="74" height="78" rx="9" class="inner"/>
+  <text x="413" y="266" text-anchor="middle" class="txt small label ink">Refine</text>
+  <text x="413" y="286" text-anchor="middle" class="txt tiny muted">no pad</text>
 
-  <rect x="500" y="36" width="450" height="448" rx="14" class="lab"/>
-  <text x="725" y="64" text-anchor="middle" class="txt label ink">Labeling</text>
-  <text x="725" y="84" text-anchor="middle" class="txt tiny muted">write descriptions on fixed bounds</text>
+  <rect x="520" y="36" width="430" height="448" rx="14" class="lab"/>
+  <text x="735" y="66" text-anchor="middle" class="txt label ink">Labeling</text>
+  <text x="735" y="88" text-anchor="middle" class="txt tiny muted">write descriptions on fixed bounds</text>
 
-  <rect x="540" y="110" width="140" height="52" rx="10" class="cand"/>
-  <text x="610" y="141" text-anchor="middle" class="txt label ink">Raw frames</text>
-  <rect x="540" y="196" width="140" height="52" rx="10" class="cand"/>
-  <text x="610" y="227" text-anchor="middle" class="txt label ink">ffmpeg</text>
-  <rect x="540" y="282" width="140" height="52" rx="10" class="cand"/>
-  <text x="610" y="313" text-anchor="middle" class="txt label ink">Seed cand.</text>
-  <rect x="540" y="368" width="140" height="52" rx="10" class="cand"/>
-  <text x="610" y="399" text-anchor="middle" class="txt label ink">Prior cand.</text>
+  <rect x="560" y="112" width="150" height="54" rx="10" class="cand"/>
+  <text x="635" y="145" text-anchor="middle" class="txt label ink">Raw frames</text>
+  <rect x="560" y="198" width="150" height="54" rx="10" class="cand"/>
+  <text x="635" y="231" text-anchor="middle" class="txt label ink">ffmpeg</text>
+  <rect x="560" y="284" width="150" height="54" rx="10" class="cand"/>
+  <text x="635" y="317" text-anchor="middle" class="txt label ink">Seed cand.</text>
+  <rect x="560" y="370" width="150" height="54" rx="10" class="cand"/>
+  <text x="635" y="403" text-anchor="middle" class="txt label ink">Prior cand.</text>
 
-  <path d="M460 266 H510 V136 H520" class="arrow"/>
-  <line x1="520" y1="136" x2="540" y2="136" class="arrow" marker-end="url(#arr)"/>
+  <line x1="468" y1="271" x2="520" y2="271" class="arrow"/>
+  <line x1="520" y1="139" x2="520" y2="397" class="arrow"/>
+  <line x1="520" y1="139" x2="560" y2="139" class="arrow" marker-end="url(#arr)"/>
+  <line x1="520" y1="225" x2="560" y2="225" class="arrow" marker-end="url(#arr)"/>
+  <line x1="520" y1="311" x2="560" y2="311" class="arrow" marker-end="url(#arr)"/>
+  <line x1="520" y1="397" x2="560" y2="397" class="arrow" marker-end="url(#arr)"/>
 
-  <line x1="680" y1="136" x2="820" y2="136" class="arrow"/>
-  <path d="M820 136 V248" class="arrow"/>
-  <line x1="820" y1="248" x2="960" y2="248" class="arrow" marker-end="url(#arr)"/>
-  <text x="760" y="124" class="txt tiny muted">single-path</text>
+  <line x1="710" y1="139" x2="820" y2="139" class="arrow"/>
+  <path d="M820 139 V250" class="arrow"/>
+  <line x1="820" y1="250" x2="960" y2="250" class="arrow" marker-end="url(#arr)"/>
+  <text x="760" y="126" class="txt tiny muted">single-path</text>
 
-  <line x1="720" y1="136" x2="720" y2="422" class="arrow"/>
-  <line x1="680" y1="222" x2="720" y2="222" class="arrow"/>
-  <line x1="680" y1="308" x2="720" y2="308" class="arrow"/>
-  <line x1="680" y1="394" x2="720" y2="394" class="arrow"/>
-  <line x1="720" y1="422" x2="768" y2="422" class="arrow" marker-end="url(#arr)"/>
+  <line x1="740" y1="139" x2="740" y2="422" class="arrow"/>
+  <line x1="710" y1="225" x2="740" y2="225" class="arrow"/>
+  <line x1="710" y1="311" x2="740" y2="311" class="arrow"/>
+  <line x1="710" y1="397" x2="740" y2="397" class="arrow"/>
+  <line x1="740" y1="422" x2="780" y2="422" class="arrow" marker-end="url(#arr)"/>
 
-  <rect x="768" y="398" width="140" height="48" rx="10" class="cand"/>
-  <text x="838" y="427" text-anchor="middle" class="txt label ink">Selector</text>
+  <rect x="780" y="396" width="140" height="52" rx="10" class="cand"/>
+  <text x="850" y="428" text-anchor="middle" class="txt label ink">Selector</text>
 
-  <line x1="908" y1="422" x2="940" y2="422" class="arrow"/>
-  <path d="M940 422 V284" class="arrow"/>
-  <line x1="940" y1="284" x2="960" y2="284" class="arrow" marker-end="url(#arr)"/>
-  <text x="780" y="456" class="txt tiny muted">multi-candidate</text>
+  <line x1="920" y1="422" x2="940" y2="422" class="arrow"/>
+  <path d="M940 422 V286" class="arrow"/>
+  <line x1="940" y1="286" x2="960" y2="286" class="arrow" marker-end="url(#arr)"/>
+  <text x="790" y="468" class="txt tiny muted">multi-candidate</text>
 
-  <rect x="960" y="236" width="196" height="60" rx="12" class="box"/>
-  <text x="1058" y="262" text-anchor="middle" class="txt label ink">Segments + labels</text>
-  <text x="1058" y="282" text-anchor="middle" class="txt tiny muted">bounds + descriptions</text>
+  <rect x="960" y="236" width="196" height="64" rx="12" class="box"/>
+  <text x="1058" y="264" text-anchor="middle" class="txt label ink">Segments + labels</text>
+  <text x="1058" y="286" text-anchor="middle" class="txt tiny muted">bounds + descriptions</text>
 </svg>
