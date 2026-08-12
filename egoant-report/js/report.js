@@ -456,12 +456,12 @@
     },
     "raw27b_inner05_e2e": {
       "zh": {
-        "name": "S2 边界 + 原始帧重标 · 27B（inner-0.5）",
+        "name": "S2 边界 + 原始帧重标 · 27B · 段内缩进 0.5 秒",
         "note": "",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 + 27B raw relabel (inner-0.5)",
+        "name": "S2 + raw relabel · 27B · inward 0.5s",
         "note": "",
         "model": "Qwen3.6-27B"
       }
@@ -473,31 +473,31 @@
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 + 27B ffmpeg-raw relabel",
+        "name": "S2 + ffmpeg-frame relabel · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       }
     },
     "seeded_neighbor27_e2e": {
       "zh": {
-        "name": "S2 边界 + seeded-neighbor · 27B",
+        "name": "S2 边界 + 种子邻段重标 · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 + 27B seeded-neighbor",
+        "name": "S2 + seeded neighbor relabel · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       }
     },
     "raw27_prior_neighbor27_e2e": {
       "zh": {
-        "name": "S2 边界 + raw-prior neighbor · 27B",
+        "name": "S2 边界 + 原始帧先验邻段重标 · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 + 27B raw-prior neighbor",
+        "name": "S2 + raw-prior neighbor relabel · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       }
@@ -509,7 +509,7 @@
         "model": "Qwen3.6-27B"
       },
       "en": {
-        "name": "S2 + 27B multi-candidate selector",
+        "name": "S2 + multi-candidate select · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       }
@@ -798,7 +798,7 @@
     tbody.innerHTML = orderedE2ERows(data).map((row) => {
       const r = locRow(row);
       const bestCls = r.e2e_f1 === best ? "best" : "";
-      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td><td>${esc(r.note || "")}</td></tr>`;
+      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td></tr>`;
     }).join("");
   }
 
@@ -970,19 +970,25 @@
     }
     const demo = walk.candidate_demo_segment || {};
     const cands = demo.candidate_labels || {};
+    const srcMap = { A: "raw", B: "rawprior", C: "seed", D: "ffmpeg" };
+    const candLabelMap = lang() === "en"
+      ? { raw: "raw frames", rawprior: "raw prior", seed: "seed", ffmpeg: "ffmpeg" }
+      : { raw: "原始帧", rawprior: "原始帧先验", seed: "种子描述", ffmpeg: "ffmpeg" };
     const tb = document.querySelector("#walk-cands");
     if (tb) {
-      const srcMap = { A: "raw", B: "rawprior", C: "seed", D: "ffmpeg" };
       const pickedKey = srcMap[demo.candidate_select_source] || null;
       const order = ["raw", "rawprior", "seed", "ffmpeg"];
       tb.innerHTML = order.filter((k) => cands[k] != null).map((k) => {
         const isFinal = (pickedKey && k === pickedKey) || cands[k] === demo.subtask;
-        return `<tr${isFinal ? ' style="background:#eaf5ee"' : ""}><td>${esc(k)}</td><td>${esc(cands[k])}</td></tr>`;
+        return `<tr${isFinal ? ' style="background:#eaf5ee"' : ""}><td>${esc(candLabelMap[k] || k)}</td><td>${esc(cands[k])}</td></tr>`;
       }).join("");
     }
     const fin = document.querySelector("#walk-cand-final");
     if (fin) {
-      fin.innerHTML = `<strong>Selector:</strong> source=<code>${esc(demo.candidate_select_source)}</code> → “${esc(demo.subtask)}”
+      const key = srcMap[demo.candidate_select_source];
+      const srcLabel = key ? (candLabelMap[key] || key) : demo.candidate_select_source;
+      const head = lang() === "en" ? "Candidate selector" : "候选判别器";
+      fin.innerHTML = `<strong>${head}:</strong> ${esc(srcLabel)} → “${esc(demo.subtask)}”
         <span style="color:var(--muted)">(${Number(demo.start_sec).toFixed(1)}–${Number(demo.end_sec).toFixed(1)}s)</span>`;
     }
 

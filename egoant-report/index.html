@@ -490,22 +490,22 @@ def compatible(a, b, strategy):
       <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端分段与标注要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
 
       <ul class="term-list">
-        <li data-i18n-html data-i18n="world.term.e2e.raw">原始帧重标（raw relabel）：固定预测边界后，用模型看当前段原始帧重写一句操作描述。S2 边界 + 397B 单路 raw 的端到端整流程得分为 0.1414。</li>
-        <li data-i18n-html data-i18n="world.term.e2e.ffmpeg">ffmpeg 抽帧重标：边界相同，只把默认解码/抽帧换成 ffmpeg 路径。这不是新的标注策略，而是同一视频段的另一路候选描述；实验中常略高于默认 raw，因此进入 selector 候选池。</li>
-        <li data-i18n-html data-i18n="world.term.e2e.neighbor">邻段重标（neighbor relabel）：给当前段时同时给上一段 / 当前段 / 下一段的帧。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。</li>
-        <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：对同一预测边界生成 raw、ffmpeg、seed、rawprior 等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini judge 下最高观察端到端整流程得分为 0.1542（397B selector）。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.raw">原始帧重标：固定预测边界后，用模型看当前段原始帧重写一句操作描述。其中「段内缩进 0.5 秒」指抽帧前先把片段两端各内缩 0.5 秒，减少边界附近噪声帧。S2 边界 + 397B 单路原始帧重标的端到端整流程得分为 0.1414。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.ffmpeg">ffmpeg 抽帧重标：边界相同，只把默认解码/抽帧换成 ffmpeg 路径。这不是新的标注策略，而是同一视频段的另一路候选描述；实验中常略高于默认原始帧重标，因此进入候选判别器的候选池。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.neighbor">邻段重标：给当前段时同时给上一段 / 当前段 / 下一段的帧。变体包括：种子邻段重标（附带一句种子描述作提示）、原始帧先验邻段重标（把原始帧重标结果当作文本先验）。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。</li>
+        <li data-i18n-html data-i18n="world.term.9">候选判别器：对同一预测边界生成原始帧、ffmpeg、种子描述、原始帧先验等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini 评判下最高观察端到端整流程得分为 0.1542（397B 候选判别器）。</li>
       </ul>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端分段与标注路径；相同方法的不同模型放在一起。</p>
       <ol class="method-list">
         <li data-i18n-html data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界，并在同一生产管线里直接写出每段描述，作为一体基线。切段是规则方法；描述也不走本文 3.2 的固定边界标注提示词，因此这里<strong>没有</strong>单独公开的一体路径提示词。</li>
         <li data-i18n="story.e2e.2">S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。</li>
-        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B / 397B：固定 S2 边界，分别用 Qwen3.6-27B（含 inner-0.5 采样）与 Qwen3.5-397B 对每段原始帧重写描述。</li>
+        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B / 397B：固定 S2 边界，分别用 Qwen3.6-27B 与 Qwen3.5-397B 对每段原始帧重写描述；27B 另试「段内缩进 0.5 秒」抽帧变体。</li>
         <li data-i18n="story.e2e.4">S2 边界 + ffmpeg 抽帧重标 · 27B / 397B：边界不变，只换 ffmpeg 解码/抽帧路径，再分别由 27B 与 397B 标注。</li>
-        <li data-i18n="story.e2e.5">S2 边界 + 邻段重标 · 27B / 397B：提交邻段视觉上下文；27B 侧试过 seeded-neighbor 与 raw-prior neighbor，397B 侧用原始帧描述作文本先验。</li>
-        <li data-i18n-html data-i18n="story.e2e.6">S2 边界 + 多候选判别 · 27B / 397B：在同一 S2 边界上生成多路候选描述，再分别由 27B 与 397B selector 定稿。重标提示词见 <a href="#label-prompt">3.2</a>；selector 提示词见下方折叠。</li>
+        <li data-i18n="story.e2e.5">S2 边界 + 邻段重标 · 27B / 397B：提交邻段视觉上下文。27B 侧试过种子邻段重标与原始帧先验邻段重标；397B 侧用原始帧描述作文本先验。</li>
+        <li data-i18n-html data-i18n="story.e2e.6">S2 边界 + 多候选判别 · 27B / 397B：在同一 S2 边界上生成多路候选描述，再分别由 27B 与 397B 候选判别器定稿。重标提示词见 <a href="#label-prompt">3.2</a>；候选判别器提示词见下方折叠。</li>
       </ol>
       <details class="prompt-fold" id="e2e-selector-prompt">
-        <summary data-i18n="walk.prompt.sel">判别器提示词（英语）</summary>
+        <summary data-i18n="walk.prompt.sel">候选判别器提示词（英语）</summary>
         <div class="prompt-fold-body">
           <p class="prompt-note" data-i18n-html data-i18n="pipeline.e2e.prompt.note">
             说明：下方就是候选判别器提示词。System / User 两段会送给模型；图像不进入本提示词，候选描述以文本列表传入。
@@ -522,7 +522,7 @@ def compatible(a, b, strategy):
       </div>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th data-i18n="th.e2ef1">端到端整流程得分</th><th data-i18n="th.predgold">预测段数 / 参考段数</th><th data-i18n="th.remark">备注</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th data-i18n="th.e2ef1">端到端整流程得分</th><th data-i18n="th.predgold">预测段数 / 参考段数</th></tr></thead>
           <tbody id="e2e-tbody"></tbody>
         </table>
       </div>
@@ -531,10 +531,10 @@ def compatible(a, b, strategy):
         <ol>
           <li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li>
           <li>分段模型自标：在同一 S2 边界上沿用分段描述，得分为 0.1234，说明只换更好描述路径仍有空间。</li>
-          <li>原始帧重标 · 27B / 397B：27B raw 为 0.1285，inner-0.5 为 0.1337；397B raw 为 0.1414。同一方法下 397B 高于 27B，但增益主要来自噪声预测边界上的定稿，而不是固定参考边界上的 Label Acc 优势。</li>
-          <li>ffmpeg 抽帧重标 · 27B / 397B：27B 为 0.1440，397B 为 0.1491。换抽帧实现本身就能抬分，且两边同向；该路径常作为 selector 的候选来源，而不是单独的新策略。</li>
-          <li>邻段重标 · 27B / 397B：27B seeded-neighbor 0.1260、raw-prior neighbor 0.1414；397B-prior neighbor 0.1491。邻段上下文有时接近单路 raw/ffmpeg，但不稳定，且容易把邻段动作写进当前句。</li>
-          <li>多候选判别 · 27B / 397B：27B selector 为 0.1362，低于同组最好的 27B ffmpeg；397B selector 为 0.1542（语义匹配 60），仍为本组最高。成本敏感场景可走单路 raw / ffmpeg；高精度场景保留 397B selector。</li>
+          <li>原始帧重标 · 27B / 397B：默认原始帧重标下，27B 为 0.1285，段内缩进 0.5 秒为 0.1337；397B 为 0.1414。同一方法下 397B 高于 27B，但增益主要来自噪声预测边界上的定稿，而不是固定参考边界上的固定分段标注得分优势。</li>
+          <li>ffmpeg 抽帧重标 · 27B / 397B：27B 为 0.1440，397B 为 0.1491。换抽帧实现本身就能抬分，且两边同向；该路径常作为候选判别器的候选来源，而不是单独的新策略。</li>
+          <li>邻段重标 · 27B / 397B：27B 种子邻段重标 0.1260、原始帧先验邻段重标 0.1414；397B 先验邻段重标 0.1491。邻段上下文有时接近单路原始帧 / ffmpeg，但不稳定，且容易把邻段动作写进当前句。</li>
+          <li>多候选判别 · 27B / 397B：27B 候选判别器为 0.1362，低于同组最好的 27B ffmpeg；397B 候选判别器为 0.1542，语义匹配 60，仍为本组最高。成本敏感场景可走单路原始帧 / ffmpeg；高精度场景保留 397B 候选判别器。</li>
         </ol>
       </div>
 
@@ -555,12 +555,12 @@ def compatible(a, b, strategy):
           </tr>
           <tr>
             <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B raw（Label Acc 55.7%）；预测边界单路配置：27B ffmpeg raw（0.1440）或 397B raw（0.1414，成本/部署不同）</td>
+            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B 原始帧（固定分段标注得分 55.7%）；预测边界单路配置：27B ffmpeg 抽帧（0.1440）或 397B 原始帧（0.1414，成本/部署不同）</td>
             <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
           </tr>
           <tr>
             <td data-i18n="recipe.r3.a">高准确率配置</td>
-            <td data-i18n="recipe.r3.b">同上边界 + 多候选 + 397B selector（Gemini E2E 0.1542）</td>
+            <td data-i18n="recipe.r3.b">同一 S2 预测边界 + 多候选生成 + 397B 候选判别器（Gemini 端到端整流程得分 0.1542）</td>
             <td data-i18n="recipe.r3.c">分段小模型自标当终稿</td>
           </tr>
           <tr>
@@ -598,8 +598,8 @@ def compatible(a, b, strategy):
           </tr>
           <tr>
             <td data-i18n="cost.row.wgo">EgoANT（本页 WGO）</td>
-            <td data-i18n="cost.row.wgo_scope">raw / selector 工程估计 + 产物 API 次数</td>
-            <td data-i18n="cost.row.wgo_num">raw 约 $0.84–$1.59/h；selector 约 $2.11–$3.80/h</td>
+            <td data-i18n="cost.row.wgo_scope">原始帧 / 候选判别器工程估计 + 产物 API 次数</td>
+            <td data-i18n="cost.row.wgo_num">原始帧约 $0.84–$1.59/h；候选判别器约 $2.11–$3.80/h</td>
           </tr>
           <tr>
             <td data-i18n="cost.row.prod">EgoANT 腕速基线</td>
@@ -614,7 +614,7 @@ def compatible(a, b, strategy):
           <tr>
             <th data-i18n="cost.th.item">项</th>
             <th data-i18n="cost.th.raw">单路 raw（E2E 0.1414）</th>
-            <th data-i18n="cost.th.sel">候选+selector（E2E 0.1542）</th>
+            <th data-i18n="cost.th.sel">多候选 + 候选判别器（E2E 0.1542）</th>
           </tr>
         </thead>
         <tbody id="cost-tbody"></tbody>
@@ -682,12 +682,11 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-4">
           <div class="step-h"><span class="badge">04</span><h3 class="step-title" data-i18n="walk.s4.t">多候选标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s4.p">
-            固定分段边界后，对每一段用多条路径各写一句：
-            <strong>raw</strong>=默认读帧；
-            <strong>ffmpeg</strong>=换解码抽帧路径；
-            <strong>seed</strong>=带先验/种子标签的变体；
-            <strong>rawprior</strong>=带 prior 的 raw。
-            下表是本集一段真实候选：意见不一致时，selector 才有价值。
+            固定分段边界后，对每个预测片段生成多条候选描述：
+            <strong>原始帧</strong>使用默认抽帧；
+            <strong>ffmpeg</strong>使用另一套解码/抽帧路径；
+            <strong>种子描述</strong>与<strong>原始帧先验</strong>使用先前模型输出作为文本先验。
+            候选判别器在推理时只看候选及其来源，不看人工参考标签。
           </p>
           <div>
               <table class="cand-table">
@@ -703,7 +702,7 @@ def compatible(a, b, strategy):
         </article>
 
         <article class="step-card" id="walk-5">
-          <div class="step-h"><span class="badge">05</span><h3 class="step-title" data-i18n="walk.s5.t">Candidate selector 定稿</h3></div>
+          <div class="step-h"><span class="badge">05</span><h3 class="step-title" data-i18n="walk.s5.t">候选判别器定稿</h3></div>
           <p class="plain" data-i18n="walk.s5.p">用 Qwen3.5-397B 从候选里挑一句最像「完成操作」的短指令。</p>
           <details class="prompt-fold">
             <summary data-i18n="walk.prompt.sel">判别器提示词（英语）</summary>
@@ -714,8 +713,8 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-6">
           <div class="step-h"><span class="badge">06</span><h3 class="step-title" data-i18n="walk.s6.t">点选 pred 段：看视频 + 标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s6.p">
-            这里只走 <strong>selector 预测轨</strong>（点色块或表格行 → 右侧播该段、左侧看标注）。
-            与 gold / 整集粗分 / contact sheet 的<strong>多轨边界对照</strong>见 <a href="#walk-boundary">本节边界对照</a>，不再重复画 gold 时间轴。
+            这里只展示 <strong>候选判别器预测轨</strong>：点击色块或表格行后，右侧播放对应片段，左侧显示预测标签。
+            人工参考 / 整集粗分 / 拼贴图粗分的多轨边界对照见 <a href="#walk-boundary">本节边界对照</a>。
           </p>
           <div id="walk-timeline" class="timeline"></div>
           <div class="walk-explore">
@@ -729,7 +728,7 @@ def compatible(a, b, strategy):
           </div>
           <div style="overflow-x:auto; max-height: 280px;">
             <table class="walk-seg-table">
-              <thead><tr><th>#</th><th data-i18n="walk.th.time">时间 (s)</th><th data-i18n="walk.th.sub">子任务</th><th>Selector</th></tr></thead>
+              <thead><tr><th>#</th><th data-i18n="walk.th.time">时间 (s)</th><th data-i18n="walk.th.sub">子任务</th><th data-i18n="walk.th.sel">候选判别器</th></tr></thead>
               <tbody id="walk-seg-tbody"></tbody>
             </table>
           </div>
@@ -796,8 +795,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-06"></script>
-  <script src="js/report.js?v=20260812-06"></script>
+  <script src="js/i18n.js?v=20260812-07"></script>
+  <script src="js/report.js?v=20260812-07"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
