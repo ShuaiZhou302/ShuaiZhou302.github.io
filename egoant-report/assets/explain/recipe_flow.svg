@@ -25,9 +25,9 @@
 
   <rect width="1200" height="520" rx="18" class="bg"/>
 
-  <rect x="8" y="230" width="108" height="52" rx="10" class="box"/>
-  <text x="62" y="262" text-anchor="middle" class="txt label ink">Raw video</text>
-  <line x1="116" y1="256" x2="148" y2="256" class="arrow" marker-end="url(#arr)"/>
+  <rect x="8" y="242" width="108" height="52" rx="10" class="box"/>
+  <text x="62" y="274" text-anchor="middle" class="txt label ink">Raw video</text>
+  <line x1="116" y1="268" x2="148" y2="268" class="arrow" marker-end="url(#arr)"/>
 
   <rect x="148" y="146" width="300" height="220" rx="14" class="seg"/>
   <text x="298" y="176" text-anchor="middle" class="txt label ink">Segmentation</text>
@@ -47,45 +47,45 @@
   <text x="393" y="266" text-anchor="middle" class="txt small label ink">Refine</text>
   <text x="393" y="286" text-anchor="middle" class="txt tiny muted">no pad</text>
 
-  <rect x="510" y="36" width="420" height="448" rx="14" class="lab"/>
-  <text x="720" y="66" text-anchor="middle" class="txt label ink">Labeling</text>
-  <text x="720" y="88" text-anchor="middle" class="txt tiny muted">write descriptions on fixed bounds</text>
+  <rect x="528" y="36" width="424" height="448" rx="14" class="lab"/>
+  <text x="740" y="66" text-anchor="middle" class="txt label ink">Labeling</text>
+  <text x="740" y="88" text-anchor="middle" class="txt tiny muted">write descriptions on fixed bounds</text>
 
-  <rect x="548" y="112" width="150" height="54" rx="10" class="cand"/>
-  <text x="623" y="145" text-anchor="middle" class="txt label ink">Raw frames</text>
-  <rect x="548" y="198" width="150" height="54" rx="10" class="cand"/>
-  <text x="623" y="231" text-anchor="middle" class="txt label ink">ffmpeg</text>
-  <rect x="548" y="284" width="150" height="54" rx="10" class="cand"/>
-  <text x="623" y="317" text-anchor="middle" class="txt label ink">Seed cand.</text>
-  <rect x="548" y="370" width="150" height="54" rx="10" class="cand"/>
-  <text x="623" y="403" text-anchor="middle" class="txt label ink">Prior cand.</text>
+  <rect x="556" y="112" width="150" height="54" rx="10" class="cand"/>
+  <text x="631" y="145" text-anchor="middle" class="txt label ink">Raw frames</text>
+  <rect x="556" y="198" width="150" height="54" rx="10" class="cand"/>
+  <text x="631" y="231" text-anchor="middle" class="txt label ink">ffmpeg</text>
+  <rect x="556" y="284" width="150" height="54" rx="10" class="cand"/>
+  <text x="631" y="317" text-anchor="middle" class="txt label ink">Seed cand.</text>
+  <rect x="556" y="370" width="150" height="54" rx="10" class="cand"/>
+  <text x="631" y="403" text-anchor="middle" class="txt label ink">Prior cand.</text>
 
   <line x1="448" y1="271" x2="510" y2="271" class="arrow"/>
   <line x1="510" y1="139" x2="510" y2="397" class="arrow"/>
-  <line x1="510" y1="139" x2="548" y2="139" class="arrow" marker-end="url(#arr)"/>
-  <line x1="510" y1="225" x2="548" y2="225" class="arrow" marker-end="url(#arr)"/>
-  <line x1="510" y1="311" x2="548" y2="311" class="arrow" marker-end="url(#arr)"/>
-  <line x1="510" y1="397" x2="548" y2="397" class="arrow" marker-end="url(#arr)"/>
+  <line x1="510" y1="139" x2="556" y2="139" class="arrow" marker-end="url(#arr)"/>
+  <line x1="510" y1="225" x2="556" y2="225" class="arrow" marker-end="url(#arr)"/>
+  <line x1="510" y1="311" x2="556" y2="311" class="arrow" marker-end="url(#arr)"/>
+  <line x1="510" y1="397" x2="556" y2="397" class="arrow" marker-end="url(#arr)"/>
 
-  <line x1="698" y1="139" x2="800" y2="139" class="arrow"/>
-  <path d="M800 139 V250" class="arrow"/>
-  <line x1="800" y1="250" x2="930" y2="250" class="arrow"/>
-  <line x1="930" y1="250" x2="988" y2="250" class="arrow" marker-end="url(#arr)"/>
-  <text x="738" y="126" class="pathlab muted">single-path</text>
+  <line x1="706" y1="139" x2="812" y2="139" class="arrow"/>
+  <path d="M812 139 V250" class="arrow"/>
+  <line x1="812" y1="250" x2="930" y2="250" class="arrow"/>
+  <line x1="942" y1="250" x2="988" y2="250" class="arrow" marker-end="url(#arr)"/>
+  <text x="746" y="126" class="pathlab muted">single-path</text>
 
-  <line x1="728" y1="139" x2="728" y2="422" class="arrow"/>
-  <line x1="698" y1="225" x2="728" y2="225" class="arrow"/>
-  <line x1="698" y1="311" x2="728" y2="311" class="arrow"/>
-  <line x1="698" y1="397" x2="728" y2="397" class="arrow"/>
-  <line x1="728" y1="422" x2="768" y2="422" class="arrow" marker-end="url(#arr)"/>
+  <line x1="736" y1="139" x2="736" y2="422" class="arrow"/>
+  <line x1="706" y1="225" x2="736" y2="225" class="arrow"/>
+  <line x1="706" y1="311" x2="736" y2="311" class="arrow"/>
+  <line x1="706" y1="397" x2="736" y2="397" class="arrow"/>
+  <line x1="736" y1="422" x2="780" y2="422" class="arrow" marker-end="url(#arr)"/>
 
-  <rect x="768" y="396" width="140" height="52" rx="10" class="cand"/>
-  <text x="838" y="428" text-anchor="middle" class="txt label ink">Selector</text>
+  <rect x="780" y="396" width="140" height="52" rx="10" class="cand"/>
+  <text x="850" y="428" text-anchor="middle" class="txt label ink">Selector</text>
 
-  <line x1="908" y1="422" x2="930" y2="422" class="arrow"/>
-  <path d="M930 422 V286" class="arrow"/>
-  <line x1="930" y1="286" x2="988" y2="286" class="arrow" marker-end="url(#arr)"/>
-  <text x="766" y="468" class="pathlab muted">multi-candidate</text>
+  <line x1="920" y1="422" x2="930" y2="422" class="arrow"/>
+  <path d="M942 422 V286" class="arrow"/>
+  <line x1="942" y1="286" x2="988" y2="286" class="arrow" marker-end="url(#arr)"/>
+  <text x="778" y="468" class="pathlab muted">multi-candidate</text>
 
   <rect x="988" y="236" width="196" height="64" rx="12" class="box"/>
   <text x="1086" y="264" text-anchor="middle" class="txt label ink">Segments + labels</text>
