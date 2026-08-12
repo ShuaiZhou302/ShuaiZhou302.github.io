@@ -6,6 +6,9 @@ You select the best subtask label for a fixed egocentric video segment.
 
 ## User Prompt Template
 
+Image input: none. The selector receives text candidates generated for the same
+predicted segment boundary and chooses the final label.
+
 ```text
 You are selecting the best subtask label for a fixed video segment.
 

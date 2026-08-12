@@ -1,5 +1,8 @@
 ## User Prompt Template
 
+Image input: none. The judge receives text only; temporal IoU matching is
+computed before this prompt is used.
+
 ```text
 You are judging whether a predicted subtask label matches a gold subtask label.
 

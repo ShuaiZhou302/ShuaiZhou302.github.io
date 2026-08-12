@@ -1272,7 +1272,7 @@
     "metric_seg": "Segment F1@0.75 micro + outer snap",
     "metric_label": "Gemini-3.5-Flash judge accuracy on gold boundaries",
     "metric_e2e": "Semantic E2E F1 (IoU match then Gemini-3.5-Flash judge)",
-    "model_note": "Model roles are separated: Qwen3.6-27B is the primary segmenter; Qwen3.6-27B and Qwen3.5-397B generate label candidates; Qwen3.5-397B selects among candidates; Gemini-3.5-Flash is the primary semantic evaluation judge.",
+    "model_note": "Model roles are separated: Qwen3.6-27B is the primary segmenter and strongest fixed-boundary raw-frame labeler; Qwen3.5-397B remains the strongest tested predicted-boundary candidate selector; Gemini-3.5-Flash is the semantic evaluation judge.",
     "blog_refs": {
       "full100_seg_f1": 0.306,
       "full100_label_acc": 0.61,
@@ -1288,7 +1288,7 @@
       "e2e_f1": 0.1542,
       "e2e_config": "S2 predicted boundaries + Qwen3.5-397B multi-candidate selector · Gemini-3.5-Flash judge"
     },
-    "generated_note": "All main Label Acc and Semantic E2E entries are rescored with Gemini-3.5-Flash judge; Segment F1 remains pure temporal IoU."
+    "generated_note": "All listed Label Acc and Semantic E2E entries are rescored with Gemini-3.5-Flash judge; Segment F1 remains pure temporal IoU. The 27B-only E2E audit was completed on 2026-08-12."
   },
   "glossary": [
     {
@@ -1708,6 +1708,24 @@
       }
     },
     {
+      "id": "l2_hawor_27b",
+      "name": "HaWoR-reconstructed wrist-guided crop · Qwen3.6-27B",
+      "acc": 0.5234042553191489,
+      "n_match": 246,
+      "n": 470,
+      "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
+      "full25": true,
+      "delta_vs_raw": 0.0212765953191489,
+      "note": "246 / 470 semantic matches; below raw 27B but above the 397B HaWoR crop row",
+      "method": {
+        "goal": "评估真正 HaWoR 腕轨迹裁剪在 27B 固定边界标注下是否优于原始帧。",
+        "how": "先用 HaWoR 估计腕部轨迹并裁剪手部区域；裁剪不可用时回退到 raw frames；由 Qwen3.6-27B 生成标签，再用 Gemini-3.5-Flash 评测。",
+        "input": "HaWoR wrist-guided hand crop with raw fallback",
+        "result": "Label Acc 52.34% (246/470)",
+        "verdict": "该设置高于 397B HaWoR crop，但仍低于 raw 27B。"
+      }
+    },
+    {
       "id": "overlay_27b",
       "name": "proxy overlay · Qwen3.6-27B",
       "acc": 0.5064,
@@ -2008,6 +2026,76 @@
       }
     },
     {
+      "id": "raw27b_inner05_e2e",
+      "name": "S2 + 27B raw relabel (inner-0.5) · Gemini judge",
+      "seg_f1": 0.2030848329048843,
+      "e2e_f1": 0.13367609254498714,
+      "pred_gold": "308/470",
+      "note": "52 semantic matches after temporal matching",
+      "method": {
+        "goal": "测试 27B raw 标注在 S2 预测边界上的端到端表现。",
+        "how": "固定 S2 预测边界，使用 inner-0.5 采样窗口，由 Qwen3.6-27B 基于 raw frames 重新生成标签。",
+        "result": "Semantic E2E F1 0.1337",
+        "verdict": "高于旧 27B raw/self-label，但低于 397B raw 和 397B selector。"
+      }
+    },
+    {
+      "id": "raw27b_ffmpeg_e2e",
+      "name": "S2 + 27B ffmpeg-raw relabel · Gemini judge",
+      "seg_f1": 0.2030848329048843,
+      "e2e_f1": 0.14395886889460155,
+      "pred_gold": "308/470",
+      "note": "56 semantic matches after temporal matching",
+      "method": {
+        "goal": "测试 27B 在另一套 ffmpeg 解码/抽帧路径下的端到端表现。",
+        "how": "固定 S2 预测边界，使用 ffmpeg 抽帧后由 Qwen3.6-27B 生成标签。",
+        "result": "Semantic E2E F1 0.1440",
+        "verdict": "这是补测的 27B-only E2E 路径中最高的一条，但仍低于 397B candidate selector。"
+      }
+    },
+    {
+      "id": "seeded_neighbor27_e2e",
+      "name": "S2 + 27B seeded-neighbor relabel · Gemini judge",
+      "seg_f1": 0.2030848329048843,
+      "e2e_f1": 0.12596401028277635,
+      "pred_gold": "308/470",
+      "note": "49 semantic matches after temporal matching",
+      "method": {
+        "goal": "评估 27B seed 与相邻片段上下文是否能提高 predicted-boundary 标签。",
+        "how": "固定 S2 预测边界，输入上一/当前/下一段视觉上下文，并使用 27B 分段标签作为文本先验。",
+        "result": "Semantic E2E F1 0.1260",
+        "verdict": "该设置低于 27B raw/ffmpeg relabel。"
+      }
+    },
+    {
+      "id": "raw27_prior_neighbor27_e2e",
+      "name": "S2 + 27B raw-prior neighbor relabel · Gemini judge",
+      "seg_f1": 0.2030848329048843,
+      "e2e_f1": 0.14138817480719792,
+      "pred_gold": "308/470",
+      "note": "55 semantic matches after temporal matching",
+      "method": {
+        "goal": "评估 27B raw prior 加相邻视觉上下文的组合。",
+        "how": "固定 S2 预测边界，输入 neighbor sheets，并用 27B raw 标签作为文本 prior 让 27B 重写。",
+        "result": "Semantic E2E F1 0.1414",
+        "verdict": "接近 397B raw relabel，但仍低于 27B ffmpeg 和 397B selector。"
+      }
+    },
+    {
+      "id": "selector27_e2e",
+      "name": "S2 + 27B multi-candidate selector · Gemini judge",
+      "seg_f1": 0.2030848329048843,
+      "e2e_f1": 0.13624678663239076,
+      "pred_gold": "308/470",
+      "note": "53 semantic matches after temporal matching",
+      "method": {
+        "goal": "测试 27B 是否也适合作为多候选 selector。",
+        "how": "在同一 S2 预测边界上生成多路候选描述，再由 Qwen3.6-27B 选择最终标签。selector 不读取 gold 标签。",
+        "result": "Semantic E2E F1 0.1362",
+        "verdict": "27B selector 没有超过 27B ffmpeg relabel，也没有超过 397B selector。"
+      }
+    },
+    {
       "id": "selector397",
       "name": "S2 + 397B multi-candidate selector · Gemini judge",
       "seg_f1": 0.2031,
@@ -2093,190 +2181,6 @@
     "R": 0.667,
     "F1": 0.571
   }
-};
-  window.__COST__ = {
-  "kind": "public_engineering_estimate",
-  "note": "WGO raw/selector tokens are engineering estimates. API call counts are artifact-counted from report outputs. Internal machines, paths, and service-state details are intentionally omitted from the public report.",
-  "eval_subset": "HomER 25 episodes",
-  "sources": {
-    "labels": "public report artifacts",
-    "wgo_exp_usage_files": 0,
-    "internal_usage_sources": "omitted"
-  },
-  "video": {
-    "n_episodes": 25,
-    "total_sec": 2402.4,
-    "total_min": 40.04,
-    "mean_sec": 96.1,
-    "duration_source": "ffprobe_on_local_mp4",
-    "per_episode_sec": {
-      "homer_1": 161.2,
-      "homer_10": 120.8,
-      "homer_11": 131.7,
-      "homer_12": 124.7,
-      "homer_15": 132.3,
-      "homer_2": 154.2,
-      "homer_29": 84.9,
-      "homer_3": 137.5,
-      "homer_33": 72.2,
-      "homer_37": 66.1,
-      "homer_38": 90.8,
-      "homer_39": 61.1,
-      "homer_4": 130.0,
-      "homer_40": 61.5,
-      "homer_41": 54.3,
-      "homer_48": 56.0,
-      "homer_5": 129.5,
-      "homer_50": 46.5,
-      "homer_52": 38.0,
-      "homer_53": 47.1,
-      "homer_56": 55.2,
-      "homer_59": 60.7,
-      "homer_60": 71.2,
-      "homer_7": 143.8,
-      "homer_9": 171.1
-    }
-  },
-  "recipe_counts": {
-    "kind": "artifact_counted",
-    "n_pred_segments": 308,
-    "n_sheets_total": 256,
-    "n_s2_windows_total": 155,
-    "n_iou_match_judge": 79,
-    "mean_sheets_per_ep": 10.24,
-    "mean_pred_per_ep": 12.32,
-    "mean_s2_windows_per_ep": 6.2
-  },
-  "assumptions_tokens": {
-    "label_frames_per_segment": 5,
-    "image_max_side": 1120,
-    "candidate_paths": 4,
-    "img_tokens_per_image": [
-      900,
-      1600
-    ],
-    "text_tokens_per_call": 600,
-    "judge_text_tokens": 400,
-    "status": "public_engineering_estimate"
-  },
-  "recipes": {
-    "raw_only": {
-      "label": "S2 边界 + 单路 raw 标注",
-      "e2e_f1": 0.1414,
-      "api_calls": {
-        "kind": "artifact_counted",
-        "segmentation_whole_episode": 25,
-        "segmentation_s2_refine": 155,
-        "labeling": 308,
-        "candidate_selector": 0,
-        "e2e_judge_text_only": 79,
-        "total": 567
-      },
-      "api_calls_estimate": {
-        "kind": "artifact_counted",
-        "segmentation_whole_episode": 25,
-        "segmentation_s2_refine": 155,
-        "labeling": 308,
-        "candidate_selector": 0,
-        "e2e_judge_text_only": 79,
-        "total": 567
-      },
-      "tokens": {
-        "kind": "engineering_estimate",
-        "total_low": 2080300,
-        "total_high": 3446000,
-        "per_video_minute_low": 51956,
-        "per_video_minute_high": 86064
-      },
-      "tokens_estimate": {
-        "kind": "engineering_estimate",
-        "total_low": 2080300,
-        "total_high": 3446000,
-        "per_video_minute_low": 51956,
-        "per_video_minute_high": 86064
-      }
-    },
-    "selector": {
-      "label": "S2 边界 + 4 路候选 + selector",
-      "e2e_f1": 0.1542,
-      "api_calls": {
-        "kind": "artifact_counted",
-        "segmentation_whole_episode": 25,
-        "segmentation_s2_refine": 155,
-        "labeling": 1232,
-        "candidate_selector": 308,
-        "e2e_judge_text_only": 79,
-        "total": 1799
-      },
-      "api_calls_estimate": {
-        "kind": "artifact_counted",
-        "segmentation_whole_episode": 25,
-        "segmentation_s2_refine": 155,
-        "labeling": 1232,
-        "candidate_selector": 308,
-        "e2e_judge_text_only": 79,
-        "total": 1799
-      },
-      "tokens": {
-        "kind": "engineering_estimate",
-        "total_low": 6977500,
-        "total_high": 11577200,
-        "per_video_minute_low": 174263,
-        "per_video_minute_high": 289141
-      },
-      "tokens_estimate": {
-        "kind": "engineering_estimate",
-        "total_low": 6977500,
-        "total_high": 11577200,
-        "per_video_minute_low": 174263,
-        "per_video_minute_high": 289141
-      }
-    }
-  },
-  "production_measured": {
-    "label": "EgoANT production default path (HaWoR wrist-speed cuts + caption + merge)",
-    "kind": "aggregate_estimate",
-    "source": "internal aggregate, paths omitted",
-    "n_episodes": 25,
-    "api_calls_total": 2574,
-    "prompt_tokens": 8039348,
-    "completion_tokens": 823878,
-    "total_tokens": 8863226,
-    "per_video_minute_tokens": 221359,
-    "per_episode_mean_tokens": 354529,
-    "stages": {
-      "caption": {
-        "requests": 1882,
-        "prompt_tokens": 5756442,
-        "completion_tokens": 481952,
-        "total_tokens": 6238394,
-        "latency_sec": 12411.453
-      },
-      "episode_summary": {
-        "requests": 25,
-        "prompt_tokens": 32544,
-        "completion_tokens": 369,
-        "total_tokens": 32913,
-        "latency_sec": 10.493
-      },
-      "merge_judge": {
-        "requests": 299,
-        "prompt_tokens": 1312672,
-        "completion_tokens": 202621,
-        "total_tokens": 1515293,
-        "latency_sec": 2477.988
-      },
-      "merge_rewrite": {
-        "requests": 368,
-        "prompt_tokens": 937690,
-        "completion_tokens": 138936,
-        "total_tokens": 1076626,
-        "latency_sec": 1660.459
-      }
-    },
-    "e2e_f1_note": "production one-pass E2E≈0.0641; not the same path as WGO selector E2E 0.1542"
-  },
-  "default_display": "both"
-};
+}
   main();
 })();
