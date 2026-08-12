@@ -10,8 +10,9 @@
       "cost.simple.th.score": "端到端得分",
       "cost.simple.th.path": "方案",
       "pipeline.recipe.cost.h4": "成本估计",
-      "pipeline.recipe.prompts": "提示词：<a href=\"#term-gepa-prompt\">切段规则</a> · <a href=\"#term-s2-prompt\">局部精修</a> · <a href=\"#label-prompt\">标注</a> · <a href=\"#e2e-selector-prompt\">候选判别器</a>"
-      "pipeline.recipe.flow": "<div class=\"pipeline pipeline-3\"><div class=\"step\"><div class=\"n\">01</div><div class=\"t\">拼贴图</div><div class=\"d\">0.5s 抽帧 · 224×144 · 时间戳</div></div><div class=\"step\"><div class=\"n\">02</div><div class=\"t\">整集粗分</div><div class=\"d\">整集拼贴图 + 切段规则</div></div><div class=\"step\"><div class=\"n\">03</div><div class=\"t\">局部精修</div><div class=\"d\">窗口不外扩 · 覆盖完整动作</div></div></div><div class=\"recipe-fork\"><div class=\"fork-join\"><div class=\"n\">04</div><div class=\"t\">写描述</div></div><div class=\"fork-branches\"><div class=\"step\"><div class=\"t\">单路原始帧</div><div class=\"d\">每段写一次 · 得分 0.1414 · ≈$1.1/h</div></div><div class=\"step best\"><div class=\"t\">多候选 + 候选判别器</div><div class=\"d\">推荐 · 得分 0.1542 · ≈$2.7/h</div></div></div></div>"
+      "pipeline.recipe.prompts": "提示词：<a href=\"#term-gepa-prompt\">切段规则</a> · <a href=\"#term-s2-prompt\">局部精修</a> · <a href=\"#label-prompt\">标注</a> · <a href=\"#e2e-selector-prompt\">候选判别器</a>",
+      "walk.flow.cap": "概念流程：左分段、右标注；本例走下支路「多候选 + 候选判别器」。",
+      "pipeline.recipe.flow.cap": "推荐配置：左分段、右标注；上支路单路原始帧，下支路多候选 + 判别器。"
       "pipeline.recipe.steps": "<li><strong>拼贴图</strong>：每 0.5 秒抽一帧，缩放到 224×144，约 20 格一张，格内加黄色时间戳。</li><li><strong>整集粗分</strong>：用 Qwen3.6-27B，把整集拼贴图与切段规则清单一次提交，得到粗边界。提示词见 <a href=\"#term-gepa-prompt\">切段规则清单提示词</a>。</li><li><strong>局部精修</strong>：在粗边界附近开窗重切，窗口不外扩，并要求覆盖窗内完整动作；模型仍用 Qwen3.6-27B。本组视频分段得分 <strong>0.2031</strong>。提示词见 <a href=\"#term-s2-prompt\">局部精修提示词</a>。</li><li><strong>多路描述</strong>：固定上述 S2 预测边界，对每段生成原始帧、ffmpeg 抽帧等候选描述。提示词见 <a href=\"#label-prompt\">固定边界标注提示词</a>。</li><li><strong>候选判别器选择</strong>：用 Qwen3.5-397B 从多路候选中选出最终描述。端到端整流程得分 <strong>0.1542</strong>。提示词见 <a href=\"#e2e-selector-prompt\">候选判别器提示词</a>。</li>",
       "pipeline.recipe.lead": "<p>前面已经试过分段、固定边界标注与端到端多条路径。这里只给出最终默认配置：开放权重模型上的端到端分段与标注流程。本组最高端到端整流程得分为 <strong>0.1542</strong>（S2 边界 + 多候选判别 · 397B）。WGO-Bench 公开的闭源最优端到端整流程得分为 <strong>0.168</strong>（全量约 100 集）；在 HomER 子集上，我们与该水平已经很接近。</p>",
       "world.term.e2e.seed": "种子描述：先有一句已经写好的短操作描述（例如分段阶段顺带写出的句子，或先前某一路重标结果），再在后续标注调用里把这句文字一并送给模型，当作「先写好的草稿」。模型通常在这句基础上改写或确认，而不是从空白重新编。种子邻段重标 = 邻段画面 + 这样一句草稿；原始帧先验邻段重标 = 邻段画面 + 原始帧重标得到的那句描述作草稿。",
@@ -209,6 +210,7 @@
       "fig.src.metric": "assets/explain/metric_iou_f1_zh.svg?v=20260811-18",
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-26",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy_zh.svg?v=20260812-01",
+      "fig.src.recipe": "assets/explain/recipe_flow_zh.svg?v=20260812-15",
       "world.h3.inputs": "视觉输入",
       "world.p.inputs": "固定边界标注会换不同视觉输入。先用六个预览面板说明「模型看见什么」；其中手部相关面板拆分为近似手部拼贴与 HaWoR 腕轨迹裁剪。随后用 HomER 里的一段样本（22.9–26.8 秒，「拉开床头柜抽屉」）对照实际画面。",
       "world.input.1": "原始帧：段内均匀抽取的原始帧，分张提交。",
@@ -407,8 +409,9 @@
       "cost.simple.th.score": "End-to-end score",
       "cost.simple.th.path": "Setup",
       "pipeline.recipe.cost.h4": "Cost estimate",
-      "pipeline.recipe.prompts": "Prompts: <a href=\"#term-gepa-prompt\">segmentation rules</a> · <a href=\"#term-s2-prompt\">local refinement</a> · <a href=\"#label-prompt\">labeling</a> · <a href=\"#e2e-selector-prompt\">candidate selector</a>"
-      "pipeline.recipe.flow": "<div class=\"pipeline pipeline-3\"><div class=\"step\"><div class=\"n\">01</div><div class=\"t\">Contact sheets</div><div class=\"d\">0.5s sample · 224×144 · timestamps</div></div><div class=\"step\"><div class=\"n\">02</div><div class=\"t\">Whole-episode coarse cut</div><div class=\"d\">full sheets + segmentation rules</div></div><div class=\"step\"><div class=\"n\">03</div><div class=\"t\">Local refinement</div><div class=\"d\">no pad-out · full-action cover</div></div></div><div class=\"recipe-fork\"><div class=\"fork-join\"><div class=\"n\">04</div><div class=\"t\">Write labels</div></div><div class=\"fork-branches\"><div class=\"step\"><div class=\"t\">Single-path raw frames</div><div class=\"d\">one pass · score 0.1414 · ≈$1.1/h</div></div><div class=\"step best\"><div class=\"t\">Multi-candidate + selector</div><div class=\"d\">recommended · score 0.1542 · ≈$2.7/h</div></div></div></div>"
+      "pipeline.recipe.prompts": "Prompts: <a href=\"#term-gepa-prompt\">segmentation rules</a> · <a href=\"#term-s2-prompt\">local refinement</a> · <a href=\"#label-prompt\">labeling</a> · <a href=\"#e2e-selector-prompt\">candidate selector</a>",
+      "walk.flow.cap": "Concept flow: segmentation left, labeling right; this example follows the bottom multi-candidate + selector branch.",
+      "pipeline.recipe.flow.cap": "Recommended recipe: segmentation on the left, labeling on the right; top branch is single-path raw frames, bottom is multi-candidate + selector."
       "pipeline.recipe.steps": "<li><strong>Contact sheets</strong>: sample one frame every 0.5s, resize to 224×144, about 20 tiles per sheet, with yellow timestamps.</li><li><strong>Whole-episode coarse cut</strong>: submit the full-episode contact sheets once with Qwen3.6-27B and the segmentation-rule list. Prompt: <a href=\"#term-gepa-prompt\">segmentation-rule prompt</a>.</li><li><strong>Local refinement</strong>: re-cut near coarse bounds with no pad-out and full-action coverage, still using Qwen3.6-27B. Segmentation score <strong>0.2031</strong>. Prompt: <a href=\"#term-s2-prompt\">local-refinement prompt</a>.</li><li><strong>Multi-path descriptions</strong>: freeze those S2 predicted bounds and generate raw-frame / ffmpeg candidates per segment. Prompt: <a href=\"#label-prompt\">fixed-boundary labeling prompt</a>.</li><li><strong>Candidate selector</strong>: let Qwen3.5-397B pick the final description. End-to-end score <strong>0.1542</strong>. Prompt: <a href=\"#e2e-selector-prompt\">candidate-selector prompt</a>.</li>",
       "pipeline.recipe.lead": "<p>Earlier sections already covered segmentation, fixed-boundary labeling, and many end-to-end paths. Here we only state the final default recipe: end-to-end segmentation and labeling with open-weight models. The best end-to-end score in this group is <strong>0.1542</strong> (S2 bounds + multi-candidate select · 397B). WGO-Bench’s best published closed-source end-to-end score is <strong>0.168</strong> on the full ~100-episode set; on the HomER subset, we are already close.</p>",
       "world.term.e2e.seed": "Seed description: start from an already-written short operation phrase (for example the segmenter’s own label, or an earlier relabel), and feed that text into the later labeling call as a draft. The model usually revises or confirms the draft instead of inventing a new sentence from scratch. Seeded-neighbor relabel = neighbor frames + such a draft; raw-prior neighbor relabel = neighbor frames + the raw-frame relabel sentence as the draft.",
@@ -606,6 +609,7 @@
       "fig.src.metric": "assets/explain/metric_iou_f1.svg?v=20260811-18",
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover.svg?v=20260811-26",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy.svg?v=20260812-01",
+      "fig.src.recipe": "assets/explain/recipe_flow.svg?v=20260812-15",
       "world.h3.inputs": "Visual inputs",
       "world.p.inputs": "Fixed-boundary labeling swaps visual-input formats. First, six preview panels show what the model actually sees; the hand-related panel is split into proxy hand-collage and HaWoR wrist-guided crop. Then a HomER sample clip (22.9&ndash;26.8s, \"open the nightstand drawer\") grounds the concepts in concrete frames.",
       "world.input.1": "Raw frames: uniformly sampled frames from the segment, submitted as separate images.",

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 460" role="img" aria-labelledby="title desc">
+  <title id="title">EgoANT 推荐配置流程图</title>
+  <desc id="desc">原始视频进入分段大框，再分叉为单路原始帧与多候选判别两条标注路径，最终输出分段与子任务标注。</desc>
+  <defs>
+    <style>
+      .bg{fill:#fffdf8}
+      .ink{fill:#1c1914}
+      .muted{fill:#5c564c}
+      .arrow{stroke:#5c564c;stroke-width:2.2;fill:none}
+      .seg{fill:#f4f0e8;stroke:#cbbfae;stroke-width:1.8}
+      .lab{fill:#f7faf8;stroke:#b7cfc7;stroke-width:1.8}
+      .box{fill:#fffdf8;stroke:#d9d0c2;stroke-width:1.5}
+      .best{fill:#eaf5ee;stroke:#0f6b5c;stroke-width:2}
+      .inner{fill:#fff;stroke:#d9d0c2;stroke-width:1.3}
+      .txt{font:15px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+      .small{font-size:12.5px}
+      .tiny{font-size:11.5px}
+      .label{font-weight:700}
+    </style>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#5c564c"/>
+    </marker>
+  </defs>
+
+  <rect width="1120" height="460" rx="18" class="bg"/>
+
+  <rect x="28" y="188" width="108" height="56" rx="12" class="box"/>
+  <text x="82" y="222" text-anchor="middle" class="txt label ink">原始视频</text>
+  <line x1="136" y1="216" x2="176" y2="216" class="arrow" marker-end="url(#arr)"/>
+
+  <rect x="176" y="118" width="300" height="196" rx="16" class="seg"/>
+  <text x="326" y="148" text-anchor="middle" class="txt label ink">分段</text>
+  <text x="326" y="168" text-anchor="middle" class="txt tiny muted">拼贴图粗分 + 局部精修</text>
+
+  <rect x="196" y="188" width="78" height="78" rx="10" class="inner"/>
+  <text x="235" y="222" text-anchor="middle" class="txt small label ink">拼贴图</text>
+  <text x="235" y="242" text-anchor="middle" class="txt tiny muted">0.5s · 时间戳</text>
+
+  <line x1="274" y1="227" x2="292" y2="227" class="arrow" marker-end="url(#arr)"/>
+
+  <rect x="292" y="188" width="78" height="78" rx="10" class="inner"/>
+  <text x="331" y="222" text-anchor="middle" class="txt small label ink">整集粗分</text>
+  <text x="331" y="242" text-anchor="middle" class="txt tiny muted">+ 切段规则</text>
+
+  <line x1="370" y1="227" x2="388" y2="227" class="arrow" marker-end="url(#arr)"/>
+
+  <rect x="388" y="188" width="70" height="78" rx="10" class="inner"/>
+  <text x="423" y="222" text-anchor="middle" class="txt small label ink">局部精修</text>
+  <text x="423" y="242" text-anchor="middle" class="txt tiny muted">不外扩</text>
+
+  <rect x="520" y="48" width="430" height="336" rx="16" class="lab"/>
+  <text x="735" y="78" text-anchor="middle" class="txt label ink">标注</text>
+  <text x="735" y="98" text-anchor="middle" class="txt tiny muted">边界固定后写操作描述</text>
+
+  <line x1="476" y1="216" x2="504" y2="216" class="arrow"/>
+  <path d="M504 216 H512 V150 H520" class="arrow" marker-end="url(#arr)"/>
+  <path d="M504 216 H512 V300 H520" class="arrow" marker-end="url(#arr)"/>
+
+  <rect x="540" y="118" width="180" height="64" rx="12" class="box"/>
+  <text x="630" y="146" text-anchor="middle" class="txt label ink">单路原始帧</text>
+  <text x="630" y="166" text-anchor="middle" class="txt tiny muted">每段写一次 · 0.1414 · ≈$1.1/h</text>
+
+  <line x1="720" y1="150" x2="860" y2="150" class="arrow"/>
+  <path d="M860 150 H880 V216" class="arrow"/>
+
+  <rect x="540" y="214" width="78" height="68" rx="10" class="best"/>
+  <text x="579" y="244" text-anchor="middle" class="txt small label ink">原始帧</text>
+  <text x="579" y="262" text-anchor="middle" class="txt tiny muted">候选</text>
+
+  <rect x="628" y="214" width="78" height="68" rx="10" class="best"/>
+  <text x="667" y="244" text-anchor="middle" class="txt small label ink">ffmpeg</text>
+  <text x="667" y="262" text-anchor="middle" class="txt tiny muted">候选</text>
+
+  <rect x="716" y="214" width="78" height="68" rx="10" class="best"/>
+  <text x="755" y="244" text-anchor="middle" class="txt small label ink">种子描述</text>
+  <text x="755" y="262" text-anchor="middle" class="txt tiny muted">候选</text>
+
+  <rect x="804" y="214" width="78" height="68" rx="10" class="best"/>
+  <text x="843" y="244" text-anchor="middle" class="txt small label ink">先验描述</text>
+  <text x="843" y="262" text-anchor="middle" class="txt tiny muted">候选</text>
+
+  <text x="735" y="308" text-anchor="middle" class="txt tiny muted">多候选并列（推荐路径）</text>
+
+  <line x1="579" y1="282" x2="579" y2="318" class="arrow"/>
+  <line x1="667" y1="282" x2="667" y2="318" class="arrow"/>
+  <line x1="755" y1="282" x2="755" y2="318" class="arrow"/>
+  <line x1="843" y1="282" x2="843" y2="318" class="arrow"/>
+  <path d="M579 318 H843" class="arrow"/>
+  <line x1="711" y1="318" x2="711" y2="332" class="arrow" marker-end="url(#arr)"/>
+
+  <rect x="620" y="332" width="182" height="36" rx="10" class="best"/>
+  <text x="711" y="355" text-anchor="middle" class="txt small label ink">候选判别器 · 0.1542 · ≈$2.7/h</text>
+
+  <path d="M802 350 H880 V216" class="arrow"/>
+  <line x1="880" y1="216" x2="950" y2="216" class="arrow"/>
+
+  <line x1="950" y1="216" x2="978" y2="216" class="arrow" marker-end="url(#arr)"/>
+  <rect x="978" y="178" width="118" height="76" rx="12" class="box"/>
+  <text x="1037" y="208" text-anchor="middle" class="txt label ink">分段与</text>
+  <text x="1037" y="230" text-anchor="middle" class="txt label ink">子任务标注</text>
+
+  <text x="28" y="430" class="txt small muted">上支路：便宜默认；下支路：多候选 + 判别器（本报告推荐）。两条路都输出「时间边界 + 操作描述」。</text>
+</svg>
