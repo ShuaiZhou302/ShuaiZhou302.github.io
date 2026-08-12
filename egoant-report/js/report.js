@@ -9,6 +9,16 @@
     "merge_exact","merge_verb","merge_bridge"
   ];
   const MAIN_SEG_IDS = new Set(MAIN_SEG_ORDER);
+  // Group same visual input across models for side-by-side reading.
+  const MAIN_LABEL_ORDER = [
+    "raw_27b", "raw_397b",
+    "temporal_collage_27b", "temporal_collage",
+    "overlay_27b", "overlay_proxy",
+    "l2_hawor_27b", "l2_hawor",
+    "l1_neighbor_27b", "l1_neighbor",
+    "l1_ts_rerun",
+    "l2_proxy_27b", "l2_yolo_proxy",
+  ];
   const PAD_SEG_IDS = new Set([
     "s2_pad0_plain_27b","s2_pad05_27b","s2_pad1_27b","s2_pad2_27b"
   ]);
@@ -340,26 +350,26 @@
     },
     "l2_hawor": {
       "zh": {
-        "name": "HaWoR 手部裁剪 · 397B",
+        "name": "HaWoR 腕轨迹裁剪 · 397B",
         "note": "略高于原始帧 · 397B，低于原始帧 · 27B",
-        "model": "Qwen3.5-397B"
+        "model": "397B"
       },
       "en": {
-        "name": "HaWoR hand crop · 397B",
+        "name": "HaWoR wrist-guided crop · 397B",
         "note": "Slightly above raw 397B, below raw 27B",
-        "model": "Qwen3.5-397B"
+        "model": "397B"
       }
     },
     "l2_hawor_27b": {
       "zh": {
-        "name": "HaWoR 手部裁剪 · 27B",
-        "note": "高于 397B 手部裁剪，低于原始帧 · 27B",
-        "model": "Qwen3.6-27B"
+        "name": "HaWoR 腕轨迹裁剪 · 27B",
+        "note": "高于 397B 腕轨迹裁剪，低于原始帧 · 27B",
+        "model": "27B"
       },
       "en": {
-        "name": "HaWoR hand crop · 27B",
-        "note": "Above 397B hand crop, below raw 27B",
-        "model": "Qwen3.6-27B"
+        "name": "HaWoR wrist-guided crop · 27B",
+        "note": "Above 397B wrist-guided crop, below raw 27B",
+        "model": "27B"
       }
     },
     "l4_strict_judge": {
@@ -741,20 +751,31 @@
       : `<tr><td colspan="5">${lang()==="en" ? "No extra pad-out ablation rows." : "无额外窗口外扩消融行。"}</td></tr>`;
   }
 
+  function orderedLabelRows(data) {
+    const rows = (data.labeling || []).filter((row) => row.id !== "predictions_labeling" && row.id !== "l4_strict_judge");
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    const ordered = MAIN_LABEL_ORDER.map((id) => byId.get(id)).filter(Boolean);
+    const seen = new Set(ordered.map((r) => r.id));
+    const rest = rows.filter((r) => !seen.has(r.id));
+    return ordered.concat(rest);
+  }
+
+  function shortModel(m) {
+    const s = String(m || "");
+    if (/27B/i.test(s) && !/397B/i.test(s)) return "27B";
+    if (/397B/i.test(s)) return "397B";
+    return s.replace(/\s*·\s*Gemini-3\.5-Flash judge/i, "").trim() || s;
+  }
+
   function fillLabelTable(data) {
     const tbody = document.querySelector("#label-tbody");
     if (!tbody) return;
     const best = data.meta.best.label_acc;
-    const rows = data.labeling.filter((row) => row.id !== "predictions_labeling");
+    const rows = orderedLabelRows(data);
     tbody.innerHTML = rows.map((row) => {
       const r = locRow(row);
       const bestCls = r.acc === best ? "best" : "";
-      let delta = "—";
-      if (r.delta_vs_raw != null) {
-        const pp = r.delta_vs_raw * 100;
-        delta = `<span class="${pp >= 0 ? "delta-up" : "delta-down"}">${pp >= 0 ? "+" : ""}${pp.toFixed(1)}pp</span>`;
-      }
-      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${pct(r.acc)}</td><td class="num">${r.n_match}/${r.n}</td><td>${esc(r.model)}</td><td>${delta}</td></tr>`;
+      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${pct(r.acc)}</td><td class="num">${r.n_match}/${r.n}</td><td>${esc(shortModel(r.model))}</td></tr>`;
     }).join("");
   }
 
@@ -1306,7 +1327,7 @@
     }
     const mainSeg = orderedSegRows(data);
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-    renderBars(document.querySelector("#label-bars"), data.labeling.filter((r) => r.id !== "predictions_labeling"), "acc", 0.60, true);
+    renderBars(document.querySelector("#label-bars"), orderedLabelRows(data), "acc", 0.60, true, data.meta.best.label_acc);
     renderBars(document.querySelector("#e2e-bars"), data.e2e, "e2e_f1", 0.18, true);
     fillSegTable(data);
     fillSegPadTable(data);
@@ -1319,7 +1340,7 @@
       if (!D || !D.data) return;
       const mainSeg = orderedSegRows(D.data);
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-      renderBars(document.querySelector("#label-bars"), D.data.labeling.filter((r) => r.id !== "predictions_labeling"), "acc", 0.60, true);
+      renderBars(document.querySelector("#label-bars"), orderedLabelRows(D.data), "acc", 0.60, true, D.data.meta.best.label_acc);
       renderBars(document.querySelector("#e2e-bars"), D.data.e2e, "e2e_f1", 0.18, true);
       fillSegTable(D.data);
       fillSegPadTable(D.data);
@@ -1781,7 +1802,7 @@
     },
     {
       "id": "l2_hawor_27b",
-      "name": "HaWoR-reconstructed wrist-guided crop · Qwen3.6-27B",
+      "name": "HaWoR 腕轨迹裁剪 · 27B",
       "acc": 0.5234042553191489,
       "n_match": 246,
       "n": 470,
@@ -1854,7 +1875,7 @@
     },
     {
       "id": "l2_hawor",
-      "name": "HaWoR-reconstructed wrist-guided crop · Qwen3.5-397B",
+      "name": "HaWoR 腕轨迹裁剪 · 397B",
       "acc": 0.5085,
       "n_match": 239,
       "n": 470,

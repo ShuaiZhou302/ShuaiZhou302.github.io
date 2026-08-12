@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260812-02" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-03" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -384,7 +384,7 @@ def compatible(a, b, strategy):
         <li data-i18n-html data-i18n="world.input.4">邻段拼贴：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
         <li data-i18n-html data-i18n="world.input.5">视觉提示叠加：在原始帧上叠加光流或启发式运动提示。</li>
         <li data-i18n-html data-i18n="world.input.6">近似手部拼贴：用 YOLO 或画面中心启发式裁剪手部附近区域后拼图提交。</li>
-        <li data-i18n-html data-i18n="world.term.11">HaWoR 腕轨迹裁剪<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：用 HaWoR 估计腕部轨迹并裁剪手部区域后提交；裁剪不完整时回退到原始帧。</li>
+        <li data-i18n-html data-i18n="world.term.11">HaWoR 腕轨迹裁剪<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：用 HaWoR 估计腕部轨迹并裁剪手部区域后提交；腕轨迹不可用或裁不出可用手部区域时，该段改送原始帧。</li>
       </ul>
       <figure class="figure" id="term-visual">
         <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260812-01" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
@@ -397,7 +397,25 @@ def compatible(a, b, strategy):
               <img src="assets/explain/inputs/input_raw_1.jpg" alt="" />
               <span class="frame-label" data-i18n="world.zoo.raw.l1">帧 1</span>
             </div>
-            <div class="frame-cell">
+            
+      <p class="plain" data-i18n="world.zoo.approx.lead">近似手部拼贴的两种裁框方式如下；上面 zoo 只给概念示意，这里用同一 HomER 帧对照。</p>
+<div class="gallery">
+        <figure class="figure">
+          <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
+          <figcaption data-i18n-html data-i18n="story.label.cap1">
+            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。对应上文「近似手部拼贴」里的画面中心启发式。
+          </figcaption>
+        </figure>
+        <figure class="figure">
+          <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
+          <figcaption data-i18n-html data-i18n="story.label.cap2">
+            读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。对应上文「近似手部拼贴」里的 YOLO 人物框路径。
+          </figcaption>
+        </figure>
+      </div>
+
+      
+<div class="frame-cell">
               <img src="assets/explain/inputs/input_raw_2.jpg" alt="" />
               <span class="frame-label" data-i18n="world.zoo.raw.l2">帧 2</span>
             </div>
@@ -443,18 +461,27 @@ def compatible(a, b, strategy):
         </figure>
       </div>
 
-      <p data-i18n="pipeline.label.methods">下列为我们尝试过的固定边界标注方法。</p>
+      <p data-i18n="pipeline.label.methods">下列为我们尝试过的固定边界标注方法。各条件共用同一套标注提示词，只换视觉输入与模型；提示词见下方折叠。</p>
+      <details class="prompt-fold" id="label-prompt">
+        <summary data-i18n="walk.prompt.label">固定边界标注提示词（英语）</summary>
+        <div class="prompt-fold-body">
+          <p class="prompt-note" data-i18n-html data-i18n="pipeline.label.prompt.note">
+            说明：下方就是提示词文本。System / User 两段会送给模型；User 里的 <code>{mode_intro}</code> 随视觉输入切换，<code>{instruction}</code> 换成整集任务指令；图像接在 User 提示词文本之后。
+          </p>
+          <div class="prompt-sent">
+            <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
+            <div class="prompt-box"><pre id="p-label-term">Loading…</pre></div>
+          </div>
+        </div>
+      </details>
       <ol class="method-list">
-        <li data-i18n="story.label.1">原始帧 · 27B：用上文「原始帧」，由 Qwen3.6-27B 生成描述。</li>
-        <li data-i18n="story.label.2">时序拼贴 · 27B：用上文「时序拼贴」，交给 Qwen3.6-27B。</li>
-        <li data-i18n="story.label.3">视觉提示叠加 · 27B：用上文「视觉提示叠加」后标注。</li>
-        <li data-i18n="story.label.4">原始帧 · 397B：同上文「原始帧」，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.5">视觉提示叠加 · 397B：同上文「视觉提示叠加」，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.6">时序拼贴 · 397B：同上文「时序拼贴」，改用 Qwen3.5-397B。</li>
-        <li data-i18n="story.label.7">邻段拼贴 · 27B / 397B：用上文「邻段拼贴」，分别由 Qwen3.6-27B 与 Qwen3.5-397B 生成描述。</li>
-        <li data-i18n="story.label.8">邻段拼贴 + 秒级时间戳 · 397B：在上文「邻段拼贴」上为每格加入秒级时间戳后重跑。</li>
-        <li data-i18n="story.label.9">近似手部拼贴 · 27B / 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交。</li>
-        <li data-i18n="story.label.10">HaWoR 手部裁剪 · 27B / 397B：用上文 HaWoR 腕轨迹裁剪；裁剪不完整时回退到原始帧。</li>
+        <li data-i18n="story.label.1">原始帧 · 27B / 397B：用上文「原始帧」，分别由 27B 与 397B 生成描述。</li>
+        <li data-i18n="story.label.2">时序拼贴 · 27B / 397B：用上文「时序拼贴」，分别交给 27B 与 397B。</li>
+        <li data-i18n="story.label.3">视觉提示叠加 · 27B / 397B：用上文「视觉提示叠加」后，分别由 27B 与 397B 标注。</li>
+        <li data-i18n="story.label.4">HaWoR 腕轨迹裁剪 · 27B / 397B：用上文 HaWoR 腕轨迹裁剪；腕轨迹不可用或裁不出可用手部区域时，该段改送原始帧。</li>
+        <li data-i18n="story.label.5">邻段拼贴 · 27B / 397B：用上文「邻段拼贴」，分别由 27B 与 397B 生成描述。</li>
+        <li data-i18n="story.label.6">邻段拼贴 + 秒级时间戳 · 397B：在上文「邻段拼贴」上为每格加入秒级时间戳后重跑。</li>
+        <li data-i18n="story.label.7">近似手部拼贴 · 27B / 397B：用 YOLO 人物框或画面中心启发式框裁剪后拼图提交。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.label">固定分段标注得分（Label Acc）</h4>
@@ -462,7 +489,7 @@ def compatible(a, b, strategy):
       </div>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">固定分段标注得分</th><th data-i18n="th.matchn">配对成功 / 参考段数</th><th data-i18n="th.model">模型</th><th data-i18n="th.delta">相对原始帧·397B</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">固定分段标注得分</th><th data-i18n="th.matchn">配对成功 / 参考段数</th><th data-i18n="th.model">模型</th></tr></thead>
           <tbody id="label-tbody"></tbody>
         </table>
       </div>
@@ -477,22 +504,7 @@ def compatible(a, b, strategy):
           <li>模型对比：原始帧输入下，27B（55.7%）高于 397B（50.2%）。固定边界标注的默认路径取原始帧 · 27B。</li>
         </ol>
       </div>
-<div class="gallery">
-        <figure class="figure">
-          <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
-          <figcaption data-i18n-html data-i18n="story.label.cap1">
-            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。见 <a href="#term-visual">视觉输入</a>。
-          </figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
-          <figcaption data-i18n-html data-i18n="story.label.cap2">
-            读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。早期无手重建时使用此类近似输入；真正读取 HaWoR 腕轨迹的手部裁剪在固定分段上达到 52.3%（27B）/ 50.9%（397B），仍低于 raw 27B。
-          </figcaption>
-        </figure>
-      </div>
-
-      <h3 data-i18n="pipeline.h3.e2e">3.3 端到端</h3>
+<h3 data-i18n="pipeline.h3.e2e">3.3 端到端</h3>
       <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
       
       <ul class="term-list">
@@ -782,9 +794,9 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-02"></script>
-  <script src="js/report.js?v=20260812-02"></script>
-  <script src="js/prompts_embed.js?v=20260812-02"></script>
+  <script src="js/i18n.js?v=20260812-03"></script>
+  <script src="js/report.js?v=20260812-03"></script>
+  <script src="js/prompts_embed.js?v=20260812-03"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];
@@ -804,7 +816,7 @@ def compatible(a, b, strategy):
     const promptMap = [
       [["p-gepa-term"], "gepa_completed_events_duration_prior_v1.md"],
       [["p-s2-term"], "s2_fullcover_refine.md"],
-      [["p-label-inline"], "labeling_fixed_boundary.md"],
+      [["p-label-term", "p-label-inline"], "labeling_fixed_boundary.md"],
       [["p-judge-inline"], "judge_semantic_match.md"],
       [["p-sel-inline"], "candidate_selector.md"],
     ];
