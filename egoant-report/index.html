@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260812-15" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-30" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -107,7 +107,7 @@
           <div class="config" data-i18n="tldr.seg.config">配置：Qwen3.6-27B · 时间戳网格 · 粗分后局部精修</div>
         </div>
         <div class="card">
-          <div class="k" data-i18n="tldr.k.label">固定分段标注得分（Label Acc）</div>
+          <div class="k" data-i18n="tldr.k.label">标注得分（Label Acc）</div>
           <div class="v">55.7%</div>
           <div class="s" data-i18n="tldr.label">470 个固定分段中，262 个描述通过语义匹配标准。</div>
           <div class="config" data-i18n="tldr.label.config">配置：Qwen3.6-27B · 原始帧 · 固定人工分段</div>
@@ -123,7 +123,7 @@
         <strong>实验范围：</strong>WGO-Bench 的第一视角人类子集 HomER，共 25 个视频、470 个人工标注片段。分段与描述均由开放权重 Qwen 视觉语言模型生成；Gemini-3.5-Flash 仅用于离线判断描述是否与人工标注语义一致。三类指标的完整定义见 <a href="#evaluate">§1</a>。
       </p>
       <ul class="tldr-points">
-        <li data-i18n-html data-i18n="tldr.pt1"><strong>先选对模型，再考虑复杂的视觉输入增强。</strong>给定人工分段、只评估片段描述时，Qwen3.6-27B 使用原始帧取得 55.7% 的固定分段标注得分；改用多帧拼图或叠加启发式视觉提示后，得分分别降至 52.8% 和 50.6%。在输入和提示词完全相同的分段实验中，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B-A17B 的 0.0952。就本组实验而言，模型选择带来的收益大于额外的视觉输入技巧。</li>
+        <li data-i18n-html data-i18n="tldr.pt1"><strong>先选对模型，再考虑复杂的视觉输入增强。</strong>给定人工分段、只评估片段描述时，Qwen3.6-27B 使用原始帧取得 55.7% 的固定分段标注得分；改用多帧拼贴图或叠加启发式视觉提示后，得分分别降至 52.8% 和 50.6%。在输入和提示词完全相同的分段实验中，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B-A17B 的 0.0952。就本组实验而言，模型选择带来的收益大于额外的视觉输入技巧。</li>
         <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段得分从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段得分为 0.227，与本方案相差 0.024。</li>
         <li data-i18n-html data-i18n="tldr.pt3"><strong>分段和描述需要不同的视觉输入。</strong>判断动作边界时，模型需要观察较长时间范围内的变化，因此带时间戳的图片网格更有效；边界已经给定后，模型需要看清片段内的手部和物体细节，此时原始帧更有效。加入相邻片段不但没有提高固定分段标注得分，还会把相邻动作误写进当前描述。</li>
         <li data-i18n-html data-i18n="tldr.pt4"><strong>端到端整流程目前首先受分段质量限制。</strong>最佳方案生成 308 个预测片段，但与 470 个人工参考片段完成时间匹配的只有 79 个；其中 60 个片段的描述进一步通过语义评判。换言之，大部分损失发生在描述生成之前。现阶段，改进动作边界比继续润色描述更可能提高端到端整流程得分。</li>
@@ -697,8 +697,8 @@ def compatible(a, b, strategy):
     <section id="conclusion">
       <h2 data-i18n="conclusion.h2">5. 结论</h2>
       <div data-i18n-html data-i18n="conclusion.body">
-        <p>我们呈现了一条面向开放权重视觉语言模型的端到端第一视角标注管线 EgoANT，并在公开基准上测试了若干辅助 VLM 标注的输入与流程设计（例如拼贴图粗分、局部精修、多候选判别）。本页是 EgoANT blog 的第一个版本。</p>
-        <p>仍有两点局限，也留给后续继续探索：</p>
+        <p>我们呈现了一条面向开放权重视觉语言模型的端到端第一视角标注管线 EgoANT，并在公开基准上测试了若干辅助 VLM 标注的输入与流程设计（例如拼贴图粗分、局部精修、多候选判别）。</p>
+        <p>与此同时，当前方案仍有两点潜在风险与局限，也留给后续继续探索：</p>
         <ol>
           <li><strong>模型能力并不整齐。</strong>不同模型在空间理解、推理、物体识别等方面强弱不一，因此没有哪种辅助技巧能长期通吃。好消息是，换成更新、更强的模型往往能直接提分；Macrodata 的报告里也有类似观察。</li>
           <li><strong>基准得分锚定的是这份人工标注。</strong>WGO-Bench 的分数建立在人工分段与标注之上：它未必对应训练上最优的监督，人工标注本身也不一定质量最高。围绕该得分优化，会让管线趋近这份基准的人工标注风格。好消息是，如果未来有经过审核、规模更大、质量更好的人工标注数据，同一套得分规则与管线优化思路仍然适用。</li>
@@ -730,7 +730,7 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-29"></script>
+  <script src="js/i18n.js?v=20260812-30"></script>
   <script src="js/report.js?v=20260812-29"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>

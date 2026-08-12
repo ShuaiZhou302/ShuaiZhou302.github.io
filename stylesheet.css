@@ -393,8 +393,10 @@ a:hover { color: var(--warm); }
 
 /* —— Blog / Honors / Misc —— */
 .blog-card {
-  display: block;
-  padding: 1.35rem 1.4rem;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.35rem;
+  padding: 1.15rem;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -413,11 +415,32 @@ a:hover { color: var(--warm); }
   bottom: 0;
   width: 5px;
   background: linear-gradient(180deg, var(--gold), var(--accent));
+  z-index: 1;
 }
 
 .blog-card:hover {
   border-color: var(--accent);
   color: inherit;
+}
+
+.blog-media {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  align-self: start;
+}
+
+.blog-media img,
+.blog-media video {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+}
+
+.blog-body {
+  min-width: 0;
 }
 
 .blog-date {
@@ -541,6 +564,21 @@ a:hover { color: var(--warm); }
 
   .pub-media img,
   .pub-media video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .blog-card {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-media {
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .blog-media img,
+  .blog-media video {
     aspect-ratio: 16 / 9;
   }
 
