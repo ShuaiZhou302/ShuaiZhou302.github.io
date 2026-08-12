@@ -542,7 +542,7 @@ def compatible(a, b, strategy):
         <p>前面已经试过分段、固定边界标注与端到端多条路径。这里只给出最终默认配置：开放权重模型上的端到端分段与标注流程。本组最高端到端整流程得分为 <strong>0.1542</strong>（S2 边界 + 多候选判别 · 397B）。WGO-Bench 公开的闭源最优端到端整流程得分为 <strong>0.168</strong>（全量约 100 集）；在 HomER 子集上，我们与该水平已经很接近。</p>
       </div>
       <figure class="figure">
-        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-19" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
+        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-20" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
         <figcaption data-i18n="pipeline.recipe.flow.cap">图示流程：左分段、右标注；原始帧可单路直出，也可与其他候选一并送入判别器。</figcaption>
       </figure>
       <p class="plain" data-i18n-html data-i18n="pipeline.recipe.prompts">
@@ -573,7 +573,7 @@ def compatible(a, b, strategy):
       <h2 data-i18n="walk.h2">4. 样例分析：HomER 样本上的端到端流程</h2>
       <p class="plain" data-i18n="walk.task">任务：用布擦桌面 / 柜面。下面按推荐路径逐步走一遍。</p>
       <figure class="figure">
-        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-19" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
+        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-20" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
         <figcaption data-i18n="walk.flow.cap">流程示意：左分段、右标注；原始帧可单路直出，也可与其他候选汇入判别器。</figcaption>
       </figure>
 
@@ -743,8 +743,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-19"></script>
-  <script src="js/report.js?v=20260812-19"></script>
+  <script src="js/i18n.js?v=20260812-20"></script>
+  <script src="js/report.js?v=20260812-20"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
