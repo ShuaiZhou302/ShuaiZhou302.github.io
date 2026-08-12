@@ -58,7 +58,7 @@
   <rect x="556" y="284" width="150" height="54" rx="10" class="cand"/>
   <text x="631" y="317" text-anchor="middle" class="txt label ink">Seed</text>
   <rect x="556" y="370" width="150" height="54" rx="10" class="cand"/>
-  <text x="631" y="403" text-anchor="middle" class="txt label ink">Raw-prior</text>
+  <text x="631" y="403" text-anchor="middle" class="txt label ink">Prior</text>
 
   <line x1="448" y1="271" x2="510" y2="271" class="arrow"/>
   <line x1="510" y1="139" x2="510" y2="397" class="arrow"/>
