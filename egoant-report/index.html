@@ -606,10 +606,11 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-3">
           <div class="step-h"><span class="badge">03</span><h3 class="step-title" data-i18n="walk.s3.t">局部精修：窗口不外扩，盖住完整动作</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s3.p">
-            在粗边界附近开局部时间窗，用<strong>同一版式</strong>的拼贴图再切一次。<strong>窗口不外扩</strong>：只看粗段内部；并加入「<strong>盖住完整动作</strong>」相关提示词。
+            在<strong>粗边界附近</strong>开局部时间窗，用<strong>同一版式</strong>的拼贴图在窗内再切一次。
+            <strong>窗口不外扩</strong>：只看该局部时间窗内部；并加入「<strong>盖住完整动作</strong>」相关提示词。
           </p>
           <p class="plain muted" data-i18n-html data-i18n="walk.s3.note">
-            以本集为例，整集粗分在约 <strong>26.0s</strong> 处得到「擦抽屉内部」粗段（约 <strong>[26.0, 42.0]</strong>）；下图是该粗段内一张局部拼贴图，覆盖 <strong>26.5s–36.0s</strong>（与上一步整集开头的拼贴图不同）。
+            以本集为例，整集粗分在约 <strong>26.0s</strong> 有一条粗边界（前一段「拉开抽屉」约 <strong>[23.5, 26.0]</strong>，后一段「擦抽屉内部」约 <strong>[26.0, 44.5]</strong>）。局部精修是在这条边界附近开窗再切；下图是该窗口内一张局部拼贴图，覆盖 <strong>26.5s–36.0s</strong>。
           </p>
           <figure class="figure">
             <img src="assets/homer4/contact_window_sample.jpg" alt="step03 local sheet" />
@@ -634,24 +635,16 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-5">
           <div class="step-h"><span class="badge">05</span><h3 class="step-title" data-i18n="walk.s5.t">候选判别器选择</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s5.p">
-            我们把上一步的多路候选交给模型，并输入提示词，让它从中选出最合适的动作标注。
+            我们把上一步的多路候选交给模型，并输入提示词，让它从中选出最合适的动作标注。下面用本集预测段落互动展示选中结果：点击时间轴色块或表格行，可跳到该预测段落并查看候选。
           </p>
           <p id="walk-cand-final" class="callout"></p>
-        </article>
-
-        <article class="step-card" id="walk-6">
-          <div class="step-h"><span class="badge">06</span><h3 class="step-title" data-i18n="walk.s6.t">点选 pred 段：看视频 + 标注</h3></div>
-          <p class="plain" data-i18n-html data-i18n="walk.s6.p">
-            这里只展示 <strong>候选判别器预测轨</strong>：点击色块或表格行后，右侧播放对应片段，左侧显示预测标签。
-            人工参考 / 整集粗分 / 拼贴图粗分的多轨边界对照见 <a href="#walk-boundary">本节边界对照</a>。
-          </p>
           <div id="walk-timeline" class="timeline"></div>
           <div class="walk-explore">
             <div class="walk-explore-anno">
-              <div id="walk-seg-detail" class="seg-detail"><span class="muted" data-i18n="walk.s6.hint">点击 pred 色块或表格行。</span></div>
+              <div id="walk-seg-detail" class="seg-detail"><span class="muted" data-i18n="walk.s6.hint">点击预测段落色块或表格行。</span></div>
             </div>
             <div class="walk-explore-video video-wrap landscape">
-              <video id="walk-clip" controls preload="metadata" src="assets/homer4/homer_4_seek.mp4"></video>
+              <video id="walk-clip" controls preload="auto" playsinline src="assets/homer4/homer_4_seek.mp4"></video>
               <div class="walk-clip-meta" id="walk-clip-meta" data-i18n="walk.s6.clipidle">尚未选择片段</div>
             </div>
           </div>
@@ -727,8 +720,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-25"></script>
-  <script src="js/report.js?v=20260812-25"></script>
+  <script src="js/i18n.js?v=20260812-26"></script>
+  <script src="js/report.js?v=20260812-26"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {

@@ -1016,32 +1016,36 @@
           if (settled) return;
           settled = true;
           video.removeEventListener("seeked", onSeeked);
+          video.removeEventListener("loadedmetadata", onReady);
+          video.removeEventListener("canplay", onReady);
           clearTimeout(timer);
           resolve(!!ok);
         };
-        const onSeeked = () => {
+        const closeEnough = () => {
           const ct = video.currentTime || 0;
-          finish(Math.abs(ct - target) < 0.75 || (target > 1 && ct >= target - 1.0));
+          return Math.abs(ct - target) < 0.35 || (target > 1 && ct >= target - 0.5 && ct <= target + 1.0);
         };
-        video.addEventListener("seeked", onSeeked);
-        const timer = setTimeout(() => {
-          const ct = video.currentTime || 0;
-          finish(Math.abs(ct - target) < 0.75 || (target > 1 && ct >= target - 1.0));
-        }, 2500);
+        const onSeeked = () => finish(closeEnough());
         const kick = () => {
           try {
-            // Do not pause here — play() may already be in flight from the click gesture.
-            if (target > 0.5 && (video.currentTime || 0) < 0.25) {
-              video.currentTime = Math.min(target, 0.5);
-            }
             video.currentTime = target;
+            // Some browsers ignore the first assignment before enough data is buffered.
+            if (!closeEnough()) {
+              requestAnimationFrame(() => {
+                try { video.currentTime = target; } catch (e) {}
+              });
+            }
           } catch (e) {
             finish(false);
           }
         };
+        const onReady = () => kick();
+        video.addEventListener("seeked", onSeeked);
+        const timer = setTimeout(() => finish(closeEnough()), 3000);
         if (video.readyState >= 1) kick();
         else {
-          video.addEventListener("loadedmetadata", kick, { once: true });
+          video.addEventListener("loadedmetadata", onReady, { once: true });
+          video.addEventListener("canplay", onReady, { once: true });
           try { video.load(); } catch (e) {}
         }
       });
@@ -1051,15 +1055,16 @@
       if (!seg) return;
       const start = Math.max(0, Number(seg.start_sec) || 0);
       const end = Math.max(start + 0.05, Number(seg.end_sec) || start + 1);
-      const label = kind === "gold" ? "Gold" : "Pred";
+      const label = kind === "gold" ? t("walk.seg.gold") : t("walk.seg.pred");
       const myGen = ++seekGen;
 
       if (detail) {
+        const sep = lang() === "en" ? ": " : "：";
         const extra = kind === "pred" && seg.candidate_labels
-          ? `<div class="muted" style="margin-top:0.45rem"><strong>${t("walk.s6.cands")}</strong><br/>${candOrder.filter((k) => seg.candidate_labels[k] != null).map((k) => `${esc(candLabelMap[k] || k)}：${esc(seg.candidate_labels[k])}`).join("<br/>")}</div>`
+          ? `<div class="muted" style="margin-top:0.45rem"><strong>${t("walk.s6.cands")}</strong><br/>${candOrder.filter((k) => seg.candidate_labels[k] != null).map((k) => `${esc(candLabelMap[k] || k)}${sep}${esc(seg.candidate_labels[k])}`).join("<br/>")}</div>`
           : "";
         const srcLine = kind === "pred" && seg.candidate_select_source
-          ? `<div class="muted" style="margin-top:0.35rem">${esc(t("walk.th.sel"))}${lang() === "en" ? ": " : "："}${esc(candSourceLabel(seg.candidate_select_source))}</div>`
+          ? `<div class="muted" style="margin-top:0.35rem">${esc(t("walk.th.sel"))}${sep}${esc(candSourceLabel(seg.candidate_select_source))}</div>`
           : "";
         detail.innerHTML = `<div class="muted">${t("walk.s6.selected")}</div>
           <strong>${label} #${idx}</strong>
@@ -1084,26 +1089,52 @@
       ensureSrc(clip, walkSrc);
       ensureSrc(overview, walkSrc);
 
-      // Important: call play() BEFORE any await so the click user-gesture is preserved.
-      if (clip) {
-        try { clip.pause(); } catch (e) {}
+      if (!clip) return;
+
+      try { clip.pause(); } catch (e) {}
+      // Preserve click gesture for autoplay: start play ASAP, then correct the seek.
+      let playPromise = null;
+      if (autoplay) {
         try { clip.currentTime = start; } catch (e) {}
-        if (overview) {
-          try { overview.currentTime = start; } catch (e) {}
+        playPromise = clip.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise = playPromise.catch(() => null);
         }
-        clipLoopHandler = () => {
-          if (!clipBound || myGen !== seekGen) return;
-          const ct = clip.currentTime || 0;
-          if (ct < clipBound.start - 0.2) {
-            try { clip.currentTime = clipBound.start; } catch (e) {}
-            return;
-          }
-          if (ct >= clipBound.end - 0.04) {
-            try { clip.currentTime = clipBound.start; } catch (e) {}
-          }
-        };
-        clip.addEventListener("timeupdate", clipLoopHandler);
-        if (autoplay) {
+      }
+
+      let ok = await seekTo(clip, start);
+      if (myGen !== seekGen) return;
+      if (!ok) {
+        await new Promise((r) => setTimeout(r, 120));
+        if (myGen !== seekGen) return;
+        ok = await seekTo(clip, start);
+      }
+      if (myGen !== seekGen) return;
+      await seekTo(overview, start);
+      if (myGen !== seekGen) return;
+
+      // If the browser drifted back to 0 while playing, force the start again.
+      if (Math.abs((clip.currentTime || 0) - start) > 0.5) {
+        try { clip.currentTime = start; } catch (e) {}
+        await seekTo(clip, start);
+        if (myGen !== seekGen) return;
+      }
+
+      clipLoopHandler = () => {
+        if (!clipBound || myGen !== seekGen) return;
+        const ct = clip.currentTime || 0;
+        if (ct < clipBound.start - 0.15) {
+          try { clip.currentTime = clipBound.start; } catch (e) {}
+          return;
+        }
+        if (ct >= clipBound.end - 0.04) {
+          try { clip.currentTime = clipBound.start; } catch (e) {}
+        }
+      };
+      clip.addEventListener("timeupdate", clipLoopHandler);
+
+      if (autoplay) {
+        if (clip.paused) {
           const p = clip.play();
           if (p && typeof p.catch === "function") {
             p.catch(() => {
@@ -1114,22 +1145,8 @@
             });
           }
         }
-      }
-
-      // Refine seek after metadata/range is ready (may await; play already started).
-      await seekTo(overview, start);
-      if (myGen !== seekGen) return;
-      let ok = await seekTo(clip, start);
-      if (myGen !== seekGen) return;
-      if (!ok) {
-        await new Promise((r) => setTimeout(r, 200));
-        if (myGen !== seekGen) return;
-        await seekTo(clip, start);
-      }
-      if (myGen !== seekGen) return;
-      if (clip && autoplay && clip.paused) {
-        const p = clip.play();
-        if (p && typeof p.catch === "function") p.catch(() => {});
+      } else {
+        try { clip.pause(); } catch (e) {}
       }
     }
 
@@ -1142,13 +1159,13 @@
       return `<div class="lane"><div class="lane-title">${esc(title)} (${segs.length})</div><div class="lane-track tall">${bits}</div></div>`;
     }
     if (tl) {
-      tl.innerHTML = makeLane("Pred", walk.pred_segments, "pred");
+      tl.innerHTML = makeLane(t("walk.lane.pred"), walk.pred_segments, "pred");
       tl.querySelectorAll(".seg").forEach((node) => {
         node.addEventListener("click", () => {
           const kind = node.getAttribute("data-kind");
           const idx = Number(node.getAttribute("data-idx"));
           const seg = walk.pred_segments[idx];
-          playSegment(kind, idx, seg);
+          playSegment(kind, idx, seg, { autoplay: true });
         });
       });
     }
@@ -1162,12 +1179,12 @@
           const kind = tr.getAttribute("data-kind");
           const idx = Number(tr.getAttribute("data-idx"));
           const seg = walk.pred_segments[idx];
-          playSegment(kind, idx, seg);
+          playSegment(kind, idx, seg, { autoplay: true });
         });
       });
     }
 
-    // Default: demo pred segment, else first pred
+    // Default: demo predicted segment, else first predicted segment
     const prefer = (walk.candidate_demo_segment && walk.candidate_demo_segment.index != null
       && walk.pred_segments[walk.candidate_demo_segment.index])
       ? { kind: "pred", idx: walk.candidate_demo_segment.index, seg: walk.pred_segments[walk.candidate_demo_segment.index] }
