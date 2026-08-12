@@ -6,12 +6,6 @@ You label egocentric manipulation subtasks. Describe the completed manipulation 
 
 ## User Prompt Template
 
-Image input: the images attached after this text depend on `mode_intro`.
-For `raw`, they are uniformly sampled raw frames from the current segment.
-For `overlay`, they are sampled frames with a heuristic motion/hand overlay.
-For `raw-hand-crop`, they include raw frames plus a hand-focused crop grid.
-For `temporal-collage`, they include past/current/future frame grids.
-
 ```text
 {mode_intro}
 

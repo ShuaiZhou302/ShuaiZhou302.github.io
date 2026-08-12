@@ -760,13 +760,6 @@
     return ordered.concat(rest);
   }
 
-  function shortModel(m) {
-    const s = String(m || "");
-    if (/27B/i.test(s) && !/397B/i.test(s)) return "27B";
-    if (/397B/i.test(s)) return "397B";
-    return s.replace(/\s*·\s*Gemini-3\.5-Flash judge/i, "").trim() || s;
-  }
-
   function fillLabelTable(data) {
     const tbody = document.querySelector("#label-tbody");
     if (!tbody) return;
@@ -775,7 +768,8 @@
     tbody.innerHTML = rows.map((row) => {
       const r = locRow(row);
       const bestCls = r.acc === best ? "best" : "";
-      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${pct(r.acc)}</td><td class="num">${r.n_match}/${r.n}</td><td>${esc(shortModel(r.model))}</td></tr>`;
+      // Condition names already include · 27B / · 397B; no separate model column.
+      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${pct(r.acc)}</td><td class="num">${r.n_match}/${r.n}</td></tr>`;
     }).join("");
   }
 

@@ -6,9 +6,6 @@ You are a careful egocentric video segmentation annotator.
 
 ## User Prompt Template
 
-Image input: all timestamped contact-sheet images for the full episode are
-attached after this text prompt, in chronological order.
-
 ```text
 Reconstruct the sequence of manipulation events in this egocentric video from the timestamped contact sheets.
 

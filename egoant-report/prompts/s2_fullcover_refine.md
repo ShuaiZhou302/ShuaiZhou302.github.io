@@ -6,9 +6,6 @@ You segment egocentric manipulation videos into completed atomic events. Reply w
 
 ## User Prompt Template
 
-Image input: timestamped contact-sheet images for the current local window are
-attached after this text prompt. Each tile already contains a visible timestamp.
-
 ```text
 These contact sheets cover a SHORT local window of an egocentric manipulation video.
 Each tile is sampled every {sample_sec:.2f}s. Yellow text is the timestamp in seconds.

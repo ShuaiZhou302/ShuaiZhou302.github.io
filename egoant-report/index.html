@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260812-03" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-04" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -342,7 +342,7 @@ def compatible(a, b, strategy):
         <h4 data-i18n="story.chart.seg">视频分段得分（Segment F1）</h4>
         <div id="seg-bars" class="bars"></div>
       </div>
-      <p class="plain" data-i18n-html data-i18n="story.seg.modelnote">条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。</p>
+      <p class="plain" data-i18n-html data-i18n="story.seg.modelnote">条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。图中两侧并不对等：397B 只覆盖拼贴图分片、S1 加密切分、早期 S2（窗外扩约 1 秒）；整集一次提交、窗口外扩消融、覆盖完整动作提示词与相邻片段规则合并均只在 27B 上跑完。</p>
       <div style="overflow-x:auto">
         <table>
           <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th>P / R</th><th>配对/预测/参考</th><th data-i18n="th.model">模型或方法</th></tr></thead>
@@ -362,16 +362,16 @@ def compatible(a, b, strategy):
           <li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守：预测片段仅 148 段（参考 470 段），配对成功 38，多数参考动作未被单独切出，整体表现为欠分割。</li>
           <li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li>
           <li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li>
-          <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。</li>
+          <li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。上述 pad / full-cover 消融均在 27B 上完成。</li>
           <li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修。</li>
-          <li>模型对比：在相同的拼贴图分片设置下，Qwen3.6-27B 的视频分段得分为 0.1278，高于 Qwen3.5-397B 的 0.0952；最终最优 S2 配置也采用 27B。</li>
+          <li>模型对比（覆盖不对等）：公平对照主要看拼贴图分片——27B 为 0.1278，高于 397B 的 0.0952。397B 另有 S1（0.1556）与早期 S2≈1 秒外扩（0.1674）；同档 27B 的 pad=1.0 为 0.1485，早期 397B 局部精修并不差，但后续窗口外扩与覆盖完整动作提示词的系统消融只在 27B 上继续，最优 0.2031 因此也落在 27B。图上 27B 行更多，是实验覆盖不对称，不是漏写已有 397B 结果。</li>
         </ol>
       </div>
 
       
 
       <h3 data-i18n="pipeline.h3.label">3.2 固定边界标注</h3>
-      <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。本阶段不预测时间，只评描述是否与人工描述表达同一完成动作。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
+      <p data-i18n-html data-i18n="pipeline.label.lead">固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。</p>
       
       <h4 data-i18n="world.h3.inputs">视觉输入</h4>
       <p data-i18n-html data-i18n="world.p.inputs">
@@ -397,25 +397,7 @@ def compatible(a, b, strategy):
               <img src="assets/explain/inputs/input_raw_1.jpg" alt="" />
               <span class="frame-label" data-i18n="world.zoo.raw.l1">帧 1</span>
             </div>
-            
-      <p class="plain" data-i18n="world.zoo.approx.lead">近似手部拼贴的两种裁框方式如下；上面 zoo 只给概念示意，这里用同一 HomER 帧对照。</p>
-<div class="gallery">
-        <figure class="figure">
-          <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
-          <figcaption data-i18n-html data-i18n="story.label.cap1">
-            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。对应上文「近似手部拼贴」里的画面中心启发式。
-          </figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
-          <figcaption data-i18n-html data-i18n="story.label.cap2">
-            读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。对应上文「近似手部拼贴」里的 YOLO 人物框路径。
-          </figcaption>
-        </figure>
-      </div>
-
-      
-<div class="frame-cell">
+            <div class="frame-cell">
               <img src="assets/explain/inputs/input_raw_2.jpg" alt="" />
               <span class="frame-label" data-i18n="world.zoo.raw.l2">帧 2</span>
             </div>
@@ -457,7 +439,7 @@ def compatible(a, b, strategy):
         </figure>
         <figure class="figure">
           <img src="assets/explain/inputs/input_proxy_overlay.jpg" alt="Orange hand-crop region on the full frame and the resulting crop" />
-          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>手部裁剪</strong>：左图橙色框表示裁剪区域，右图是实际送入标注模型的局部图像。</figcaption>
+          <figcaption data-i18n-html data-i18n="world.zoo.crop"><strong>HaWoR 腕轨迹裁剪</strong>：左图橙色框表示按重建腕轨迹得到的裁剪区域，右图是实际送入标注模型的局部图像；作为上文手部相关输入的实拍补充。</figcaption>
         </figure>
       </div>
 
@@ -489,19 +471,19 @@ def compatible(a, b, strategy):
       </div>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">固定分段标注得分</th><th data-i18n="th.matchn">配对成功 / 参考段数</th><th data-i18n="th.model">模型</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.acc">固定分段标注得分</th><th data-i18n="th.matchn">配对成功 / 参考段数</th></tr></thead>
           <tbody id="label-tbody"></tbody>
         </table>
       </div>
             <div data-i18n-html data-i18n="pipeline.label.analysis">
         <p>结合上图与表，可以归纳如下。</p>
         <ol>
-          <li>原始帧 · 27B：在 470 个固定参考片段上配对成功 262，固定分段标注得分 55.7%，为本组最高。同一评测尺子下，复杂视觉输入均未超过该配置。</li>
-          <li>时序拼贴与视觉提示叠加：在 27B 上分别得到 52.8% 与 50.6%；在 397B 上分别得到 45.1% 与 48.5%，均低于对应模型的原始帧。额外上下文没有提高当前片段描述准确率。</li>
-          <li>HaWoR 手部裁剪：27B 为 52.3%（246 / 470），高于 397B 的 50.9%，但仍低于原始帧 · 27B。裁剪能略微帮助部分模型，但不能替代原始帧和模型选择。</li>
-          <li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型只带来很小变化，相邻动作仍容易被写进当前描述。</li>
-          <li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%。YOLO / 画面中心启发式裁剪在固定边界上低于原始帧，也低于 HaWoR 腕轨迹裁剪。</li>
-          <li>模型对比：原始帧输入下，27B（55.7%）高于 397B（50.2%）。固定边界标注的默认路径取原始帧 · 27B。</li>
+          <li>原始帧 · 27B：在 470 个固定参考片段上配对成功 262，固定分段标注得分 55.7%，为本组最高。边界已给定时，模型更吃完整场景上下文；同一评测尺子下，更复杂的视觉输入均未超过该配置。</li>
+          <li>时序拼贴与视觉提示叠加：27B 为 52.8% / 50.6%，397B 为 45.1% / 48.5%，均低于各自原始帧。拼贴压缩分辨率、叠加提示引入额外笔迹，都可能干扰对当前完成动作的判断；额外上下文没有抬高当前片段描述准确率。</li>
+          <li>HaWoR 腕轨迹裁剪：27B 为 52.3%（246 / 470），397B 为 50.9%。相对各自原始帧，27B 掉了约 3.4 个百分点，397B 接近持平甚至略高。裁剪能帮大模型更盯住手部，但仍低于原始帧 · 27B；重建腕轨迹可用时有用，替代不了「看全景 + 选对模型」。</li>
+          <li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型几乎不动，失败更像「邻段动作泄漏进当前描述」，不是容量问题；时间戳也救不了跨段混淆。</li>
+          <li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%，全组最低。YOLO / 画面中心启发式框比 HaWoR 腕轨迹更粗，固定边界上既丢背景又裁不准手，双重伤害。</li>
+          <li>模型对比：不只看原始帧。原始帧上 27B（55.7%）高于 397B（50.2%）；时序拼贴、视觉提示叠加、HaWoR、邻段拼贴上同样是 27B ≥ 397B（差值约 1–8 个百分点）。唯一接近持平或 397B 略高的是近似手部拼贴（39.1% vs 38.5%），但两者都远低于原始帧。固定边界标注更依赖把当前动作说对的指令跟随与视觉阅读，参数量更大并不自动更好；默认路径取原始帧 · 27B。</li>
         </ol>
       </div>
 <h3 data-i18n="pipeline.h3.e2e">3.3 端到端</h3>
@@ -794,9 +776,9 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-03"></script>
-  <script src="js/report.js?v=20260812-03"></script>
-  <script src="js/prompts_embed.js?v=20260812-03"></script>
+  <script src="js/i18n.js?v=20260812-05"></script>
+  <script src="js/report.js?v=20260812-05"></script>
+  <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];
