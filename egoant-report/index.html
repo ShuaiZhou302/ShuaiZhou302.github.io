@@ -41,11 +41,12 @@
       <a class="brand" href="#blog" data-i18n="nav.brand">EgoANT</a>
       <div class="topnav-links">
         <a href="#intro" data-i18n="nav.intro">导读</a>
-        <a href="#tldr" data-i18n="nav.tldr">结论</a>
+        <a href="#tldr" data-i18n="nav.tldr">TL;DR</a>
         <a href="#world" data-i18n="nav.world">相关工作</a>
         <a href="#evaluate" data-i18n="nav.evaluate">如何评估</a>
         <a href="#pipeline" data-i18n="nav.pipeline">标注管线</a>
         <a href="#walk" data-i18n="nav.walk">样例</a>
+        <a href="#conclusion" data-i18n="nav.conclusion">结论</a>
         <a href="#references" data-i18n="nav.references">参考文献</a>
       </div>
       <div class="lang-switch" role="group" aria-label="Language">
@@ -65,6 +66,7 @@
     <a href="#evaluate" data-toc="evaluate" data-i18n="nav.evaluate">如何评估</a>
     <a href="#pipeline" data-toc="pipeline" data-i18n="nav.pipeline">标注管线</a>
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
+    <a href="#conclusion" data-toc="conclusion" data-i18n="nav.conclusion">结论</a>
     <a href="#references" data-toc="references" data-i18n="nav.references">参考文献</a>
   </aside>
 
@@ -666,7 +668,7 @@ def compatible(a, b, strategy):
       </div>
 
       <h3 id="walk-label-compare" data-i18n="labelcmp.h2">最终标注对照</h3>
-      <p class="plain" data-i18n="labelcmp.lead">下面直观展示最终标注结果与原始人工标注的对比情况。上方播视频，下方两条时间轴；点击色块可查看该段标注并跳转播放。</p>
+      <p class="plain muted" data-i18n="labelcmp.lead">下面直观展示最终标注结果与原始人工标注的对比情况。上方播视频，下方两条时间轴；点击色块可查看该段标注并跳转播放。</p>
       <div class="bc-card" id="labelcmp-card">
         <div class="bc-head">
           <div class="bc-title">
@@ -692,9 +694,20 @@ def compatible(a, b, strategy):
       </div>
     </section>
 
+    <section id="conclusion">
+      <h2 data-i18n="conclusion.h2">5. 结论</h2>
+      <div data-i18n-html data-i18n="conclusion.body">
+        <p>我们呈现了一条面向开放权重视觉语言模型的端到端第一视角标注管线 EgoANT，并在公开基准上测试了若干辅助 VLM 标注的输入与流程设计（例如拼贴图粗分、局部精修、多候选判别）。本页是 EgoANT blog 的第一个版本。</p>
+        <p>仍有两点局限，也留给后续继续探索：</p>
+        <ol>
+          <li><strong>模型能力并不整齐。</strong>不同模型在空间理解、推理、物体识别等方面强弱不一，因此没有哪种辅助技巧能长期通吃。好消息是，换成更新、更强的模型往往能直接提分；Macrodata 的报告里也有类似观察。</li>
+          <li><strong>基准得分锚定的是这份人工标注。</strong>WGO-Bench 的分数建立在人工分段与标注之上：它未必对应训练上最优的监督，人工标注本身也不一定质量最高。围绕该得分优化，会让管线趋近这份基准的人工标注风格。好消息是，如果未来有经过审核、规模更大、质量更好的人工标注数据，同一套得分规则与管线优化思路仍然适用。</li>
+        </ol>
+      </div>
+    </section>
 
     <section id="references">
-      <h2 data-i18n="references.h2">5. 参考文献</h2>
+      <h2 data-i18n="references.h2">6. 参考文献</h2>
       <ol class="ref-list">
         <li id="ref-pi05" data-i18n-html data-i18n="references.pi05">Physical Intelligence, Black, Kevin, Brown, Noah, Darpinian, James, Dhabalia, Karan, Driess, Danny, et al. (2025). <em>&pi;<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization</em>. arXiv. <a href="https://arxiv.org/abs/2504.16054" target="_blank" rel="noopener">https://arxiv.org/abs/2504.16054</a></li>
         <li id="ref-wgo" data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
@@ -717,8 +730,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-28"></script>
-  <script src="js/report.js?v=20260812-28"></script>
+  <script src="js/i18n.js?v=20260812-29"></script>
+  <script src="js/report.js?v=20260812-29"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
