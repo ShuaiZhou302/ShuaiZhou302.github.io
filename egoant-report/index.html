@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260811-40" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-02" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -383,8 +383,8 @@ def compatible(a, b, strategy):
         <li data-i18n-html data-i18n="world.input.3">拼贴图：带时间戳的密抽帧网格；主要用于分段，看完整时间轴找边界。</li>
         <li data-i18n-html data-i18n="world.input.4">邻段拼贴：上一段 / 当前段 / 下一段的抽样帧一并提交。</li>
         <li data-i18n-html data-i18n="world.input.5">视觉提示叠加：在原始帧上叠加光流或启发式运动提示。</li>
-        <li data-i18n-html data-i18n="world.input.6">手部裁剪：按估计腕轨迹裁剪手部区域后提交。</li>
-        <li data-i18n-html data-i18n="world.term.11">HaWoR<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：从第一视角视频中重建手部运动的方法，本文用它估计腕部轨迹并裁出手部区域。</li>
+        <li data-i18n-html data-i18n="world.input.6">近似手部拼贴：用 YOLO 或画面中心启发式裁剪手部附近区域后拼图提交。</li>
+        <li data-i18n-html data-i18n="world.term.11">HaWoR 腕轨迹裁剪<sup class="cite"><a class="cite-ref" href="#ref-hawor">6</a></sup>：用 HaWoR 估计腕部轨迹并裁剪手部区域后提交；裁剪不完整时回退到原始帧。</li>
       </ul>
       <figure class="figure" id="term-visual">
         <img src="assets/explain/visual_input_taxonomy_zh.svg?v=20260812-01" data-i18n-src="fig.src.taxonomy" alt="Visual input taxonomy" />
@@ -453,8 +453,8 @@ def compatible(a, b, strategy):
         <li data-i18n="story.label.6">时序拼贴 · 397B：同上文「时序拼贴」，改用 Qwen3.5-397B。</li>
         <li data-i18n="story.label.7">邻段拼贴 · 27B / 397B：用上文「邻段拼贴」，分别由 Qwen3.6-27B 与 Qwen3.5-397B 生成描述。</li>
         <li data-i18n="story.label.8">邻段拼贴 + 秒级时间戳 · 397B：在上文「邻段拼贴」上为每格加入秒级时间戳后重跑。</li>
-        <li data-i18n="story.label.9">近似手部拼贴 · 27B / 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交；这不是 HaWoR 腕轨迹裁剪。</li>
-        <li data-i18n="story.label.10">HaWoR 手部裁剪 · 397B：用上文「手部裁剪」（HaWoR 腕轨迹）；裁剪不完整时回退到原始帧。</li>
+        <li data-i18n="story.label.9">近似手部拼贴 · 27B / 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交。</li>
+        <li data-i18n="story.label.10">HaWoR 手部裁剪 · 27B / 397B：用上文 HaWoR 腕轨迹裁剪；裁剪不完整时回退到原始帧。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.label">固定分段标注得分（Label Acc）</h4>
@@ -466,28 +466,28 @@ def compatible(a, b, strategy):
           <tbody id="label-tbody"></tbody>
         </table>
       </div>
-      <div data-i18n-html data-i18n="pipeline.label.analysis">
+            <div data-i18n-html data-i18n="pipeline.label.analysis">
         <p>结合上图与表，可以归纳如下。</p>
         <ol>
           <li>原始帧 · 27B：在 470 个固定参考片段上配对成功 262，固定分段标注得分 55.7%，为本组最高。同一评测尺子下，复杂视觉输入均未超过该配置。</li>
           <li>时序拼贴与视觉提示叠加：在 27B 上分别得到 52.8% 与 50.6%；在 397B 上分别得到 45.1% 与 48.5%，均低于对应模型的原始帧。额外上下文没有提高当前片段描述准确率。</li>
+          <li>HaWoR 手部裁剪：27B 为 52.3%（246 / 470），高于 397B 的 50.9%，但仍低于原始帧 · 27B。裁剪能略微帮助部分模型，但不能替代原始帧和模型选择。</li>
           <li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型只带来很小变化，相邻动作仍容易被写进当前描述。</li>
-          <li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%。这里的近似手部拼贴使用 YOLO 或画面中心启发式裁剪，不读取 HaWoR 腕轨迹，因此不等同于真正的手部重建裁剪。</li>
-          <li>HaWoR 手部裁剪 · 397B：配对成功 239 / 470，得分 50.9%，略高于原始帧 · 397B 的 50.2%，仍低于原始帧 · 27B。手部裁剪不能替代模型选择。</li>
+          <li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%。YOLO / 画面中心启发式裁剪在固定边界上低于原始帧，也低于 HaWoR 腕轨迹裁剪。</li>
           <li>模型对比：原始帧输入下，27B（55.7%）高于 397B（50.2%）。固定边界标注的默认路径取原始帧 · 27B。</li>
         </ol>
       </div>
-      <div class="gallery">
+<div class="gallery">
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_centerproxy_LABELED.jpg" alt="centerproxy three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap1">
-            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框，不是手腕检测）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。见 <a href="#term-visual">视觉输入</a>。
+            读图（三栏）：左为原始帧；中为启发式框（画面中心偏下固定方框）；右为送给标注模型的裁剪图。该近似裁剪路径在固定边界上低于原始帧。见 <a href="#term-visual">视觉输入</a>。
           </figcaption>
         </figure>
         <figure class="figure">
           <img src="assets/demos/demo_handcrop_homer7_yolo_t1.jpg" alt="yolo three-panel" />
           <figcaption data-i18n-html data-i18n="story.label.cap2">
-            读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。早期无手重建时使用此类近似输入；HaWoR 手部裁剪的固定分段标注得分为 50.9%。
+            读图（三栏）：左为原始帧；中为 YOLO 人物框；右为模型实际看到的裁剪。早期无手重建时使用此类近似输入；真正读取 HaWoR 腕轨迹的手部裁剪在固定分段上达到 52.3%（27B）/ 50.9%（397B），仍低于 raw 27B。
           </figcaption>
         </figure>
       </div>
@@ -499,15 +499,16 @@ def compatible(a, b, strategy):
         <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
       </ul>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端标注路径。</p>
-      <ol class="method-list">
+            <ol class="method-list">
         <li data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。</li>
         <li data-i18n="story.e2e.2">S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。</li>
-        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B：固定 S2 边界，用 Qwen3.6-27B 对每段原始帧重新生成描述。</li>
-        <li data-i18n="story.e2e.4">S2 边界 + 原始帧重标 · 397B：固定 S2 边界，用 Qwen3.5-397B 对每段原始帧重新生成描述。</li>
-        <li data-i18n="story.e2e.5">S2 边界 + ffmpeg 抽帧重标 · 397B：固定 S2 边界，改用另一套解码/抽帧路径后由 397B 标注。</li>
-        <li data-i18n="story.e2e.6">S2 边界 + 邻段重标 · 27B 先验：固定 S2 边界，提交邻段视觉上下文，并以 27B 描述为文本先验。</li>
-        <li data-i18n="story.e2e.7">S2 边界 + 邻段重标 · 397B 先验：固定 S2 边界，提交邻段视觉上下文，并以 397B 原始帧描述为文本先验。</li>
-        <li data-i18n="story.e2e.8">S2 边界 + 多候选判别 · 397B：在同一 S2 边界上生成多路候选描述，再由 Qwen3.5-397B 选出最终描述。</li>
+        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B：固定 S2 边界，用 Qwen3.6-27B 对每段原始帧重标（含 inner-0.5 采样）。</li>
+        <li data-i18n="story.e2e.4">S2 边界 + ffmpeg 抽帧重标 · 27B：固定 S2 边界，换 ffmpeg 解码/抽帧后由 27B 标注。</li>
+        <li data-i18n="story.e2e.5">S2 边界 + 邻段 / 多候选 · 27B：在 S2 边界上试 seeded-neighbor、raw-prior neighbor，以及 27B 多候选 selector。</li>
+        <li data-i18n="story.e2e.6">S2 边界 + 原始帧重标 · 397B：固定 S2 边界，用 Qwen3.5-397B 对每段原始帧重新生成描述。</li>
+        <li data-i18n="story.e2e.7">S2 边界 + ffmpeg 抽帧重标 · 397B：固定 S2 边界，换解码/抽帧路径后由 397B 标注。</li>
+        <li data-i18n="story.e2e.8">S2 边界 + 邻段重标 · 397B 先验：固定 S2 边界，提交邻段视觉上下文，并以 397B 原始帧描述为文本先验。</li>
+        <li data-i18n="story.e2e.9">S2 边界 + 多候选判别 · 397B：在同一 S2 边界上生成多路候选描述，再由 Qwen3.5-397B 选出最终描述。</li>
       </ol>
       <div class="chart-box">
         <h4 data-i18n="story.chart.e2e">端到端整流程得分（E2E F1）</h4>
@@ -520,14 +521,7 @@ def compatible(a, b, strategy):
         </table>
       </div>
       <div data-i18n-html data-i18n="pipeline.e2e.analysis">
-        <p>结合上图与表，可以归纳如下。</p>
-        <ol>
-          <li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li>
-          <li>分段模型自标与 27B 原始帧重标：在同一 S2 边界上，自标为 0.1234（时间配对后语义匹配 48）；27B 原始帧重标为 0.1285（语义匹配 50）。固定边界上最优的 27B 原始帧标注，换到噪声预测边界后增益有限。</li>
-          <li>397B 原始帧重标：端到端整流程得分 0.1414（语义匹配 55），高于 27B 重标。预测边界上的描述纠错更依赖较大模型。</li>
-          <li>ffmpeg 抽帧与邻段重标：ffmpeg 抽帧重标与 397B 先验邻段重标均为 0.1491（语义匹配 58）；27B 先验邻段重标为 0.1234，未超过自标。邻段上下文不是稳定增益来源。</li>
-          <li>多候选判别 · 397B：在同一 S2 边界上从多路候选中定稿，端到端整流程得分 0.1542（语义匹配 60），为本组最高；相对 397B 单路原始帧重标提高约 9.1%，并伴随额外候选生成与判别调用。成本敏感场景可默认使用 397B 单路原始帧重标。</li>
-        </ol>
+        <p>结合上图与表，可以归纳如下。</p><ol><li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li><li>分段模型自标与 27B 重标：在同一 S2 边界上，自标为 0.1234；27B raw inner-0.5 重标为 0.1337；27B ffmpeg 抽帧重标为 0.1440，是补测的 27B-only 路径中最高的一条。</li><li>27B 邻段与 27B selector：27B seeded-neighbor 为 0.1260，27B raw-prior neighbor 为 0.1414，27B 多候选 selector 为 0.1362。说明 27B 在固定参考边界上写得好，但不一定擅长在噪声预测边界上做候选定稿。</li><li>397B 原始帧重标：端到端整流程得分 0.1414（语义匹配 55），与 27B raw-prior neighbor 接近，低于 27B ffmpeg，但调用成本和部署约束不同。</li><li>397B 候选路径：397B ffmpeg raw 与 397B-prior neighbor 均为 0.1491；多候选判别 · 397B 在同一 S2 边界上从多路候选中定稿，端到端整流程得分 0.1542（语义匹配 60），仍为本组最高。成本敏感场景可选择单路 raw / ffmpeg 路径，高精度场景保留 397B selector。</li></ol>
       </div>
 
       <h3 data-i18n="pipeline.h3.recipe">3.4 推荐配置</h3>
@@ -547,7 +541,7 @@ def compatible(a, b, strategy):
           </tr>
           <tr>
             <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B raw（Label Acc 55.7%）；预测边界 E2E 低成本配置：397B raw（0.1414）</td>
+            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B raw（Label Acc 55.7%）；预测边界单路配置：27B ffmpeg raw（0.1440）或 397B raw（0.1414，成本/部署不同）</td>
             <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
           </tr>
           <tr>
@@ -788,9 +782,9 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260811-37"></script>
-  <script src="js/report.js?v=20260811-37"></script>
-  <script src="js/prompts_embed.js?v=20260811-37"></script>
+  <script src="js/i18n.js?v=20260812-02"></script>
+  <script src="js/report.js?v=20260812-02"></script>
+  <script src="js/prompts_embed.js?v=20260812-02"></script>
   <script>
     async function loadPrompt(ids, file) {
       const list = Array.isArray(ids) ? ids : [ids];

@@ -334,7 +334,7 @@
       },
       "en": {
         "name": "Approximate hand collage · 397B",
-        "note": "Approximate crop, not reconstructed wrist-track crop",
+        "note": "Heuristic crop, below raw frames",
         "model": "Qwen3.5-397B"
       }
     },
@@ -348,6 +348,18 @@
         "name": "HaWoR hand crop · 397B",
         "note": "Slightly above raw 397B, below raw 27B",
         "model": "Qwen3.5-397B"
+      }
+    },
+    "l2_hawor_27b": {
+      "zh": {
+        "name": "HaWoR 手部裁剪 · 27B",
+        "note": "高于 397B 手部裁剪，低于原始帧 · 27B",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "HaWoR hand crop · 27B",
+        "note": "Above 397B hand crop, below raw 27B",
+        "model": "Qwen3.6-27B"
       }
     },
     "l4_strict_judge": {
@@ -420,6 +432,66 @@
         "name": "S2 bounds + raw relabel · 27B",
         "note": "Best fixed-boundary Label Acc, but not best E2E",
         "model": null
+      }
+    },
+    "raw27b_inner05_e2e": {
+      "zh": {
+        "name": "S2 边界 + 原始帧重标 · 27B（inner-0.5）",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "S2 + 27B raw relabel (inner-0.5)",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      }
+    },
+    "raw27b_ffmpeg_e2e": {
+      "zh": {
+        "name": "S2 边界 + ffmpeg 抽帧重标 · 27B",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "S2 + 27B ffmpeg-raw relabel",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      }
+    },
+    "seeded_neighbor27_e2e": {
+      "zh": {
+        "name": "S2 边界 + seeded-neighbor · 27B",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "S2 + 27B seeded-neighbor",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      }
+    },
+    "raw27_prior_neighbor27_e2e": {
+      "zh": {
+        "name": "S2 边界 + raw-prior neighbor · 27B",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "S2 + 27B raw-prior neighbor",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      }
+    },
+    "selector27_e2e": {
+      "zh": {
+        "name": "S2 边界 + 多候选判别 · 27B",
+        "note": "",
+        "model": "Qwen3.6-27B"
+      },
+      "en": {
+        "name": "S2 + 27B multi-candidate selector",
+        "note": "",
+        "model": "Qwen3.6-27B"
       }
     },
     "ffmpeg397": {
@@ -499,8 +571,8 @@
     l1_neighbor: { en: { goal: "Evaluate previous/current/next context.", how: "Feed previous, current, and next segment sheets to the labeler.", input: "neighbor contact sheets", result: "Label Acc 39.6%", verdict: "Below raw 397B." } },
     l1_ts_rerun: { en: { goal: "Evaluate neighbor sheets with second-level timestamps.", how: "Re-run previous/current/next sheets after adding second-level timestamps.", input: "timestamped neighbor sheets", result: "Label Acc 40.0%", verdict: "Below raw 397B." } },
     l1_neighbor_27b: { en: { goal: "Test whether Qwen3.6-27B uses previous/current/next context better.", how: "Feed previous, current, and next segment sheets to Qwen3.6-27B and score with Gemini-3.5-Flash.", input: "neighbor contact sheets", result: "Label Acc 40.9%", verdict: "Slightly above 397B neighbor and far below raw 27B." } },
-    l2_proxy_27b: { en: { goal: "Evaluate approximate hand-crop collages with Qwen3.6-27B.", how: "Use YOLO or center-heuristic hand-adjacent crops rather than reconstructed wrist tracks.", input: "proxy hand-collage", result: "Label Acc 38.5%", verdict: "Below raw 27B and below 397B proxy hand-collage." } },
-    l2_yolo_proxy: { en: { goal: "Evaluate approximate hand-crop collages.", how: "Use YOLO or center-heuristic crops rather than reconstructed wrist tracks.", input: "proxy hand-collage", result: "Label Acc 39.1%", verdict: "Below raw 397B." } },
+    l2_proxy_27b: { en: { goal: "Evaluate approximate hand-crop collages with Qwen3.6-27B.", how: "Use YOLO or center-heuristic hand-adjacent crops, then tile them for labeling.", input: "proxy hand-collage", result: "Label Acc 38.5%", verdict: "Below raw 27B and below 397B proxy hand-collage." } },
+    l2_yolo_proxy: { en: { goal: "Evaluate approximate hand-crop collages.", how: "Use YOLO or center-heuristic crops, then tile them for labeling.", input: "proxy hand-collage", result: "Label Acc 39.1%", verdict: "Below raw 397B." } },
     l2_hawor: { en: { goal: "Evaluate HaWoR-reconstructed wrist-guided crops.", how: "Estimate wrist tracks with HaWoR, crop around hands, and use raw fallback when crops are incomplete.", input: "HaWoR-reconstructed wrist-guided crop plus raw fallback", result: "Label Acc 50.9%", verdict: "Above raw 397B and below raw 27B." } },
     l4_strict_judge: { en: { goal: "Measure sensitivity to judge strictness.", how: "Re-score the same raw predictions with a stricter semantic rubric.", input: "unchanged predicted captions", result: "Accuracy 43.0%", verdict: "Main reports should keep the semantic judge fixed." } },
     egovid_e2e: { en: { goal: "Evaluate the production one-pass output under WGO metrics.", how: "Generate wrist-speed boundaries and per-segment labels.", input: "production-style baseline output", result: "Semantic E2E F1 0.0641", verdict: "Below the WGO-Bench evaluation pipeline settings." } },
@@ -1770,7 +1842,7 @@
       "model": "Qwen3.6-27B · Gemini-3.5-Flash judge",
       "full25": true,
       "delta_vs_raw": -0.11702127659574468,
-      "note": "181 / 470 semantic matches; proxy crop is not HaWoR wrist-guided crop",
+      "note": "181 / 470 semantic matches; below raw 27B and HaWoR crop",
       "method": {
         "goal": "评估 27B 在近似手部拼贴输入下的固定边界标注。",
         "how": "使用 YOLO 或画面中心启发式裁剪手部附近区域后拼图提交；该路径不读取 HaWoR 腕轨迹。",
