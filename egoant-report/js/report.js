@@ -96,12 +96,12 @@
     },
     "s1_full25_397b": {
       "zh": {
-        "name": "S1 加密切分 · 397B",
+        "name": "S1 密集切分 · 397B",
         "note": "召回上升，切分也更细",
         "model": "Qwen3.5-397B"
       },
       "en": {
-        "name": "S1 denser cuts · 397B",
+        "name": "S1 dense cuts · 397B",
         "note": "Recall up; cuts also finer",
         "model": "Qwen3.5-397B"
       }
@@ -504,7 +504,7 @@
     },
     "selector27_e2e": {
       "zh": {
-        "name": "S2 边界 + 多候选判别 · 27B",
+        "name": "S2 边界 + 多候选选择 · 27B",
         "note": "",
         "model": "Qwen3.6-27B"
       },
@@ -552,7 +552,7 @@
     },
     "selector397": {
       "zh": {
-        "name": "S2 边界 + 多候选判别 · 397B",
+        "name": "S2 边界 + 多候选选择 · 397B",
         "note": "端到端整流程得分 0.1542",
         "model": null
       },
@@ -570,7 +570,7 @@
     cs_max3_27b: { en: { goal: "Repeat chunked contact sheets with Qwen3.6-27B.", how: "Keep max_sheets=3 and the legacy prompt while changing the segmenter.", input: "chunked contact sheets", result: "Segment F1 0.1278", verdict: "Changing the model does not remove pseudo-boundaries introduced by chunking." } },
     whole_legacy_27b: { en: { goal: "Remove chunk seams.", how: "Submit whole-episode sheets in one request with the legacy prompt.", input: "whole-episode contact sheets", result: "Segment F1 0.1230; 148 predictions", verdict: "Pseudo-boundaries decrease, but the model predicts fewer segments than the reference." } },
     aligned_gepa_27b: { en: { goal: "Use completed-event segmentation rules.", how: "Submit whole-episode sheets with the GEPA-derived segmentation prompt.", input: "whole-episode contact sheets plus GEPA-derived segmentation prompt", result: "Segment F1 0.1369", verdict: "The prompt improves over the legacy prompt, but recall remains low." } },
-    s1_full25_397b: { en: { goal: "Increase predicted segment density.", how: "Adjust the duration prior and denser-cut instruction over all 25 HomER videos.", input: "whole-episode sheets plus denser-cut prompt", result: "Segment F1 0.1556; 558 predictions", verdict: "Recall increases together with the number of predicted segments." } },
+    s1_full25_397b: { en: { goal: "Increase predicted segment density.", how: "Adjust the duration prior and dense-cut instruction over all 25 HomER videos.", input: "whole-episode sheets plus dense-cut prompt", result: "Segment F1 0.1556; 558 predictions", verdict: "Recall increases together with the number of predicted segments." } },
     s2_full25_397b: { en: { goal: "Add local refinement after coarse segmentation.", how: "Open local contact-sheet windows near coarse bounds; this early setup used about one second of pad-out.", input: "local sheets plus coarse-bound hints", result: "Segment F1 0.1674", verdict: "This is an early local-refinement configuration, not the final full-cover setup." } },
     s2_pad0_plain_27b: { en: { goal: "Compare local-window padding widths.", how: "Run local refine with pad_sec=0 before adding the full-cover instruction.", input: "local contact sheets", result: "Segment F1 0.1711; 582 predictions", verdict: "pad=0 is above the tested pad-out settings, but still predicts many segments." } },
     s2_pad05_27b: { en: { goal: "Test 0.5s pad-out.", how: "Add 0.5 seconds of neighboring context on both sides during local refine.", input: "local contact sheets", result: "Segment F1 0.1444", verdict: "This setting is below pad=0." } },
@@ -869,6 +869,7 @@
     const rows = [
       { name: i18n("cost.simple.md"), score: mdScore, usd: mdHour, best: false, exactUsd: true },
       { name: i18n("cost.simple.raw"), score: raw.e2e_f1, usd: rawHour, best: false, exactUsd: false },
+      { name: i18n("cost.simple.ffmpeg"), score: 0.1491, usd: rawHour, best: false, exactUsd: false },
       { name: i18n("cost.simple.sel"), score: sel.e2e_f1, usd: selHour, best: true, exactUsd: false },
     ];
     body.innerHTML = rows.map((r) => {
@@ -1579,7 +1580,7 @@
       "def": "Macrodata 通过 GEPA 搜索得到的 completed-event segmentation rules；本文推理时复用的是规则文本，而不是运行 GEPA。"
     },
     {
-      "term": "S1 denser cuts",
+      "term": "S1 dense cuts",
       "def": "提高预测片段密度以提升召回率的第一遍分段设置。"
     },
     {
@@ -1710,7 +1711,7 @@
     },
     {
       "id": "s1_full25_397b",
-      "name": "S1 denser cuts",
+      "name": "S1 dense cuts",
       "f1": 0.1556,
       "p": 0.143,
       "r": 0.17,
@@ -1723,7 +1724,7 @@
       "method": {
         "goal": "提高预测片段密度以改善召回率。",
         "how": "调整 duration prior 与分段密度指令，覆盖全部 25 个 HomER 视频。",
-        "input": "整集 sheets + denser-cut prompt",
+        "input": "整集 sheets + dense-cut prompt",
         "result": "Segment F1 0.1556；558 个预测片段",
         "verdict": "召回率提高，同时预测片段数量增加。"
       }

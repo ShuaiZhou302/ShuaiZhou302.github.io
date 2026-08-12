@@ -80,7 +80,7 @@
   <line x1="736" y1="422" x2="780" y2="422" class="arrow" marker-end="url(#arr)"/>
 
   <rect x="780" y="396" width="140" height="52" rx="10" class="cand"/>
-  <text x="850" y="428" text-anchor="middle" class="txt label ink">候选判别器</text>
+  <text x="850" y="428" text-anchor="middle" class="txt label ink">候选选择器</text>
 
   <path d="M920 422 H942 V286 H988" class="arrow" marker-end="url(#arr)"/>
   <text x="850" y="468" text-anchor="middle" class="pathlab muted">多候选汇入</text>
