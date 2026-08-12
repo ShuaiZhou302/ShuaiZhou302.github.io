@@ -2,7 +2,7 @@
 (function () {
   const I18N = {
     zh: {
-      "cost.simple.compare": "费用按 HomER 25 集（约 40 分钟、308 个预测段）上的调用量估算：单路每段 1 次标注，多候选每段约 4 路候选再加 1 次判别，再按 Qwen 公开单价折成每视频小时。我们最终推荐多候选 + 候选判别器：端到端得分 <strong>0.1542</strong>，约 <strong>$2.7 / 视频小时</strong>，接近 Macrodata 闭源批量的 <strong>0.168</strong> 与 <strong>$2.64 / 视频小时</strong>，且可私有部署；更看重成本时改用单路原始帧，约 <strong>$1.1 / 视频小时</strong>。",
+      "cost.simple.compare": "费用按 HomER 25 集（约 40 分钟）上的调用量估算：推荐分段给出 <strong>308</strong> 个预测段（人工参考是 <strong>470</strong> 段），单路每段 1 次标注，多候选每段约 4 路候选再加 1 次判别，再按 Qwen 公开单价折成每视频小时。我们最终推荐多候选 + 候选判别器：端到端得分 <strong>0.1542</strong>，约 <strong>$2.7 / 视频小时</strong>，接近 Macrodata 闭源批量的端到端得分 <strong>0.168</strong> 与费用 <strong>$2.64 / 视频小时</strong>，且可私有部署；更看重成本时改用单路原始帧，端到端得分 <strong>0.1414</strong>，约 <strong>$1.1 / 视频小时</strong>。",
       "cost.simple.md": "Macrodata 闭源批量（全量约 100 集）",
       "cost.simple.sel": "EgoANT 多候选 + 候选判别器（推荐）",
       "cost.simple.raw": "EgoANT 单路原始帧标注",
@@ -397,7 +397,7 @@
       "tag.pretrain": "预训练",
     },
     en: {
-      "cost.simple.compare": "Costs are estimated from call counts on HomER 25 episodes (~40 minutes, 308 predicted segments): one labeling call per segment for the single-path setup, versus about four candidate descriptions plus one selector call for the multi-candidate setup, then converted with public Qwen unit prices to per video-hour. We recommend multi-candidate + selector by default: end-to-end score <strong>0.1542</strong> at about <strong>$2.7 / video-hour</strong>, close to Macrodata’s closed-source batch <strong>0.168</strong> and <strong>$2.64 / video-hour</strong>, and privately deployable; for tighter budgets, use single-path raw frames at about <strong>$1.1 / video-hour</strong>.",
+      "cost.simple.compare": "Costs are estimated from call counts on HomER 25 episodes (~40 minutes): the recommended segmenter yields <strong>308</strong> predicted segments (vs <strong>470</strong> human reference segments); single-path uses one labeling call per segment, while multi-candidate uses about four candidate descriptions plus one selector call, then converts with public Qwen unit prices to per video-hour. We recommend multi-candidate + selector by default: end-to-end score <strong>0.1542</strong> at about <strong>$2.7 / video-hour</strong>, close to Macrodata’s closed-source batch end-to-end score <strong>0.168</strong> and cost <strong>$2.64 / video-hour</strong>, and privately deployable; for tighter budgets, use single-path raw frames (end-to-end score <strong>0.1414</strong>, about <strong>$1.1 / video-hour</strong>).",
       "cost.simple.md": "Macrodata closed-source batch (full ~100 eps)",
       "cost.simple.sel": "EgoANT multi-candidate + selector (recommended)",
       "cost.simple.raw": "EgoANT single-path raw-frame labeling",

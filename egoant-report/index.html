@@ -564,7 +564,7 @@ def compatible(a, b, strategy):
         <tbody id="cost-tbody"></tbody>
       </table>
       <p class="plain" data-i18n-html data-i18n="cost.simple.compare">
-        费用按 HomER 25 集（约 40 分钟、308 个预测段）上的调用量估算：单路每段 1 次标注，多候选每段约 4 路候选再加 1 次判别，再按 Qwen 公开单价折成每视频小时。我们最终推荐多候选 + 候选判别器：端到端得分 <strong>0.1542</strong>，约 <strong>$2.7 / 视频小时</strong>，接近 Macrodata 闭源批量的 <strong>0.168</strong> 与 <strong>$2.64 / 视频小时</strong>，且可私有部署；更看重成本时改用单路原始帧，约 <strong>$1.1 / 视频小时</strong>。
+        费用按 HomER 25 集（约 40 分钟）上的调用量估算：推荐分段给出 <strong>308</strong> 个预测段（人工参考是 <strong>470</strong> 段），单路每段 1 次标注，多候选每段约 4 路候选再加 1 次判别，再按 Qwen 公开单价折成每视频小时。我们最终推荐多候选 + 候选判别器：端到端得分 <strong>0.1542</strong>，约 <strong>$2.7 / 视频小时</strong>，接近 Macrodata 闭源批量的端到端得分 <strong>0.168</strong> 与费用 <strong>$2.64 / 视频小时</strong>，且可私有部署；更看重成本时改用单路原始帧，端到端得分 <strong>0.1414</strong>，约 <strong>$1.1 / 视频小时</strong>。
       </p>
     </section>
 
@@ -740,8 +740,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-12"></script>
-  <script src="js/report.js?v=20260812-12"></script>
+  <script src="js/i18n.js?v=20260812-13"></script>
+  <script src="js/report.js?v=20260812-13"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
