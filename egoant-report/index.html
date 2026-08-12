@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260812-36" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-37" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -176,7 +176,7 @@
         <strong>首尾吸附只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P<sub>0</sub>.start 从 0.5 改为 0、P<sub>3</sub>.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260812-36" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260812-37" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <h3 data-i18n="metrics.h3.seg">视频分段得分例子</h3>
