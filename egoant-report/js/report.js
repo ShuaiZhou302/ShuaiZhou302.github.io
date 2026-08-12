@@ -641,16 +641,27 @@
 
   function renderBars(el, rows, valueKey, maxVal, alt, bestId) {
     if (!el) return;
+    const hasIdMatch = bestId != null && rows.some((row) => row.id === bestId);
+    let bestValue = null;
+    if (!hasIdMatch && rows.length) {
+      bestValue = rows.reduce((m, row) => {
+        const v = Number(locRow(row)[valueKey]);
+        return Number.isFinite(v) && (m == null || v > m) ? v : m;
+      }, null);
+    }
     el.innerHTML = rows.map((row) => {
       const r = locRow(row);
       const v = r[valueKey];
       const w = Math.max(2, Math.round((v / maxVal) * 100));
-      const isBest = bestId && row.id === bestId;
+      const isBest = hasIdMatch
+        ? row.id === bestId
+        : bestValue != null && Number(v) === Number(bestValue);
       const label = isBest ? `<strong>${esc(r.name)}</strong>` : esc(r.name);
+      const valTxt = valueKey === "acc" ? pct(v) : fmtF1(v);
       return `<div class="bar-row${isBest ? " best" : ""}">
         <div class="bar-label">${label}</div>
         <div class="bar-track"><div class="bar-fill${alt ? " alt" : ""}" style="width:${w}%"></div></div>
-        <div class="bar-val">${valueKey === "acc" ? pct(v) : fmtF1(v)}</div>
+        <div class="bar-val">${isBest ? `<strong>${valTxt}</strong>` : valTxt}</div>
       </div>`;
     }).join("");
   }
@@ -1494,7 +1505,7 @@
     }
     const mainSeg = orderedSegRows(data);
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-    renderBars(document.querySelector("#label-bars"), orderedLabelRows(data), "acc", 0.60, true, data.meta.best.label_acc);
+    renderBars(document.querySelector("#label-bars"), orderedLabelRows(data), "acc", 0.60, true, "raw_27b");
     renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(data), "e2e_f1", 0.18, true, "selector397");
     fillSegTable(data);
     fillSegPadTable(data);
@@ -1507,7 +1518,7 @@
       if (!D || !D.data) return;
       const mainSeg = orderedSegRows(D.data);
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
-      renderBars(document.querySelector("#label-bars"), orderedLabelRows(D.data), "acc", 0.60, true, D.data.meta.best.label_acc);
+      renderBars(document.querySelector("#label-bars"), orderedLabelRows(D.data), "acc", 0.60, true, "raw_27b");
       renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(D.data), "e2e_f1", 0.18, true, "selector397");
       fillSegTable(D.data);
       fillSegPadTable(D.data);
