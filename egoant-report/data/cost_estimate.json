@@ -217,5 +217,12 @@
     },
     "e2e_f1_note": "production one-pass E2E≈0.0641; not the same path as WGO selector E2E 0.1542"
   },
+  "macrodata_public": {
+    "label": "Macrodata closed-source E2E batch",
+    "e2e_f1": 0.168,
+    "e2e_f1_scope": "full ~100 episodes",
+    "usd_per_video_hour": 2.64,
+    "usd_note": "public batch bill for seeded-relabel end-to-end"
+  },
   "default_display": "both"
 }

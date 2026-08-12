@@ -837,13 +837,18 @@
     return s;
   }
 
-  function mid(a, b) {
+  // Point estimate biased toward the low side of the token/pricing range
+  // (about 1/3 up from the floor, not the midpoint).
+  function lowish(a, b) {
     if (a == null || b == null) return null;
-    return (Number(a) + Number(b)) / 2;
+    const lo = Number(a);
+    const hi = Number(b);
+    return lo + (hi - lo) / 3;
   }
-  function fmtUsdApprox(n) {
+  function fmtUsdApprox(n, exact) {
     if (n == null || Number.isNaN(Number(n))) return "—";
     const x = Number(n);
+    if (exact) return `$${x.toFixed(2)}`;
     return `≈$${x >= 10 ? x.toFixed(0) : x.toFixed(1)}`;
   }
 
@@ -853,22 +858,25 @@
     const recipes = cost.recipes || {};
     const raw = recipes.raw_only;
     const sel = recipes.selector;
+    const md = cost.macrodata_public || {};
     const body = document.querySelector("#cost-tbody");
     if (!body || !raw || !sel) return;
 
-    const rawHour = mid(raw.usd_estimate?.per_video_hour_low, raw.usd_estimate?.per_video_hour_high);
-    const selHour = mid(sel.usd_estimate?.per_video_hour_low, sel.usd_estimate?.per_video_hour_high);
-    const rawName = i18n("cost.simple.raw");
-    const selName = i18n("cost.simple.sel");
+    const rawHour = lowish(raw.usd_estimate?.per_video_hour_low, raw.usd_estimate?.per_video_hour_high);
+    const selHour = lowish(sel.usd_estimate?.per_video_hour_low, sel.usd_estimate?.per_video_hour_high);
+    const mdHour = md.usd_per_video_hour != null ? Number(md.usd_per_video_hour) : 2.64;
+    const mdScore = md.e2e_f1 != null ? Number(md.e2e_f1) : 0.168;
     const rows = [
-      { name: rawName, score: raw.e2e_f1, usd: rawHour, best: false },
-      { name: selName, score: sel.e2e_f1, usd: selHour, best: true },
+      { name: i18n("cost.simple.md"), score: mdScore, usd: mdHour, best: false, exactUsd: true },
+      { name: i18n("cost.simple.raw"), score: raw.e2e_f1, usd: rawHour, best: false, exactUsd: false },
+      { name: i18n("cost.simple.sel"), score: sel.e2e_f1, usd: selHour, best: true, exactUsd: false },
     ];
     body.innerHTML = rows.map((r) => {
       const cls = r.best ? "best" : "";
       const name = r.best ? `<strong>${esc(r.name)}</strong>` : esc(r.name);
       const score = r.best ? `<strong>${fmtF1(r.score)}</strong>` : fmtF1(r.score);
-      const usd = r.best ? `<strong>${esc(fmtUsdApprox(r.usd))}</strong>` : esc(fmtUsdApprox(r.usd));
+      const usdTxt = fmtUsdApprox(r.usd, r.exactUsd);
+      const usd = r.best ? `<strong>${esc(usdTxt)}</strong>` : esc(usdTxt);
       return `<tr class="${cls}"><td>${name}</td><td class="num">${score}</td><td class="num">${usd}</td></tr>`;
     }).join("");
 
