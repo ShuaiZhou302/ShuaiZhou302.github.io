@@ -496,7 +496,7 @@ def compatible(a, b, strategy):
         <li data-i18n-html data-i18n="world.term.e2e.ffmpeg">ffmpeg 抽帧重标：边界相同，只把默认解码/抽帧换成 ffmpeg 路径。这不是新的标注策略，而是同一视频段的另一路候选描述；实验中常略高于默认原始帧重标，因此进入候选判别器的候选池。</li>
         <li data-i18n-html data-i18n="world.term.e2e.neighbor">邻段重标：给当前段时同时给上一段 / 当前段 / 下一段的帧。变体包括种子邻段重标与原始帧先验邻段重标。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。</li>
         <li data-i18n-html data-i18n="world.term.e2e.seed">种子描述：先有一句已经写好的短操作描述（例如分段阶段顺带写出的句子，或先前某一路重标结果），再在后续标注调用里把这句文字一并送给模型，当作「先写好的草稿」。模型通常在这句基础上改写或确认，而不是从空白重新编。种子邻段重标 = 邻段画面 + 这样一句草稿；原始帧先验邻段重标 = 邻段画面 + 原始帧重标得到的那句描述作草稿。</li>
-        <li data-i18n-html data-i18n="world.term.9">候选判别器：对同一预测边界生成原始帧、ffmpeg、种子描述、原始帧先验等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini 评判下最高观察端到端整流程得分为 0.1542（397B 候选判别器）。</li>
+        <li data-i18n-html data-i18n="world.term.9">候选判别器：对同一预测边界生成原始帧、ffmpeg、种子候选、先验描述等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini 评判下最高观察端到端整流程得分为 0.1542（397B 候选判别器）。</li>
       </ul>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端分段与标注路径；相同方法的不同模型放在一起。</p>
       <ol class="method-list">
@@ -619,32 +619,24 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-4">
           <div class="step-h"><span class="badge">04</span><h3 class="step-title" data-i18n="walk.s4.t">多候选标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s4.p">
-            固定分段边界后，对每个预测片段生成多条候选描述：
-            <strong>原始帧</strong>使用默认抽帧；
-            <strong>ffmpeg</strong>使用另一套解码/抽帧路径；
-            <strong>种子描述</strong>与<strong>原始帧先验</strong>使用先前模型输出作为文本先验。
-            候选判别器在推理时只看候选及其来源，不看人工参考标签。
+            分段边界固定后，对每个预测片段并行生成多路候选描述：
+            <strong>原始帧</strong>、<strong>ffmpeg</strong>、<strong>种子候选</strong>、<strong>先验描述</strong>。
+            下表是其中一个片段上的候选结果示例。
           </p>
           <div>
               <table class="cand-table">
                 <thead><tr><th data-i18n="walk.th.src">来源</th><th data-i18n="walk.th.cand">候选标签</th></tr></thead>
                 <tbody id="walk-cands"></tbody>
               </table>
-              <p id="walk-cand-final" class="callout"></p>
           </div>
-          <details class="prompt-fold">
-            <summary data-i18n="walk.prompt.label">标注提示词（英语）</summary>
-            <div class="prompt-box"><pre id="p-label-inline">Loading…</pre></div>
-          </details>
         </article>
 
         <article class="step-card" id="walk-5">
           <div class="step-h"><span class="badge">05</span><h3 class="step-title" data-i18n="walk.s5.t">候选判别器选择</h3></div>
-          <p class="plain" data-i18n="walk.s5.p">用 Qwen3.5-397B 从候选里挑一句最像「完成操作」的短指令。</p>
-          <details class="prompt-fold">
-            <summary data-i18n="walk.prompt.sel">判别器提示词（英语）</summary>
-            <div class="prompt-box"><pre id="p-sel-inline">Loading…</pre></div>
-          </details>
+          <p class="plain" data-i18n-html data-i18n="walk.s5.p">
+            我们把上一步的多路候选交给模型，并输入提示词，让它从中选出最合适的动作标注。
+          </p>
+          <p id="walk-cand-final" class="callout"></p>
         </article>
 
         <article class="step-card" id="walk-6">
@@ -735,8 +727,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-24"></script>
-  <script src="js/report.js?v=20260812-24"></script>
+  <script src="js/i18n.js?v=20260812-25"></script>
+  <script src="js/report.js?v=20260812-25"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
@@ -757,9 +749,9 @@ def compatible(a, b, strategy):
     const promptMap = [
       [["p-gepa-term"], "gepa_completed_events_duration_prior_v1.md"],
       [["p-s2-term"], "s2_fullcover_refine.md"],
-      [["p-label-term", "p-label-inline"], "labeling_fixed_boundary.md"],
+      [["p-label-term"], "labeling_fixed_boundary.md"],
       [["p-judge-inline"], "judge_semantic_match.md"],
-      [["p-sel-term", "p-sel-inline"], "candidate_selector.md"],
+      [["p-sel-term"], "candidate_selector.md"],
     ];
     for (const [ids, file] of promptMap) loadPrompt(ids, file);
   </script>

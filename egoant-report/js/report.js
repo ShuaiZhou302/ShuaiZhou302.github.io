@@ -943,23 +943,31 @@
     const cands = demo.candidate_labels || {};
     const srcMap = { A: "raw", B: "rawprior", C: "seed", D: "ffmpeg" };
     const candLabelMap = lang() === "en"
-      ? { raw: "raw frames", rawprior: "raw prior", seed: "seed", ffmpeg: "ffmpeg" }
-      : { raw: "原始帧", rawprior: "原始帧先验", seed: "种子描述", ffmpeg: "ffmpeg" };
+      ? { raw: "Raw frames", rawprior: "Prior", seed: "Seed", ffmpeg: "ffmpeg" }
+      : { raw: "原始帧", rawprior: "先验描述", seed: "种子候选", ffmpeg: "ffmpeg" };
+    const candOrder = ["raw", "ffmpeg", "seed", "rawprior"];
+    function resolveCandKey(src) {
+      if (!src) return null;
+      if (candLabelMap[src]) return src;
+      return srcMap[src] || null;
+    }
+    function candSourceLabel(src) {
+      const key = resolveCandKey(src);
+      if (key) return candLabelMap[key];
+      return src || "—";
+    }
     const tb = document.querySelector("#walk-cands");
     if (tb) {
-      const pickedKey = srcMap[demo.candidate_select_source] || null;
-      const order = ["raw", "rawprior", "seed", "ffmpeg"];
-      tb.innerHTML = order.filter((k) => cands[k] != null).map((k) => {
-        const isFinal = (pickedKey && k === pickedKey) || cands[k] === demo.subtask;
-        return `<tr${isFinal ? ' style="background:#eaf5ee"' : ""}><td>${esc(candLabelMap[k] || k)}</td><td>${esc(cands[k])}</td></tr>`;
+      tb.innerHTML = candOrder.filter((k) => cands[k] != null).map((k) => {
+        return `<tr><td>${esc(candLabelMap[k] || k)}</td><td>${esc(cands[k])}</td></tr>`;
       }).join("");
     }
     const fin = document.querySelector("#walk-cand-final");
     if (fin) {
-      const key = srcMap[demo.candidate_select_source];
-      const srcLabel = key ? (candLabelMap[key] || key) : demo.candidate_select_source;
-      const head = lang() === "en" ? "Candidate selector" : "候选判别器";
-      fin.innerHTML = `<strong>${head}:</strong> ${esc(srcLabel)} → “${esc(demo.subtask)}”
+      const srcLabel = candSourceLabel(demo.candidate_select_source);
+      const head = t("walk.s5.result");
+      const sep = lang() === "en" ? ": " : "：";
+      fin.innerHTML = `<strong>${esc(head)}${sep}</strong>${esc(srcLabel)} → “${esc(demo.subtask)}”
         <span style="color:var(--muted)">(${Number(demo.start_sec).toFixed(1)}–${Number(demo.end_sec).toFixed(1)}s)</span>`;
     }
 
@@ -1048,10 +1056,10 @@
 
       if (detail) {
         const extra = kind === "pred" && seg.candidate_labels
-          ? `<div class="muted" style="margin-top:0.45rem"><strong>${t("walk.s6.cands")}</strong><br/>${Object.entries(seg.candidate_labels).map(([k,v]) => `<code>${esc(k)}</code> ${esc(v)}`).join("<br/>")}</div>`
+          ? `<div class="muted" style="margin-top:0.45rem"><strong>${t("walk.s6.cands")}</strong><br/>${candOrder.filter((k) => seg.candidate_labels[k] != null).map((k) => `${esc(candLabelMap[k] || k)}：${esc(seg.candidate_labels[k])}`).join("<br/>")}</div>`
           : "";
         const srcLine = kind === "pred" && seg.candidate_select_source
-          ? `<div class="muted" style="margin-top:0.35rem">Selector: <code>${esc(seg.candidate_select_source)}</code></div>`
+          ? `<div class="muted" style="margin-top:0.35rem">${esc(t("walk.th.sel"))}${lang() === "en" ? ": " : "："}${esc(candSourceLabel(seg.candidate_select_source))}</div>`
           : "";
         detail.innerHTML = `<div class="muted">${t("walk.s6.selected")}</div>
           <strong>${label} #${idx}</strong>
@@ -1147,7 +1155,7 @@
     const body = document.querySelector("#walk-seg-tbody");
     if (body) {
       const rows = [];
-      walk.pred_segments.forEach((s, i) => rows.push(`<tr data-kind="pred" data-idx="${i}"><td>${i}</td><td class="num">${Number(s.start_sec).toFixed(2)}–${Number(s.end_sec).toFixed(2)}</td><td>${esc(s.subtask)}</td><td>${esc(s.candidate_select_source || "—")}</td></tr>`));
+      walk.pred_segments.forEach((s, i) => rows.push(`<tr data-kind="pred" data-idx="${i}"><td>${i}</td><td class="num">${Number(s.start_sec).toFixed(2)}–${Number(s.end_sec).toFixed(2)}</td><td>${esc(s.subtask)}</td><td>${esc(candSourceLabel(s.candidate_select_source))}</td></tr>`));
       body.innerHTML = rows.join("");
       body.querySelectorAll("tr").forEach((tr) => {
         tr.addEventListener("click", () => {
