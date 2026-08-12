@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
   <title id="title">EgoANT 推荐配置流程图</title>
-  <desc id="desc">原始视频经分段后进入标注：四路描述输入都来自分段结果；原始帧可单路直出，也可与其他候选一并送入判别器。</desc>
+  <desc id="desc">原始视频经分段后进入标注：四路描述输入都来自分段结果；原始帧可单路直出，也可与其他候选一并送入选择器。</desc>
   <defs>
     <style>
       .bg{fill:#fffdf8}
