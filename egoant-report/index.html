@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260812-34" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-36" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -112,15 +112,15 @@
           <div class="k" data-i18n="tldr.k.e2e">端到端整流程得分（E2E F1）</div>
           <div class="v">0.1542</div>
           <div class="s" data-i18n="tldr.e2e">79 个片段通过时间匹配，其中 60 个进一步通过语义匹配。</div>
-          <div class="config" data-i18n="tldr.e2e.config">配置：Qwen3.6-27B 分段 + Qwen3.5-397B-A17B 候选选择器</div>
+          <div class="config" data-i18n="tldr.e2e.config">配置：Qwen3.6-27B 分段 + Qwen3.5-397B 候选选择器</div>
         </div>
       </div>
       <p class="plain" data-i18n-html data-i18n="tldr.scope">
         <strong>实验范围：</strong>WGO-Bench 的第一视角人类子集 HomER，共 25 个视频、470 个人工标注片段。分段与描述均由开放权重 Qwen 视觉语言模型生成；Gemini-3.5-Flash 仅用于离线充当语义研判器，判断描述是否与人工标注语义一致。三类指标的完整定义见 <a href="#evaluate">§2</a>。
       </p>
       <ul class="tldr-points">
-        <li data-i18n-html data-i18n="tldr.pt1"><strong>不同阶段的最优模型并不相同。</strong>在固定边界标注上，Qwen3.6-27B 原始帧取得 55.7%；改用多帧拼贴图或启发式视觉提示后分别降至 52.8% 和 50.6%。在相同拼贴图与提示词的分段对照中，27B 为 0.1278，高于 397B 的 0.0952。但端到端最高分来自 397B 候选选择器（0.1542）。因此，<strong>在本文测试的配置中</strong>，阶段匹配的模型选择往往比额外视觉输入技巧更关键；这并不意味着 27B 在所有阶段都优于 397B。</li>
-        <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段得分从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段得分为 0.227，与本方案相差 0.024。</li>
+        <li data-i18n-html data-i18n="tldr.pt1"><strong>不同阶段的最优模型并不相同。</strong>在固定边界标注上，Qwen3.6-27B 原始帧取得 55.7%；改用多帧拼贴图或启发式视觉提示后分别降至 52.8% 和 50.6%。在相同拼贴图与提示词的分段对照中，27B 为 0.1278，高于 397B 的 0.0952。但端到端最高分来自 397B 候选选择器（<strong>0.1542</strong>）。因此，<strong>在本文测试的配置中</strong>，阶段匹配的模型选择往往比额外视觉输入技巧更关键；这并不意味着 27B 在所有阶段都优于 397B。</li>
+        <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段得分从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段得分为 <strong>0.227</strong>，比本方案高出 0.024。</li>
         <li data-i18n-html data-i18n="tldr.pt3"><strong>分段和描述需要不同的视觉输入。</strong>判断动作边界时，模型需要观察较长时间范围内的变化，因此带时间戳的拼贴图更有效；边界已经给定后，模型需要看清片段内的手部和物体细节，此时原始帧更有效。加入相邻片段不但没有提高固定边界标注准确率，还会引入跨片段动作泄漏，把相邻动作误写进当前描述。</li>
         <li data-i18n-html data-i18n="tldr.pt4"><strong>在当前 WGO-Bench 评测口径下，时间分段是端到端性能的主要瓶颈。</strong>最佳方案生成 308 个预测片段，但与 470 个人工参考片段完成时间匹配的只有 79 个；其中 60 个进一步通过语义匹配。换言之，大部分损失发生在描述生成之前。现阶段，改进动作边界比继续润色描述更可能提高端到端整流程得分。</li>
         <li data-i18n-html data-i18n="tldr.pt5"><strong>端到端描述路径可分成三档：原始帧基线、最佳单路、精度优先的候选选择器。</strong>同一 S2 预测边界上，397B 原始帧单路为 <strong>0.1414</strong>（约 <strong>$1.1 / 视频小时</strong>）；同成本量级的最佳单路是 397B ffmpeg 抽帧 <strong>0.1491</strong>；多候选 + 候选选择器达到 <strong>0.1542</strong>（约 <strong>$2.7 / 视频小时</strong>）。成本敏感时优先选最佳单路 ffmpeg；只要最简单基线时用原始帧；追求本组最高分时再用候选选择器。</li>
@@ -176,7 +176,7 @@
         <strong>首尾吸附只替换两个外侧端点。</strong>评分前，将最早预测片段的起点替换为人工标注的最外侧起点，并将最晚预测片段的终点替换为人工标注的最外侧终点。本例中只有 P<sub>0</sub>.start 从 0.5 改为 0、P<sub>3</sub>.end 从 9.5 改为 10。若端点原本越界，同样直接替换为人工外边界；其余端点和中间空隙保持不变，时间轴不移动也不缩放。
       </div>
       <figure class="figure">
-        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260812-34" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
+        <img src="assets/explain/metric_iou_f1_zh.svg?v=20260812-36" data-i18n-src="fig.src.metric" alt="Temporal IoU and F1 scoring diagram" />
         <figcaption data-i18n="metrics.figcap">图中预测轨已经完成首尾吸附。绿色片段与参考片段的时间 IoU 达到 0.75，灰色片段未达到。</figcaption>
       </figure>
       <h3 data-i18n="metrics.h3.seg">视频分段得分例子</h3>
@@ -458,7 +458,7 @@ def compatible(a, b, strategy):
           <tbody id="label-tbody"></tbody>
         </table>
       </div>
-            <div data-i18n-html data-i18n="pipeline.label.analysis"><p>结合上图与表，可以归纳如下。</p><ol><li>原始帧 · 27B：在 470 个固定参考片段上语义匹配 262，固定边界标注准确率 55.7%，为本组最高。同一评测尺子下，更复杂的视觉输入均未超过该配置。可能的原因是：完整画面保留了裁剪或拼贴压缩时丢失的物体与场景线索。</li><li>时序拼贴与视觉提示叠加：27B 为 52.8% / 50.6%，397B 为 45.1% / 48.5%，均低于各自原始帧。拼贴压缩分辨率、叠加提示引入额外笔迹，都可能干扰对当前完成动作的判断；额外上下文没有抬高当前片段描述准确率。</li><li>HaWoR 腕轨迹裁剪：27B 为 52.3%（246 / 470），397B 为 50.9%。该路径在腕引导裁剪不可用时会回退到原始帧，因此 52.3% 不是纯 crop-only 结果。相对各自原始帧，27B 掉了约 3.4 个百分点，397B 接近持平甚至略高；重建腕轨迹可用时有用，但仍低于原始帧 · 27B。</li><li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型几乎不动；主要失败机制是<strong>跨片段动作泄漏（cross-segment action leakage）</strong>，不是容量问题，时间戳也救不了。</li><li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%，全组最低。这里是 YOLO 人物框 / 画面中心启发式近似裁剪，不是专用手部检测；比 HaWoR 腕轨迹更粗，固定边界上既丢背景又裁不准手，双重伤害。</li><li>模型对比：不只看原始帧。原始帧上 27B（55.7%）高于 397B（50.2%）；时序拼贴、视觉提示叠加、HaWoR、邻段拼贴上同样是 27B ≥ 397B（差值约 1–8 个百分点）。唯一接近持平或 397B 略高的是近似手部拼贴（39.1% vs 38.5%），但两者都远低于原始帧。固定边界标注更依赖把当前动作说对的指令跟随与视觉阅读，参数量更大并不自动更好；默认路径取原始帧 · 27B。</li></ol></div>
+            <div data-i18n-html data-i18n="pipeline.label.analysis"><p>结合上图与表，可以归纳如下。</p><ol><li>原始帧 · 27B：在 470 个固定参考片段上语义匹配 262，固定边界标注准确率 55.7%，为本组最高。同一评测尺子下，更复杂的视觉输入均未超过该配置。可能的原因是：完整画面保留了裁剪或拼贴压缩时丢失的物体与场景线索。</li><li>时序拼贴与视觉提示叠加：27B 为 52.8% / 50.6%，397B 为 45.1% / 48.5%，均低于各自原始帧。拼贴压缩分辨率、叠加提示引入额外笔迹，都可能干扰对当前完成动作的判断；额外上下文没有抬高当前片段描述准确率。</li><li>HaWoR 腕轨迹裁剪：27B 为 52.3%（246 / 470），397B 为 50.9%。该路径在腕引导裁剪不可用时会回退到原始帧，因此 52.3% 不是纯 crop-only 结果。相对各自原始帧，27B 掉了约 3.4 个百分点，397B 接近持平甚至略高；重建腕轨迹可用时有用，但仍低于原始帧 · 27B。</li><li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型几乎不动；主要失败机制是<strong>跨片段动作泄漏（cross-segment action leakage）</strong>，不是容量问题，时间戳也救不了。</li><li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%，全组最低。这里是 YOLO 人物框 / 画面中心启发式近似裁剪，不是专用手部检测；比 HaWoR 腕轨迹更粗，固定边界上既丢背景又裁不准手，双重伤害。</li><li>模型对比：不只看原始帧。原始帧上 27B（55.7%）高于 397B（50.2%）；时序拼贴、视觉提示叠加、HaWoR、邻段拼贴上同样是 27B ≥ 397B（差值约 1–8 个百分点）。唯一接近持平或 397B 略高的是近似手部拼贴（39.1% vs 38.5%），但两者都远低于原始帧。固定边界标注更依赖把当前动作说对的指令跟随与视觉阅读，参数量更大并不自动更好；因此推荐设置取原始帧 · 27B。</li></ol></div>
 <h3 data-i18n="pipeline.h3.e2e">3.3 端到端分段与标注</h3>
       <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端分段与标注要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
 
@@ -664,8 +664,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-34"></script>
-  <script src="js/report.js?v=20260812-35"></script>
+  <script src="js/i18n.js?v=20260812-36"></script>
+  <script src="js/report.js?v=20260812-36"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {

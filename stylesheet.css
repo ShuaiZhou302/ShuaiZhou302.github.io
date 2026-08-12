@@ -453,9 +453,20 @@ a:hover { color: var(--warm); }
 }
 
 .blog-card h3 {
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.35rem;
   font-family: var(--serif);
   font-size: 1.2rem;
+}
+
+.blog-card .blog-authors {
+  margin: 0 0 0.45rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.blog-card .blog-authors strong {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .blog-card p {
