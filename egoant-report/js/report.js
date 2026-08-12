@@ -798,7 +798,7 @@
     tbody.innerHTML = orderedE2ERows(data).map((row) => {
       const r = locRow(row);
       const bestCls = r.e2e_f1 === best ? "best" : "";
-      return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td></tr>`;
+      return `<tr class="${bestCls}"><td>${bestCls ? `<strong>${esc(r.name)}</strong>` : esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${bestCls ? `<strong>${fmtF1(r.e2e_f1)}</strong>` : fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td></tr>`;
     }).join("");
   }
 
@@ -1346,7 +1346,7 @@
     const mainSeg = orderedSegRows(data);
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
     renderBars(document.querySelector("#label-bars"), orderedLabelRows(data), "acc", 0.60, true, data.meta.best.label_acc);
-    renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(data), "e2e_f1", 0.18, true);
+    renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(data), "e2e_f1", 0.18, true, "selector397");
     fillSegTable(data);
     fillSegPadTable(data);
     fillLabelTable(data);
@@ -1359,7 +1359,7 @@
       const mainSeg = orderedSegRows(D.data);
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
       renderBars(document.querySelector("#label-bars"), orderedLabelRows(D.data), "acc", 0.60, true, D.data.meta.best.label_acc);
-      renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(D.data), "e2e_f1", 0.18, true);
+      renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(D.data), "e2e_f1", 0.18, true, "selector397");
       fillSegTable(D.data);
       fillSegPadTable(D.data);
       fillLabelTable(D.data);

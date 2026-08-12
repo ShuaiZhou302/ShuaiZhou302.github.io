@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/report.css?v=20260812-04" />
+  <link rel="stylesheet" href="css/report.css?v=20260812-08" />
 </head>
 <body>
   <header class="splash" id="top">
@@ -46,7 +46,6 @@
         <a href="#evaluate" data-i18n="nav.evaluate">如何评估</a>
         <a href="#pipeline" data-i18n="nav.pipeline">标注管线</a>
         <a href="#walk" data-i18n="nav.walk">样例</a>
-        <a href="#appendix" data-i18n="nav.appendix">附录</a>
         <a href="#references" data-i18n="nav.references">参考文献</a>
       </div>
       <div class="lang-switch" role="group" aria-label="Language">
@@ -66,7 +65,6 @@
     <a href="#evaluate" data-toc="evaluate" data-i18n="nav.evaluate">如何评估</a>
     <a href="#pipeline" data-toc="pipeline" data-i18n="nav.pipeline">标注管线</a>
     <a href="#walk" data-toc="walk" data-i18n="nav.walk">样例</a>
-    <a href="#appendix" data-toc="appendix" data-i18n="nav.appendix">附录</a>
     <a href="#references" data-toc="references" data-i18n="nav.references">参考文献</a>
   </aside>
 
@@ -492,7 +490,8 @@ def compatible(a, b, strategy):
       <ul class="term-list">
         <li data-i18n-html data-i18n="world.term.e2e.raw">原始帧重标：固定预测边界后，用模型看当前段原始帧重写一句操作描述。其中「段内缩进 0.5 秒」指抽帧前先把片段两端各内缩 0.5 秒，减少边界附近噪声帧。S2 边界 + 397B 单路原始帧重标的端到端整流程得分为 0.1414。</li>
         <li data-i18n-html data-i18n="world.term.e2e.ffmpeg">ffmpeg 抽帧重标：边界相同，只把默认解码/抽帧换成 ffmpeg 路径。这不是新的标注策略，而是同一视频段的另一路候选描述；实验中常略高于默认原始帧重标，因此进入候选判别器的候选池。</li>
-        <li data-i18n-html data-i18n="world.term.e2e.neighbor">邻段重标：给当前段时同时给上一段 / 当前段 / 下一段的帧。变体包括：种子邻段重标（附带一句种子描述作提示）、原始帧先验邻段重标（把原始帧重标结果当作文本先验）。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.neighbor">邻段重标：给当前段时同时给上一段 / 当前段 / 下一段的帧。变体包括种子邻段重标与原始帧先验邻段重标。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.seed">种子描述：先有一句已经写好的短操作描述（例如分段阶段顺带写出的句子，或先前某一路重标结果），再在后续标注调用里把这句文字一并送给模型，当作「先写好的草稿」。模型通常在这句基础上改写或确认，而不是从空白重新编。种子邻段重标 = 邻段画面 + 这样一句草稿；原始帧先验邻段重标 = 邻段画面 + 原始帧重标得到的那句描述作草稿。</li>
         <li data-i18n-html data-i18n="world.term.9">候选判别器：对同一预测边界生成原始帧、ffmpeg、种子描述、原始帧先验等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini 评判下最高观察端到端整流程得分为 0.1542（397B 候选判别器）。</li>
       </ul>
       <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端分段与标注路径；相同方法的不同模型放在一起。</p>
@@ -501,7 +500,7 @@ def compatible(a, b, strategy):
         <li data-i18n="story.e2e.2">S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。</li>
         <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B / 397B：固定 S2 边界，分别用 Qwen3.6-27B 与 Qwen3.5-397B 对每段原始帧重写描述；27B 另试「段内缩进 0.5 秒」抽帧变体。</li>
         <li data-i18n="story.e2e.4">S2 边界 + ffmpeg 抽帧重标 · 27B / 397B：边界不变，只换 ffmpeg 解码/抽帧路径，再分别由 27B 与 397B 标注。</li>
-        <li data-i18n="story.e2e.5">S2 边界 + 邻段重标 · 27B / 397B：提交邻段视觉上下文。27B 侧试过种子邻段重标与原始帧先验邻段重标；397B 侧用原始帧描述作文本先验。</li>
+        <li data-i18n="story.e2e.5">S2 边界 + 邻段重标 · 27B / 397B：提交邻段视觉上下文。27B 侧试过种子邻段重标（邻段画面 + 一句已有草稿描述）与原始帧先验邻段重标（邻段画面 + 原始帧重标句作草稿）；397B 侧同样用原始帧描述作草稿先验。种子描述含义见上文术语。</li>
         <li data-i18n-html data-i18n="story.e2e.6">S2 边界 + 多候选判别 · 27B / 397B：在同一 S2 边界上生成多路候选描述，再分别由 27B 与 397B 候选判别器定稿。重标提示词见 <a href="#label-prompt">3.2</a>；候选判别器提示词见下方折叠。</li>
       </ol>
       <details class="prompt-fold" id="e2e-selector-prompt">
@@ -534,49 +533,27 @@ def compatible(a, b, strategy):
           <li>原始帧重标 · 27B / 397B：默认原始帧重标下，27B 为 0.1285，段内缩进 0.5 秒为 0.1337；397B 为 0.1414。同一方法下 397B 高于 27B，但增益主要来自噪声预测边界上的定稿，而不是固定参考边界上的固定分段标注得分优势。</li>
           <li>ffmpeg 抽帧重标 · 27B / 397B：27B 为 0.1440，397B 为 0.1491。换抽帧实现本身就能抬分，且两边同向；该路径常作为候选判别器的候选来源，而不是单独的新策略。</li>
           <li>邻段重标 · 27B / 397B：27B 种子邻段重标 0.1260、原始帧先验邻段重标 0.1414；397B 先验邻段重标 0.1491。邻段上下文有时接近单路原始帧 / ffmpeg，但不稳定，且容易把邻段动作写进当前句。</li>
-          <li>多候选判别 · 27B / 397B：27B 候选判别器为 0.1362，低于同组最好的 27B ffmpeg；397B 候选判别器为 0.1542，语义匹配 60，仍为本组最高。成本敏感场景可走单路原始帧 / ffmpeg；高精度场景保留 397B 候选判别器。</li>
+          <li>多候选判别 · 27B / 397B：27B 候选判别器为 0.1362，低于同组最好的 27B ffmpeg；397B 候选判别器为 <strong>0.1542</strong>，语义匹配 60，仍为本组最高。WGO-Bench 公开的闭源最优端到端整流程得分为 0.168（全量约 100 集）；我们在 HomER 子集上的 0.1542 已与之接近。成本敏感场景可走单路原始帧 / ffmpeg；高精度场景保留 397B 候选判别器。</li>
         </ol>
       </div>
 
       <h3 data-i18n="pipeline.h3.recipe">3.4 推荐配置</h3>
-      <div class="pipeline">
-        <div class="step"><div class="n">01</div><div class="t" data-i18n="recipe.p1.t">拼贴图</div><div class="d" data-i18n="recipe.p1.d">0.5 秒 · 224×144 · 20 格 · 黄色时间戳</div></div>
-        <div class="step"><div class="n">02</div><div class="t" data-i18n="recipe.p2.t">Coarse cut</div><div class="d" data-i18n="recipe.p2.d">Whole episode + rule list</div></div>
-        <div class="step"><div class="n">03</div><div class="t" data-i18n="recipe.p3.t">局部精修</div><div class="d" data-i18n="recipe.p3.d">窗口不外扩 · 覆盖完整动作 · 27B → 0.2031</div></div>
-        <div class="step"><div class="n">04</div><div class="t" data-i18n="recipe.p4.t">多候选判别</div><div class="d" data-i18n="recipe.p4.d">397B 多候选 → 端到端整流程得分 0.1542</div></div>
+      <div data-i18n-html data-i18n="pipeline.recipe.lead">
+        <p>前面已经试过分段、固定边界标注与端到端多条路径。这里只给出最终默认配置：开放权重模型上的端到端分段与标注流程。本组最高端到端整流程得分为 <strong>0.1542</strong>（S2 边界 + 多候选判别 · 397B）。WGO-Bench 公开的闭源最优端到端整流程得分为 <strong>0.168</strong>（全量约 100 集）；在 HomER 子集上，我们与该水平已经很接近。</p>
       </div>
-      <table>
-        <thead><tr><th data-i18n="recipe.th.stage">阶段</th><th data-i18n="recipe.th.do">推荐</th><th data-i18n="recipe.th.dont">当前不推荐</th></tr></thead>
-        <tbody>
-          <tr>
-            <td data-i18n="recipe.r1.a">分段</td>
-            <td data-i18n="recipe.r1.b">Qwen3.6-27B + 切段规则清单 + 局部精修（窗口不外扩、盖住完整动作）</td>
-            <td data-i18n="recipe.r1.c">分片 max3；基于规则的相邻片段合并</td>
-          </tr>
-          <tr>
-            <td data-i18n="recipe.r2.a">标注（省钱）</td>
-            <td data-i18n-html data-i18n="recipe.r2.b">固定参考边界诊断：27B 原始帧（固定分段标注得分 55.7%）；预测边界单路配置：27B ffmpeg 抽帧（0.1440）或 397B 原始帧（0.1414，成本/部署不同）</td>
-            <td data-i18n="recipe.r2.c">proxy overlay / 邻段 / 整帧 collage / proxy hand-crop 默认启用</td>
-          </tr>
-          <tr>
-            <td data-i18n="recipe.r3.a">高准确率配置</td>
-            <td data-i18n="recipe.r3.b">同一 S2 预测边界 + 多候选生成 + 397B 候选判别器（Gemini 端到端整流程得分 0.1542）</td>
-            <td data-i18n="recipe.r3.c">分段小模型自标当终稿</td>
-          </tr>
-          <tr>
-            <td data-i18n="recipe.r4.a">对照</td>
-            <td data-i18n="recipe.r4.b">HomER-only vs Macrodata HomER≈0.227</td>
-            <td data-i18n="recipe.r4.c">用全量 0.306 headline 直接对比</td>
-          </tr>
-        </tbody>
-      </table>
+      <ol class="method-list" data-i18n-html data-i18n="pipeline.recipe.steps">
+        <li><strong>拼贴图</strong>：每 0.5 秒抽一帧，缩放到 224×144，约 20 格一张，格内加黄色时间戳。</li>
+        <li><strong>整集粗分</strong>：用 Qwen3.6-27B，把整集拼贴图与切段规则清单一次提交，得到粗边界。提示词见 <a href="#term-gepa-prompt">切段规则清单提示词</a>。</li>
+        <li><strong>局部精修</strong>：在粗边界附近开窗重切，窗口不外扩，并要求覆盖窗内完整动作；模型仍用 Qwen3.6-27B。本组视频分段得分 <strong>0.2031</strong>。提示词见 <a href="#term-s2-prompt">局部精修提示词</a>。</li>
+        <li><strong>多路描述</strong>：固定上述 S2 预测边界，对每段生成原始帧、ffmpeg 抽帧等候选描述。提示词见 <a href="#label-prompt">固定边界标注提示词</a>。</li>
+        <li><strong>候选判别器定稿</strong>：用 Qwen3.5-397B 从多路候选中选出最终描述。端到端整流程得分 <strong>0.1542</strong>。提示词见 <a href="#e2e-selector-prompt">候选判别器提示词</a>。</li>
+      </ol>
 
-      <h3 data-i18n="pipeline.h3.cost">3.5 成本对照</h3>
+      <h4 data-i18n="pipeline.recipe.cost.h4">成本估计</h4>
       <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n-html data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见<a href="#appendix">附录</a>。
+        推荐路径共用同一套 S2 分段（视频分段得分 0.2031），主要差别在标注调用次数。API 次数来自报告产物计数；输入 token 按图片数量与分辨率估算，输出 token 按任务类型给区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索。美元结果不含离线 Gemini 评判，也不能与 Macrodata 的 Gemini 批量账单视为同条件价格比较。
       </p>
-      <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
         <thead>
           <tr>
@@ -588,32 +565,26 @@ def compatible(a, b, strategy):
         <tbody>
           <tr>
             <td data-i18n="cost.row.md_e2e">Macrodata 公开</td>
-            <td data-i18n="cost.row.md_e2e_scope">E2E seeded relabel（batch）</td>
-            <td data-i18n="cost.row.md_e2e_num">~$2.64 / 视频小时；segmentation-only batch ~$0.43/h</td>
+            <td data-i18n="cost.row.md_e2e_scope">端到端批量标注</td>
+            <td data-i18n="cost.row.md_e2e_num">约 $2.64 / 视频小时；仅分段批量约 $0.43/h</td>
           </tr>
           <tr>
             <td data-i18n="cost.row.md_cs">Macrodata 公开</td>
-            <td data-i18n="cost.row.md_cs_scope">contact sheet vs 逐帧输入</td>
-            <td data-i18n="cost.row.md_cs_num">约 12× 更便宜（文中有 token/价格示意）</td>
+            <td data-i18n="cost.row.md_cs_scope">拼贴图相对逐帧输入</td>
+            <td data-i18n="cost.row.md_cs_num">约便宜 12 倍</td>
           </tr>
           <tr>
-            <td data-i18n="cost.row.wgo">EgoANT（本页 WGO）</td>
-            <td data-i18n="cost.row.wgo_scope">原始帧 / 候选判别器工程估计 + 产物 API 次数</td>
+            <td data-i18n="cost.row.wgo">EgoANT（本页）</td>
+            <td data-i18n="cost.row.wgo_scope">原始帧单路 / 候选判别器工程估计</td>
             <td data-i18n="cost.row.wgo_num">原始帧约 $0.84–$1.59/h；候选判别器约 $2.11–$3.80/h</td>
-          </tr>
-          <tr>
-            <td data-i18n="cost.row.prod">EgoANT 腕速基线</td>
-            <td data-i18n="cost.row.prod_scope">同一 HomER 子集上的内部工程估计</td>
-            <td data-i18n="cost.row.prod_num">仅保留聚合调用量级；不公开内部机器、路径或服务状态</td>
           </tr>
         </tbody>
       </table>
-      <h3 data-i18n="cost.recipe.h3">WGO 两条标注路径（token 与美元估算）</h3>
       <table>
         <thead>
           <tr>
             <th data-i18n="cost.th.item">项</th>
-            <th data-i18n="cost.th.raw">单路 raw（E2E 0.1414）</th>
+            <th data-i18n="cost.th.raw">单路原始帧（E2E 0.1414）</th>
             <th data-i18n="cost.th.sel">多候选 + 候选判别器（E2E 0.1542）</th>
           </tr>
         </thead>
@@ -769,10 +740,8 @@ def compatible(a, b, strategy):
     </section>
 
 
-    <section id="appendix"></section>
-
     <section id="references">
-      <h2 data-i18n="references.h2">6. 参考文献</h2>
+      <h2 data-i18n="references.h2">5. 参考文献</h2>
       <ol class="ref-list">
         <li id="ref-pi05" data-i18n-html data-i18n="references.pi05">Physical Intelligence, Black, Kevin, Brown, Noah, Darpinian, James, Dhabalia, Karan, Driess, Danny, et al. (2025). <em>&pi;<sub>0.5</sub>: a Vision-Language-Action Model with Open-World Generalization</em>. arXiv. <a href="https://arxiv.org/abs/2504.16054" target="_blank" rel="noopener">https://arxiv.org/abs/2504.16054</a></li>
         <li id="ref-wgo" data-i18n-html data-i18n="references.wgo">Macrodata Labs. (2026). <em>WGO-Bench: What's Going On Benchmark</em>. Hugging Face. <a href="https://huggingface.co/datasets/macrodata/WGO-Bench" target="_blank" rel="noopener">https://huggingface.co/datasets/macrodata/WGO-Bench</a></li>
