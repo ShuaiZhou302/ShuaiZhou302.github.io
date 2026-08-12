@@ -1222,12 +1222,49 @@
       if (p && typeof p.catch === "function") p.catch(() => {});
     }
 
+    let activeClipBase = null;
+    function playSegmentClip(seg, start) {
+      if (!seg) return playAt(start);
+      if (seg.clip) {
+        const abs = new URL(seg.clip, window.location.href).href;
+        const cur = (video.currentSrc || "").split("#")[0];
+        const needLoad = cur !== abs.split("#")[0];
+        activeClipBase = start;
+        if (needLoad) {
+          video.src = seg.clip;
+          video.preload = "auto";
+          const onReady = () => {
+            try { video.currentTime = 0; } catch (e) {}
+            setPlayhead(start);
+            const p = video.play();
+            if (p && typeof p.catch === "function") p.catch(() => {});
+          };
+          video.addEventListener("loadedmetadata", onReady, { once: true });
+          try { video.load(); } catch (e) {}
+        } else {
+          try { video.currentTime = 0; } catch (e) {}
+          setPlayhead(start);
+          const p = video.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+        }
+        return;
+      }
+      activeClipBase = null;
+      if (walkSrc) {
+        const abs = new URL(walkSrc, window.location.href).href;
+        if ((video.currentSrc || "").split("#")[0] !== abs.split("#")[0]) {
+          video.src = walkSrc;
+        }
+      }
+      playAt(start);
+    }
+
     lanesEl.innerHTML = tracks.map((tr) => {
       const segs = (tr.segments || []).map((s, i) => {
         const left = (Number(s.start_sec) / tmax) * 100;
         const width = Math.max(0.35, ((Number(s.end_sec) - Number(s.start_sec)) / tmax) * 100);
         const txt = esc(s.subtask || "");
-        return `<div class="bc-seg color-${esc(tr.color)}" data-track-label="${esc(tr.label)}" data-idx="${i}" data-start="${s.start_sec}" data-end="${s.end_sec}" data-full="${txt}" style="left:${left}%;width:${width}%">
+        return `<div class="bc-seg color-${esc(tr.color)}" data-track="${esc(tr.id)}" data-track-label="${esc(tr.label)}" data-idx="${i}" data-start="${s.start_sec}" data-end="${s.end_sec}" data-full="${txt}" style="left:${left}%;width:${width}%">
           <span class="bc-idx">${i}</span><span class="bc-txt">${txt}</span>
         </div>`;
       }).join("");
@@ -1254,15 +1291,26 @@
       node.setAttribute("tabindex", "0");
       node.addEventListener("click", () => {
         const start = Number(node.getAttribute("data-start")) || 0;
+        const idx = Number(node.getAttribute("data-idx")) || 0;
+        const trackId = node.getAttribute("data-track");
+        const tr = tracks.find((x) => x.id === trackId);
+        const seg = tr && tr.segments ? tr.segments[idx] : null;
         lanesEl.querySelectorAll(".bc-seg").forEach((x) => x.classList.remove("active"));
         node.classList.add("active");
         showTip(node, trackLabel);
-        playAt(start);
+        playSegmentClip(seg, start);
       });
     });
     lanesEl.querySelectorAll(".bc-lane-track").forEach((track) => {
       track.addEventListener("click", (ev) => {
         if (ev.target.closest(".bc-seg")) return;
+        activeClipBase = null;
+        if (walkSrc) {
+          const abs = new URL(walkSrc, window.location.href).href;
+          if ((video.currentSrc || "").split("#")[0] !== abs.split("#")[0]) {
+            video.src = walkSrc;
+          }
+        }
         const rect = track.getBoundingClientRect();
         const ratio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
         playAt(ratio * tmax);
@@ -1271,9 +1319,18 @@
 
     if (!video._lcBound) {
       video._lcBound = true;
-      video.addEventListener("timeupdate", () => setPlayhead(video.currentTime || 0));
-      video.addEventListener("seeked", () => setPlayhead(video.currentTime || 0));
-      window.addEventListener("resize", () => setPlayhead(video.currentTime || 0));
+      video.addEventListener("timeupdate", () => {
+        if (activeClipBase != null) setPlayhead(activeClipBase + (video.currentTime || 0));
+        else setPlayhead(video.currentTime || 0);
+      });
+      video.addEventListener("seeked", () => {
+        if (activeClipBase != null) setPlayhead(activeClipBase + (video.currentTime || 0));
+        else setPlayhead(video.currentTime || 0);
+      });
+      window.addEventListener("resize", () => {
+        if (activeClipBase != null) setPlayhead(activeClipBase + (video.currentTime || 0));
+        else setPlayhead(video.currentTime || 0);
+      });
     }
     setPlayhead(video.currentTime || 0);
     window.__LABELCMP_WALK__ = walk;
