@@ -1513,13 +1513,11 @@
       fillLabelTable(D.data);
       fillE2ETable(D.data);
       if (D.walk) renderWalk(D.walk);
-      if (D.boundary) renderBoundaryCompare(D.boundary);
       if (D.walk) renderLabelCompare(D.walk);
       renderTimeline(document.querySelector("#toy-timeline"), D.data.walkthrough_toy);
     }
     window.__rerenderTablesI18n = rerenderDynamicI18n;
     renderWalk(walk);
-    if (boundary) renderBoundaryCompare(boundary);
     renderLabelCompare(walk);
     renderCost(cost);
     if (heroGrid) renderHeroGrid(heroGrid);

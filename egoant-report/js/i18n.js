@@ -923,7 +923,6 @@
     if (typeof window.__rerenderCostI18n === "function") window.__rerenderCostI18n();
     if (typeof window.__rerenderHeroI18n === "function") window.__rerenderHeroI18n();
     if (typeof window.__rerenderTablesI18n === "function") window.__rerenderTablesI18n();
-    if (typeof window.__rerenderBoundaryI18n === "function") window.__rerenderBoundaryI18n();
     if (typeof window.__rerenderLabelCmpI18n === "function") window.__rerenderLabelCmpI18n();
     renumberCitations();
   }
