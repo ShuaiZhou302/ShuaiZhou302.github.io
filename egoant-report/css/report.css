@@ -447,15 +447,13 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
   overflow-x: auto;
 }
 .metric-example-card p {
-  overflow-wrap: anywhere;
-  line-height: 1.65;
-}
-.metric-example-card p {
   margin: 0;
   padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
+  overflow-wrap: anywhere;
+  line-height: 1.65;
 }
 .metric-example-card .formula {
   margin: 0;

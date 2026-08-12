@@ -209,7 +209,7 @@
       "world.term.10": "语义研判器（judge）：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。",
       "world.term.11": "HaWoR 腕轨迹裁剪<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>：用 HaWoR 估计腕部轨迹并裁剪手部区域后提交；腕轨迹不可用或裁不出可用手部区域时，该段改送原始帧。",
       "fig.src.segterms": "assets/explain/seg_terms_zh.svg?v=20260810-3",
-      "fig.src.metric": "assets/explain/metric_iou_f1_zh.svg?v=20260811-18",
+      "fig.src.metric": "assets/explain/metric_iou_f1_zh.svg?v=20260812-34",
       "fig.src.s2": "assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-26",
       "fig.src.taxonomy": "assets/explain/visual_input_taxonomy_zh.svg?v=20260812-34",
       "fig.src.recipe": "assets/explain/recipe_flow_zh.svg?v=20260812-32",
