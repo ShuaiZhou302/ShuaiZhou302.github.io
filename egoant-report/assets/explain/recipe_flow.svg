@@ -56,9 +56,9 @@
   <rect x="556" y="198" width="150" height="54" rx="10" class="cand"/>
   <text x="631" y="231" text-anchor="middle" class="txt label ink">ffmpeg</text>
   <rect x="556" y="284" width="150" height="54" rx="10" class="cand"/>
-  <text x="631" y="317" text-anchor="middle" class="txt label ink">Seed cand.</text>
+  <text x="631" y="317" text-anchor="middle" class="txt label ink">Seed</text>
   <rect x="556" y="370" width="150" height="54" rx="10" class="cand"/>
-  <text x="631" y="403" text-anchor="middle" class="txt label ink">Prior cand.</text>
+  <text x="631" y="403" text-anchor="middle" class="txt label ink">Raw-prior</text>
 
   <line x1="448" y1="271" x2="510" y2="271" class="arrow"/>
   <line x1="510" y1="139" x2="510" y2="397" class="arrow"/>
@@ -67,11 +67,8 @@
   <line x1="510" y1="311" x2="556" y2="311" class="arrow" marker-end="url(#arr)"/>
   <line x1="510" y1="397" x2="556" y2="397" class="arrow" marker-end="url(#arr)"/>
 
-  <line x1="706" y1="139" x2="812" y2="139" class="arrow"/>
-  <path d="M812 139 V250" class="arrow"/>
-  <line x1="812" y1="250" x2="930" y2="250" class="arrow"/>
-  <line x1="942" y1="250" x2="988" y2="250" class="arrow" marker-end="url(#arr)"/>
-  <text x="746" y="126" class="pathlab muted">single-path</text>
+  <path d="M706 139 H812 V250 H988" class="arrow" marker-end="url(#arr)"/>
+  <text x="850" y="126" text-anchor="middle" class="pathlab muted">single-path</text>
 
   <line x1="736" y1="139" x2="736" y2="422" class="arrow"/>
   <line x1="706" y1="225" x2="736" y2="225" class="arrow"/>
@@ -82,10 +79,8 @@
   <rect x="780" y="396" width="140" height="52" rx="10" class="cand"/>
   <text x="850" y="428" text-anchor="middle" class="txt label ink">Selector</text>
 
-  <line x1="920" y1="422" x2="930" y2="422" class="arrow"/>
-  <path d="M942 422 V286" class="arrow"/>
-  <line x1="942" y1="286" x2="988" y2="286" class="arrow" marker-end="url(#arr)"/>
-  <text x="778" y="468" class="pathlab muted">multi-candidate</text>
+  <path d="M920 422 H942 V286 H988" class="arrow" marker-end="url(#arr)"/>
+  <text x="850" y="468" text-anchor="middle" class="pathlab muted">multi-candidate</text>
 
   <rect x="988" y="236" width="196" height="64" rx="12" class="box"/>
   <text x="1086" y="264" text-anchor="middle" class="txt label ink">Segments + labels</text>

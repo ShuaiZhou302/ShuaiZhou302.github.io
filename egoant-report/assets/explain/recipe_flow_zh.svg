@@ -70,7 +70,7 @@
 
   <!-- single-path: one continuous exit into output -->
   <path d="M706 139 H812 V250 H988" class="arrow" marker-end="url(#arr)"/>
-  <text x="756" y="126" class="pathlab muted">单路直出</text>
+  <text x="850" y="126" text-anchor="middle" class="pathlab muted">单路直出</text>
 
   <!-- merge into selector -->
   <line x1="736" y1="139" x2="736" y2="422" class="arrow"/>
@@ -83,7 +83,7 @@
   <text x="850" y="428" text-anchor="middle" class="txt label ink">候选判别器</text>
 
   <path d="M920 422 H942 V286 H988" class="arrow" marker-end="url(#arr)"/>
-  <text x="788" y="468" class="pathlab muted">多候选汇入</text>
+  <text x="850" y="468" text-anchor="middle" class="pathlab muted">多候选汇入</text>
 
   <rect x="988" y="236" width="196" height="64" rx="12" class="box"/>
   <text x="1086" y="264" text-anchor="middle" class="txt label ink">分段与子任务标注</text>
