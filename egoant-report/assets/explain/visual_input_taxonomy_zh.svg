@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-label="视觉输入类型预览：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 520" role="img" aria-label="视觉输入类型预览：原始帧、时序拼贴、拼贴图、邻段拼贴、视觉提示叠加、手部裁剪">
   <style>
     .bg{fill:#fffaf1}
     .card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}
     .title{font:700 20px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#141414}
     .name{font:700 16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#141414}
-    .sub{font:12.5px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#4f4a42}
+    .sub{font:13px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#4f4a42}
     .tiny{font:11px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;fill:#554b40}
     .pred{fill:#2f7d70}
     .muted{fill:#d9d5cb}
@@ -23,7 +23,7 @@
   <g transform="translate(38,68)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">原始帧</text>
-    <text x="20" y="58" class="sub">段内均匀抽样，分张提交</text>
+    <text x="20" y="64" class="sub">段内均匀抽样，分张提交</text>
     <g transform="translate(34,84)">
       <rect x="0" y="0" width="78" height="72" rx="6" fill="#e8e1d4" stroke="#cfc6b6"/>
       <rect x="98" y="0" width="78" height="72" rx="6" fill="#ddd6c8" stroke="#cfc6b6"/>
@@ -38,7 +38,7 @@
   <g transform="translate(414,68)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">时序拼贴</text>
-    <text x="20" y="58" class="sub">同段多帧拼成一张</text>
+    <text x="20" y="64" class="sub">同段多帧拼成一张</text>
     <g transform="translate(88,78)">
       <rect x="0" y="0" width="176" height="96" rx="8" fill="#f4eee4" stroke="#cfc6b6" stroke-width="2"/>
       <rect x="8" y="8" width="76" height="36" rx="4" fill="#e8e1d4"/>
@@ -52,7 +52,7 @@
   <g transform="translate(790,68)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">拼贴图</text>
-    <text x="20" y="58" class="sub">带时间戳的抽帧网格</text>
+    <text x="20" y="64" class="sub">带时间戳的抽帧网格</text>
     <g transform="translate(54,78)">
       <rect x="0" y="0" width="244" height="100" rx="8" fill="#f4eee4" stroke="#cfc6b6" stroke-width="2"/>
       <!-- 4x5 mini cells with yellow timestamp dots -->
@@ -74,7 +74,7 @@
   <g transform="translate(38,292)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">邻段拼贴</text>
-    <text x="20" y="58" class="sub">上一段 / 当前段 / 下一段</text>
+    <text x="20" y="64" class="sub">上一段 / 当前段 / 下一段</text>
     <g transform="translate(40,84)">
       <rect x="0" y="0" width="78" height="72" rx="7" class="muted"/>
       <rect x="98" y="0" width="78" height="72" rx="7" class="pred"/>
@@ -89,7 +89,7 @@
   <g transform="translate(414,292)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">视觉提示叠加</text>
-    <text x="20" y="58" class="sub">原帧 + 运动提示</text>
+    <text x="20" y="64" class="sub">原帧 + 运动提示</text>
     <g transform="translate(88,78)">
       <rect x="0" y="0" width="176" height="96" rx="8" fill="#e8e1d4"/>
       <circle cx="68" cy="54" r="18" fill="#c85e25" opacity=".22"/>
@@ -104,7 +104,7 @@
   <g transform="translate(790,292)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">手部相关输入</text>
-    <text x="20" y="58" class="sub">近似裁剪 vs HaWoR 腕轨迹裁剪</text>
+    <text x="20" y="64" class="sub">近似裁剪 vs HaWoR 腕轨迹裁剪</text>
     <g transform="translate(34,78)">
       <rect x="0" y="0" width="126" height="82" rx="8" fill="#e8e1d4"/>
       <rect x="28" y="22" width="72" height="38" rx="7" fill="none" stroke="#c85e25" stroke-width="3"/>

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 470" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
   <title id="title">Temporal IoU and F1 scoring diagram</title>
   <desc id="desc">A toy timeline showing gold segments, predicted segments, overlap, union, temporal matches, precision, recall, and F1.</desc>
   <defs>
@@ -6,10 +6,10 @@
       .bg{fill:#fffdf8}.ink{fill:#1c1914}.muted{fill:#5c564c}.axis{stroke:#d9d0c2;stroke-width:2}
       .gold{fill:#f0c94d}.pred{fill:#2f6f66}.miss{fill:#bfc7ca}.mark{stroke:#c45c26;stroke-width:4}
       .box{fill:#f7f4ef;stroke:#d9d0c2;stroke-width:1.4}.txt{font:16px "IBM Plex Sans","Noto Sans CJK SC","PingFang SC","Microsoft YaHei",Arial,sans-serif}
-      .mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}.sum{font-size:17px}.sumMono{font:16px "IBM Plex Mono",monospace}.flow{fill:none;stroke:#8a8378;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+      .mono{font:15px "IBM Plex Mono",monospace}.small{font-size:13px}.label{font-weight:700}.sum{font-size:16px}.sumMono{font:15px "IBM Plex Mono",monospace}.flow{fill:none;stroke:#8a8378;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
     </style>
   </defs>
-  <rect width="1120" height="470" rx="18" class="bg"/>
+  <rect width="1120" height="520" rx="18" class="bg"/>
   <text x="42" y="48" class="txt label ink">评分示例：先做时间配对，再计算视频分段得分</text>
   <text x="42" y="78" class="txt muted">IoU = 两段重叠的时长 ÷ 两段合起来覆盖的总时长；达到 0.75 才能配对。</text>
 
@@ -36,21 +36,29 @@
   <path d="M150 164v44M396 164v44" class="mark"/>
   <path d="M414 164v44M634 164v44" class="mark"/>
   <text x="158" y="188" class="txt small ink">P₀ 与 G₀ 重叠足够</text>
-  <text x="158" y="206" class="txt small muted">IoU ≈ 0.93 → 配对成功</text>
+  <text x="158" y="208" class="txt small muted">IoU ≈ 0.93 → 配对成功</text>
   <text x="424" y="188" class="txt small ink">P₁ 与 G₁ 重叠足够</text>
-  <text x="424" y="206" class="txt small muted">IoU ≈ 0.78 → 配对成功</text>
+  <text x="424" y="208" class="txt small muted">IoU ≈ 0.78 → 配对成功</text>
   <text x="704" y="198" class="txt small muted">P₂、P₃ 未达阈值</text>
 
-  <rect x="70" y="310" width="980" height="124" rx="14" class="box"/>
-  <text x="96" y="340" class="txt sum ink">① 统计分段数量</text>
-  <text x="96" y="373" class="txt sum ink">成功配对分段数：<tspan class="sumMono">m = 2</tspan></text>
-  <text x="96" y="405" class="txt sum ink">分段总数：<tspan class="sumMono">n</tspan><tspan class="sumMono" dy="4" style="font-size:9px">pred</tspan><tspan class="sumMono" dy="-4"> = 4，n</tspan><tspan class="sumMono" dy="4" style="font-size:9px">gold</tspan><tspan class="sumMono" dy="-4"> = 3</tspan></text>
-  <path d="M335 375h26m-8-8 8 8-8 8" class="flow"/>
-  <text x="392" y="340" class="txt sum ink">② 计算两个比例</text>
-  <text x="392" y="373" class="txt sum ink">预测命中率：<tspan class="sumMono">2 / 4 = 0.50</tspan></text>
-  <text x="392" y="405" class="txt sum ink">参考找回率：<tspan class="sumMono">2 / 3 = 0.67</tspan></text>
-  <path d="M687 375h26m-8-8 8 8-8 8" class="flow"/>
-  <text x="746" y="340" class="txt sum ink">③ 合并为视频分段得分</text>
-  <text x="746" y="373" class="txt sum ink">视频分段得分（Segment F1）</text>
-  <text x="746" y="405" class="sumMono ink">视频分段得分 = 2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">) = 0.571</tspan></text>
+  <rect x="48" y="300" width="1024" height="188" rx="14" class="box"/>
+  <text x="78" y="338" class="txt sum ink">① 统计分段数量</text>
+  <text x="78" y="372" class="txt sum ink">成功配对分段数：<tspan class="sumMono">m = 2</tspan></text>
+  <text x="78" y="406" class="txt sum ink">分段总数：</text>
+  <text x="78" y="438" class="sumMono ink">n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> = 4，n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4"> = 3</tspan></text>
+
+  <path d="M330 390h28m-8-8 8 8-8 8" class="flow"/>
+
+  <text x="386" y="338" class="txt sum ink">② 计算两个比例</text>
+  <text x="386" y="372" class="txt sum ink">预测命中率：</text>
+  <text x="386" y="402" class="sumMono ink">2 / 4 = 0.50</text>
+  <text x="386" y="434" class="txt sum ink">参考找回率：</text>
+  <text x="386" y="464" class="sumMono ink">2 / 3 ≈ 0.67</text>
+
+  <path d="M660 390h28m-8-8 8 8-8 8" class="flow"/>
+
+  <text x="716" y="338" class="txt sum ink">③ 合并为视频分段得分</text>
+  <text x="716" y="372" class="txt sum ink">视频分段得分（Segment F1）</text>
+  <text x="716" y="406" class="sumMono ink">= 2m / (n<tspan dy="4" style="font-size:9px">pred</tspan><tspan dy="-4"> + n</tspan><tspan dy="4" style="font-size:9px">gold</tspan><tspan dy="-4">)</tspan></text>
+  <text x="716" y="438" class="sumMono ink">= 2×2 / (4 + 3) = 4/7 ≈ 0.571</text>
 </svg>

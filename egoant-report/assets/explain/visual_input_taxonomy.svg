@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="520" viewBox="0 0 1180 520" role="img" aria-label="Visual input types preview: raw frames, temporal collage, contact sheet, neighbor collage, visual-hint overlay, hand crop">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 520" role="img" aria-label="Visual input types preview: raw frames, temporal collage, contact sheet, neighbor collage, visual-hint overlay, hand crop">
   <style>
     .bg{fill:#fffaf1}
     .card{fill:#fffaf6;stroke:#d8c8b1;stroke-width:1.5}
     .title{font:700 20px "IBM Plex Sans",Arial,sans-serif;fill:#141414}
     .name{font:700 16px "IBM Plex Sans",Arial,sans-serif;fill:#141414}
-    .sub{font:12.5px "IBM Plex Sans",Arial,sans-serif;fill:#4f4a42}
+    .sub{font:13px "IBM Plex Sans",Arial,sans-serif;fill:#4f4a42}
     .tiny{font:11px "IBM Plex Sans",Arial,sans-serif;fill:#554b40}
     .pred{fill:#2f7d70}
     .muted{fill:#d9d5cb}
@@ -23,7 +23,7 @@
   <g transform="translate(38,68)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">Raw frames</text>
-    <text x="20" y="58" class="sub">Uniform samples, submitted separately</text>
+    <text x="20" y="64" class="sub">Uniform samples, submitted separately</text>
     <g transform="translate(34,84)">
       <rect x="0" y="0" width="78" height="72" rx="6" fill="#e8e1d4" stroke="#cfc6b6"/>
       <rect x="98" y="0" width="78" height="72" rx="6" fill="#ddd6c8" stroke="#cfc6b6"/>
@@ -38,7 +38,7 @@
   <g transform="translate(414,68)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">Temporal collage</text>
-    <text x="20" y="58" class="sub">Several in-segment frames tiled as one</text>
+    <text x="20" y="64" class="sub">Several in-segment frames tiled as one</text>
     <g transform="translate(88,78)">
       <rect x="0" y="0" width="176" height="96" rx="8" fill="#f4eee4" stroke="#cfc6b6" stroke-width="2"/>
       <rect x="8" y="8" width="76" height="36" rx="4" fill="#e8e1d4"/>
@@ -52,7 +52,7 @@
   <g transform="translate(790,68)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">Contact sheet</text>
-    <text x="20" y="58" class="sub">Timestamped sampled-frame grid</text>
+    <text x="20" y="64" class="sub">Timestamped sampled-frame grid</text>
     <g transform="translate(54,78)">
       <rect x="0" y="0" width="244" height="100" rx="8" fill="#f4eee4" stroke="#cfc6b6" stroke-width="2"/>
       <g fill="#e0d8cb">
@@ -73,7 +73,7 @@
   <g transform="translate(38,292)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">Neighbor collage</text>
-    <text x="20" y="58" class="sub">Previous / current / next segment</text>
+    <text x="20" y="64" class="sub">Previous / current / next segment</text>
     <g transform="translate(40,84)">
       <rect x="0" y="0" width="78" height="72" rx="7" class="muted"/>
       <rect x="98" y="0" width="78" height="72" rx="7" class="pred"/>
@@ -88,7 +88,7 @@
   <g transform="translate(414,292)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">Visual-hint overlay</text>
-    <text x="20" y="58" class="sub">Raw frame + motion cues</text>
+    <text x="20" y="64" class="sub">Raw frame + motion cues</text>
     <g transform="translate(88,78)">
       <rect x="0" y="0" width="176" height="96" rx="8" fill="#e8e1d4"/>
       <circle cx="68" cy="54" r="18" fill="#c85e25" opacity=".22"/>
@@ -103,7 +103,7 @@
   <g transform="translate(790,292)">
     <rect class="card" width="352" height="200" rx="12"/>
     <text x="20" y="34" class="name">Hand inputs</text>
-    <text x="20" y="58" class="sub">Proxy crop vs HaWoR wrist crop</text>
+    <text x="20" y="64" class="sub">Proxy crop vs HaWoR wrist crop</text>
     <g transform="translate(34,78)">
       <rect x="0" y="0" width="126" height="82" rx="8" fill="#e8e1d4"/>
       <rect x="28" y="22" width="72" height="38" rx="7" fill="none" stroke="#c85e25" stroke-width="3"/>
