@@ -94,7 +94,7 @@
     <section id="tldr">
       <h2 data-i18n="tldr.h2">TL;DR</h2>
       <figure class="figure">
-        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-22" data-i18n-src="fig.src.recipe" alt="EgoANT pipeline overview flowchart" />
+        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-25" data-i18n-src="fig.src.recipe" alt="EgoANT pipeline overview flowchart" />
         <figcaption data-i18n="tldr.flow.cap">流程总览：左分段、右标注。推荐两条管线——单路原始帧直出，或多候选汇入判别器后送出。</figcaption>
       </figure>
       <div class="tldr">
@@ -546,7 +546,7 @@ def compatible(a, b, strategy):
         <p>前面已经试过分段、固定边界标注与端到端多条路径。这里只给出最终默认配置：开放权重模型上的端到端分段与标注流程。本组最高端到端整流程得分为 <strong>0.1542</strong>（S2 边界 + 多候选判别 · 397B）。WGO-Bench 公开的闭源最优端到端整流程得分为 <strong>0.168</strong>（全量约 100 集）；在 HomER 子集上，我们与该水平已经很接近。</p>
       </div>
       <figure class="figure">
-        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-22" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
+        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-25" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
         <figcaption data-i18n="pipeline.recipe.flow.cap">图示流程：左分段、右标注。推荐两条管线——单路原始帧直出，或多候选汇入判别器后送出。</figcaption>
       </figure>
       <p class="plain" data-i18n-html data-i18n="pipeline.recipe.prompts">
