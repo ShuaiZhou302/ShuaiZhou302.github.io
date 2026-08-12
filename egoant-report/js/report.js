@@ -837,78 +837,44 @@
     return s;
   }
 
+  function mid(a, b) {
+    if (a == null || b == null) return null;
+    return (Number(a) + Number(b)) / 2;
+  }
+  function fmtUsdApprox(n) {
+    if (n == null || Number.isNaN(Number(n))) return "—";
+    const x = Number(n);
+    return `≈$${x >= 10 ? x.toFixed(0) : x.toFixed(1)}`;
+  }
+
   function renderCost(cost) {
     if (!cost) return;
     window.__COST_DATA__ = cost;
-    const v = cost.video || {};
     const recipes = cost.recipes || {};
     const raw = recipes.raw_only;
     const sel = recipes.selector;
-    const sum = document.querySelector("#cost-summary");
-    const prod = cost.production_measured;
-    if (sum) {
-      let extra = "";
-      if (prod && prod.kind === "measured") {
-        extra = " " + i18n("cost.dyn.extra", {
-          api: fmtInt(prod.api_calls_total),
-          tok: fmtInt(prod.total_tokens),
-          perMin: fmtInt(prod.per_video_minute_tokens),
-        });
-      }
-      sum.textContent = i18n("cost.dyn.summary", {
-        n: v.n_episodes,
-        min: v.total_min,
-        mean: v.mean_sec,
-        extra: extra,
-      });
-    }
     const body = document.querySelector("#cost-tbody");
     if (!body || !raw || !sel) return;
-    const rc = costCalls(raw);
-    const sc = costCalls(sel);
-    const rt = costTokens(raw);
-    const st = costTokens(sel);
-    const rows = [
-      [i18n("cost.row.dur"), `${v.total_min} min`, `${v.total_min} min`],
-      [i18n("cost.row.pred"), String((cost.recipe_counts||{}).n_pred_segments), String((cost.recipe_counts||{}).n_pred_segments)],
-      [i18n("cost.row.s2"), String((cost.recipe_counts||{}).n_s2_windows_total), String((cost.recipe_counts||{}).n_s2_windows_total)],
-      [i18n("cost.row.label_api"), fmtInt(rc.labeling || 0), fmtInt((sc.labeling || 0) + (sc.candidate_selector || 0))],
-      [i18n("cost.row.api_tot"), fmtInt(rc.total || 0), fmtInt(sc.total || 0)],
-      [i18n("cost.row.tok"), tokRange(rt), tokRange(st)],
-      [i18n("cost.row.tok_min"), perMin(rt), perMin(st)],
-      [i18n("cost.row.usd"), usdRange(raw.usd_estimate, false), usdRange(sel.usd_estimate, false)],
-      [i18n("cost.row.usd_hour"), usdRange(raw.usd_estimate, true), usdRange(sel.usd_estimate, true)],
-      [i18n("cost.row.e2e"), fmtF1(raw.e2e_f1), fmtF1(sel.e2e_f1)],
-    ];
-    body.innerHTML = rows.map((r) => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td></tr>`).join("");
 
+    const rawHour = mid(raw.usd_estimate?.per_video_hour_low, raw.usd_estimate?.per_video_hour_high);
+    const selHour = mid(sel.usd_estimate?.per_video_hour_low, sel.usd_estimate?.per_video_hour_high);
+    const rawName = i18n("cost.simple.raw");
+    const selName = i18n("cost.simple.sel");
+    const rows = [
+      { name: rawName, score: raw.e2e_f1, usd: rawHour, best: false },
+      { name: selName, score: sel.e2e_f1, usd: selHour, best: true },
+    ];
+    body.innerHTML = rows.map((r) => {
+      const cls = r.best ? "best" : "";
+      const name = r.best ? `<strong>${esc(r.name)}</strong>` : esc(r.name);
+      const score = r.best ? `<strong>${fmtF1(r.score)}</strong>` : fmtF1(r.score);
+      const usd = r.best ? `<strong>${esc(fmtUsdApprox(r.usd))}</strong>` : esc(fmtUsdApprox(r.usd));
+      return `<tr class="${cls}"><td>${name}</td><td class="num">${score}</td><td class="num">${usd}</td></tr>`;
+    }).join("");
+
+    // Keep optional production box empty in the public simplified view.
     const prodBox = document.querySelector("#cost-production");
-    if (prodBox && prod && prod.kind === "measured") {
-      const stg = prod.stages || {};
-      const stageRows = Object.keys(stg).map((k) => {
-        const s = stg[k];
-        return `<tr><td>${esc(k)}</td><td class="num">${fmtInt(s.requests)}</td><td class="num">${fmtInt(s.total_tokens)}</td></tr>`;
-      }).join("");
-      const thItem = i18n("cost.th.item");
-      const thVal = i18n("cost.dyn.measured");
-      prodBox.innerHTML = `
-        <h3>${esc(i18n("cost.dyn.prod_h3"))}</h3>
-        <p class="plain">${esc(i18n("cost.dyn.prod_p"))}</p>
-        <table>
-          <thead><tr><th>${esc(thItem)}</th><th>${esc(thVal)}</th></tr></thead>
-          <tbody>
-            <tr><td>${esc(i18n("cost.dyn.api"))}</td><td class="num">${fmtInt(prod.api_calls_total)}</td></tr>
-            <tr><td>${esc(i18n("cost.dyn.prompt"))}</td><td class="num">${fmtInt(prod.prompt_tokens)}</td></tr>
-            <tr><td>${esc(i18n("cost.dyn.completion"))}</td><td class="num">${fmtInt(prod.completion_tokens)}</td></tr>
-            <tr><td>${esc(i18n("cost.dyn.total"))}</td><td class="num">${fmtInt(prod.total_tokens)}</td></tr>
-            <tr><td>${esc(i18n("cost.dyn.per_min"))}</td><td class="num">${fmtInt(prod.per_video_minute_tokens)}</td></tr>
-          </tbody>
-        </table>
-        <table>
-          <thead><tr><th>${esc(i18n("cost.dyn.stage"))}</th><th>${esc(i18n("cost.dyn.reqs"))}</th><th>${esc(i18n("cost.dyn.total"))}</th></tr></thead>
-          <tbody>${stageRows}</tbody>
-        </table>`;
-    }
+    if (prodBox) prodBox.innerHTML = "";
   }
   window.__rerenderCostI18n = function () {
     if (window.__COST_DATA__) renderCost(window.__COST_DATA__);

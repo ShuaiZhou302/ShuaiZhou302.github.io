@@ -121,7 +121,7 @@
         <li data-i18n-html data-i18n="tldr.pt2"><strong>最佳分段方案是「整集粗分 + 局部精修」。</strong>系统先用时间戳网格浏览完整视频并给出粗边界，再在每个粗边界附近重新判断动作起止。相较腕部速度规则基线，这一方案将视频分段得分从 0.0953 提升至 <strong>0.2031</strong>，并在 470 个人工参考片段中找到 79 个合格的时间匹配。Macrodata 公布的同范围 Gemini 视频分段得分为 0.227，与本方案相差 0.024。</li>
         <li data-i18n-html data-i18n="tldr.pt3"><strong>分段和描述需要不同的视觉输入。</strong>判断动作边界时，模型需要观察较长时间范围内的变化，因此带时间戳的图片网格更有效；边界已经给定后，模型需要看清片段内的手部和物体细节，此时原始帧更有效。加入相邻片段不但没有提高固定分段标注得分，还会把相邻动作误写进当前描述。</li>
         <li data-i18n-html data-i18n="tldr.pt4"><strong>端到端整流程目前首先受分段质量限制。</strong>最佳方案生成 308 个预测片段，但与 470 个人工参考片段完成时间匹配的只有 79 个；其中 60 个片段的描述进一步通过语义评判。换言之，大部分损失发生在描述生成之前。现阶段，改进动作边界比继续润色描述更可能提高端到端整流程得分。</li>
-        <li data-i18n-html data-i18n="tldr.pt5"><strong>单路原始帧标注已接近多候选判别方案，且成本更低。</strong>在相同预测边界上，使用 Qwen3.5-397B-A17B 进行单路原始帧标注，端到端整流程得分为 <strong>0.1414</strong>；生成多条描述并由候选判别器定稿后，得分为 <strong>0.1542</strong>，相对提高约 9.1%。前者估计为 <strong>$0.84–$1.59 / 视频小时</strong>，后者为 <strong>$2.11–$3.80 / 视频小时</strong>，均不含离线语义评判费用。对成本敏感的批量处理，单路原始帧标注是更合适的默认方案。</li>
+        <li data-i18n-html data-i18n="tldr.pt5"><strong>单路原始帧标注已接近多候选判别方案，且成本更低。</strong>在相同预测边界上，使用 Qwen3.5-397B-A17B 进行单路原始帧标注，端到端整流程得分为 <strong>0.1414</strong>；生成多条描述并由候选判别器定稿后，得分为 <strong>0.1542</strong>，相对提高约 9.1%。前者约 <strong>$1.2 / 视频小时</strong>，后者约 <strong>$3.0 / 视频小时</strong>。对成本敏感的批量处理，单路原始帧标注是更合适的默认方案。</li>
       </ul>
     </section>
 
@@ -550,46 +550,22 @@ def compatible(a, b, strategy):
       </ol>
 
       <h4 data-i18n="pipeline.recipe.cost.h4">成本估计</h4>
-      <p id="cost-summary" class="plain">Loading…</p>
       <p class="plain" id="cost-note" data-i18n-html data-i18n="cost.note">
-        推荐路径共用同一套 S2 分段（视频分段得分 0.2031），主要差别在标注调用次数。API 次数来自报告产物计数；输入 token 按图片数量与分辨率估算，输出 token 按任务类型给区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索。美元结果不含离线 Gemini 评判，也不能与 Macrodata 的 Gemini 批量账单视为同条件价格比较。
+        分段边界固定后，定稿有两种做法：每段只写一次描述，或先写多路候选再挑一句。下表按 HomER 25 集（约 40 分钟）估算开放权重模型费用，并折算成每视频小时。
       </p>
-      <table id="cost-compare-table">
-        <thead>
-          <tr>
-            <th data-i18n="cost.th.source">来源</th>
-            <th data-i18n="cost.th.scope">口径</th>
-            <th data-i18n="cost.th.num">数字</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td data-i18n="cost.row.md_e2e">Macrodata 公开</td>
-            <td data-i18n="cost.row.md_e2e_scope">端到端批量标注</td>
-            <td data-i18n="cost.row.md_e2e_num">约 $2.64 / 视频小时；仅分段批量约 $0.43/h</td>
-          </tr>
-          <tr>
-            <td data-i18n="cost.row.md_cs">Macrodata 公开</td>
-            <td data-i18n="cost.row.md_cs_scope">拼贴图相对逐帧输入</td>
-            <td data-i18n="cost.row.md_cs_num">约便宜 12 倍</td>
-          </tr>
-          <tr>
-            <td data-i18n="cost.row.wgo">EgoANT（本页）</td>
-            <td data-i18n="cost.row.wgo_scope">原始帧单路 / 候选判别器工程估计</td>
-            <td data-i18n="cost.row.wgo_num">原始帧约 $0.84–$1.59/h；候选判别器约 $2.11–$3.80/h</td>
-          </tr>
-        </tbody>
-      </table>
       <table>
         <thead>
           <tr>
-            <th data-i18n="cost.th.item">项</th>
-            <th data-i18n="cost.th.raw">单路原始帧（E2E 0.1414）</th>
-            <th data-i18n="cost.th.sel">多候选 + 候选判别器（E2E 0.1542）</th>
+            <th data-i18n="cost.simple.th.path">方案</th>
+            <th data-i18n="cost.simple.th.score">端到端得分</th>
+            <th data-i18n="cost.simple.th.usd">约每视频小时费用</th>
           </tr>
         </thead>
         <tbody id="cost-tbody"></tbody>
       </table>
+      <p class="plain" data-i18n-html data-i18n="cost.simple.compare">
+        对照：Macrodata 公开闭源端到端批量标注约 <strong>$2.64 / 视频小时</strong>。我们的推荐路径约 <strong>$3.0 / 视频小时</strong>，费用同量级，但用的是可私有部署的开放权重模型。
+      </p>
     </section>
 
 
@@ -764,8 +740,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-07"></script>
-  <script src="js/report.js?v=20260812-07"></script>
+  <script src="js/i18n.js?v=20260812-10"></script>
+  <script src="js/report.js?v=20260812-10"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
