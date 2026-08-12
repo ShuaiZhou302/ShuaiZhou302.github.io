@@ -2,6 +2,12 @@
 (function () {
   const I18N = {
     zh: {
+      "cost.simple.compare": "对照：Macrodata 公开闭源端到端批量标注约 <strong>$2.64 / 视频小时</strong>。我们的推荐路径约 <strong>$3.0 / 视频小时</strong>，费用同量级，但用的是可私有部署的开放权重模型。",
+      "cost.simple.sel": "多候选 + 候选判别器（推荐）",
+      "cost.simple.raw": "单路原始帧重标",
+      "cost.simple.th.usd": "约每视频小时费用",
+      "cost.simple.th.score": "端到端得分",
+      "cost.simple.th.path": "方案",
       "pipeline.recipe.cost.h4": "成本估计",
       "pipeline.recipe.steps": "<li><strong>拼贴图</strong>：每 0.5 秒抽一帧，缩放到 224×144，约 20 格一张，格内加黄色时间戳。</li><li><strong>整集粗分</strong>：用 Qwen3.6-27B，把整集拼贴图与切段规则清单一次提交，得到粗边界。提示词见 <a href=\"#term-gepa-prompt\">切段规则清单提示词</a>。</li><li><strong>局部精修</strong>：在粗边界附近开窗重切，窗口不外扩，并要求覆盖窗内完整动作；模型仍用 Qwen3.6-27B。本组视频分段得分 <strong>0.2031</strong>。提示词见 <a href=\"#term-s2-prompt\">局部精修提示词</a>。</li><li><strong>多路描述</strong>：固定上述 S2 预测边界，对每段生成原始帧、ffmpeg 抽帧等候选描述。提示词见 <a href=\"#label-prompt\">固定边界标注提示词</a>。</li><li><strong>候选判别器定稿</strong>：用 Qwen3.5-397B 从多路候选中选出最终描述。端到端整流程得分 <strong>0.1542</strong>。提示词见 <a href=\"#e2e-selector-prompt\">候选判别器提示词</a>。</li>",
       "pipeline.recipe.lead": "<p>前面已经试过分段、固定边界标注与端到端多条路径。这里只给出最终默认配置：开放权重模型上的端到端分段与标注流程。本组最高端到端整流程得分为 <strong>0.1542</strong>（S2 边界 + 多候选判别 · 397B）。WGO-Bench 公开的闭源最优端到端整流程得分为 <strong>0.168</strong>（全量约 100 集）；在 HomER 子集上，我们与该水平已经很接近。</p>",
@@ -102,7 +108,7 @@
       "tldr.e2e": "60 个片段同时通过时间匹配与语义匹配标准。",
       "tldr.e2e.config": "配置：Qwen3.6-27B 分段 + Qwen3.5-397B-A17B 候选判别器",
       "cost.h2": "6. 开销对照：Macrodata 公开数字 vs EgoANT",
-      "cost.note": "推荐路径共用同一套 S2 分段（视频分段得分 0.2031），主要差别在标注调用次数。API 次数来自报告产物计数；输入 token 按图片数量与分辨率估算，输出 token 按任务类型给区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索。美元结果不含离线 Gemini 评判，也不能与 Macrodata 的 Gemini 批量账单视为同条件价格比较。",
+      "cost.note": "分段已经固定后，定稿可以走两条路：只给每段写一次描述，或先写多路候选再挑一句。下面按 HomER 25 集（约 40 分钟）估算开放权重模型费用，区间取中值。",
       "cost.compare.h3": "与 Macrodata 公开开销对照",
       "cost.th.source": "来源",
       "cost.th.scope": "口径",
@@ -390,6 +396,12 @@
       "tag.pretrain": "预训练",
     },
     en: {
+      "cost.simple.compare": "Reference: Macrodata’s public closed-source end-to-end batch labeling is about <strong>$2.64 / video-hour</strong>. Our recommended path is about <strong>$3.0 / video-hour</strong>—similar cost scale, but with privately deployable open-weight models.",
+      "cost.simple.sel": "Multi-candidate + selector (recommended)",
+      "cost.simple.raw": "Single-path raw-frame relabel",
+      "cost.simple.th.usd": "Approx. cost / video-hour",
+      "cost.simple.th.score": "End-to-end score",
+      "cost.simple.th.path": "Setup",
       "pipeline.recipe.cost.h4": "Cost estimate",
       "pipeline.recipe.steps": "<li><strong>Contact sheets</strong>: sample one frame every 0.5s, resize to 224×144, about 20 tiles per sheet, with yellow timestamps.</li><li><strong>Whole-episode coarse cut</strong>: submit the full-episode contact sheets once with Qwen3.6-27B and the segmentation-rule list. Prompt: <a href=\"#term-gepa-prompt\">segmentation-rule prompt</a>.</li><li><strong>Local refinement</strong>: re-cut near coarse bounds with no pad-out and full-action coverage, still using Qwen3.6-27B. Segmentation score <strong>0.2031</strong>. Prompt: <a href=\"#term-s2-prompt\">local-refinement prompt</a>.</li><li><strong>Multi-path descriptions</strong>: freeze those S2 predicted bounds and generate raw-frame / ffmpeg candidates per segment. Prompt: <a href=\"#label-prompt\">fixed-boundary labeling prompt</a>.</li><li><strong>Candidate-selector finalization</strong>: let Qwen3.5-397B pick the final description. End-to-end score <strong>0.1542</strong>. Prompt: <a href=\"#e2e-selector-prompt\">candidate-selector prompt</a>.</li>",
       "pipeline.recipe.lead": "<p>Earlier sections already covered segmentation, fixed-boundary labeling, and many end-to-end paths. Here we only state the final default recipe: end-to-end segmentation and labeling with open-weight models. The best end-to-end score in this group is <strong>0.1542</strong> (S2 bounds + multi-candidate select · 397B). WGO-Bench’s best published closed-source end-to-end score is <strong>0.168</strong> on the full ~100-episode set; on the HomER subset, we are already close.</p>",
@@ -490,7 +502,7 @@
       "tldr.e2e": "60 segments pass both temporal and semantic matching.",
       "tldr.e2e.config": "Setup: Qwen3.6-27B segmentation + Qwen3.5-397B-A17B candidate selector",
       "cost.h2": "6. Cost: Macrodata published numbers vs EgoANT",
-      "cost.note": "The recommended path shares one S2 segmentation (segmentation score 0.2031); the main difference is labeling call count. API counts come from report artifacts; input tokens are estimated from image count/resolution, and output tokens use task-specific ranges. Pricing is $0.422/M input and $2.532/M output for Qwen3.6-27B, and $0.1644/M input and $0.9864/M output for Qwen3.5-397B-A17B. The pipeline does not use web search. Dollar estimates exclude the offline Gemini judge and are not directly comparable to Macrodata’s Gemini batch invoice.",
+      "cost.note": "With segmentation fixed, final labels can follow two paths: write one description per segment, or generate multiple candidates and pick one. Costs below are open-weight model estimates on HomER 25 episodes (~40 minutes), using the midpoint of each range.",
       "cost.compare.h3": "Vs Macrodata published cost",
       "cost.th.source": "Source",
       "cost.th.scope": "Scope",
