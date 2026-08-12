@@ -1237,6 +1237,61 @@ ol > li > details.term-fold {
 @media (max-width: 1050px) {
   .pipeline.pipeline-4 { grid-template-columns: repeat(2, 1fr); }
 }
+.pipeline.pipeline-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 800px) {
+  .pipeline.pipeline-3 { grid-template-columns: 1fr; }
+}
+
+.recipe-flow {
+  margin: 0.85rem 0 1.2rem;
+}
+.recipe-fork {
+  margin-top: 0.55rem;
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 9.5rem) 1fr;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+.recipe-fork .fork-join {
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.recipe-fork .fork-join .n {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.recipe-fork .fork-join .t {
+  font-weight: 650;
+  margin: 0.2rem 0 0;
+}
+.recipe-fork .fork-branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.recipe-fork .fork-branches .step.best {
+  border-color: rgba(15, 107, 92, 0.45);
+  background: #eaf5ee;
+}
+.recipe-fork .fork-branches .step.best .t {
+  color: #0b1f14;
+}
+@media (max-width: 800px) {
+  .recipe-fork {
+    grid-template-columns: 1fr;
+  }
+  .recipe-fork .fork-branches {
+    grid-template-columns: 1fr;
+  }
+}
 
 
 details.term-fold pre.formula {
