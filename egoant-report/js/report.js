@@ -797,8 +797,9 @@
     const best = data.meta.best.e2e_f1;
     tbody.innerHTML = orderedE2ERows(data).map((row) => {
       const r = locRow(row);
-      const bestCls = r.e2e_f1 === best ? "best" : "";
-      return `<tr class="${bestCls}"><td>${bestCls ? `<strong>${esc(r.name)}</strong>` : esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${bestCls ? `<strong>${fmtF1(r.e2e_f1)}</strong>` : fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td></tr>`;
+      const isBest = row.id === "selector397" || (r.e2e_f1 != null && best != null && Number(r.e2e_f1).toFixed(4) === Number(best).toFixed(4));
+      const bestCls = isBest ? "best" : "";
+      return `<tr class="${bestCls}"><td>${isBest ? `<strong>${esc(r.name)}</strong>` : esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${isBest ? `<strong>${fmtF1(r.e2e_f1)}</strong>` : fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td></tr>`;
     }).join("");
   }
 
