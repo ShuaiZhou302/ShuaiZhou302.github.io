@@ -934,10 +934,6 @@
   function renderWalk(walk) {
     if (!walk) return;
     const t = (k) => (window.EgoANT_I18N && window.EgoANT_I18N.t) ? window.EgoANT_I18N.t(k, lang()) : k;
-    const instr = document.querySelector("#walk-instruction");
-    if (instr) {
-      instr.innerHTML = `<strong>${t("walk.task")}</strong> ${esc(walk.instruction)} · ≈${Number(walk.duration_sec).toFixed(1)}s · pred ${walk.scores_episode.n_pred} / gold ${walk.scores_episode.n_gold}`;
-    }
     const pills = document.querySelector("#walk-params");
     if (pills) {
       const p = (walk.pipeline_meta && walk.pipeline_meta.contact_params) || "sample_sec=0.5, tile=224x144, 20 tiles/sheet, yellow timestamps";

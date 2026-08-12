@@ -95,7 +95,7 @@
       <h2 data-i18n="tldr.h2">TL;DR</h2>
       <figure class="figure">
         <img src="assets/explain/recipe_flow_zh.svg?v=20260812-22" data-i18n-src="fig.src.recipe" alt="EgoANT pipeline overview flowchart" />
-        <figcaption data-i18n="tldr.flow.cap">流程总览：左分段、右标注；原始帧可单路直出，也可与其他候选一并送入判别器。</figcaption>
+        <figcaption data-i18n="tldr.flow.cap">流程总览：左分段、右标注。推荐两条管线——单路原始帧直出，或多候选汇入判别器后送出。</figcaption>
       </figure>
       <div class="tldr">
         <div class="card">
@@ -547,7 +547,7 @@ def compatible(a, b, strategy):
       </div>
       <figure class="figure">
         <img src="assets/explain/recipe_flow_zh.svg?v=20260812-22" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
-        <figcaption data-i18n="pipeline.recipe.flow.cap">图示流程：左分段、右标注；原始帧可单路直出，也可与其他候选一并送入判别器。</figcaption>
+        <figcaption data-i18n="pipeline.recipe.flow.cap">图示流程：左分段、右标注。推荐两条管线——单路原始帧直出，或多候选汇入判别器后送出。</figcaption>
       </figure>
       <p class="plain" data-i18n-html data-i18n="pipeline.recipe.prompts">
         提示词：<a href="#term-gepa-prompt">切段规则</a> · <a href="#term-s2-prompt">局部精修</a> · <a href="#label-prompt">标注</a> · <a href="#e2e-selector-prompt">候选判别器</a>
@@ -574,14 +574,13 @@ def compatible(a, b, strategy):
 
 
     <section id="walk">
-      <h2 data-i18n="walk.h2">4. 样例分析：HomER 样本上的端到端流程</h2>
-      <p class="plain" data-i18n="walk.task">任务：用布擦桌面 / 柜面。下面按推荐路径逐步走一遍。</p>
+      <h2 data-i18n="walk.h2">4. 样例分析：HomER 样本上走推荐的端到端流程</h2>
+      <p class="plain" data-i18n="walk.lead">本章在 HomER 的一个样本上走一遍推荐的端到端流程。下面按推荐的多候选路径，逐步展示该样本的分段与标注。</p>
 
       <div class="steps">
         <article class="step-card" id="walk-0">
-          <div class="step-h"><span class="badge">00</span><h3 class="step-title" data-i18n="walk.s0.t">输入视频</h3></div>
-          <p class="plain" id="walk-instruction">Loading…</p>
-          <p class="plain muted" data-i18n="walk.s0.hint">下方为整集预览。到 Step 06 点选时间轴或表格行，可只播该段并同步看标注。</p>
+          <div class="step-h"><span class="badge">00</span><h3 class="step-title" data-i18n="walk.s0.t">原始视频</h3></div>
+          <p class="plain" data-i18n="walk.s0.p">这是本样本的原始视频。</p>
           <div class="video-wrap landscape">
             <video id="walk-video" controls preload="metadata" src="assets/homer4/homer_4_seek.mp4"></video>
           </div>
@@ -589,9 +588,9 @@ def compatible(a, b, strategy):
 
         <article class="step-card" id="walk-1">
           <div class="step-h"><span class="badge">01</span><h3 class="step-title" data-i18n="walk.s1.t">生成拼贴图</h3></div>
-          <p class="plain" data-i18n="walk.s1.p">参数与上文拼贴图设定一致。模型后续只看这些带时间戳的拼图，而不是原始 MP4 字节流。</p>
+          <p class="plain" data-i18n="walk.s1.p">参数与上文拼贴图设定一致。模型后续只看这些带时间戳的拼贴图，而不是原始 MP4 字节流。</p>
           <div class="param-pills" id="walk-params"></div>
-          <p class="plain muted" data-i18n="walk.s1.note">下方为首张 sheet 示例（同参数）。</p>
+          <p class="plain muted" data-i18n="walk.s1.note">下方为首张拼贴图示例（同参数）；整集还会生成多张同类拼贴图。</p>
           <figure class="figure">
             <img src="assets/homer4/contact_sheet_example.jpg" alt="homer_4 contact sheet" />
           </figure>
@@ -600,27 +599,19 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-2">
           <div class="step-h"><span class="badge">02</span><h3 class="step-title" data-i18n="walk.s2.t">粗分：整集一次 + 切段规则清单</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s2.p">
-            把该集尽量多的 sheet 一次送给分段模型，并在请求文本里贴上<strong>切段规则清单</strong>
-            （GEPA 搜索得到的英语规则：只标完成事件、偏好约 2–10 秒等——见 <a href="#term-gepa">GEPA</a>）。
-            这样能消灭「分片接缝假切点」，但容易切太少（欠分割）。
+            把该集尽量多的<strong>拼贴图</strong>一次送给分段模型，并在请求文本里附上<strong>切段规则清单</strong>，得到整集粗分边界。
           </p>
         </article>
 
         <article class="step-card" id="walk-3">
-          <div class="step-h"><span class="badge">03</span><h3 class="step-title" data-i18n="walk.s3.t">局部再切一遍：窗口不外扩，盖住完整动作</h3></div>
+          <div class="step-h"><span class="badge">03</span><h3 class="step-title" data-i18n="walk.s3.t">局部精修：窗口不外扩，盖住完整动作</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s3.p">
-            在粗边界附近开一个<strong>短时间窗</strong>，用<strong>同一版式</strong>的 sheet 再切一次。
-            <strong>窗口不外扩</strong>：只使用粗边界内部的视觉上下文（技术名 pad=0）；
-            <strong>盖住完整动作</strong>：窗内看得见的完成事件都要切到，避免不完整微动作片段（技术名 full-cover）。
-            （整步技术名：S2 · pad=0 · full-cover）
+            在粗边界附近开局部时间窗，用<strong>同一版式</strong>的拼贴图再切一次。<strong>窗口不外扩</strong>：只看粗段内部；<strong>盖住完整动作</strong>：窗内看得见起止的完成操作都要切出。
+            以本集为例，整集粗分在约 <strong>26.0s</strong> 处得到「擦抽屉内部」粗段（约 <strong>[26.0, 42.0]</strong>）；下图是该粗段内一张局部拼贴图，覆盖 <strong>26.5s–36.0s</strong>（与上一步整集开头的拼贴图不同）。
           </p>
           <figure class="figure">
             <img src="assets/homer4/contact_window_sample.jpg" alt="step03 local sheet" />
-            <figcaption data-i18n="walk.s3.cap">局部时间窗 contact sheet（第二遍精修输入）。</figcaption>
-          </figure>
-          <figure class="figure">
-            <img src="assets/explain/s2_no_pad_full_cover_zh.svg?v=20260811-26" data-i18n-src="fig.src.s2" alt="S2 no-pad full-cover local refinement diagram" />
-            <figcaption data-i18n-html data-i18n="walk.s3.diagram.cap">同上：粗分窗口 → pad=0 精修范围 → 窗内应切出的完整动作。提示词见 <a href="#term-s2-prompt">覆盖完整动作提示词</a>。</figcaption>
+            <figcaption data-i18n="walk.s3.cap">局部时间窗拼贴图示例：26.5s–36.0s（第二遍精修输入）。</figcaption>
           </figure>
         </article>
 
@@ -743,8 +734,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-22"></script>
-  <script src="js/report.js?v=20260812-22"></script>
+  <script src="js/i18n.js?v=20260812-23"></script>
+  <script src="js/report.js?v=20260812-23"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
