@@ -962,14 +962,6 @@
         return `<tr><td>${esc(candLabelMap[k] || k)}</td><td>${esc(cands[k])}</td></tr>`;
       }).join("");
     }
-    const fin = document.querySelector("#walk-cand-final");
-    if (fin) {
-      const srcLabel = candSourceLabel(demo.candidate_select_source);
-      const head = t("walk.s5.result");
-      const sep = lang() === "en" ? ": " : "：";
-      fin.innerHTML = `<strong>${esc(head)}${sep}</strong>${esc(srcLabel)} → “${esc(demo.subtask)}”
-        <span style="color:var(--muted)">(${Number(demo.start_sec).toFixed(1)}–${Number(demo.end_sec).toFixed(1)}s)</span>`;
-    }
 
     const overview = document.querySelector("#walk-video");
     const clip = document.querySelector("#walk-clip");
@@ -977,20 +969,20 @@
     // Prefer seek-optimized asset when present (dense keyframes + faststart).
     const walkSrc = (walk.assets && walk.assets.video_seek) || walk.video;
     function ensureSrc(el, src) {
-      if (!el || !src) return;
+      if (!el || !src) return false;
       try {
         const abs = new URL(src, window.location.href).href;
         // Ignore media-fragment differences; never reload if same file.
         const cur = (el.currentSrc || el.src || "").split("#")[0];
-        if (cur === abs.split("#")[0]) return;
+        if (cur === abs.split("#")[0]) return false;
       } catch (e) {}
       el.src = src;
       try { el.load(); } catch (e2) {}
+      return true;
     }
     ensureSrc(overview, walkSrc);
-    ensureSrc(clip, walkSrc);
-    if (clip) clip.preload = "auto";
     if (overview) overview.preload = "metadata";
+    if (clip) clip.preload = "auto";
 
     const tmax = walk.duration_sec;
     const tl = document.querySelector("#walk-timeline");
@@ -1007,56 +999,30 @@
       clipBound = null;
     }
 
-    function seekTo(video, tSec) {
+    function waitEvent(el, name, timeoutMs) {
       return new Promise((resolve) => {
-        if (!video) return resolve(false);
-        const target = Math.max(0, Number(tSec) || 0);
-        let settled = false;
+        let done = false;
         const finish = (ok) => {
-          if (settled) return;
-          settled = true;
-          video.removeEventListener("seeked", onSeeked);
-          video.removeEventListener("loadedmetadata", onReady);
-          video.removeEventListener("canplay", onReady);
+          if (done) return;
+          done = true;
+          el.removeEventListener(name, onEv);
           clearTimeout(timer);
           resolve(!!ok);
         };
-        const closeEnough = () => {
-          const ct = video.currentTime || 0;
-          return Math.abs(ct - target) < 0.35 || (target > 1 && ct >= target - 0.5 && ct <= target + 1.0);
-        };
-        const onSeeked = () => finish(closeEnough());
-        const kick = () => {
-          try {
-            video.currentTime = target;
-            // Some browsers ignore the first assignment before enough data is buffered.
-            if (!closeEnough()) {
-              requestAnimationFrame(() => {
-                try { video.currentTime = target; } catch (e) {}
-              });
-            }
-          } catch (e) {
-            finish(false);
-          }
-        };
-        const onReady = () => kick();
-        video.addEventListener("seeked", onSeeked);
-        const timer = setTimeout(() => finish(closeEnough()), 3000);
-        if (video.readyState >= 1) kick();
-        else {
-          video.addEventListener("loadedmetadata", onReady, { once: true });
-          video.addEventListener("canplay", onReady, { once: true });
-          try { video.load(); } catch (e) {}
-        }
+        const onEv = () => finish(true);
+        const timer = setTimeout(() => finish(false), timeoutMs || 2500);
+        el.addEventListener(name, onEv, { once: true });
       });
     }
 
     async function playSegment(kind, idx, seg, { autoplay = true } = {}) {
-      if (!seg) return;
+      if (!seg || !clip) return;
       const start = Math.max(0, Number(seg.start_sec) || 0);
       const end = Math.max(start + 0.05, Number(seg.end_sec) || start + 1);
       const label = kind === "gold" ? t("walk.seg.gold") : t("walk.seg.pred");
       const myGen = ++seekGen;
+      const dedicated = seg.clip || null;
+      const src = dedicated || walkSrc;
 
       if (detail) {
         const sep = lang() === "en" ? ": " : "：";
@@ -1084,40 +1050,38 @@
       });
 
       stopClipLoop();
-      clipBound = { start, end };
-      // Keep a stable src (do NOT rewrite with #t= fragments — that reloads and resets to 0).
-      ensureSrc(clip, walkSrc);
-      ensureSrc(overview, walkSrc);
-
-      if (!clip) return;
+      const swapped = ensureSrc(clip, src);
+      if (overview && !dedicated) ensureSrc(overview, walkSrc);
 
       try { clip.pause(); } catch (e) {}
-      // Preserve click gesture for autoplay: start play ASAP, then correct the seek.
-      let playPromise = null;
-      if (autoplay) {
-        try { clip.currentTime = start; } catch (e) {}
-        playPromise = clip.play();
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise = playPromise.catch(() => null);
+      if (swapped || clip.readyState < 1) {
+        await Promise.race([
+          waitEvent(clip, "loadedmetadata", 3000),
+          waitEvent(clip, "canplay", 3000),
+        ]);
+        if (myGen !== seekGen) return;
+      }
+
+      const localStart = dedicated ? 0 : start;
+      const localEnd = dedicated
+        ? (Number.isFinite(clip.duration) && clip.duration > 0 ? clip.duration : Math.max(0.2, end - start))
+        : end;
+      clipBound = { start: localStart, end: localEnd };
+
+      try { clip.currentTime = localStart; } catch (e) {}
+      if (!dedicated && overview) {
+        try { overview.currentTime = start; } catch (e) {}
+      }
+
+      // Confirm seek landed; dedicated clips should already start at 0.
+      if (!dedicated) {
+        await waitEvent(clip, "seeked", 1500);
+        if (myGen !== seekGen) return;
+        if (Math.abs((clip.currentTime || 0) - localStart) > 0.5) {
+          try { clip.currentTime = localStart; } catch (e) {}
+          await waitEvent(clip, "seeked", 1500);
+          if (myGen !== seekGen) return;
         }
-      }
-
-      let ok = await seekTo(clip, start);
-      if (myGen !== seekGen) return;
-      if (!ok) {
-        await new Promise((r) => setTimeout(r, 120));
-        if (myGen !== seekGen) return;
-        ok = await seekTo(clip, start);
-      }
-      if (myGen !== seekGen) return;
-      await seekTo(overview, start);
-      if (myGen !== seekGen) return;
-
-      // If the browser drifted back to 0 while playing, force the start again.
-      if (Math.abs((clip.currentTime || 0) - start) > 0.5) {
-        try { clip.currentTime = start; } catch (e) {}
-        await seekTo(clip, start);
-        if (myGen !== seekGen) return;
       }
 
       clipLoopHandler = () => {
@@ -1127,23 +1091,21 @@
           try { clip.currentTime = clipBound.start; } catch (e) {}
           return;
         }
-        if (ct >= clipBound.end - 0.04) {
+        if (ct >= clipBound.end - 0.05) {
           try { clip.currentTime = clipBound.start; } catch (e) {}
         }
       };
       clip.addEventListener("timeupdate", clipLoopHandler);
 
       if (autoplay) {
-        if (clip.paused) {
-          const p = clip.play();
-          if (p && typeof p.catch === "function") {
-            p.catch(() => {
-              try { clip.pause(); } catch (e) {}
-              if (clipMeta && myGen === seekGen) {
-                clipMeta.textContent = `${label} #${idx} · ${start.toFixed(1)}–${end.toFixed(1)}s · ${t("walk.s6.clickplay")}`;
-              }
-            });
-          }
+        const p = clip.play();
+        if (p && typeof p.catch === "function") {
+          p.catch(() => {
+            try { clip.pause(); } catch (e) {}
+            if (clipMeta && myGen === seekGen) {
+              clipMeta.textContent = `${label} #${idx} · ${start.toFixed(1)}–${end.toFixed(1)}s · ${t("walk.s6.clickplay")}`;
+            }
+          });
         }
       } else {
         try { clip.pause(); } catch (e) {}
@@ -1194,6 +1156,130 @@
     }
   }
 
+  function renderLabelCompare(walk) {
+    if (!walk) return;
+    const video = document.querySelector("#lc-video");
+    const lanesEl = document.querySelector("#lc-lanes");
+    const axisEl = document.querySelector("#lc-axis");
+    const playhead = document.querySelector("#lc-playhead");
+    const nowEl = document.querySelector("#lc-now");
+    const instrEl = document.querySelector("#lc-instr");
+    const epEl = document.querySelector("#lc-ep");
+    const tipEl = document.querySelector("#lc-tip");
+    const board = document.querySelector("#lc-board");
+    if (!video || !lanesEl || !board) return;
+
+    const t = (k) => (window.EgoANT_I18N && window.EgoANT_I18N.t) ? window.EgoANT_I18N.t(k, lang()) : k;
+    const tmax = Number(walk.duration_sec) || 130;
+    const walkSrc = (walk.assets && walk.assets.video_seek) || walk.video;
+    if (epEl) epEl.textContent = String(walk.id || "HOMER_4").toUpperCase();
+    if (instrEl) {
+      const prefix = lang() === "en" ? "Instruction:" : "任务指令：";
+      instrEl.textContent = `${prefix} ${walk.instruction || ""}`;
+    }
+    if (walkSrc) {
+      const abs = new URL(walkSrc, window.location.href).href;
+      if ((video.currentSrc || "").split("#")[0] !== abs.split("#")[0]) {
+        video.src = walkSrc;
+        video.preload = "auto";
+      }
+    }
+
+    const tracks = [
+      { id: "gold", label: t("legend.gold"), color: "gold", segments: walk.gold_segments || [] },
+      { id: "ours", label: t("legend.ours"), color: "contact", segments: walk.pred_segments || [] },
+    ];
+
+    function setPlayhead(tt) {
+      const tSec = Math.max(0, Math.min(tmax, tt || 0));
+      const track = board.querySelector(".bc-lane-track");
+      if (!track || !playhead) return;
+      const boardRect = board.getBoundingClientRect();
+      const trackRect = track.getBoundingClientRect();
+      const x = (trackRect.left - boardRect.left) + (tSec / tmax) * trackRect.width;
+      playhead.style.left = `${Math.max(0, x)}px`;
+      if (nowEl) nowEl.textContent = `now ${tSec.toFixed(1)}s / ${tmax.toFixed(0)}s`;
+    }
+
+    function showTip(node, trackLabel) {
+      if (!tipEl || !node) return;
+      const full = node.getAttribute("data-full") || "";
+      const start = Number(node.getAttribute("data-start")) || 0;
+      const end = Number(node.getAttribute("data-end")) || 0;
+      const idx = node.getAttribute("data-idx") || "";
+      tipEl.hidden = false;
+      tipEl.innerHTML = `<div class="bc-tip-meta"><strong>${esc(trackLabel)}</strong> · #${esc(idx)} · ${start.toFixed(2)}–${end.toFixed(2)}s</div>
+        <div class="bc-tip-full">${esc(full)}</div>`;
+    }
+    function hideTip() {
+      if (tipEl) tipEl.hidden = true;
+    }
+
+    function playAt(start) {
+      try { video.currentTime = start; } catch (e) {}
+      setPlayhead(start);
+      const p = video.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    }
+
+    lanesEl.innerHTML = tracks.map((tr) => {
+      const segs = (tr.segments || []).map((s, i) => {
+        const left = (Number(s.start_sec) / tmax) * 100;
+        const width = Math.max(0.35, ((Number(s.end_sec) - Number(s.start_sec)) / tmax) * 100);
+        const txt = esc(s.subtask || "");
+        return `<div class="bc-seg color-${esc(tr.color)}" data-track-label="${esc(tr.label)}" data-idx="${i}" data-start="${s.start_sec}" data-end="${s.end_sec}" data-full="${txt}" style="left:${left}%;width:${width}%">
+          <span class="bc-idx">${i}</span><span class="bc-txt">${txt}</span>
+        </div>`;
+      }).join("");
+      return `<div class="bc-lane" data-track="${esc(tr.id)}">
+        <div class="bc-lane-label">${esc(tr.label)}</div>
+        <div class="bc-lane-track">${segs}</div>
+      </div>`;
+    }).join("");
+
+    if (axisEl) {
+      const step = tmax > 80 ? 20 : 10;
+      const ticks = [];
+      for (let x = 0; x <= tmax; x += step) ticks.push(x);
+      if (ticks[ticks.length - 1] !== Math.floor(tmax)) ticks.push(Math.floor(tmax));
+      axisEl.innerHTML = ticks.map((x) => `<span>${x}s</span>`).join("");
+    }
+
+    lanesEl.querySelectorAll(".bc-seg").forEach((node) => {
+      const trackLabel = node.getAttribute("data-track-label") || "";
+      node.addEventListener("mouseenter", () => showTip(node, trackLabel));
+      node.addEventListener("mouseleave", hideTip);
+      node.addEventListener("focus", () => showTip(node, trackLabel));
+      node.addEventListener("blur", hideTip);
+      node.setAttribute("tabindex", "0");
+      node.addEventListener("click", () => {
+        const start = Number(node.getAttribute("data-start")) || 0;
+        lanesEl.querySelectorAll(".bc-seg").forEach((x) => x.classList.remove("active"));
+        node.classList.add("active");
+        showTip(node, trackLabel);
+        playAt(start);
+      });
+    });
+    lanesEl.querySelectorAll(".bc-lane-track").forEach((track) => {
+      track.addEventListener("click", (ev) => {
+        if (ev.target.closest(".bc-seg")) return;
+        const rect = track.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        playAt(ratio * tmax);
+      });
+    });
+
+    if (!video._lcBound) {
+      video._lcBound = true;
+      video.addEventListener("timeupdate", () => setPlayhead(video.currentTime || 0));
+      video.addEventListener("seeked", () => setPlayhead(video.currentTime || 0));
+      window.addEventListener("resize", () => setPlayhead(video.currentTime || 0));
+    }
+    setPlayhead(video.currentTime || 0);
+    window.__LABELCMP_WALK__ = walk;
+    window.__rerenderLabelCmpI18n = () => renderLabelCompare(window.__LABELCMP_WALK__);
+  }
+
   function renderBoundaryCompare(bc) {
     if (!bc) return;
     const video = document.querySelector("#bc-video");
@@ -1216,7 +1302,8 @@
       instrEl.textContent = `${prefix} ${bc.instruction || ""}`;
     }
     if (captionEl) {
-      captionEl.textContent = L === "en" ? (bc.caption_en || bc.caption_zh || "") : (bc.caption_zh || bc.caption_en || "");
+      captionEl.hidden = true;
+      captionEl.textContent = "";
     }
     if (bc.video) {
       const abs = new URL(bc.video, window.location.href).href;
@@ -1251,10 +1338,18 @@
       if (tipEl) tipEl.hidden = true;
     }
 
+    function trackLabelFor(tr) {
+      const tkey = (k) => (window.EgoANT_I18N && window.EgoANT_I18N.t) ? window.EgoANT_I18N.t(k, L) : k;
+      if (tr.id === "gold") return tkey("legend.gold");
+      if (tr.id === "whole") return tkey("legend.coarse");
+      if (tr.id === "contact") return tkey("legend.contact");
+      return L === "en" ? (tr.label_en || tr.label_zh || tr.id) : (tr.label_zh || tr.label_en || tr.id);
+    }
+
     function renderLanes() {
       const tracks = bc.tracks || [];
       lanesEl.innerHTML = tracks.map((tr) => {
-        const label = L === "en" ? (tr.label_en || tr.label_zh || tr.id) : (tr.label_zh || tr.label_en || tr.id);
+        const label = trackLabelFor(tr);
         const segs = (tr.segments || []).map((s, i) => {
           const left = (s.start_sec / tmax) * 100;
           const width = Math.max(0.35, ((s.end_sec - s.start_sec) / tmax) * 100);
@@ -1362,11 +1457,13 @@
       fillE2ETable(D.data);
       if (D.walk) renderWalk(D.walk);
       if (D.boundary) renderBoundaryCompare(D.boundary);
+      if (D.walk) renderLabelCompare(D.walk);
       renderTimeline(document.querySelector("#toy-timeline"), D.data.walkthrough_toy);
     }
     window.__rerenderTablesI18n = rerenderDynamicI18n;
     renderWalk(walk);
     if (boundary) renderBoundaryCompare(boundary);
+    renderLabelCompare(walk);
     renderCost(cost);
     if (heroGrid) renderHeroGrid(heroGrid);
     initTocSpy();

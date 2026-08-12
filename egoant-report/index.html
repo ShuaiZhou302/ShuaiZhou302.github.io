@@ -621,9 +621,17 @@ def compatible(a, b, strategy):
           <div class="step-h"><span class="badge">04</span><h3 class="step-title" data-i18n="walk.s4.t">多候选标注</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s4.p">
             分段边界固定后，对每个预测片段并行生成多路候选描述：
-            <strong>原始帧</strong>、<strong>ffmpeg</strong>、<strong>种子候选</strong>、<strong>先验描述</strong>。
-            下表是其中一个片段上的候选结果示例。
+            <strong>原始帧</strong>用默认抽帧直接写描述；
+            <strong>ffmpeg</strong>换一套解码/抽帧路径再写一路；
+            <strong>种子候选</strong>带上先前草稿描述再改写；
+            <strong>先验描述</strong>用已有描述作文本先验再生成。
           </p>
+          <p class="plain muted" data-i18n-html data-i18n="walk.s4.note">
+            下表是其中一个片段上的候选结果示例（约 26.5s–45.0s，「擦抽屉内部」）。
+          </p>
+          <figure class="figure">
+            <img src="assets/homer4/contact_window_sample.jpg" alt="candidate example collage" />
+          </figure>
           <div>
               <table class="cand-table">
                 <thead><tr><th data-i18n="walk.th.src">来源</th><th data-i18n="walk.th.cand">候选标签</th></tr></thead>
@@ -635,9 +643,9 @@ def compatible(a, b, strategy):
         <article class="step-card" id="walk-5">
           <div class="step-h"><span class="badge">05</span><h3 class="step-title" data-i18n="walk.s5.t">候选判别器选择</h3></div>
           <p class="plain" data-i18n-html data-i18n="walk.s5.p">
-            我们把上一步的多路候选交给模型，并输入提示词，让它从中选出最合适的动作标注。下面用本集预测段落互动展示选中结果：点击时间轴色块或表格行，可跳到该预测段落并查看候选。
+            我们把上一步的多路候选交给模型，并输入提示词，让它从中选出最合适的动作标注。
           </p>
-          <p id="walk-cand-final" class="callout"></p>
+          <p class="plain muted" data-i18n="walk.s5.note">下面用本集预测段落互动展示选中结果：点击时间轴色块或表格行，可跳到该预测段落并查看候选。</p>
           <div id="walk-timeline" class="timeline"></div>
           <div class="walk-explore">
             <div class="walk-explore-anno">
@@ -658,8 +666,8 @@ def compatible(a, b, strategy):
       </div>
 
       <h3 id="walk-boundary" data-i18n="boundary.h2">边界对照：同一视频上的三种分段结果</h3>
-<p class="plain" data-i18n-html data-i18n="boundary.lead">
-        对齐 Macrodata 博客的 Boundary comparison 交互：上方播视频，下方多轨时间轴；播放头随时间移动，点击色块可跳到该段。
+      <p class="plain" data-i18n-html data-i18n="boundary.lead">
+        上方播视频，下方多轨时间轴；播放头随时间移动，点击色块可跳到该段。
       </p>
       <div class="bc-card" id="boundary-card">
         <div class="bc-head">
@@ -679,19 +687,37 @@ def compatible(a, b, strategy):
           <div class="bc-axis" id="bc-axis"></div>
         </div>
         <div class="legend-row" aria-label="Boundary color legend">
-          <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">Gold / 人工标注</span></span>
+          <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">人工标注</span></span>
           <span class="legend-key"><span class="legend-swatch coarse"></span><span data-i18n="legend.coarse">Whole-episode coarse</span></span>
           <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.contact">Contact-sheet prediction</span></span>
         </div>
         <div class="bc-tip" id="bc-tip" hidden></div>
-        <p class="bc-caption" id="bc-caption" data-i18n="boundary.caption">
-          模型常能叫出粗事件，却漏掉更细的子任务边界。同集 homer_4（与本节样例一致）对照：人工 gold、整集粗分、contact sheet 粗分。悬停色块可看完整标注。
-        </p>
       </div>
 
-      <div class="callout good" data-i18n-html data-i18n="walk.score">
-        <strong>本集成绩：</strong>gold 15 / pred 11；IoU≥0.75 匹配 4；语义匹配 3；本集 E2E≈0.231
-        （全集 HomER micro 仍是 0.1542）。
+      <h3 id="walk-label-compare" data-i18n="labelcmp.h2">标注对照：人工标注与 EgoANT 管线</h3>
+      <p class="plain" data-i18n="labelcmp.lead">上方播视频，下方两条时间轴；点击色块可查看该段标注并跳转播放。</p>
+      <div class="bc-card" id="labelcmp-card">
+        <div class="bc-head">
+          <div class="bc-title">
+            <span data-i18n="labelcmp.kicker">标注对照</span>
+            <strong id="lc-ep">HOMER_4</strong>
+          </div>
+          <div class="bc-now" id="lc-now">now 0.0s / 130s</div>
+        </div>
+        <p class="bc-instr" id="lc-instr">Instruction: …</p>
+        <div class="bc-video-wrap">
+          <video id="lc-video" controls preload="auto" playsinline src="assets/homer4/homer_4_seek.mp4"></video>
+        </div>
+        <div class="bc-board" id="lc-board" aria-label="Label comparison timeline">
+          <div class="bc-playhead" id="lc-playhead"></div>
+          <div id="lc-lanes"></div>
+          <div class="bc-axis" id="lc-axis"></div>
+        </div>
+        <div class="legend-row" aria-label="Label comparison legend">
+          <span class="legend-key"><span class="legend-swatch gold"></span><span data-i18n="legend.gold">人工标注</span></span>
+          <span class="legend-key"><span class="legend-swatch pred"></span><span data-i18n="legend.ours">EgoANT管线(候选器判别)</span></span>
+        </div>
+        <div class="bc-tip" id="lc-tip" hidden></div>
       </div>
     </section>
 
@@ -720,8 +746,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-26"></script>
-  <script src="js/report.js?v=20260812-26"></script>
+  <script src="js/i18n.js?v=20260812-27"></script>
+  <script src="js/report.js?v=20260812-27"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
