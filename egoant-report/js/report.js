@@ -9,6 +9,16 @@
     "merge_exact","merge_verb","merge_bridge"
   ];
   const MAIN_SEG_IDS = new Set(MAIN_SEG_ORDER);
+  // Group same E2E method across models for side-by-side reading.
+  const MAIN_E2E_ORDER = [
+    "egovid_e2e",
+    "s2_self",
+    "raw27b_e2e", "raw27b_inner05_e2e", "raw397",
+    "raw27b_ffmpeg_e2e", "ffmpeg397",
+    "seeded_neighbor27_e2e", "raw27_prior_neighbor27_e2e", "nb28", "nb397",
+    "selector27_e2e", "selector397",
+  ];
+  const MAIN_E2E_IDS = new Set(MAIN_E2E_ORDER);
   // Group same visual input across models for side-by-side reading.
   const MAIN_LABEL_ORDER = [
     "raw_27b", "raw_397b",
@@ -773,11 +783,19 @@
     }).join("");
   }
 
+  function orderedE2ERows(data) {
+    const rows = data.e2e || [];
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    const ordered = MAIN_E2E_ORDER.map((id) => byId.get(id)).filter(Boolean);
+    const seen = new Set(ordered.map((r) => r.id));
+    return ordered.concat(rows.filter((r) => !seen.has(r.id)));
+  }
+
   function fillE2ETable(data) {
     const tbody = document.querySelector("#e2e-tbody");
     if (!tbody) return;
     const best = data.meta.best.e2e_f1;
-    tbody.innerHTML = data.e2e.map((row) => {
+    tbody.innerHTML = orderedE2ERows(data).map((row) => {
       const r = locRow(row);
       const bestCls = r.e2e_f1 === best ? "best" : "";
       return `<tr class="${bestCls}"><td>${esc(r.name)}</td><td class="num">${fmtF1(r.seg_f1)}</td><td class="num">${fmtF1(r.e2e_f1)}</td><td class="num">${esc(r.pred_gold)}</td><td>${esc(r.note || "")}</td></tr>`;
@@ -1322,7 +1340,7 @@
     const mainSeg = orderedSegRows(data);
     renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
     renderBars(document.querySelector("#label-bars"), orderedLabelRows(data), "acc", 0.60, true, data.meta.best.label_acc);
-    renderBars(document.querySelector("#e2e-bars"), data.e2e, "e2e_f1", 0.18, true);
+    renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(data), "e2e_f1", 0.18, true);
     fillSegTable(data);
     fillSegPadTable(data);
     fillLabelTable(data);
@@ -1335,7 +1353,7 @@
       const mainSeg = orderedSegRows(D.data);
       renderBars(document.querySelector("#seg-bars"), mainSeg, "f1", 0.25, false, "s2_fullcover_qwen36");
       renderBars(document.querySelector("#label-bars"), orderedLabelRows(D.data), "acc", 0.60, true, D.data.meta.best.label_acc);
-      renderBars(document.querySelector("#e2e-bars"), D.data.e2e, "e2e_f1", 0.18, true);
+      renderBars(document.querySelector("#e2e-bars"), orderedE2ERows(D.data), "e2e_f1", 0.18, true);
       fillSegTable(D.data);
       fillSegPadTable(D.data);
       fillLabelTable(D.data);

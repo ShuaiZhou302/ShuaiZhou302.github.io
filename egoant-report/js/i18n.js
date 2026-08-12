@@ -2,14 +2,19 @@
 (function () {
   const I18N = {
     zh: {
+      "world.term.e2e.neighbor": "邻段重标（neighbor relabel）：给当前段时同时给上一段 / 当前段 / 下一段的帧。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。",
+      "world.term.e2e.ffmpeg": "ffmpeg 抽帧重标：边界相同，只把默认解码/抽帧换成 ffmpeg 路径。这不是新的标注策略，而是同一视频段的另一路候选描述；实验中常略高于默认 raw，因此进入 selector 候选池。",
+      "world.term.e2e.raw": "原始帧重标（raw relabel）：固定预测边界后，用模型看当前段原始帧重写一句操作描述。S2 边界 + 397B 单路 raw 的端到端整流程得分为 0.1414。",
+      "pipeline.e2e.prompt.note": "说明：下方就是候选判别器提示词。System / User 两段会送给模型；图像不进入本提示词，候选描述以文本列表传入。",
+      "th.mpg": "配对/预测/参考",
       "nav.intro": "导读",
       "nav.tldr": "TL;DR",
       "nav.world": "相关工作",
       "nav.terms": "术语约定",
       "pipeline.h3.cost": "3.5 成本对照",
       "pipeline.h3.recipe": "3.4 推荐配置",
-      "pipeline.e2e.lead": "端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。",
-      "pipeline.h3.e2e": "3.3 端到端",
+      "pipeline.e2e.lead": "端到端分段与标注要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。",
+      "pipeline.h3.e2e": "3.3 端到端分段与标注",
       "pipeline.label.lead": "固定边界标注要解决的问题是：给定人工参考时间边界，为每个片段生成简短操作描述。得分统一为同一 HomER 子集上的固定分段标注得分（Label Acc）。",
       "pipeline.h3.label": "3.2 固定边界标注",
       "pipeline.seg.analysis": "<p>结合上图与表，按实验路径可以归纳如下。</p><ol><li>腕速规则切段并合并：预测片段 810 段，远多于参考分段 470 段，配对成功仅 61。腕速低谷会把动作内部的停顿和微调也当成边界，因此整体呈过分割，难以对齐语义完整的动作。</li><li>拼贴图分片（每次最多 3 张）：改用带时间戳拼贴图后，模型可以在局部时间上下文中判边界，但仍受请求长度限制。每次最多送入 3 张拼贴图，请求之间的接缝缺乏整集上下文，容易被误判为动作边界。</li><li>整集一次提交（无切段规则清单）：整集同一次调用消除了分片接缝带来的伪边界，但模型偏保守：预测片段仅 148 段（参考 470 段），配对成功 38，多数参考动作未被单独切出，整体表现为欠分割。</li><li>整集一次提交 + 切段规则清单：加入切段规则后，预测片段升至 202 段、配对成功 46，相对无规则清单有提升，但仍远少于参考 470 段。规则清单改善了「该切哪些完成事件」，却不足以单独决定切分粒度。</li><li>S1 加密切分：通过提示词要求更密的候选切分后，配对成功升至 80（参考分段共 470），预测片段增至 558 段。召回改善的同时过分割回升，说明密切可以抬高找回率，但边界仍需第二遍精修。</li><li>S2 局部精修：在粗边界附近开窗重切，是本组主要增益来源。窗口不外扩优于向外多看 0.5/1/2 秒；在窗口不外扩时，写入覆盖完整动作提示词优于无覆盖完整动作提示词，也优于用算法中点事后补覆盖。最终「窗口不外扩 + 覆盖完整动作提示词」取得最高视频分段得分 0.2031（配对成功 79，预测 308 段，参考 470 段）。上述 pad / full-cover 消融均在 27B 上完成。</li><li>S2 + 相邻片段规则合并：三种规则都接在上述最优 S2 预测之后，只根据相邻预测段的标签与时间间隙做后处理。结果均低于未合并的 S2，说明在当前 IoU 评测口径下，粗合并并不能替代局部精修。</li><li>模型对比（覆盖不对等）：公平对照主要看拼贴图分片——27B 为 0.1278，高于 397B 的 0.0952。397B 另有 S1（0.1556）与早期 S2≈1 秒外扩（0.1674）；同档 27B 的 pad=1.0 为 0.1485，早期 397B 局部精修并不差，但后续窗口外扩与覆盖完整动作提示词的系统消融只在 27B 上继续，最优 0.2031 因此也落在 27B。图上 27B 行更多，是实验覆盖不对称，不是漏写已有 397B 结果。</li></ol>",
@@ -17,9 +22,9 @@
       "pipeline.seg.methods": "下列为我们尝试过的分段标注方法。",
       "pipeline.label.methods": "下列为我们尝试过的固定边界标注方法。各条件共用同一套标注提示词，只换视觉输入与模型；提示词见下方折叠。",
       "pipeline.label.prompt.note": "说明：下方就是提示词文本。System / User 两段会送给模型；User 里的 <code>{mode_intro}</code> 随视觉输入切换，<code>{instruction}</code> 换成整集任务指令；图像接在 User 提示词文本之后。",
-      "pipeline.e2e.methods": "下列为我们尝试过的端到端标注路径。",
+      "pipeline.e2e.methods": "下列为我们尝试过的端到端分段与标注路径；相同方法的不同模型放在一起。",
       "pipeline.label.analysis": "<p>结合上图与表，可以归纳如下。</p><ol><li>原始帧 · 27B：在 470 个固定参考片段上配对成功 262，固定分段标注得分 55.7%，为本组最高。边界已给定时，模型更吃完整场景上下文；同一评测尺子下，更复杂的视觉输入均未超过该配置。</li><li>时序拼贴与视觉提示叠加：27B 为 52.8% / 50.6%，397B 为 45.1% / 48.5%，均低于各自原始帧。拼贴压缩分辨率、叠加提示引入额外笔迹，都可能干扰对当前完成动作的判断；额外上下文没有抬高当前片段描述准确率。</li><li>HaWoR 腕轨迹裁剪：27B 为 52.3%（246 / 470），397B 为 50.9%。相对各自原始帧，27B 掉了约 3.4 个百分点，397B 接近持平甚至略高。裁剪能帮大模型更盯住手部，但仍低于原始帧 · 27B；重建腕轨迹可用时有用，替代不了「看全景 + 选对模型」。</li><li>邻段拼贴：27B 为 40.9%，397B 为 39.6%，397B 加秒级时间戳后为 40.0%。换模型几乎不动，失败更像「邻段动作泄漏进当前描述」，不是容量问题；时间戳也救不了跨段混淆。</li><li>近似手部拼贴：27B 为 38.5%，397B 为 39.1%，全组最低。YOLO / 画面中心启发式框比 HaWoR 腕轨迹更粗，固定边界上既丢背景又裁不准手，双重伤害。</li><li>模型对比：不只看原始帧。原始帧上 27B（55.7%）高于 397B（50.2%）；时序拼贴、视觉提示叠加、HaWoR、邻段拼贴上同样是 27B ≥ 397B（差值约 1–8 个百分点）。唯一接近持平或 397B 略高的是近似手部拼贴（39.1% vs 38.5%），但两者都远低于原始帧。固定边界标注更依赖把当前动作说对的指令跟随与视觉阅读，参数量更大并不自动更好；默认路径取原始帧 · 27B。</li></ol>",
-      "pipeline.e2e.analysis": "<p>结合上图与表，可以归纳如下。</p><ol><li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li><li>分段模型自标与 27B 重标：在同一 S2 边界上，自标为 0.1234；27B raw inner-0.5 重标为 0.1337；27B ffmpeg 抽帧重标为 0.1440，是补测的 27B-only 路径中最高的一条。</li><li>27B 邻段与 27B selector：27B seeded-neighbor 为 0.1260，27B raw-prior neighbor 为 0.1414，27B 多候选 selector 为 0.1362。说明 27B 在固定参考边界上写得好，但不一定擅长在噪声预测边界上做候选定稿。</li><li>397B 原始帧重标：端到端整流程得分 0.1414（语义匹配 55），与 27B raw-prior neighbor 接近，低于 27B ffmpeg，但调用成本和部署约束不同。</li><li>397B 候选路径：397B ffmpeg raw 与 397B-prior neighbor 均为 0.1491；多候选判别 · 397B 在同一 S2 边界上从多路候选中定稿，端到端整流程得分 0.1542（语义匹配 60），仍为本组最高。成本敏感场景可选择单路 raw / ffmpeg 路径，高精度场景保留 397B selector。</li></ol>",
+      "pipeline.e2e.analysis": "<p>结合上图与表，可以归纳如下。</p><ol><li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li><li>分段模型自标：在同一 S2 边界上沿用分段描述，得分为 0.1234，说明只换更好描述路径仍有空间。</li><li>原始帧重标 · 27B / 397B：27B raw 为 0.1285，inner-0.5 为 0.1337；397B raw 为 0.1414。同一方法下 397B 高于 27B，但增益主要来自噪声预测边界上的定稿，而不是固定参考边界上的 Label Acc 优势。</li><li>ffmpeg 抽帧重标 · 27B / 397B：27B 为 0.1440，397B 为 0.1491。换抽帧实现本身就能抬分，且两边同向；该路径常作为 selector 的候选来源，而不是单独的新策略。</li><li>邻段重标 · 27B / 397B：27B seeded-neighbor 0.1260、raw-prior neighbor 0.1414；397B-prior neighbor 0.1491。邻段上下文有时接近单路 raw/ffmpeg，但不稳定，且容易把邻段动作写进当前句。</li><li>多候选判别 · 27B / 397B：27B selector 为 0.1362，低于同组最好的 27B ffmpeg；397B selector 为 0.1542（语义匹配 60），仍为本组最高。成本敏感场景可走单路 raw / ffmpeg；高精度场景保留 397B selector。</li></ol>",
       "story.label.1": "原始帧 · 27B / 397B：用上文「原始帧」，分别由 27B 与 397B 生成描述。",
       "story.label.2": "时序拼贴 · 27B / 397B：用上文「时序拼贴」，分别交给 27B 与 397B。",
       "story.label.3": "视觉提示叠加 · 27B / 397B：用上文「视觉提示叠加」后，分别由 27B 与 397B 标注。",
@@ -30,12 +35,12 @@
       "story.label.8": "邻段拼贴 + 秒级时间戳 · 397B：在上文「邻段拼贴」上为每格加入秒级时间戳后重跑。",
       "story.label.9": "近似手部拼贴 · 27B / 397B：用 YOLO 或画面中心启发式裁剪手部区域后拼图提交。",
       "story.label.10": "HaWoR 腕轨迹裁剪 · 27B / 397B：用上文 HaWoR 腕轨迹裁剪；腕轨迹不可用或裁不出可用手部区域时，该段改送原始帧。",
-      "story.e2e.1": "腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。",
+      "story.e2e.1": "腕速规则切段并合并（一体产出）：用腕速规则切边界，并在同一生产管线里直接写出每段描述，作为一体基线。切段是规则方法；描述也不走本文 3.2 的固定边界标注提示词，因此这里<strong>没有</strong>单独公开的一体路径提示词。",
       "story.e2e.2": "S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。",
-      "story.e2e.3": "S2 边界 + 原始帧重标 · 27B：固定 S2 边界，用 Qwen3.6-27B 对每段原始帧重标（含 inner-0.5 采样）。",
-      "story.e2e.4": "S2 边界 + ffmpeg 抽帧重标 · 27B：固定 S2 边界，换 ffmpeg 解码/抽帧后由 27B 标注。",
-      "story.e2e.5": "S2 边界 + 邻段 / 多候选 · 27B：在 S2 边界上试 seeded-neighbor、raw-prior neighbor，以及 27B 多候选 selector。",
-      "story.e2e.6": "S2 边界 + 原始帧重标 · 397B：固定 S2 边界，用 Qwen3.5-397B 对每段原始帧重新生成描述。",
+      "story.e2e.3": "S2 边界 + 原始帧重标 · 27B / 397B：固定 S2 边界，分别用 Qwen3.6-27B（含 inner-0.5 采样）与 Qwen3.5-397B 对每段原始帧重写描述。",
+      "story.e2e.4": "S2 边界 + ffmpeg 抽帧重标 · 27B / 397B：边界不变，只换 ffmpeg 解码/抽帧路径，再分别由 27B 与 397B 标注。",
+      "story.e2e.5": "S2 边界 + 邻段重标 · 27B / 397B：提交邻段视觉上下文；27B 侧试过 seeded-neighbor 与 raw-prior neighbor，397B 侧用原始帧描述作文本先验。",
+      "story.e2e.6": "S2 边界 + 多候选判别 · 27B / 397B：在同一 S2 边界上生成多路候选描述，再分别由 27B 与 397B selector 定稿。重标提示词见 <a href=\"#label-prompt\">3.2</a>；selector 提示词见下方折叠。",
       "story.e2e.7": "S2 边界 + ffmpeg 抽帧重标 · 397B：固定 S2 边界，换解码/抽帧路径后由 397B 标注。",
       "story.e2e.8": "S2 边界 + 邻段重标 · 397B 先验：固定 S2 边界，提交邻段视觉上下文，并以 397B 原始帧描述为文本先验。",
       "story.e2e.9": "S2 边界 + 多候选判别 · 397B：在同一 S2 边界上生成多路候选描述，再由 Qwen3.5-397B 选出最终描述。",
@@ -45,7 +50,7 @@
       "pipeline.flow.4.d": "推荐路径与成本",
       "pipeline.flow.4.t": "定稿配置",
       "pipeline.flow.3.d": "分段 + 标注串联评测",
-      "pipeline.flow.3.t": "端到端",
+      "pipeline.flow.3.t": "端到端分段与标注",
       "pipeline.flow.2.d": "固定边界或预测边界上的描述生成",
       "pipeline.flow.2.t": "标注",
       "pipeline.flow.1.d": "拼贴图粗分 → 局部精修",
@@ -92,7 +97,7 @@
       "tldr.e2e": "60 个片段同时通过时间匹配与语义匹配标准。",
       "tldr.e2e.config": "配置：Qwen3.6-27B 分段 + Qwen3.5-397B-A17B 候选判别器",
       "cost.h2": "6. 开销对照：Macrodata 公开数字 vs EgoANT",
-      "cost.note": "两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 C。",
+      "cost.note": "两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见<a href=\"#appendix\">附录</a>。",
       "cost.compare.h3": "与 Macrodata 公开开销对照",
       "cost.th.source": "来源",
       "cost.th.scope": "口径",
@@ -183,7 +188,7 @@
       "world.term.8": "覆盖完整动作（full-cover）：写入 S2 局部精修提示词的输出要求。窗口内从开始到结束都可见的操作事件都要切出；例如完整出现「拿起杯子」和「放下杯子」时应各输出一段，而仅有伸手接近或完成后收回手时，不单独成段。",
       "world.term.gepa": "GEPA<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>：根据反馈自动改写提示词的方法。Macrodata Labs 用它在独立的 15 集验证集上搜索更贴合标注规范的分段规则；本文复用其公开结果 <code>completed_events_duration_prior_v1</code>，没有重新运行 GEPA。使用时将完整视频的全部带时间戳拼贴图与规则文本一并提交，一次调用得到整集粗分。",
       "world.s2.prompt.note": "说明：下方就是提示词文本。System / User 两段会送给模型；其中 <code>{sample_sec}</code>、<code>{t0}</code>、<code>{t1}</code>、<code>{instruction}</code>、<code>{coarse_hint}</code> 会替换成该窗口的实际值；图像输入是窗内带时间戳的拼贴图，接在 User 提示词文本之后。",
-      "world.term.9": "候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。",
+      "world.term.9": "候选判别器（selector）：对同一预测边界生成 raw、ffmpeg、seed、rawprior 等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini judge 下最高观察端到端整流程得分为 0.1542（397B selector）。",
       "world.term.10": "语义评判模型（judge）：只在评测阶段使用，判断预测描述与人工描述是否表达同一个完成动作。",
       "world.term.11": "HaWoR 腕轨迹裁剪<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>：用 HaWoR 估计腕部轨迹并裁剪手部区域后提交；腕轨迹不可用或裁不出可用手部区域时，该段改送原始帧。",
       "fig.src.segterms": "assets/explain/seg_terms_zh.svg?v=20260810-3",
@@ -250,7 +255,7 @@
       "story.h3.label": "7.2 标注：更复杂的视觉输入未必提高准确率",
       "story.h3.e2e": "7.3 预测边界上的语义标注：单路生成与多候选选择",
       "recipe.h2": "8. 推荐配置与使用边界",
-      "appendix.h2": "5. 附录：概念、公式、实现与成本记账",
+      "appendix.h2": "5. 附录：成本记账",
       "tldr.k.seg": "视频分段得分（Segment F1）",
       "tldr.k.label": "固定分段标注得分（Label Acc）",
       "tldr.k.e2e": "端到端整流程得分（E2E F1）",
@@ -340,7 +345,7 @@
       "recipe.r4.a": "对照",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "与 full-100 0.306 headline 直接比较",
-      "appendix.lead": "正文讲「试了什么、分数怎么变」；本附录补清楚术语和实现边界。目录： <a href=\"#app-e2e\">A 标注/E2E 术语</a> · <a href=\"#app-prompts\">B 提示词</a> · <a href=\"#app-cost\">C 成本记账</a>。",
+      "appendix.lead": "正文已覆盖术语与提示词；本附录只补充成本记账口径。",
       "metrics.toy.g": "参考片段：G<sub>0</sub>[0,3]、G<sub>1</sub>[3,6]、G<sub>2</sub>[6,10]；模型预测：P<sub>0</sub>[0.5,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,9.5]。",
       "metrics.seg.example": "吸附后，预测片段变为 P<sub>0</sub>[0,2.8]、P<sub>1</sub>[2.8,5.5]、P<sub>2</sub>[5.5,8]、P<sub>3</sub>[8,10]；只有 P<sub>0</sub> 与 P<sub>3</sub> 的外侧端点发生变化。P<sub>0</sub>–G<sub>0</sub>、P<sub>1</sub>–G<sub>1</sub> 的时间 IoU 达到 0.75 阈值并形成一对一配对；P<sub>2</sub>、P<sub>3</sub> 未达到阈值。于是一对一时间匹配数 m = 2，预测段数 n<sub>pred</sub> = 4，参考段数 n<sub>gold</sub> = 3。",
       "metrics.seg.formula": "IoU = 重叠时长 / 两段合起来覆盖的总时长\n本例：P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933；P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781（均 ≥ 0.75）\n预测命中率 = m / n<sub>pred</sub> = 2 / 4 = 0.50\n参考找回率 = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\n视频分段得分 = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
@@ -380,14 +385,19 @@
       "tag.pretrain": "预训练",
     },
     en: {
+      "world.term.e2e.neighbor": "Neighbor relabel: the labeler also sees previous / current / next segment frames. This looks like useful context, but neighboring actions often leak into the current sentence and hurt accuracy.",
+      "world.term.e2e.ffmpeg": "ffmpeg-frame relabel: same boundaries, but the default decode/sampling path is switched to ffmpeg. This is not a new labeling strategy; it is another candidate description for the same segment, and it often slightly beats default raw, so it enters the selector pool.",
+      "world.term.e2e.raw": "Raw-frame relabel: with predicted boundaries frozen, the model rewrites one short operation description from the current segment’s raw frames. S2 bounds + single-path 397B raw reaches E2E F1 0.1414.",
+      "pipeline.e2e.prompt.note": "Note: the text below is the candidate-selector prompt. System / User are sent to the model; no images enter this prompt, and candidate descriptions arrive as a text list.",
+      "th.mpg": "match / pred / gold",
       "nav.intro": "Intro",
       "nav.tldr": "TL;DR",
       "nav.world": "Related work",
       "nav.terms": "Terminology",
       "pipeline.h3.cost": "3.5 Cost comparison",
       "pipeline.h3.recipe": "3.4 Recommended configuration",
-      "pipeline.e2e.lead": "End-to-end asks the model for predicted boundaries and a description per segment; evaluation first matches spans by temporal IoU, then checks semantic agreement. Except for the wrist-speed one-pass baseline, this group freezes the best S2 boundaries (segmentation score 0.2031; 308 predicted / 470 reference) and varies only the description path. Scores are end-to-end score (E2E F1).",
-      "pipeline.h3.e2e": "3.3 End-to-end",
+      "pipeline.e2e.lead": "End-to-end segmentation and labeling asks the model for predicted boundaries and a description per segment; evaluation first matches spans by temporal IoU, then checks semantic agreement. Except for the wrist-speed one-pass baseline, this group freezes the best S2 boundaries (segmentation score 0.2031; 308 predicted / 470 reference) and varies only the description path. Scores are end-to-end score (E2E F1).",
+      "pipeline.h3.e2e": "3.3 End-to-end segmentation & labeling",
       "pipeline.label.lead": "Fixed-boundary labeling asks: given human reference time spans, write a short operation description for each segment. All scores are fixed-boundary labeling score (Label Acc) on the same HomER subset.",
       "pipeline.h3.label": "3.2 Fixed-boundary labeling",
       "pipeline.seg.analysis": "<p>Reading the chart and table along the experimental path yields the following summary.</p><ol><li>Wrist-speed rule cuts + merge: 810 predicted segments versus 470 reference segments, with only 61 matches. Wrist-speed minima also fire on in-action pauses and micro-adjustments, so the baseline over-segments and poorly aligns with completed-action semantics.</li><li>Chunked contact sheets (max 3 per call): timestamped contact sheets give local temporal context, but each request is still length-limited. With at most three sheets per call, seams between requests lack whole-episode context and are often mistaken for action boundaries.</li><li>Whole-episode request (no segmentation-rule list): a single whole-episode call removes chunk-seam pseudo-boundaries, but the model becomes conservative—only 148 predicted segments and 38 matches—most reference actions are not cut out as separate segments, i.e. the run under-segments.</li><li>Whole-episode request + segmentation-rule list: with the rule list, predictions rise to 202 segments and 46 matches—better than the no-rule run, but still far below 470 references. The list improves “which completed events to cut,” yet is not enough alone to set the right granularity.</li><li>S1 denser cuts: denser-cut prompting lifts matches to 80 of 470 references and predictions to 558. Recall improves while over-segmentation returns, so denser cuts raise recovery but still need a second refinement pass.</li><li>S2 local refinement: re-cutting near coarse bounds is the main gain. No pad-out beats 0.5/1/2s outward pads; with no pad-out, the cover-full-actions prompt beats both the no-cover prompt and algorithmic midpoint cover. The best setting—no pad-out + cover-full-actions—reaches Segment F1 0.2031 (79 matches, 308 predictions / 470 references). Those pad / full-cover ablations were run on 27B only.</li><li>S2 + adjacent-segment rule merges: all three rules post-process the best S2 predictions using only neighboring labels and time gaps. All score below unmerged S2, so coarse merging does not replace local refinement under the current IoU protocol.</li><li>Model comparison (asymmetric coverage): the fair head-to-head is chunked contact sheets—27B at 0.1278 vs 397B at 0.0952. 397B also has S1 (0.1556) and early S2 with ≈1s pad (0.1674); the matching 27B pad=1.0 row is 0.1485, so early 397B refinement is not weak, but later pad and cover-full-actions ablations continued only on 27B, and the best 0.2031 therefore lands on 27B. The chart looks 27B-heavy because coverage is asymmetric, not because existing 397B rows were omitted.</li></ol>",
@@ -395,9 +405,9 @@
       "pipeline.seg.methods": "The segmentation methods we tried are listed below.",
       "pipeline.label.methods": "The fixed-boundary labeling methods we tried are listed below. All conditions share one labeling prompt and only swap visual input and model; see the fold for the prompt text.",
       "pipeline.label.prompt.note": "Note: the text below is the prompt. System / User are sent to the model; <code>{mode_intro}</code> switches with the visual input, and <code>{instruction}</code> is replaced by the episode task instruction. Images follow the User prompt text.",
-      "pipeline.e2e.methods": "The end-to-end labeling paths we tried are listed below.",
+      "pipeline.e2e.methods": "The end-to-end segmentation and labeling paths we tried are listed below; the same method with different models is grouped together.",
       "pipeline.label.analysis": "<p>Reading the chart and table yields the following summary.</p><ol><li>Raw frames · 27B: 262 of 470 fixed reference segments match, for Label Acc 55.7%, the highest in this group. With boundaries given, the model benefits more from full-scene context; under the same judge, no richer visual input exceeds this setting.</li><li>Temporal collage and visual-hint overlay: 52.8% / 50.6% on 27B and 45.1% / 48.5% on 397B—all below each model’s raw-frame run. Collage compresses resolution and overlays add ink that can distract from the completed action; extra context does not raise current-segment accuracy.</li><li>HaWoR wrist-guided crop: 27B reaches 52.3% (246 / 470) and 397B reaches 50.9%. Versus each model’s raw frames, 27B drops about 3.4 points while 397B is roughly flat or slightly up. Cropping can help the larger model attend to the hand, but still trails raw 27B; reconstructed wrists help when available, and do not replace full-frame input plus model choice.</li><li>Neighbor collage: 27B reaches 40.9%, 397B reaches 39.6%, and 397B with second-level timestamps reaches 40.0%. Changing the model barely moves the needle—the failure looks like neighboring actions leaking into the current description, not a capacity gap; timestamps do not fix cross-segment confusion.</li><li>Approximate hand collage: 27B reaches 38.5% and 397B reaches 39.1%, the lowest in the group. YOLO / center-heuristic boxes are coarser than HaWoR wrist crops, so fixed-boundary runs both lose background and miss the hand.</li><li>Model comparison: not only raw frames. On raw frames, 27B (55.7%) beats 397B (50.2%); on temporal collage, overlay, HaWoR, and neighbor collage, 27B is also ≥ 397B (gaps about 1–8 points). The only near-tie / slight 397B edge is approximate hand collage (39.1% vs 38.5%), and both sit far below raw frames. Fixed-boundary labeling depends more on saying the current action correctly than on parameter count; the default path is raw frames · 27B.</li></ol>",
-      "pipeline.e2e.analysis": "<p>Reading the chart and table yields the following summary.</p><ol><li>Wrist-speed one-pass baseline: 810 predicted / 470 reference segments, E2E F1 0.0641, well below later paths that freeze S2 boundaries.</li><li>Segmenter self-label and 27B relabeling: on the same S2 bounds, self-label reaches 0.1234; 27B raw inner-0.5 reaches 0.1337; 27B ffmpeg raw reaches 0.1440, the best 27B-only path in the completed audit.</li><li>27B neighbor and selector variants: 27B seeded-neighbor reaches 0.1260, 27B raw-prior neighbor reaches 0.1414, and 27B multi-candidate selector reaches 0.1362. A strong fixed-boundary captioner is therefore not automatically the best noisy predicted-boundary label resolver.</li><li>397B raw relabel: E2E F1 0.1414 (55 semantic matches), close to 27B raw-prior neighbor and below 27B ffmpeg raw, with different deployment and cost tradeoffs.</li><li>397B candidate paths: 397B ffmpeg raw and 397B-prior neighbor both reach 0.1491; multi-candidate selector · 397B reaches E2E F1 0.1542 (60 matches), the highest here. Cost-sensitive runs can use single-path raw / ffmpeg labeling, while the best observed E2E keeps the 397B selector.</li></ol>",
+      "pipeline.e2e.analysis": "<p>Reading the chart and table yields the following summary.</p><ol><li>Wrist-speed one-pass baseline: 810 predicted / 470 reference segments, E2E F1 0.0641, well below later paths that freeze S2 boundaries.</li><li>Segmenter self-label: keeping the segmentation-stage descriptions on the same S2 bounds scores 0.1234, so there is still room to improve the description path alone.</li><li>Raw-frame relabel · 27B / 397B: 27B raw reaches 0.1285 and inner-0.5 reaches 0.1337; 397B raw reaches 0.1414. Under the same method, 397B beats 27B; the gain is mostly about finalizing noisy predicted boundaries, not about fixed-boundary Label Acc.</li><li>ffmpeg-frame relabel · 27B / 397B: 27B reaches 0.1440 and 397B reaches 0.1491. Changing the decode/sample path itself helps, in the same direction for both models; this path is usually a selector candidate source rather than a new strategy.</li><li>Neighbor relabel · 27B / 397B: 27B seeded-neighbor reaches 0.1260 and raw-prior neighbor 0.1414; 397B-prior neighbor reaches 0.1491. Neighbor context can approach single-path raw/ffmpeg, but it is unstable and often leaks neighboring actions into the current sentence.</li><li>Multi-candidate select · 27B / 397B: 27B selector reaches 0.1362, below the best 27B ffmpeg path; 397B selector reaches 0.1542 (60 semantic matches), still the highest in this group. Prefer single-path raw/ffmpeg when cost-sensitive; keep the 397B selector when accuracy matters most.</li></ol>",
       "story.label.1": "Raw frames · 27B / 397B: use the raw-frame input above with 27B and 397B.",
       "story.label.2": "Temporal collage · 27B / 397B: use the temporal-collage input above with 27B and 397B.",
       "story.label.3": "Visual-hint overlay · 27B / 397B: use the visual-hint overlay above with 27B and 397B.",
@@ -408,12 +418,12 @@
       "story.label.8": "Neighbor collage + second-level timestamps · 397B: start from the neighbor collage above and add second-level stamps on each tile.",
       "story.label.9": "Approximate hand collage · 27B / 397B: crop hand-adjacent regions with YOLO or a center heuristic, then tile the crops.",
       "story.label.10": "HaWoR hand crop · 27B / 397B: use the HaWoR wrist-guided crop above; if the wrist track is unavailable or no usable crop can be made, that segment falls back to raw frames.",
-      "story.e2e.1": "Wrist-speed rule cuts + merge (one-pass): cut with wrist-speed rules and emit descriptions in one pipeline as the joint baseline.",
+      "story.e2e.1": "Wrist-speed rule cuts + merge (one-pass): cut with wrist-speed rules and emit per-segment descriptions in the same production pipeline as the joint baseline. Cuts are rule-based; descriptions also do not use the §3.2 fixed-boundary labeling prompt, so there is <strong>no</strong> separately published one-pass prompt here.",
       "story.e2e.2": "S2 bounds + segmenter self-label: keep S2 predicted bounds and the descriptions written during segmentation; no separate relabel.",
-      "story.e2e.3": "S2 bounds + raw-frame relabel · 27B: freeze S2 bounds and relabel each segment from raw frames with Qwen3.6-27B (including inner-0.5 sampling).",
-      "story.e2e.4": "S2 bounds + ffmpeg-frame relabel · 27B: freeze S2 bounds, switch to an ffmpeg decode/sampling path, then label with 27B.",
-      "story.e2e.5": "S2 bounds + neighbor / multi-candidate · 27B: try seeded-neighbor, raw-prior neighbor, and a 27B multi-candidate selector on the same S2 bounds.",
-      "story.e2e.6": "S2 bounds + raw-frame relabel · 397B: freeze S2 bounds and regenerate each description from raw frames with Qwen3.5-397B.",
+      "story.e2e.3": "S2 bounds + raw-frame relabel · 27B / 397B: freeze S2 bounds and rewrite each segment from raw frames with Qwen3.6-27B (including inner-0.5 sampling) and Qwen3.5-397B.",
+      "story.e2e.4": "S2 bounds + ffmpeg-frame relabel · 27B / 397B: keep the bounds, switch only the ffmpeg decode/sampling path, then label with 27B and 397B.",
+      "story.e2e.5": "S2 bounds + neighbor relabel · 27B / 397B: submit neighbor visual context; 27B tries seeded-neighbor and raw-prior neighbor, while 397B uses a raw description as the text prior.",
+      "story.e2e.6": "S2 bounds + multi-candidate select · 27B / 397B: generate multiple candidate descriptions on the same S2 bounds, then finalize with 27B and 397B selectors. Relabel prompts are in <a href=\"#label-prompt\">§3.2</a>; the selector prompt is in the fold below.",
       "story.e2e.7": "S2 bounds + ffmpeg-frame relabel · 397B: freeze S2 bounds, switch decode/sampling, then label with 397B.",
       "story.e2e.8": "S2 bounds + neighbor relabel · 397B prior: freeze S2 bounds, submit neighbor visual context, and use a 397B raw description as the text prior.",
       "story.e2e.9": "S2 bounds + multi-candidate select · 397B: generate multiple candidate descriptions on the same S2 bounds, then let Qwen3.5-397B pick the final one.",
@@ -423,7 +433,7 @@
       "pipeline.flow.4.d": "Recommended path and cost",
       "pipeline.flow.4.t": "Final recipe",
       "pipeline.flow.3.d": "Segmentation + labeling evaluated together",
-      "pipeline.flow.3.t": "End-to-end",
+      "pipeline.flow.3.t": "End-to-end seg. & labeling",
       "pipeline.flow.2.d": "Descriptions on fixed or predicted boundaries",
       "pipeline.flow.2.t": "Labeling",
       "pipeline.flow.1.d": "Contact-sheet coarse pass → local refine",
@@ -470,7 +480,7 @@
       "tldr.e2e": "60 segments pass both temporal and semantic matching.",
       "tldr.e2e.config": "Setup: Qwen3.6-27B segmentation + Qwen3.5-397B-A17B candidate selector",
       "cost.h2": "6. Cost: Macrodata published numbers vs EgoANT",
-      "cost.note": "Both WGO paths share the same S2 segmentation (segmentation score = 0.2031) and differ only in labeling calls. API counts come from report artifacts; input tokens are estimated from image counts and resolution, while output tokens use task-specific ranges. Pricing is $0.422/M input and $2.532/M output for Qwen3.6-27B, and $0.1644/M input and $0.9864/M output for Qwen3.5-397B-A17B. The pipeline does not use web search, so the $0.000548/request search fee is excluded. Dollar estimates exclude the offline Gemini judge and are not directly comparable to Macrodata's Gemini batch invoice. See Appendix C.",
+      "cost.note": "Both WGO paths share the same S2 segmentation (segmentation score = 0.2031) and differ only in labeling calls. API counts come from report artifacts; input tokens are estimated from image counts and resolution, while output tokens use task-specific ranges. Pricing is $0.422/M input and $2.532/M output for Qwen3.6-27B, and $0.1644/M input and $0.9864/M output for Qwen3.5-397B-A17B. The pipeline does not use web search, so the $0.000548/request search fee is excluded. Dollar estimates exclude the offline Gemini judge and are not directly comparable to Macrodata's Gemini batch invoice. See the <a href=\"#appendix\">appendix</a>.",
       "cost.compare.h3": "Vs Macrodata published cost",
       "cost.th.source": "Source",
       "cost.th.scope": "Scope",
@@ -561,7 +571,7 @@
       "world.term.8": "Cover full actions (full-cover): an output requirement written into the S2 local-refinement prompt. Every manipulation event whose start and completion are both visible in the window should be cut out; if both \"pick up the cup\" and \"put down the cup\" are fully shown, output two segments, while merely reaching toward the cup or withdrawing the hand afterward should not form a segment on its own.",
       "world.term.gepa": "GEPA<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-gepa\">3</a></sup>: a method that rewrites prompts from feedback. Macrodata Labs used it on a held-out 15-episode validation set to search segmentation rules closer to the annotation spec; this report reuses their public result <code>completed_events_duration_prior_v1</code> and does not re-run GEPA. At inference, whole-episode timestamped contact sheets are submitted with the rule text in one call to get the coarse cut.",
       "world.s2.prompt.note": "Note: the block below is the prompt text. The System and User sections are sent to the model; <code>{sample_sec}</code>, <code>{t0}</code>, <code>{t1}</code>, <code>{instruction}</code>, and <code>{coarse_hint}</code> are filled for the local window; image inputs are in-window timestamped contact sheets appended after the User prompt text.",
-      "world.term.9": "Candidate selector: chooses the final description when several candidates exist for the same predicted boundary; used only during description generation.",
+      "world.term.9": "Candidate selector: generate raw, ffmpeg, seed, rawprior, and related candidates for the same predicted boundary, then pick the sentence that best names the completed operation; used only during description generation. Under the Gemini judge, the highest observed E2E F1 is 0.1542 (397B selector).",
       "world.term.10": "Semantic judge: used only during evaluation to decide whether the predicted and human descriptions express the same completed action.",
       "world.term.11": "HaWoR wrist-guided crop<sup class=\"cite\"><a class=\"cite-ref\" href=\"#ref-hawor\">6</a></sup>: estimate wrist tracks with HaWoR and crop the hand region; if the track is unavailable or no usable crop can be made, that segment falls back to raw frames.",
       "fig.src.segterms": "assets/explain/seg_terms_en.svg?v=20260810-3",
@@ -628,7 +638,7 @@
       "story.h3.label": "7.2 Labeling: richer visual inputs do not necessarily improve accuracy",
       "story.h3.e2e": "7.3 Semantic labeling under predicted boundaries: single-path generation vs multi-candidate selection",
       "recipe.h2": "8. Recommended configurations and usage boundaries",
-      "appendix.h2": "5. Appendix: concepts, formulas, implementation, and cost accounting",
+      "appendix.h2": "5. Appendix: cost accounting",
       "tldr.k.seg": "Segmentation score (Segment F1)",
       "tldr.k.label": "Fixed-boundary labeling score (Label Acc)",
       "tldr.k.e2e": "End-to-end score (E2E F1)",
@@ -718,7 +728,7 @@
       "recipe.r4.a": "Comparison",
       "recipe.r4.b": "HomER-only vs Macrodata HomER≈0.227",
       "recipe.r4.c": "Direct comparison to the full-100 0.306 headline",
-      "appendix.lead": "The body covers what we tried and how scores moved; this appendix spells out terminology and implementation details. Contents: <a href=\"#app-e2e\">A label/E2E terms</a> · <a href=\"#app-prompts\">B prompts</a> · <a href=\"#app-cost\">C cost</a>.",
+      "appendix.lead": "Terminology and prompts are covered in the body; this appendix only adds the cost-accounting notes.",
       "metrics.toy.g": "Reference: G<sub>0</sub>[0,3], G<sub>1</sub>[3,6], G<sub>2</sub>[6,10]. Prediction: P<sub>0</sub>[0.5,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], P<sub>3</sub>[8,9.5].",
       "metrics.seg.example": "After outer snap, the predictions become P<sub>0</sub>[0,2.8], P<sub>1</sub>[2.8,5.5], P<sub>2</sub>[5.5,8], and P<sub>3</sub>[8,10]; only the outer endpoints of P<sub>0</sub> and P<sub>3</sub> change. P<sub>0</sub>–G<sub>0</sub> and P<sub>1</sub>–G<sub>1</sub> clear the 0.75 temporal-IoU threshold and form one-to-one matches; P<sub>2</sub> and P<sub>3</sub> do not. Thus the one-to-one temporal match count is m = 2, with n<sub>pred</sub> = 4 predicted segments and n<sub>gold</sub> = 3 reference segments.",
       "metrics.seg.formula": "IoU = overlap duration / total duration covered by either span\nThis example: P<sub>0</sub>–G<sub>0</sub> = 2.8 / 3 ≈ 0.933; P<sub>1</sub>–G<sub>1</sub> = 2.5 / 3.2 ≈ 0.781 (both ≥ 0.75)\nPrecision = m / n<sub>pred</sub> = 2 / 4 = 0.50\nRecall = m / n<sub>gold</sub> = 2 / 3 ≈ 0.67\nSegmentation score = 2m / (n<sub>pred</sub> + n<sub>gold</sub>) = 2×2 / (4 + 3) = 4/7 ≈ 0.571",
@@ -761,57 +771,15 @@
 
   const APPENDIX_HTML = {
     zh: `
-      <h2>5. 附录：概念、实现与成本记账</h2>
-      <p class="plain">正文讲“试了什么、分数怎么变”；附录补清楚术语和实现边界。目录：
-        <a href="#app-e2e">A 标注/E2E 术语</a> ·
-        <a href="#app-prompts">B 提示词</a> ·
-        <a href="#app-cost">C 成本</a>。</p>
-
-
-
-      <h3 id="app-e2e">A. 标注 / E2E 术语</h3>
-      <article class="concept-card"><h4>raw relabel</h4><p>固定边界后，用 397B 看当前段 raw 帧重写一句 subtask。S2 边界 + 单路 raw 的 E2E F1 为 0.1414。</p></article>
-      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>边界相同，只把默认解码/抽帧实现换成 ffmpeg 路径。它不是新的标注策略，而是同一段视频的另一种候选标签来源；实验中略高于默认 raw，因此进入 selector 候选池。</p></article>
-      <article class="concept-card"><h4>neighbor relabel</h4><p>给当前段时同时给上一/当前/下一段的帧。这个想法看似能提供上下文，但在 Qwen 上常把邻段动作写进当前句，因此降低标注准确率。</p></article>
-      <article class="concept-card"><h4>candidate selector</h4><p>对同一边界生成 raw、ffmpeg、seed、rawprior 等候选，再让 397B 选最像完成操作的一句；Gemini judge 下最高观察 E2E F1 为 0.1542。</p></article>
-
-
-
-      <h3 id="app-prompts">B. 提示词原文（英语）</h3>
-      <p>英语提示词全文只在网页折叠区展示，不提供单独下载。</p>
-      <ul>
-        <li><a href="#walk-4">Labeling</a></li>
-        <li><a href="#walk-5">Candidate selector</a></li>
-      </ul>
-
-      <h3 id="app-cost">C. 成本：估计与公开数字对照</h3>
+      <h2>5. 附录：成本记账</h2>
+      <p class="plain">正文已覆盖术语与提示词；本附录只补充成本记账口径。</p>
+      <h3 id="app-cost">成本：估计与公开数字对照</h3>
       <p>Macrodata 公开 E2E batch 约 $2.64/视频小时，segmentation-only batch 约 $0.43/h；本页 Qwen 栈 token 为工程估计；新增 Gemini judge 重判开销另行记录。页面保留结构化比较，不公开内部机器、路径或服务状态。</p>
     `,
     en: `
-      <h2>6. Appendix: concepts, implementation, and cost accounting</h2>
-      <p class="plain">The body explains what we tried and how scores moved. This appendix spells out terminology and implementation boundaries. Contents:
-        <a href="#app-e2e">A label/E2E terms</a> ·
-        <a href="#app-prompts">B prompts</a> ·
-        <a href="#app-cost">C cost</a>.</p>
-
-
-
-      <h3 id="app-e2e">A. Labeling / E2E terms</h3>
-      <article class="concept-card"><h4>raw relabel</h4><p>With boundaries locked, Qwen3.5-397B rewrites one subtask label from raw frames inside the current segment. S2 bounds + raw-only relabel gives Gemini E2E F1 0.1414.</p></article>
-      <article class="concept-card"><h4>ffmpeg raw relabel</h4><p>Same boundaries, but the decode / frame-sampling implementation is switched to ffmpeg. It is not a new labeling strategy; it is another candidate label source for the same video segment, and it slightly beats the default raw path in this benchmark.</p></article>
-      <article class="concept-card"><h4>neighbor relabel</h4><p>The labeler sees previous/current/next segment frames. This looks helpful but often pollutes the current label with neighboring actions, reducing Qwen labeling accuracy on HomER.</p></article>
-      <article class="concept-card"><h4>candidate selector</h4><p>Generate raw, ffmpeg, seed, rawprior, and related candidates for the same boundary; Qwen3.5-397B selects the best completed-action label. Current best Gemini-judged E2E F1 is 0.1542.</p></article>
-
-
-
-      <h3 id="app-prompts">B. Prompt originals (English)</h3>
-      <p>Full English prompts are shown only in on-page folds; no separate downloads.</p>
-      <ul>
-        <li><a href="#walk-4">Labeling</a></li>
-        <li><a href="#walk-5">Candidate selector</a></li>
-      </ul>
-
-      <h3 id="app-cost">C. Cost: estimates and published numbers</h3>
+      <h2>5. Appendix: cost accounting</h2>
+      <p class="plain">Terminology and prompts are covered in the body; this appendix only adds the cost-accounting notes.</p>
+      <h3 id="app-cost">Cost: estimates and published numbers</h3>
       <p>Macrodata reports about $2.64/video-hour for batch end-to-end seeded relabeling and about $0.43/h for segmentation-only batch. This page keeps Qwen-stack token numbers as engineering estimates; the added Gemini judge rescore is reported separately. The public version removes internal machines, paths, and service-state details.</p>
     `
   };

@@ -345,7 +345,7 @@ def compatible(a, b, strategy):
       <p class="plain" data-i18n-html data-i18n="story.seg.modelnote">条件名中的「· 27B / · 397B」分别表示该次调用使用 Qwen3.6-27B / Qwen3.5-397B-A17B。图中两侧并不对等：397B 只覆盖拼贴图分片、S1 加密切分、早期 S2（窗外扩约 1 秒）；整集一次提交、窗口外扩消融、覆盖完整动作提示词与相邻片段规则合并均只在 27B 上跑完。</p>
       <div style="overflow-x:auto">
         <table>
-          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th>P / R</th><th>配对/预测/参考</th><th data-i18n="th.model">模型或方法</th></tr></thead>
+          <thead><tr><th data-i18n="th.cond">条件</th><th data-i18n="th.segf1">视频分段得分</th><th>P / R</th><th data-i18n="th.mpg">配对/预测/参考</th><th data-i18n="th.model">模型或方法</th></tr></thead>
           <tbody id="seg-tbody"></tbody>
         </table>
       </div>
@@ -486,24 +486,36 @@ def compatible(a, b, strategy):
           <li>模型对比：不只看原始帧。原始帧上 27B（55.7%）高于 397B（50.2%）；时序拼贴、视觉提示叠加、HaWoR、邻段拼贴上同样是 27B ≥ 397B（差值约 1–8 个百分点）。唯一接近持平或 397B 略高的是近似手部拼贴（39.1% vs 38.5%），但两者都远低于原始帧。固定边界标注更依赖把当前动作说对的指令跟随与视觉阅读，参数量更大并不自动更好；默认路径取原始帧 · 27B。</li>
         </ol>
       </div>
-<h3 data-i18n="pipeline.h3.e2e">3.3 端到端</h3>
-      <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
-      
+<h3 data-i18n="pipeline.h3.e2e">3.3 端到端分段与标注</h3>
+      <p data-i18n-html data-i18n="pipeline.e2e.lead">端到端分段与标注要解决的问题是：模型同时给出预测边界与每段描述，评测先按时间 IoU 配对，再判断语义是否匹配。除腕速一体基线外，本组固定 S2 最优分段边界（视频分段得分 0.2031，预测 308 段 / 参考 470 段），只改变描述生成路径。得分统一为端到端整流程得分（E2E F1）。</p>
+
       <ul class="term-list">
-        <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：在同一预测边界上有多条候选描述时，从中选出最终描述；只在描述生成阶段使用。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.raw">原始帧重标（raw relabel）：固定预测边界后，用模型看当前段原始帧重写一句操作描述。S2 边界 + 397B 单路 raw 的端到端整流程得分为 0.1414。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.ffmpeg">ffmpeg 抽帧重标：边界相同，只把默认解码/抽帧换成 ffmpeg 路径。这不是新的标注策略，而是同一视频段的另一路候选描述；实验中常略高于默认 raw，因此进入 selector 候选池。</li>
+        <li data-i18n-html data-i18n="world.term.e2e.neighbor">邻段重标（neighbor relabel）：给当前段时同时给上一段 / 当前段 / 下一段的帧。看似能提供上下文，但常把邻段动作写进当前句，从而拉低准确率。</li>
+        <li data-i18n-html data-i18n="world.term.9">候选判别器（selector）：对同一预测边界生成 raw、ffmpeg、seed、rawprior 等多路候选，再选出最像完成操作的一句；只在描述生成阶段使用。Gemini judge 下最高观察端到端整流程得分为 0.1542（397B selector）。</li>
       </ul>
-      <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端标注路径。</p>
-            <ol class="method-list">
-        <li data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界并直接生成描述，作为一体基线。</li>
+      <p data-i18n="pipeline.e2e.methods">下列为我们尝试过的端到端分段与标注路径；相同方法的不同模型放在一起。</p>
+      <ol class="method-list">
+        <li data-i18n-html data-i18n="story.e2e.1">腕速规则切段并合并（一体产出）：用腕速规则切边界，并在同一生产管线里直接写出每段描述，作为一体基线。切段是规则方法；描述也不走本文 3.2 的固定边界标注提示词，因此这里<strong>没有</strong>单独公开的一体路径提示词。</li>
         <li data-i18n="story.e2e.2">S2 边界 + 分段模型自标：沿用 S2 预测边界与分段阶段写出的描述，不再单独重标。</li>
-        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B：固定 S2 边界，用 Qwen3.6-27B 对每段原始帧重标（含 inner-0.5 采样）。</li>
-        <li data-i18n="story.e2e.4">S2 边界 + ffmpeg 抽帧重标 · 27B：固定 S2 边界，换 ffmpeg 解码/抽帧后由 27B 标注。</li>
-        <li data-i18n="story.e2e.5">S2 边界 + 邻段 / 多候选 · 27B：在 S2 边界上试 seeded-neighbor、raw-prior neighbor，以及 27B 多候选 selector。</li>
-        <li data-i18n="story.e2e.6">S2 边界 + 原始帧重标 · 397B：固定 S2 边界，用 Qwen3.5-397B 对每段原始帧重新生成描述。</li>
-        <li data-i18n="story.e2e.7">S2 边界 + ffmpeg 抽帧重标 · 397B：固定 S2 边界，换解码/抽帧路径后由 397B 标注。</li>
-        <li data-i18n="story.e2e.8">S2 边界 + 邻段重标 · 397B 先验：固定 S2 边界，提交邻段视觉上下文，并以 397B 原始帧描述为文本先验。</li>
-        <li data-i18n="story.e2e.9">S2 边界 + 多候选判别 · 397B：在同一 S2 边界上生成多路候选描述，再由 Qwen3.5-397B 选出最终描述。</li>
+        <li data-i18n="story.e2e.3">S2 边界 + 原始帧重标 · 27B / 397B：固定 S2 边界，分别用 Qwen3.6-27B（含 inner-0.5 采样）与 Qwen3.5-397B 对每段原始帧重写描述。</li>
+        <li data-i18n="story.e2e.4">S2 边界 + ffmpeg 抽帧重标 · 27B / 397B：边界不变，只换 ffmpeg 解码/抽帧路径，再分别由 27B 与 397B 标注。</li>
+        <li data-i18n="story.e2e.5">S2 边界 + 邻段重标 · 27B / 397B：提交邻段视觉上下文；27B 侧试过 seeded-neighbor 与 raw-prior neighbor，397B 侧用原始帧描述作文本先验。</li>
+        <li data-i18n-html data-i18n="story.e2e.6">S2 边界 + 多候选判别 · 27B / 397B：在同一 S2 边界上生成多路候选描述，再分别由 27B 与 397B selector 定稿。重标提示词见 <a href="#label-prompt">3.2</a>；selector 提示词见下方折叠。</li>
       </ol>
+      <details class="prompt-fold" id="e2e-selector-prompt">
+        <summary data-i18n="walk.prompt.sel">判别器提示词（英语）</summary>
+        <div class="prompt-fold-body">
+          <p class="prompt-note" data-i18n-html data-i18n="pipeline.e2e.prompt.note">
+            说明：下方就是候选判别器提示词。System / User 两段会送给模型；图像不进入本提示词，候选描述以文本列表传入。
+          </p>
+          <div class="prompt-sent">
+            <div class="prompt-sent-label" data-i18n="world.gepa.prompt.sent">提示词文本</div>
+            <div class="prompt-box"><pre id="p-sel-term">Loading…</pre></div>
+          </div>
+        </div>
+      </details>
       <div class="chart-box">
         <h4 data-i18n="story.chart.e2e">端到端整流程得分（E2E F1）</h4>
         <div id="e2e-bars" class="bars"></div>
@@ -515,7 +527,15 @@ def compatible(a, b, strategy):
         </table>
       </div>
       <div data-i18n-html data-i18n="pipeline.e2e.analysis">
-        <p>结合上图与表，可以归纳如下。</p><ol><li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li><li>分段模型自标与 27B 重标：在同一 S2 边界上，自标为 0.1234；27B raw inner-0.5 重标为 0.1337；27B ffmpeg 抽帧重标为 0.1440，是补测的 27B-only 路径中最高的一条。</li><li>27B 邻段与 27B selector：27B seeded-neighbor 为 0.1260，27B raw-prior neighbor 为 0.1414，27B 多候选 selector 为 0.1362。说明 27B 在固定参考边界上写得好，但不一定擅长在噪声预测边界上做候选定稿。</li><li>397B 原始帧重标：端到端整流程得分 0.1414（语义匹配 55），与 27B raw-prior neighbor 接近，低于 27B ffmpeg，但调用成本和部署约束不同。</li><li>397B 候选路径：397B ffmpeg raw 与 397B-prior neighbor 均为 0.1491；多候选判别 · 397B 在同一 S2 边界上从多路候选中定稿，端到端整流程得分 0.1542（语义匹配 60），仍为本组最高。成本敏感场景可选择单路 raw / ffmpeg 路径，高精度场景保留 397B selector。</li></ol>
+        <p>结合上图与表，可以归纳如下。</p>
+        <ol>
+          <li>腕速一体基线：预测 810 段 / 参考 470 段，端到端整流程得分 0.0641，明显低于后续固定 S2 边界的路径。</li>
+          <li>分段模型自标：在同一 S2 边界上沿用分段描述，得分为 0.1234，说明只换更好描述路径仍有空间。</li>
+          <li>原始帧重标 · 27B / 397B：27B raw 为 0.1285，inner-0.5 为 0.1337；397B raw 为 0.1414。同一方法下 397B 高于 27B，但增益主要来自噪声预测边界上的定稿，而不是固定参考边界上的 Label Acc 优势。</li>
+          <li>ffmpeg 抽帧重标 · 27B / 397B：27B 为 0.1440，397B 为 0.1491。换抽帧实现本身就能抬分，且两边同向；该路径常作为 selector 的候选来源，而不是单独的新策略。</li>
+          <li>邻段重标 · 27B / 397B：27B seeded-neighbor 0.1260、raw-prior neighbor 0.1414；397B-prior neighbor 0.1491。邻段上下文有时接近单路 raw/ffmpeg，但不稳定，且容易把邻段动作写进当前句。</li>
+          <li>多候选判别 · 27B / 397B：27B selector 为 0.1362，低于同组最好的 27B ffmpeg；397B selector 为 0.1542（语义匹配 60），仍为本组最高。成本敏感场景可走单路 raw / ffmpeg；高精度场景保留 397B selector。</li>
+        </ol>
       </div>
 
       <h3 data-i18n="pipeline.h3.recipe">3.4 推荐配置</h3>
@@ -553,8 +573,8 @@ def compatible(a, b, strategy):
 
       <h3 data-i18n="pipeline.h3.cost">3.5 成本对照</h3>
       <p id="cost-summary" class="plain">Loading…</p>
-      <p class="plain" id="cost-note" data-i18n="cost.note">
-        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见附录 C。
+      <p class="plain" id="cost-note" data-i18n-html data-i18n="cost.note">
+        两种 WGO 路径共用同一套 S2 分段（视频分段得分 = 0.2031），仅标注调用不同。API 次数来自报告产物计数，输入 token 根据图片数量与分辨率估算，输出 token 则按任务类型设置区间。Qwen3.6-27B 按输入 $0.422/M、输出 $2.532/M 计价；Qwen3.5-397B-A17B 按输入 $0.1644/M、输出 $0.9864/M 计价。流程未使用网页搜索，因此不计 $0.000548/次的搜索费。美元结果不含离线 Gemini judge，也不能与 Macrodata 的 Gemini batch 账单视为同条件价格比较。细节见<a href="#appendix">附录</a>。
       </p>
       <h3 data-i18n="cost.compare.h3">与 Macrodata 公开开销对照</h3>
       <table id="cost-compare-table">
@@ -776,8 +796,8 @@ def compatible(a, b, strategy):
     <span data-i18n="footer.text">EgoANT · Shuai Zhou, Jul 2026</span>
   </footer>
 
-  <script src="js/i18n.js?v=20260812-05"></script>
-  <script src="js/report.js?v=20260812-05"></script>
+  <script src="js/i18n.js?v=20260812-06"></script>
+  <script src="js/report.js?v=20260812-06"></script>
   <script src="js/prompts_embed.js?v=20260812-05"></script>
   <script>
     async function loadPrompt(ids, file) {
@@ -800,7 +820,7 @@ def compatible(a, b, strategy):
       [["p-s2-term"], "s2_fullcover_refine.md"],
       [["p-label-term", "p-label-inline"], "labeling_fixed_boundary.md"],
       [["p-judge-inline"], "judge_semantic_match.md"],
-      [["p-sel-inline"], "candidate_selector.md"],
+      [["p-sel-term", "p-sel-inline"], "candidate_selector.md"],
     ];
     for (const [ids, file] of promptMap) loadPrompt(ids, file);
   </script>
