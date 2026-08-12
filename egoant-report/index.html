@@ -93,6 +93,10 @@
 
     <section id="tldr">
       <h2 data-i18n="tldr.h2">TL;DR</h2>
+      <figure class="figure">
+        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-22" data-i18n-src="fig.src.recipe" alt="EgoANT pipeline overview flowchart" />
+        <figcaption data-i18n="tldr.flow.cap">流程总览：左分段、右标注；原始帧可单路直出，也可与其他候选一并送入判别器。</figcaption>
+      </figure>
       <div class="tldr">
         <div class="card">
           <div class="k" data-i18n="tldr.k.seg">视频分段得分（Segment F1）</div>
@@ -572,10 +576,6 @@ def compatible(a, b, strategy):
     <section id="walk">
       <h2 data-i18n="walk.h2">4. 样例分析：HomER 样本上的端到端流程</h2>
       <p class="plain" data-i18n="walk.task">任务：用布擦桌面 / 柜面。下面按推荐路径逐步走一遍。</p>
-      <figure class="figure">
-        <img src="assets/explain/recipe_flow_zh.svg?v=20260812-22" data-i18n-src="fig.src.recipe" alt="Recommended EgoANT recipe flowchart" />
-        <figcaption data-i18n="walk.flow.cap">流程示意：左分段、右标注；原始帧可单路直出，也可与其他候选汇入判别器。</figcaption>
-      </figure>
 
       <div class="steps">
         <article class="step-card" id="walk-0">
