@@ -615,17 +615,21 @@ a:hover { color: var(--warm); }
 .bg-bar::before { left: 0; }
 .bg-bar::after { left: 100%; }
 
-.bg-bar[data-tone="a"] { background: #3d8fd1; }
-.bg-bar[data-tone="b"] { background: #7a6ad8; }
-.bg-bar[data-tone="c"] { background: #0f6b5c; }
-.bg-bar[data-tone="d"] { background: #c45c26; }
+.bg-bar[data-tone="a"] { background: #3d8fd1; transform: translateY(calc(-50% - 7px)); }
+.bg-bar[data-tone="b"] { background: #7a6ad8; transform: translateY(-50%); }
+.bg-bar[data-tone="c"] { background: #0f6b5c; transform: translateY(calc(-50% + 7px)); }
+.bg-bar[data-tone="d"] { background: #c45c26; transform: translateY(-50%); }
 
 .bg-bar.is-active {
   opacity: 1;
   filter: brightness(1.05);
-  transform: translateY(-50%) scaleY(1.15);
   z-index: 2;
 }
+
+.bg-bar[data-tone="a"].is-active { transform: translateY(calc(-50% - 7px)) scaleY(1.2); }
+.bg-bar[data-tone="b"].is-active { transform: translateY(-50%) scaleY(1.2); }
+.bg-bar[data-tone="c"].is-active { transform: translateY(calc(-50% + 7px)) scaleY(1.2); }
+.bg-bar[data-tone="d"].is-active { transform: translateY(-50%) scaleY(1.2); }
 
 .bg-cards { position: relative; height: 100%; min-height: 420px; }
 
@@ -655,7 +659,7 @@ a:hover { color: var(--warm); }
   position: absolute;
   left: 50%;
   width: 0;
-  border-left: 1.5px dashed #cfc5b4;
+  border-left: 1.5px dashed #9f9688;
 }
 
 .bg-card-above { top: 8%; }
