@@ -584,46 +584,22 @@ a:hover { color: var(--warm); }
   --vtl-tone-c: #0f6b5c;
   --vtl-tone-d: #c45c26;
   position: relative;
-  margin: 0.4rem 0 0.8rem;
-  min-height: 640px;
-  padding: 0.5rem 0 1rem;
+  margin: 0.55rem 0 1rem;
+  min-height: 920px;
+  padding: 1.2rem 0 1.6rem;
 }
 
 .vtl-spine {
   position: absolute;
   left: 50%;
-  top: 0.5rem;
-  bottom: 0.5rem;
+  top: 0.8rem;
+  bottom: 0.8rem;
   width: 2px;
   background: #ddd4c6;
   transform: translateX(-50%);
   z-index: 0;
-}
-
-.vtl-bars {
-  position: absolute;
-  left: 50%;
-  top: 0.5rem;
-  bottom: 0.5rem;
-  width: 0;
-  transform: translateX(-50%);
-  z-index: 1;
   pointer-events: none;
 }
-
-.vtl-bar {
-  position: absolute;
-  left: 50%;
-  width: 8px;
-  border-radius: 999px;
-  transform: translateX(-50%);
-  opacity: 0.95;
-}
-
-.vtl-bar[data-tone="a"] { background: var(--vtl-tone-a); }
-.vtl-bar[data-tone="b"] { background: var(--vtl-tone-b); }
-.vtl-bar[data-tone="c"] { background: var(--vtl-tone-c); left: calc(50% + 7px); }
-.vtl-bar[data-tone="d"] { background: var(--vtl-tone-d); }
 
 .vtl-list {
   list-style: none;
@@ -631,6 +607,7 @@ a:hover { color: var(--warm); }
   padding: 0;
   position: relative;
   min-height: inherit;
+  z-index: 1;
 }
 
 .vtl-item {
@@ -640,7 +617,7 @@ a:hover { color: var(--warm); }
   right: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 1.7rem;
+  column-gap: 2.4rem;
   align-items: center;
   transform: translateY(-50%);
   z-index: 2;
@@ -655,45 +632,72 @@ a:hover { color: var(--warm); }
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--tone);
-  border: 3px solid var(--bg);
-  box-shadow: 0 0 0 2px var(--tone);
+  background: var(--bg);
+  border: 2.5px solid var(--tone);
   transform: translate(-50%, -50%);
-  z-index: 4;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .vtl-connector {
   position: absolute;
   top: 50%;
-  width: calc(50% - 0.85rem);
-  border-top: 1.5px dashed #b9b0a2;
+  width: calc(50% - 1.15rem);
+  border-top: 1.5px dashed #c4bbb0;
   z-index: 1;
+  pointer-events: none;
 }
 
 .vtl-left .vtl-connector {
-  right: 50%;
+  right: calc(50% + 0.45rem);
   transform: translateY(-50%);
 }
 
 .vtl-right .vtl-connector {
-  left: 50%;
+  left: calc(50% + 0.45rem);
   transform: translateY(-50%);
 }
 
+.vtl-when {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.74rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  background: var(--bg);
+  padding: 0.12rem 0.35rem;
+  border-radius: 999px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.vtl-left .vtl-when {
+  left: calc(50% + 0.95rem);
+}
+
+.vtl-right .vtl-when {
+  right: calc(50% + 0.95rem);
+  text-align: right;
+}
+
 .vtl-card {
+  position: relative;
   display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 0.85rem;
+  grid-template-columns: 42px 1fr;
+  gap: 0.75rem;
   align-items: start;
-  width: min(100%, 430px);
-  padding: 0.95rem 1.05rem;
-  border-radius: 16px;
+  width: min(100%, 360px);
+  padding: 0.85rem 0.95rem;
+  border-radius: 14px;
   border: 1px solid var(--line);
   background: var(--card);
   box-shadow: var(--shadow);
+  z-index: 4;
 }
 
 .vtl-left .vtl-card {
@@ -707,9 +711,9 @@ a:hover { color: var(--warm); }
 }
 
 .vtl-logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 11px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   object-fit: contain;
   background: #fff;
   border: 1px solid var(--line);
@@ -717,39 +721,39 @@ a:hover { color: var(--warm); }
 
 .vtl-body {
   display: grid;
-  gap: 0.18rem;
+  gap: 0.14rem;
   min-width: 0;
-}
-
-.vtl-date {
-  font-size: 0.78rem;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
 }
 
 .vtl-role {
   font-family: var(--serif);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   line-height: 1.25;
   color: var(--ink);
   font-weight: 700;
 }
 
-.vtl-dept {
-  font-size: 0.9rem;
+.vtl-school {
+  font-size: 0.88rem;
   color: var(--muted);
   line-height: 1.35;
 }
 
+.vtl-unit {
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
 .vtl-lab {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--ink);
   line-height: 1.35;
   font-weight: 600;
 }
 
 .vtl-note {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: #7a7368;
   line-height: 1.35;
 }
