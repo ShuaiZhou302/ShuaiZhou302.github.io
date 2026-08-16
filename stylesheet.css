@@ -869,8 +869,8 @@ a:hover { color: var(--warm); }
 
 .vtl-month {
   position: absolute;
-  left: calc(50% + 0.78rem);
-  transform: translateY(-50%);
+  left: calc(50% - 0.78rem);
+  transform: translate(-100%, -50%);
   font-size: 0.7rem;
   letter-spacing: 0.02em;
   color: var(--ink);
@@ -882,7 +882,7 @@ a:hover { color: var(--warm); }
   pointer-events: none;
   line-height: 1.2;
   white-space: nowrap;
-  text-align: left;
+  text-align: right;
 }
 
 .vtl[data-layout="chrono"] .vtl-connector {
