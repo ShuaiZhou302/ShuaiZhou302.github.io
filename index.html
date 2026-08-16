@@ -455,7 +455,7 @@
                     <div class="vtl-body">
                       <strong class="vtl-role">Visiting Researcher</strong>
                       <span class="vtl-school">HKUST (Guangzhou)</span>
-                      <span class="vtl-unit">Cheng Kar-Shun Robotics Institute</span>
+                      <span class="vtl-unit">CKSRI Guangzhou</span>
                       <span class="vtl-lab">IPRN Lab</span>
                       <span class="vtl-note">Advised by Prof. Haoang Li</span>
                     </div>
@@ -617,13 +617,31 @@
         var items = root.querySelectorAll(".vtl-item");
         if (!items.length) return;
         if (window.matchMedia("(max-width: 820px)").matches) {
-          items.forEach(function (item) { item.style.top = ""; });
+          items.forEach(function (item) {
+            item.style.top = "";
+            var connector = item.querySelector(".vtl-connector");
+            if (connector) connector.style.width = "";
+          });
           return;
         }
         var n = items.length;
         items.forEach(function (item, i) {
           var top = ((i + 0.5) / n) * 100;
           item.style.top = top + "%";
+        });
+
+        /* Size dashed connectors to the gap only — never run under/through cards. */
+        items.forEach(function (item) {
+          var card = item.querySelector(".vtl-card");
+          var connector = item.querySelector(".vtl-connector");
+          var node = item.querySelector(".vtl-node");
+          if (!card || !connector || !node) return;
+          var cr = card.getBoundingClientRect();
+          var nr = node.getBoundingClientRect();
+          var gap = item.classList.contains("vtl-left")
+            ? (nr.left - cr.right)
+            : (cr.left - nr.right);
+          connector.style.width = Math.max(14, gap - 2) + "px";
         });
       }
 

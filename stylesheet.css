@@ -585,8 +585,8 @@ a:hover { color: var(--warm); }
   --vtl-tone-d: #c45c26;
   position: relative;
   margin: 0.55rem 0 1rem;
-  min-height: 920px;
-  padding: 1.2rem 0 1.6rem;
+  min-height: 1180px;
+  padding: 1.75rem 0 2.4rem;
 }
 
 .vtl-spine {
@@ -645,43 +645,51 @@ a:hover { color: var(--warm); }
 .vtl-connector {
   position: absolute;
   top: 50%;
-  width: calc(50% - 1.15rem);
+  width: 1.6rem; /* JS sets exact gap length on desktop */
   border-top: 1.5px dashed #c4bbb0;
   z-index: 1;
   pointer-events: none;
 }
 
 .vtl-left .vtl-connector {
+  left: auto;
   right: calc(50% + 0.45rem);
   transform: translateY(-50%);
 }
 
 .vtl-right .vtl-connector {
+  right: auto;
   left: calc(50% + 0.45rem);
   transform: translateY(-50%);
 }
 
 .vtl-when {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.74rem;
+  top: calc(50% - 1.45rem);
+  font-size: 0.72rem;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   background: var(--bg);
-  padding: 0.12rem 0.35rem;
+  padding: 0.08rem 0.42rem;
   border-radius: 999px;
   z-index: 3;
   pointer-events: none;
+  line-height: 1.2;
+  box-shadow: 0 0 0 3px var(--bg);
 }
 
 .vtl-left .vtl-when {
-  left: calc(50% + 0.95rem);
+  left: calc(50% + 0.85rem);
+  right: auto;
+  transform: none;
+  text-align: left;
 }
 
 .vtl-right .vtl-when {
-  right: calc(50% + 0.95rem);
+  right: calc(50% + 0.85rem);
+  left: auto;
+  transform: none;
   text-align: right;
 }
 
@@ -940,7 +948,7 @@ a:hover { color: var(--warm); }
   .vtl-right .vtl-when {
     left: 2.4rem;
     right: auto;
-    top: 0.1rem;
+    top: -0.05rem;
     transform: none;
     text-align: left;
   }
