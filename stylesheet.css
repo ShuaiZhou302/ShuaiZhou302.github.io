@@ -510,7 +510,8 @@ a:hover { color: var(--warm); }
 /* —— Background vertical timeline —— */
 .bg-toggle {
   appearance: none;
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 0.45rem;
   margin: 0.15rem 0 0.35rem;
@@ -524,6 +525,12 @@ a:hover { color: var(--warm); }
   font-size: 0.98rem;
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+#background .section-title {
+  display: block;
+  width: fit-content;
+  margin-bottom: 0.85rem;
 }
 
 .bg-toggle:hover { border-color: #cfc5b4; }
@@ -597,9 +604,10 @@ a:hover { color: var(--warm); }
   --tone: #3d8fd1;
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2rem;
   align-items: center;
+  min-height: 7.5rem;
   z-index: 1;
 }
 
@@ -658,10 +666,10 @@ a:hover { color: var(--warm); }
 .vtl-card {
   display: grid;
   grid-template-columns: 44px 1fr;
-  gap: 0.8rem;
+  gap: 0.85rem;
   align-items: start;
-  width: min(100%, 420px);
-  padding: 0.95rem 1.05rem;
+  width: min(100%, 460px);
+  padding: 1.05rem 1.15rem;
   border-radius: 16px;
   border: 1px solid var(--line);
   background: var(--card);
