@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Cheng Kar-Shun Robotics Institute">
+  <rect width="128" height="128" fill="#ffffff"/>
+  <g transform="translate(18,22)">
+    <path d="M8 8h42c14 0 24 8 24 22 0 11-7 19-18 21l20 33H54L36 55H28v29H8V8zm20 16v15h14c6.5 0 10.5-3.2 10.5-8.2S48.5 24 42 24H28z" fill="#0B2C5E"/>
+    <circle cx="78" cy="14" r="8" fill="#4EC3F7"/>
+    <rect x="71" y="28" width="14" height="36" rx="3" fill="#0B2C5E"/>
+    <rect x="71" y="70" width="14" height="14" rx="2" fill="#E83E8C"/>
+  </g>
+</svg>
