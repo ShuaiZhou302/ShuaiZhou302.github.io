@@ -385,121 +385,150 @@
     </section>
 
     <section id="background" class="section" aria-labelledby="bg-title">
-      <div class="wrap bg-wrap">
-        <p class="section-kicker">Path</p>
+      <div class="wrap">
+        <p class="section-kicker">Know More</p>
         <h2 class="section-title" id="bg-title">Background</h2>
+        <button type="button" class="bg-toggle" id="bg-toggle" aria-expanded="false" aria-controls="bg-reveal">
+          Show experience, education &amp; service
+        </button>
 
-        <div class="bg-tabs" role="tablist" aria-label="Background categories">
-          <button type="button" class="bg-tab is-active" role="tab" aria-selected="true" aria-controls="bg-experience" id="tab-bg-experience" data-bg="experience">Experience</button>
-          <button type="button" class="bg-tab" role="tab" aria-selected="false" aria-controls="bg-education" id="tab-bg-education" data-bg="education">Education</button>
-          <button type="button" class="bg-tab" role="tab" aria-selected="false" aria-controls="bg-service" id="tab-bg-service" data-bg="service">Service</button>
-        </div>
-
-        <div class="bg-panel is-active" id="bg-experience" role="tabpanel" aria-labelledby="tab-bg-experience">
-          <div class="bg-timeline" data-start="2024-01" data-end="2026-12">
-            <div class="bg-years" aria-hidden="true"></div>
-            <div class="bg-axis" aria-hidden="true">
-              <span class="bg-axis-line"></span>
-              <div class="bg-bars">
-                <span class="bg-bar" data-start="2024-04" data-end="2025-04" data-tone="a" data-card="exp-sjtu"></span>
-                <span class="bg-bar" data-start="2025-04" data-end="2026-03" data-tone="b" data-card="exp-arcs"></span>
-                <span class="bg-bar" data-start="2025-08" data-end="2026-03" data-tone="c" data-card="exp-safeai"></span>
-                <span class="bg-bar" data-start="2026-03" data-end="2026-07" data-tone="d" data-card="exp-hkust"></span>
-              </div>
-            </div>
-            <div class="bg-cards">
-              <button type="button" class="bg-card bg-card-above" id="exp-sjtu" data-start="2024-04" data-end="2025-04" data-anchor="2024-10" data-years="Apr 2024 – Apr 2025">
-                <img class="bg-card-logo" src="images/ji_logo.png" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Apr 2024 – Apr 2025</span>
-                  <strong class="bg-card-role">Research Intern</strong>
-                  <span class="bg-card-org">RAP Lab, Shanghai Jiao Tong University</span>
-                  <span class="bg-card-note">Advised by Prof. Zhongqiang Ren</span>
-                </div>
-              </button>
-              <button type="button" class="bg-card bg-card-below" id="exp-arcs" data-start="2025-04" data-end="2026-03" data-anchor="2025-07" data-years="Apr 2025 – Mar 2026">
-                <img class="bg-card-logo" src="images/ri_logo.png" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Apr 2025 – Mar 2026</span>
-                  <strong class="bg-card-role">Research Intern</strong>
-                  <span class="bg-card-org">ARCS Lab, Carnegie Mellon University</span>
-                  <span class="bg-card-note">Advised by Prof. Jiaoyang Li</span>
-                </div>
-              </button>
-              <button type="button" class="bg-card bg-card-above" id="exp-safeai" data-start="2025-08" data-end="2026-03" data-anchor="2025-11" data-years="Aug 2025 – Mar 2026">
-                <img class="bg-card-logo" src="images/me_logo.jpg" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Aug 2025 – Mar 2026</span>
-                  <strong class="bg-card-role">Research Intern</strong>
-                  <span class="bg-card-org">Safe AI Lab, Carnegie Mellon University</span>
-                  <span class="bg-card-note">Advised by Prof. Ding Zhao</span>
-                </div>
-              </button>
-              <button type="button" class="bg-card bg-card-below" id="exp-hkust" data-start="2026-03" data-end="2026-07" data-anchor="2026-06" data-years="Mar 2026 – Jul 2026">
-                <img class="bg-card-logo" src="images/hkustgz_logo.png" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Mar 2026 – Jul 2026</span>
-                  <strong class="bg-card-role">Visiting Researcher</strong>
-                  <span class="bg-card-org">IPRN Lab, HKUST (Guangzhou)</span>
-                  <span class="bg-card-note">Advised by Prof. Haoang Li</span>
-                </div>
-              </button>
-            </div>
-            <p class="bg-year-hint" aria-live="polite"></p>
+        <div class="bg-reveal" id="bg-reveal" hidden>
+          <div class="bg-tabs" role="tablist" aria-label="Background categories">
+            <button type="button" class="bg-tab is-active" role="tab" aria-selected="true" aria-controls="bg-experience" id="tab-bg-experience" data-bg="experience">Experience</button>
+            <button type="button" class="bg-tab" role="tab" aria-selected="false" aria-controls="bg-education" id="tab-bg-education" data-bg="education">Education</button>
+            <button type="button" class="bg-tab" role="tab" aria-selected="false" aria-controls="bg-service" id="tab-bg-service" data-bg="service">Service</button>
           </div>
-        </div>
 
-        <div class="bg-panel" id="bg-education" role="tabpanel" aria-labelledby="tab-bg-education" hidden>
-          <div class="bg-timeline" data-start="2022-01" data-end="2028-12">
-            <div class="bg-years" aria-hidden="true"></div>
-            <div class="bg-axis" aria-hidden="true">
-              <span class="bg-axis-line"></span>
-              <div class="bg-bars">
-                <span class="bg-bar" data-start="2022-08" data-end="2026-06" data-tone="a" data-card="edu-scut"></span>
-                <span class="bg-bar" data-start="2023-08" data-end="2023-12" data-tone="b" data-card="edu-berkeley"></span>
-                <span class="bg-bar" data-start="2026-08" data-end="2028-06" data-tone="c" data-card="edu-cmu"></span>
-              </div>
-            </div>
-            <div class="bg-cards">
-              <button type="button" class="bg-card bg-card-above" id="edu-scut" data-start="2022-08" data-end="2026-06" data-anchor="2024-07" data-years="Aug 2022 – Jun 2026">
-                <img class="bg-card-logo" src="images/scut_logo.png" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Aug 2022 – Jun 2026</span>
-                  <strong class="bg-card-role">B.Eng. in Robotics</strong>
-                  <span class="bg-card-org">South China University of Technology</span>
-                  <span class="bg-card-note">GPA: 3.86 / 4.00</span>
+          <div class="bg-panel is-active" id="bg-experience" role="tabpanel" aria-labelledby="tab-bg-experience">
+            <ol class="vtl">
+              <li class="vtl-item vtl-left" data-tone="a">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Apr 2024 – Apr 2025</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/ji_logo.png" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">Shanghai Jiao Tong University–University of Michigan Joint Institute</strong>
+                    <span class="vtl-lab">RAP Lab</span>
+                    <span class="vtl-note">Advised by Prof. Zhongqiang Ren</span>
+                  </div>
                 </div>
-              </button>
-              <button type="button" class="bg-card bg-card-below" id="edu-berkeley" data-start="2023-08" data-end="2023-12" data-anchor="2023-10" data-years="Aug 2023 – Dec 2023">
-                <img class="bg-card-logo" src="images/ucb_logo.png" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Aug 2023 – Dec 2023</span>
-                  <strong class="bg-card-role">Exchange Student in EECS</strong>
-                  <span class="bg-card-org">University of California, Berkeley</span>
-                  <span class="bg-card-note">GPA: 4.00 / 4.00</span>
+              </li>
+              <li class="vtl-item vtl-right" data-tone="b">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Apr 2025 – Mar 2026</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/ri_logo.png" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">Carnegie Mellon University</strong>
+                    <span class="vtl-lab">ARCS Lab</span>
+                    <span class="vtl-note">Advised by Prof. Jiaoyang Li</span>
+                  </div>
                 </div>
-              </button>
-              <button type="button" class="bg-card bg-card-above" id="edu-cmu" data-start="2026-08" data-end="2028-06" data-anchor="2027-07" data-years="Aug 2026 – Jun 2028">
-                <img class="bg-card-logo" src="images/ri_logo.png" alt="" width="40" height="40">
-                <div class="bg-card-body">
-                  <span class="bg-card-date">Aug 2026 – Jun 2028</span>
-                  <strong class="bg-card-role">M.S. in Robotics</strong>
-                  <span class="bg-card-org">Carnegie Mellon University</span>
-                  <span class="bg-card-note">Robotics Institute</span>
+              </li>
+              <li class="vtl-item vtl-left" data-tone="c">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Aug 2025 – Mar 2026</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/me_logo.jpg" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">Carnegie Mellon University</strong>
+                    <span class="vtl-lab">Safe AI Lab</span>
+                    <span class="vtl-note">Advised by Prof. Ding Zhao</span>
+                  </div>
                 </div>
-              </button>
-            </div>
-            <p class="bg-year-hint" aria-live="polite"></p>
+              </li>
+              <li class="vtl-item vtl-right" data-tone="d">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Mar 2026 – Jul 2026</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/hkustgz_logo.png" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">The Hong Kong University of Science and Technology (Guangzhou)</strong>
+                    <span class="vtl-lab">IPRN Lab</span>
+                    <span class="vtl-note">Advised by Prof. Haoang Li</span>
+                  </div>
+                </div>
+              </li>
+            </ol>
           </div>
-        </div>
 
-        <div class="bg-panel" id="bg-service" role="tabpanel" aria-labelledby="tab-bg-service" hidden>
-          <div class="bg-service">
-            <div class="bg-service-pills" role="list">
-              <button type="button" class="bg-service-pill" data-years="2025 – 2026" data-detail="Conference Reviewer · IEEE/RSJ IROS">IROS</button>
-              <button type="button" class="bg-service-pill" data-years="2026" data-detail="Journal Reviewer · IEEE RA-L">RA-L</button>
+          <div class="bg-panel" id="bg-education" role="tabpanel" aria-labelledby="tab-bg-education" hidden>
+            <ol class="vtl">
+              <li class="vtl-item vtl-left" data-tone="a">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Aug 2022 – Jun 2026</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/scut_logo.png" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">South China University of Technology</strong>
+                    <span class="vtl-lab">B.Eng. in Robotics</span>
+                    <span class="vtl-note">GPA: 3.86 / 4.00</span>
+                  </div>
+                </div>
+              </li>
+              <li class="vtl-item vtl-right" data-tone="b">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Aug 2023 – Dec 2023</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/ucb_logo.png" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">University of California, Berkeley</strong>
+                    <span class="vtl-lab">Exchange Student in EECS</span>
+                    <span class="vtl-note">GPA: 4.00 / 4.00</span>
+                  </div>
+                </div>
+              </li>
+              <li class="vtl-item vtl-left" data-tone="c">
+                <span class="vtl-rail" aria-hidden="true">
+                  <span class="vtl-dot vtl-dot-start"></span>
+                  <span class="vtl-seg"></span>
+                  <span class="vtl-dot vtl-dot-end"></span>
+                </span>
+                <span class="vtl-range">Aug 2026 – Jun 2028</span>
+                <div class="vtl-card">
+                  <img class="vtl-logo" src="images/ri_logo.png" alt="" width="44" height="44">
+                  <div class="vtl-body">
+                    <strong class="vtl-dept">Carnegie Mellon University</strong>
+                    <span class="vtl-lab">M.S. in Robotics · Robotics Institute</span>
+                    <span class="vtl-note">Expected Jun 2028</span>
+                  </div>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="bg-panel" id="bg-service" role="tabpanel" aria-labelledby="tab-bg-service" hidden>
+            <div class="bg-service">
+              <div class="bg-service-pills" role="list">
+                <button type="button" class="bg-service-pill" data-years="2025 – 2026" data-detail="Conference Reviewer · IEEE/RSJ IROS">IROS</button>
+                <button type="button" class="bg-service-pill" data-years="2026" data-detail="Journal Reviewer · IEEE RA-L">RA-L</button>
+              </div>
+              <p class="bg-service-meta" aria-live="polite">Click a venue to show the year.</p>
             </div>
-            <p class="bg-service-meta" aria-live="polite">Click a venue to show the year.</p>
           </div>
         </div>
       </div>
@@ -582,48 +611,21 @@
         }
       }
 
-      /* Background timeline */
-      function monthIndex(ym) {
-        var parts = String(ym).split("-");
-        return Number(parts[0]) * 12 + Number(parts[1]);
-      }
-
-      function pctInRange(ym, start, end) {
-        var a = monthIndex(start);
-        var b = monthIndex(end);
-        if (b <= a) return 0;
-        return ((monthIndex(ym) - a) / (b - a)) * 100;
-      }
-
-      function layoutTimeline(root) {
-        if (!root) return;
-        var start = root.getAttribute("data-start");
-        var end = root.getAttribute("data-end");
-        var yearsEl = root.querySelector(".bg-years");
-        if (yearsEl) {
-          var y0 = Number(String(start).split("-")[0]);
-          var y1 = Number(String(end).split("-")[0]);
-          var html = "";
-          for (var y = y0; y <= y1; y++) html += "<span>" + y + "</span>";
-          yearsEl.innerHTML = html;
-        }
-
-        root.querySelectorAll(".bg-bar").forEach(function (bar) {
-          var left = pctInRange(bar.getAttribute("data-start"), start, end);
-          var right = pctInRange(bar.getAttribute("data-end"), start, end);
-          bar.style.left = Math.max(0, left) + "%";
-          bar.style.width = Math.max(1.5, right - left) + "%";
-        });
-
-        root.querySelectorAll(".bg-card").forEach(function (card) {
-          var anchor = card.getAttribute("data-anchor") || card.getAttribute("data-start");
-          var left = pctInRange(anchor, start, end);
-          left = Math.min(88, Math.max(12, left));
-          card.style.left = left + "%";
+      /* Background */
+      var bgToggle = document.getElementById("bg-toggle");
+      var bgReveal = document.getElementById("bg-reveal");
+      if (bgToggle && bgReveal) {
+        bgToggle.addEventListener("click", function () {
+          var open = bgToggle.getAttribute("aria-expanded") === "true";
+          open = !open;
+          bgToggle.setAttribute("aria-expanded", open ? "true" : "false");
+          bgToggle.textContent = open
+            ? "Hide experience, education & service"
+            : "Show experience, education & service";
+          if (open) bgReveal.removeAttribute("hidden");
+          else bgReveal.setAttribute("hidden", "");
         });
       }
-
-      document.querySelectorAll(".bg-timeline").forEach(layoutTimeline);
 
       var bgTabs = document.querySelectorAll(".bg-tab");
       var bgPanels = {
@@ -651,21 +653,6 @@
       bgTabs.forEach(function (tab) {
         tab.addEventListener("click", function () {
           showBg(tab.getAttribute("data-bg"));
-        });
-      });
-
-      document.querySelectorAll(".bg-timeline").forEach(function (timeline) {
-        var hint = timeline.querySelector(".bg-year-hint");
-        timeline.querySelectorAll(".bg-card").forEach(function (card) {
-          card.addEventListener("click", function () {
-            timeline.querySelectorAll(".bg-card").forEach(function (c) {
-              c.classList.toggle("is-active", c === card);
-            });
-            timeline.querySelectorAll(".bg-bar").forEach(function (bar) {
-              bar.classList.toggle("is-active", bar.getAttribute("data-card") === card.id);
-            });
-            if (hint) hint.textContent = card.getAttribute("data-years") || "";
-          });
         });
       });
 
