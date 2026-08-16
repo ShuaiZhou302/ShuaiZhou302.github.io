@@ -791,11 +791,12 @@ a:hover { color: var(--warm); }
 }
 
 .bg-service-meta {
-  margin: 0.95rem 0 0;
+  margin: 0.85rem 0 0;
   color: var(--muted);
   font-size: 0.95rem;
-  min-height: 1.4rem;
 }
+
+.bg-service-meta:empty { display: none; }
 
 .bg-service-meta strong {
   color: var(--ink);
@@ -906,22 +907,14 @@ a:hover { color: var(--warm); }
     min-height: 0;
   }
 
-  .vtl-spine,
-  .vtl-bars {
+  .vtl-spine {
     left: 1.05rem;
     transform: none;
   }
-
-  .vtl-bar {
-    left: 1.05rem;
-    transform: none;
-  }
-
-  .vtl-bar[data-tone="c"] { left: 1.45rem; }
 
   .vtl-list {
     display: grid;
-    gap: 1rem;
+    gap: 1.15rem;
     min-height: 0;
   }
 
@@ -941,6 +934,15 @@ a:hover { color: var(--warm); }
     left: 1.05rem !important;
     right: auto !important;
     width: 1.2rem !important;
+  }
+
+  .vtl-left .vtl-when,
+  .vtl-right .vtl-when {
+    left: 2.4rem;
+    right: auto;
+    top: 0.1rem;
+    transform: none;
+    text-align: left;
   }
 
   .vtl-left .vtl-card,
