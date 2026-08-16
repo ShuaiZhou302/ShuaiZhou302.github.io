@@ -596,6 +596,7 @@ a:hover { color: var(--warm); }
 
 .vtl[data-layout="chrono"] .vtl-spine,
 .vtl[data-layout="chrono"] .vtl-years,
+.vtl[data-layout="chrono"] .vtl-months,
 .vtl[data-layout="chrono"] .vtl-list {
   position: absolute;
   top: 2.2rem;
@@ -610,6 +611,7 @@ a:hover { color: var(--warm); }
 }
 
 .vtl[data-layout="chrono"] .vtl-years,
+.vtl[data-layout="chrono"] .vtl-months,
 .vtl[data-layout="chrono"] .vtl-list {
   left: 0;
   right: 0;
@@ -694,7 +696,7 @@ a:hover { color: var(--warm); }
   position: absolute;
   top: calc(50% - 1.45rem);
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   background: var(--bg);
@@ -807,16 +809,23 @@ a:hover { color: var(--warm); }
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--serif);
-  font-size: 0.8rem;
-  font-weight: 650;
-  color: var(--ink);
-  background: var(--bg);
-  padding: 0.14rem 0.45rem;
-  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fffdf8;
+  background: var(--ink);
+  padding: 0.16rem 0.42rem;
+  border-radius: 4px;
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 0 0 4px var(--bg);
+  box-shadow: 0 0 0 3px var(--bg);
   z-index: 9;
+}
+
+.vtl-months {
+  position: absolute;
+  inset: 0;
+  z-index: 21;
+  pointer-events: none;
 }
 
 .vtl[data-layout="chrono"] .vtl-item {
@@ -860,10 +869,11 @@ a:hover { color: var(--warm); }
 
 .vtl-month {
   position: absolute;
+  left: calc(50% + 0.78rem);
   transform: translateY(-50%);
   font-size: 0.7rem;
   letter-spacing: 0.02em;
-  color: var(--tone);
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
   background: var(--bg);
   padding: 0.04rem 0.28rem;
@@ -872,16 +882,7 @@ a:hover { color: var(--warm); }
   pointer-events: none;
   line-height: 1.2;
   white-space: nowrap;
-}
-
-.vtl-left .vtl-month {
-  left: calc(50% + 0.85rem);
   text-align: left;
-}
-
-.vtl-right .vtl-month {
-  right: calc(50% + 0.85rem);
-  text-align: right;
 }
 
 .vtl[data-layout="chrono"] .vtl-connector {
@@ -1062,6 +1063,7 @@ a:hover { color: var(--warm); }
 
   .vtl[data-layout="chrono"] .vtl-spine,
   .vtl[data-layout="chrono"] .vtl-years,
+  .vtl[data-layout="chrono"] .vtl-months,
   .vtl[data-layout="chrono"] .vtl-list {
     position: relative;
     top: auto;
@@ -1100,6 +1102,7 @@ a:hover { color: var(--warm); }
   }
 
   .vtl-years,
+  .vtl-months,
   .vtl-span,
   .vtl-node-end,
   .vtl-month {
@@ -1110,7 +1113,7 @@ a:hover { color: var(--warm); }
     display: block;
     margin: 0 0 0.35rem;
     font-size: 0.78rem;
-    color: var(--muted);
+    color: var(--ink);
     font-variant-numeric: tabular-nums;
   }
 
