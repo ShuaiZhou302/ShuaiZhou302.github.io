@@ -398,13 +398,22 @@
           </div>
 
           <div class="bg-panel is-active" id="bg-experience" role="tabpanel" aria-labelledby="tab-bg-experience">
-            <div class="vtl" data-layout="even">
+            <div class="vtl" data-layout="chrono" data-from="2023-12" data-to="2026-12">
               <div class="vtl-spine" aria-hidden="true"></div>
+              <div class="vtl-years" aria-hidden="true">
+                <span class="vtl-year" data-ym="2024-01">2024</span>
+                <span class="vtl-year" data-ym="2025-01">2025</span>
+                <span class="vtl-year" data-ym="2026-01">2026</span>
+              </div>
               <ol class="vtl-list">
-                <li class="vtl-item vtl-left" data-tone="a">
-                  <span class="vtl-node" aria-hidden="true"></span>
+                <li class="vtl-item vtl-left" data-tone="a" data-start="2024-04" data-end="2025-04">
+                  <span class="vtl-span" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-start" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-end" aria-hidden="true"></span>
+                  <span class="vtl-month vtl-month-start">Apr</span>
+                  <span class="vtl-month vtl-month-end">Apr</span>
                   <span class="vtl-connector" aria-hidden="true"></span>
-                  <span class="vtl-when">Apr 2024 – Apr 2025</span>
+                  <span class="vtl-when-mobile">Apr 2024 – Apr 2025</span>
                   <div class="vtl-card">
                     <img class="vtl-logo" src="images/ji_logo.png" alt="" width="44" height="44">
                     <div class="vtl-body">
@@ -416,10 +425,14 @@
                     </div>
                   </div>
                 </li>
-                <li class="vtl-item vtl-right" data-tone="b">
-                  <span class="vtl-node" aria-hidden="true"></span>
+                <li class="vtl-item vtl-right" data-tone="b" data-start="2025-04" data-end="2026-03">
+                  <span class="vtl-span" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-start" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-end" aria-hidden="true"></span>
+                  <span class="vtl-month vtl-month-start">Apr</span>
+                  <span class="vtl-month vtl-month-end">Mar</span>
                   <span class="vtl-connector" aria-hidden="true"></span>
-                  <span class="vtl-when">Apr 2025 – Mar 2026</span>
+                  <span class="vtl-when-mobile">Apr 2025 – Mar 2026</span>
                   <div class="vtl-card">
                     <img class="vtl-logo" src="images/ri_logo.png" alt="" width="44" height="44">
                     <div class="vtl-body">
@@ -431,10 +444,14 @@
                     </div>
                   </div>
                 </li>
-                <li class="vtl-item vtl-left" data-tone="c">
-                  <span class="vtl-node" aria-hidden="true"></span>
+                <li class="vtl-item vtl-left" data-tone="c" data-start="2025-08" data-end="2026-03">
+                  <span class="vtl-span" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-start" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-end" aria-hidden="true"></span>
+                  <span class="vtl-month vtl-month-start">Aug</span>
+                  <span class="vtl-month vtl-month-end">Mar</span>
                   <span class="vtl-connector" aria-hidden="true"></span>
-                  <span class="vtl-when">Aug 2025 – Mar 2026</span>
+                  <span class="vtl-when-mobile">Aug 2025 – Mar 2026</span>
                   <div class="vtl-card">
                     <img class="vtl-logo" src="images/me_logo.jpg" alt="" width="44" height="44">
                     <div class="vtl-body">
@@ -446,16 +463,20 @@
                     </div>
                   </div>
                 </li>
-                <li class="vtl-item vtl-right" data-tone="d">
-                  <span class="vtl-node" aria-hidden="true"></span>
+                <li class="vtl-item vtl-right" data-tone="d" data-start="2026-03" data-end="2026-07">
+                  <span class="vtl-span" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-start" aria-hidden="true"></span>
+                  <span class="vtl-node vtl-node-end" aria-hidden="true"></span>
+                  <span class="vtl-month vtl-month-start">Mar</span>
+                  <span class="vtl-month vtl-month-end">Jul</span>
                   <span class="vtl-connector" aria-hidden="true"></span>
-                  <span class="vtl-when">Mar 2026 – Jul 2026</span>
+                  <span class="vtl-when-mobile">Mar 2026 – Jul 2026</span>
                   <div class="vtl-card">
                     <img class="vtl-logo" src="images/cks_ri_logo.svg" alt="" width="44" height="44">
                     <div class="vtl-body">
                       <strong class="vtl-role">Visiting Researcher</strong>
                       <span class="vtl-school">HKUST (Guangzhou)</span>
-                      <span class="vtl-unit">CKSRI Guangzhou</span>
+                      <span class="vtl-unit">Cheng Kar-Shun Robotics Institute</span>
                       <span class="vtl-lab">IPRN Lab</span>
                       <span class="vtl-note">Advised by Prof. Haoang Li</span>
                     </div>
@@ -612,6 +633,115 @@
         return ((monthIndex(ym) - a) / (b - a)) * 100;
       }
 
+      function layoutEvenTimeline(root, items) {
+        var n = items.length;
+        items.forEach(function (item, i) {
+          item.style.top = (((i + 0.5) / n) * 100) + "%";
+        });
+        sizeConnectors(items);
+      }
+
+      function layoutChronoTimeline(root, items) {
+        var from = root.getAttribute("data-from") || "2024-01";
+        var to = root.getAttribute("data-to") || "2026-12";
+        var years = root.querySelectorAll(".vtl-year");
+
+        years.forEach(function (el) {
+          el.style.top = pctInRange(el.getAttribute("data-ym"), from, to) + "%";
+        });
+
+        var ranked = Array.prototype.slice.call(items).sort(function (a, b) {
+          return monthIndex(a.getAttribute("data-start")) - monthIndex(b.getAttribute("data-start"));
+        });
+        ranked.forEach(function (item, i) {
+          var span = item.querySelector(".vtl-span");
+          if (span) span.style.zIndex = String(2 + i);
+        });
+
+        var cardPlan = [];
+        items.forEach(function (item) {
+          var start = item.getAttribute("data-start");
+          var end = item.getAttribute("data-end");
+          var startPct = pctInRange(start, from, to);
+          var endPct = pctInRange(end, from, to);
+          var span = item.querySelector(".vtl-span");
+          var startNode = item.querySelector(".vtl-node-start");
+          var endNode = item.querySelector(".vtl-node-end");
+          var startMonth = item.querySelector(".vtl-month-start");
+          var endMonth = item.querySelector(".vtl-month-end");
+          var connector = item.querySelector(".vtl-connector");
+          if (span) {
+            span.style.top = startPct + "%";
+            span.style.height = Math.max(endPct - startPct, 0.9) + "%";
+          }
+          if (startNode) startNode.style.top = startPct + "%";
+          if (endNode) endNode.style.top = endPct + "%";
+          if (startMonth) startMonth.style.top = startPct + "%";
+          if (endMonth) endMonth.style.top = endPct + "%";
+          var mid = (startPct + endPct) / 2;
+          cardPlan.push({
+            item: item,
+            side: item.classList.contains("vtl-left") ? "left" : "right",
+            startPct: startPct,
+            desired: mid,
+            connector: connector
+          });
+        });
+
+        cardPlan.sort(function (a, b) { return a.startPct - b.startPct; });
+        var last = { left: -999, right: -999 };
+        var minGap = 16;
+        cardPlan.forEach(function (plan) {
+          var top = Math.max(plan.desired, last[plan.side] + minGap);
+          last[plan.side] = top;
+          plan.item.style.setProperty("--card-top", top + "%");
+          if (plan.connector) plan.connector.style.top = top + "%";
+        });
+
+        nudgeMonthLabels(items);
+        sizeConnectors(items, true);
+      }
+
+      function nudgeMonthLabels(items) {
+        var labels = [];
+        items.forEach(function (item) {
+          var side = item.classList.contains("vtl-left") ? "right" : "left";
+          item.querySelectorAll(".vtl-month").forEach(function (el) {
+            var top = parseFloat(el.style.top);
+            if (!isNaN(top)) labels.push({ el: el, side: side, top: top });
+          });
+        });
+        labels.sort(function (a, b) {
+          if (a.side !== b.side) return a.side < b.side ? -1 : 1;
+          return a.top - b.top;
+        });
+        for (var i = 1; i < labels.length; i++) {
+          var prev = labels[i - 1];
+          var cur = labels[i];
+          if (prev.side === cur.side && Math.abs(cur.top - prev.top) < 2.4) {
+            cur.top = prev.top + 2.6;
+            cur.el.style.top = cur.top + "%";
+          }
+        }
+      }
+
+      function sizeConnectors(items, chrono) {
+        items.forEach(function (item) {
+          var card = item.querySelector(".vtl-card");
+          var connector = item.querySelector(".vtl-connector");
+          var target = chrono
+            ? (item.querySelector(".vtl-span") || item.querySelector(".vtl-node-start"))
+            : item.querySelector(".vtl-node");
+          if (!card || !connector || !target) return;
+          var cr = card.getBoundingClientRect();
+          var tr = target.getBoundingClientRect();
+          var gap = item.classList.contains("vtl-left")
+            ? (tr.left - cr.right)
+            : (cr.left - tr.right);
+          connector.style.width = Math.max(14, gap - 2) + "px";
+        });
+      }
+
       function layoutVerticalTimeline(root) {
         if (!root) return;
         var items = root.querySelectorAll(".vtl-item");
@@ -619,30 +749,20 @@
         if (window.matchMedia("(max-width: 820px)").matches) {
           items.forEach(function (item) {
             item.style.top = "";
+            item.style.removeProperty("--card-top");
             var connector = item.querySelector(".vtl-connector");
-            if (connector) connector.style.width = "";
+            if (connector) {
+              connector.style.width = "";
+              connector.style.top = "";
+            }
           });
           return;
         }
-        var n = items.length;
-        items.forEach(function (item, i) {
-          var top = ((i + 0.5) / n) * 100;
-          item.style.top = top + "%";
-        });
-
-        /* Size dashed connectors to the gap only — never run under/through cards. */
-        items.forEach(function (item) {
-          var card = item.querySelector(".vtl-card");
-          var connector = item.querySelector(".vtl-connector");
-          var node = item.querySelector(".vtl-node");
-          if (!card || !connector || !node) return;
-          var cr = card.getBoundingClientRect();
-          var nr = node.getBoundingClientRect();
-          var gap = item.classList.contains("vtl-left")
-            ? (nr.left - cr.right)
-            : (cr.left - nr.right);
-          connector.style.width = Math.max(14, gap - 2) + "px";
-        });
+        if (root.getAttribute("data-layout") === "chrono") {
+          layoutChronoTimeline(root, items);
+        } else {
+          layoutEvenTimeline(root, items);
+        }
       }
 
       function layoutAllTimelines() {
