@@ -179,13 +179,11 @@ a:hover { color: var(--warm); }
 }
 
 .bio-email {
-  display: inline-block;
-  width: fit-content;
+  display: block;
   margin: 0 0 1rem;
-  padding: 0.22rem 0.75rem;
-  border-radius: 999px;
-  background: var(--gold);
-  color: var(--ink);
+  padding: 0;
+  background: none;
+  color: var(--gold);
   font-size: 0.95rem;
   font-weight: 500;
   user-select: text;
