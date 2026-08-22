@@ -111,15 +111,6 @@ a:hover { color: var(--warm); }
 
 #bio { scroll-margin-top: 4.5rem; }
 
-.section-kicker {
-  margin: 0 0 0.35rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 500;
-}
-
 .section-title {
   margin: 0 0 1.4rem;
   font-family: var(--serif);
@@ -171,6 +162,12 @@ a:hover { color: var(--warm); }
   color: var(--ink);
 }
 
+.bio-photo {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+}
+
 .bio-photo img {
   width: 100%;
   border-radius: 18px;
@@ -181,11 +178,24 @@ a:hover { color: var(--warm); }
   object-position: center top;
 }
 
+.bio-email {
+  margin: 1.15rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.bio-email a {
+  color: inherit;
+}
+
+.bio-email a:hover { color: var(--accent); }
+
 .socials {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.55rem;
-  margin-top: 1.25rem;
+  margin: 0;
 }
 
 .social {
