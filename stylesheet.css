@@ -178,7 +178,7 @@ a:hover { color: var(--warm); }
   object-position: center top;
 }
 
-.bio-email {
+.bio p.bio-email {
   display: block;
   margin: 0 0 1rem;
   padding: 0;
