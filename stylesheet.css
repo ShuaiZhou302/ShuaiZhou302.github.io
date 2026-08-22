@@ -1005,7 +1005,8 @@ a:hover { color: var(--warm); }
   }
 
   .bio h1,
-  .bio-lead {
+  .bio-lead,
+  .bio-email {
     text-align: center;
   }
 
