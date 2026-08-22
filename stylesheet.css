@@ -142,7 +142,7 @@ a:hover { color: var(--warm); }
 }
 
 .bio h1 {
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.55rem;
   font-family: var(--serif);
   font-size: clamp(2.2rem, 5vw, 3rem);
   font-weight: 700;
@@ -153,7 +153,7 @@ a:hover { color: var(--warm); }
 .bio-lead {
   margin: 0 0 1rem;
   font-size: 1.12rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.45;
 }
 
@@ -181,8 +181,8 @@ a:hover { color: var(--warm); }
 .bio-email {
   display: inline-block;
   width: fit-content;
-  margin: 1.15rem 0 0;
-  padding: 0.28rem 0.8rem;
+  margin: 0 0 1rem;
+  padding: 0.22rem 0.75rem;
   border-radius: 999px;
   background: var(--gold);
   color: var(--ink);
