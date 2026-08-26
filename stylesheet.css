@@ -222,6 +222,13 @@ a:hover { color: var(--warm); }
   fill: currentColor;
 }
 
+.social-cv {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
 /* —— News —— */
 .news-list {
   list-style: none;
