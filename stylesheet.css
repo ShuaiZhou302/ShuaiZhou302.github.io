@@ -223,9 +223,9 @@ a:hover { color: var(--warm); }
 }
 
 .social-cv {
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   line-height: 1;
 }
 
