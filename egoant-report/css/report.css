@@ -1362,3 +1362,190 @@ details.term-fold .plain ul {
 details.term-fold .plain li {
   margin: 0.35rem 0;
 }
+
+/* —— Likes + comments —— */
+.blog-feedback {
+  margin-top: 2.5rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+}
+.blog-feedback h2 {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  margin: 0 0 1rem;
+}
+.blog-interaction-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin: 0 0 1.4rem;
+}
+.bs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.bs-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(15, 107, 92, 0.06);
+}
+.bs-btn svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.bs-btn .bs-count { font-variant-numeric: tabular-nums; min-width: 1ch; }
+.bs-btn.bs-like-btn.liked {
+  color: #c45c26;
+  border-color: #c45c26;
+  background: rgba(196, 92, 38, 0.08);
+}
+.bs-btn.bs-like-btn.liked svg {
+  fill: #c45c26;
+  stroke: #c45c26;
+}
+.bs-btn.bs-views {
+  cursor: default;
+  background: transparent;
+  border-color: transparent;
+  padding-left: 0.15rem;
+}
+.bs-btn.bs-views:hover {
+  color: var(--muted);
+  border-color: transparent;
+  background: transparent;
+}
+.bs-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2.2rem;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--ink);
+  color: #fff;
+  padding: 0.65rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 9999;
+}
+.bs-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.bs-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0 0 1.6rem;
+}
+.bs-comment-form input[type="text"],
+.bs-comment-form textarea {
+  font: inherit;
+  color: var(--ink);
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  width: 100%;
+  resize: vertical;
+}
+.bs-comment-form input[type="text"] { max-width: 280px; }
+.bs-comment-form textarea { min-height: 6.2rem; line-height: 1.55; }
+.bs-comment-form input:focus,
+.bs-comment-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(15, 107, 92, 0.12);
+}
+.bs-comment-form button {
+  align-self: flex-start;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.15rem;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.bs-comment-form button:hover { background: #0c584c; }
+.bs-comment-form button:disabled { opacity: 0.55; cursor: not-allowed; }
+.bs-comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bs-comment {
+  padding: 0.9rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.bs-comment-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+.bs-comment-author { font-weight: 650; color: var(--ink); }
+.bs-comment-time { font-size: 0.82rem; color: var(--muted); }
+.bs-comment-text {
+  line-height: 1.6;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.bs-comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 0.7rem;
+}
+.bs-comment-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  padding: 0.1rem 0.15rem;
+  cursor: pointer;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.84rem;
+}
+.bs-comment-actions button svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.bs-comment-actions .bs-clike.liked,
+.bs-comment-actions .bs-clike:hover { color: #c45c26; }
+.bs-comment-actions .bs-clike.liked svg { fill: #c45c26; stroke: #c45c26; }
+.bs-comment-actions .bs-cdelete:hover { color: #a33b2b; }
+.bs-empty { color: var(--muted); font-style: italic; }

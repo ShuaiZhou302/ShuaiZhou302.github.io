@@ -81,6 +81,7 @@
       "nav.recipe": "推荐配置",
       "nav.appendix": "附录",
       "nav.references": "参考文献",
+      "nav.feedback": "评论",
       "nav.conclusion": "结论",
       "toc.label": "目录",
       "tag.ego": "第一视角人类数据",
@@ -415,6 +416,25 @@
       "references.egoverse": "EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">https://egoverse.ai/</a>",
       "references.egolive": "Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href=\"https://doi.org/10.48550/arXiv.2604.23570\" target=\"_blank\" rel=\"noopener\">https://doi.org/10.48550/arXiv.2604.23570</a>",
       "footer.text": "EgoANT · Shuai Zhou, Jul 2026",
+      "social.h2": "评论",
+      "social.share": "分享",
+      "social.leaveComment": "写评论",
+      "social.post": "发表评论",
+      "social.namePh": "名字（可选）",
+      "social.textPh": "说点什么…",
+      "social.empty": "还没有评论，来写第一条吧。",
+      "social.anonymous": "匿名",
+      "social.delete": "删除",
+      "social.deleteConfirm": "删除这条评论？",
+      "social.copied": "链接已复制",
+      "social.postFail": "评论发送失败，请稍后再试。",
+      "social.deleteFail": "无法删除这条评论。",
+      "social.justNow": "刚刚",
+      "social.minAgo": "{n} 分钟前",
+      "social.hourAgo": "{n} 小时前",
+      "social.dayAgo": "{n} 天前",
+      "social.likePost": "点赞这篇文章",
+      "social.views": "阅读",
       "tag.pretrain": "预训练",
     },
     en: {
@@ -497,6 +517,7 @@
       "nav.recipe": "Recipe",
       "nav.appendix": "Appendix",
       "nav.references": "References",
+      "nav.feedback": "Comments",
       "nav.conclusion": "Conclusion",
       "toc.label": "On this page",
       "tag.ego": "Egocentric Human Data",
@@ -831,6 +852,25 @@
       "references.egoverse": "EgoVerse Consortium. (2026). <em>EgoVerse: Egocentric Data for Robot Learning from Around the World</em>. Project website. <a href=\"https://egoverse.ai/\" target=\"_blank\" rel=\"noopener\">https://egoverse.ai/</a>",
       "references.egolive": "Li, Yihang, Wei, Xuelong, Luo, Jingzhou, Xiao, Yingjing, Bai, Yibo, Zhou, Guangyuan, Zou, Teng, et al. (2026). <em>EgoLive: A Large-Scale Egocentric Dataset from Real-World Human Tasks</em>. arXiv. <a href=\"https://doi.org/10.48550/arXiv.2604.23570\" target=\"_blank\" rel=\"noopener\">https://doi.org/10.48550/arXiv.2604.23570</a>",
       "footer.text": "EgoANT · Shuai Zhou, Jul 2026",
+      "social.h2": "Comments",
+      "social.share": "Share",
+      "social.leaveComment": "Leave a comment",
+      "social.post": "Post comment",
+      "social.namePh": "Name (optional)",
+      "social.textPh": "Leave a comment…",
+      "social.empty": "No comments yet. Be the first to comment.",
+      "social.anonymous": "Anonymous",
+      "social.delete": "Delete",
+      "social.deleteConfirm": "Delete this comment?",
+      "social.copied": "Link copied to clipboard",
+      "social.postFail": "Could not post comment.",
+      "social.deleteFail": "Could not delete comment.",
+      "social.justNow": "just now",
+      "social.minAgo": "{n}m ago",
+      "social.hourAgo": "{n}h ago",
+      "social.dayAgo": "{n}d ago",
+      "social.likePost": "Like this post",
+      "social.views": "Views",
       "tag.pretrain": "Pretraining",
     },
   };
@@ -899,6 +939,11 @@
       if (!key) return;
       el.setAttribute("aria-label", t(key, lang));
     });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (!key) return;
+      el.setAttribute("placeholder", t(key, lang));
+    });
     // Diagrams carry their own text, so they ship as one file per language.
     document.querySelectorAll("[data-i18n-src]").forEach((el) => {
       const key = el.getAttribute("data-i18n-src");
@@ -921,6 +966,7 @@
     if (typeof window.__rerenderHeroI18n === "function") window.__rerenderHeroI18n();
     if (typeof window.__rerenderTablesI18n === "function") window.__rerenderTablesI18n();
     if (typeof window.__rerenderLabelCmpI18n === "function") window.__rerenderLabelCmpI18n();
+    if (typeof window.__rerenderSocialI18n === "function") window.__rerenderSocialI18n();
     renumberCitations();
   }
 
