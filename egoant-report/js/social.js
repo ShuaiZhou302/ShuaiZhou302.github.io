@@ -171,7 +171,7 @@
       return (b.ts || 0) - (a.ts || 0);
     });
     if (!arr.length) {
-      list.innerHTML = '<li class="bs-empty">' + esc(t("social.empty")) + "</li>";
+      list.innerHTML = "";
       return;
     }
     list.innerHTML = arr.map(function (c) {

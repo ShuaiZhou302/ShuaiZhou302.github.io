@@ -1548,4 +1548,3 @@ details.term-fold .plain li {
 .bs-comment-actions .bs-clike:hover { color: #c45c26; }
 .bs-comment-actions .bs-clike.liked svg { fill: #c45c26; stroke: #c45c26; }
 .bs-comment-actions .bs-cdelete:hover { color: #a33b2b; }
-.bs-empty { color: var(--muted); font-style: italic; }
