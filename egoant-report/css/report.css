@@ -1457,7 +1457,6 @@ details.term-fold .plain li {
   gap: 0.7rem;
   margin: 0 0 1.6rem;
 }
-.bs-comment-form input[type="text"],
 .bs-comment-form textarea {
   font: inherit;
   color: var(--ink);
@@ -1467,11 +1466,9 @@ details.term-fold .plain li {
   background: #fff;
   width: 100%;
   resize: vertical;
+  min-height: 6.2rem;
+  line-height: 1.55;
 }
-.bs-comment-form input[type="text"] { max-width: 280px; }
-.bs-comment-form textarea { min-height: 6.2rem; line-height: 1.55; }
-.bs-comment-form input:focus,
-.bs-comment-form textarea:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(15, 107, 92, 0.12);

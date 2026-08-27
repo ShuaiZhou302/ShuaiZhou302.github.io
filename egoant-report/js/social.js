@@ -179,7 +179,7 @@
       var canDelete = mine.indexOf(c.id) !== -1;
       return '<li class="bs-comment" data-id="' + esc(c.id) + '">' +
         '<div class="bs-comment-head">' +
-          '<span class="bs-comment-author">' + esc(c.name || t("social.anonymous")) + "</span>" +
+          '<span class="bs-comment-author">' + esc(t("social.anonymous")) + "</span>" +
           '<span class="bs-comment-time">' + esc(relTime(c.ts)) + "</span>" +
         "</div>" +
         '<div class="bs-comment-text">' + esc(c.text) + "</div>" +
@@ -204,16 +204,14 @@
 
   function onPostComment(e) {
     e.preventDefault();
-    var nameEl = document.getElementById("bs-comment-name");
     var textEl = document.getElementById("bs-comment-text");
     var submit = document.getElementById("bs-comment-submit");
     var text = (textEl.value || "").trim();
     if (!text) return;
-    var name = (nameEl.value || "").trim() || t("social.anonymous");
     submit.disabled = true;
     loadState().then(function () {
       var id = "c" + Date.now() + Math.floor(Math.random() * 1e4).toString(36);
-      state.comments.push({ id: id, name: name, text: text, ts: Date.now(), likes: 0 });
+      state.comments.push({ id: id, name: "", text: text, ts: Date.now(), likes: 0 });
       rememberMine(id);
       return saveState();
     }).then(function () {
