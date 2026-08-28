@@ -230,38 +230,29 @@ a:hover { color: var(--warm); }
 }
 
 .sample-shuai {
-  height: 2.35rem;
-  padding: 0 0.8rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  color: var(--accent);
+  margin: -0.45rem 0 -0.3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
   font-family: var(--serif);
-  font-size: 0.78rem;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   line-height: 1;
   cursor: pointer;
   white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.12em;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 .sample-shuai i {
   font-style: italic;
-  font-weight: 650;
 }
 .sample-shuai sub {
   font-size: 0.72em;
   font-style: italic;
-  font-weight: 650;
-  bottom: -0.08em;
+  bottom: -0.05em;
 }
 .sample-shuai:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  color: var(--accent);
 }
 
 /* —— News —— */
