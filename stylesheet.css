@@ -239,9 +239,10 @@ a:hover { color: var(--warm); }
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  line-height: 1;
+  line-height: 1.25;
   cursor: pointer;
-  white-space: nowrap;
+  text-align: center;
+  max-width: 100%;
 }
 .sample-shuai i {
   font-style: italic;
