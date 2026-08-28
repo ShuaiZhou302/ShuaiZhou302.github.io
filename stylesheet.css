@@ -634,6 +634,7 @@ a:hover { color: var(--warm); }
   --vtl-tone-b: #7a6ad8;
   --vtl-tone-c: #0f6b5c;
   --vtl-tone-d: #c45c26;
+  --vtl-tone-e: #5c6bc0;
   position: relative;
   margin: 0.55rem 0 1rem;
   min-height: 720px;
@@ -643,6 +644,10 @@ a:hover { color: var(--warm); }
 
 .vtl[data-layout="chrono"] {
   min-height: 1320px;
+}
+
+#bg-experience .vtl[data-layout="chrono"] {
+  min-height: 1680px;
 }
 
 .vtl[data-layout="chrono"] .vtl-spine,
@@ -707,6 +712,7 @@ a:hover { color: var(--warm); }
 .vtl-item[data-tone="b"] { --tone: var(--vtl-tone-b); }
 .vtl-item[data-tone="c"] { --tone: var(--vtl-tone-c); }
 .vtl-item[data-tone="d"] { --tone: var(--vtl-tone-d); }
+.vtl-item[data-tone="e"] { --tone: var(--vtl-tone-e); }
 
 .vtl-node {
   position: absolute;
