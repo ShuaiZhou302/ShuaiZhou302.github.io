@@ -159,6 +159,7 @@ a:hover { color: var(--warm); }
 
 .bio-more {
   margin: 0.15rem 0 0;
+  max-width: 36rem;
 }
 
 .bio-more summary {
@@ -193,6 +194,7 @@ a:hover { color: var(--warm); }
 
 .bio-more p {
   margin: 0.7rem 0 0;
+  text-wrap: pretty;
 }
 
 .bio p {
@@ -1081,6 +1083,11 @@ a:hover { color: var(--warm); }
 
   .bio-text {
     text-align: left;
+    max-width: 36rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 0.35rem;
+    box-sizing: border-box;
   }
 
   .bio h1,
@@ -1090,11 +1097,14 @@ a:hover { color: var(--warm); }
   }
 
   .bio-more {
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
   }
 
   .bio-more p {
-    text-align: left;
+    text-align: center;
+    line-height: 1.6;
   }
 
   .bio h1 {
@@ -1313,11 +1323,6 @@ a:hover { color: var(--warm); }
   .nav-links {
     gap: 0.4rem 0.65rem;
     font-size: 0.82rem;
-  }
-
-  .bio {
-    padding-left: 0;
-    padding-right: 0;
   }
 
   .bio h1 {
