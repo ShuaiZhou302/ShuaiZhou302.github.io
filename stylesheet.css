@@ -482,7 +482,7 @@ a:hover { color: var(--warm); }
   font-weight: 500;
 }
 
-/* —— Blog / Honors / Misc —— */
+/* —— Blog / Misc —— */
 .blog-card {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -565,38 +565,6 @@ a:hover { color: var(--warm); }
   color: var(--muted);
   font-size: 0.98rem;
 }
-
-.honor {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.35rem 1.5rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.honor:first-of-type {
-  border-top: 1px solid var(--line);
-}
-
-.honor h3 {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 1.1rem;
-}
-
-.honor-desc {
-  margin: 0.2rem 0 0;
-  font-style: italic;
-  color: var(--muted);
-}
-
-.honor-meta {
-  text-align: right;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.honor-meta .place { display: block; color: var(--ink); }
 
 /* —— Background vertical timeline —— */
 .bg-toggle {
@@ -1161,14 +1129,6 @@ a:hover { color: var(--warm); }
   .news-list.is-expanded li.news-older {
     grid-template-columns: 1fr;
     gap: 0.25rem;
-  }
-
-  .honor {
-    grid-template-columns: 1fr;
-  }
-
-  .honor-meta {
-    text-align: left;
   }
 
   .vtl {
