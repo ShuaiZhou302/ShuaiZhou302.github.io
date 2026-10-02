@@ -208,6 +208,12 @@ a:hover { color: var(--warm); }
   gap: 0.85rem;
 }
 
+.bio-portrait {
+  position: relative;
+  width: 100%;
+  margin: 0;
+}
+
 .bio-photo img {
   width: 100%;
   border-radius: 18px;
@@ -217,6 +223,40 @@ a:hover { color: var(--warm); }
   aspect-ratio: 1 / 1;
   object-position: center top;
 }
+
+.bio-portrait-hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  object-position: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.bio-portrait:hover .bio-portrait-hover,
+.bio-portrait:focus-within .bio-portrait-hover {
+  opacity: 1;
+}
+
+.bio-portrait figcaption {
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.bio-cap-hover { display: none; }
+
+.bio-portrait:hover .bio-cap-default,
+.bio-portrait:focus-within .bio-cap-default { display: none; }
+
+.bio-portrait:hover .bio-cap-hover,
+.bio-portrait:focus-within .bio-cap-hover { display: inline; }
 
 .bio p.bio-email {
   display: block;
@@ -267,33 +307,6 @@ a:hover { color: var(--warm); }
   font-weight: 700;
   letter-spacing: 0.06em;
   line-height: 1;
-}
-
-.sample-shuai {
-  margin: -0.45rem 0 -0.3rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font-family: var(--serif);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 1.25;
-  cursor: pointer;
-  text-align: center;
-  max-width: 100%;
-}
-.sample-shuai i {
-  font-style: italic;
-}
-.sample-shuai sub {
-  font-size: 0.72em;
-  font-style: italic;
-  bottom: -0.05em;
-}
-.sample-shuai:hover {
-  color: var(--accent);
 }
 
 /* —— News —— */
