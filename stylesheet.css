@@ -466,6 +466,11 @@ a:hover { color: var(--warm); }
   font-size: 0.95rem;
 }
 
+.pub-award {
+  color: #c62828;
+  font-weight: 700;
+}
+
 .pub-links {
   display: flex;
   flex-wrap: wrap;
