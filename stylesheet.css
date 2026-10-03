@@ -450,8 +450,9 @@ a:hover { color: var(--warm); }
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.01em;
-  line-height: 1.2;
-  white-space: nowrap;
+  line-height: 1.25;
+  white-space: normal;
+  max-width: calc(100% - 0.9rem);
   pointer-events: none;
 }
 
