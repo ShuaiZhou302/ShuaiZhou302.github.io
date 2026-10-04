@@ -566,6 +566,10 @@ a:hover { color: var(--warm); }
   font-size: 1.2rem;
 }
 
+.blog-card h3 a { color: var(--ink); }
+
+.blog-card h3 a:hover { color: var(--accent); }
+
 .blog-card .blog-authors {
   margin: 0 0 0.45rem;
   color: var(--muted);
@@ -578,7 +582,7 @@ a:hover { color: var(--warm); }
 }
 
 .blog-card p {
-  margin: 0;
+  margin: 0 0 0.65rem;
   color: var(--muted);
   font-size: 0.98rem;
 }
