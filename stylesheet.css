@@ -8,6 +8,7 @@
   --accent: #0f6b5c;
   --accent-soft: rgba(15, 107, 92, 0.1);
   --gold: #f0c94d;
+  --cmu-red: #c41230;
   --gold-soft: rgba(240, 201, 77, 0.28);
   --warm: #c45c26;
   --shadow: 0 8px 24px rgba(28, 25, 20, 0.06);
@@ -202,6 +203,20 @@ a:hover { color: var(--warm); }
   color: var(--ink);
 }
 
+.bio-collaboration {
+  margin-top: 0.5rem;
+}
+
+.bio-collaboration ul {
+  margin: 0 0 0.9rem;
+  padding-left: 1.3rem;
+  text-align: left;
+}
+
+.bio-collaboration li {
+  margin: 0.2rem 0;
+}
+
 .bio-photo {
   display: grid;
   justify-items: center;
@@ -263,7 +278,7 @@ a:hover { color: var(--warm); }
   margin: 0 0 1rem;
   padding: 0;
   background: none;
-  color: var(--gold);
+  color: var(--cmu-red);
   font-size: 0.95rem;
   font-weight: 500;
   user-select: text;
