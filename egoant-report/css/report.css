@@ -261,6 +261,42 @@ img, svg, video { max-width: 100%; height: auto; display: block; }
 }
 .splash-cta:hover { background: #e8eef4; }
 
+.splash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 100%;
+}
+.splash-actions .splash-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  border: 1px solid transparent;
+}
+.splash-actions .splash-code {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+}
+.splash-actions .splash-code:hover {
+  color: #0b1c2c;
+  background: #fff;
+  border-color: #fff;
+}
+.splash-actions .splash-cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+.splash-code svg {
+  flex: 0 0 18px;
+}
+
+
 .tag-pills {
   display: flex; flex-wrap: wrap; gap: 0.4rem;
   margin: 0 0 0.85rem;
