@@ -541,10 +541,6 @@ a:hover { color: var(--warm); }
   text-decoration: none;
 }
 
-.blog-card:hover {
-  border-color: var(--accent);
-  color: inherit;
-}
 
 .blog-media {
   border-radius: 10px;
