@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="stylesheet.css?v=20261103-2">
+  <link rel="stylesheet" href="stylesheet.css?v=20261103-3">
   <link rel="icon" type="image/png" href="images/ri_logo.png">
   <script type="application/ld+json">
   {
@@ -182,7 +182,7 @@
           </a>
           <div class="blog-body">
             <h3><a href="https://www.shuai-zhou.com/egoant-report/?lang=en">EgoANT: Segmentation &amp; Annotation for Egocentric Human Video</a></h3>
-            <p>Segmentation &amp; Annotation for Egocentric Human Video with open-source VLM</p>
+            <p class="pub-tldr"><strong>TL;DR:</strong> Turning raw egocentric human video into time-aligned subtask labels for robot learning, using only open-weight, self-hostable VLMs. EgoANT finds action boundaries with a whole-episode coarse cut over timestamped contact sheets followed by local refinement, then picks the best of several candidate descriptions for each segment. On WGO-Bench (HomER), it more than doubles segmentation F1 over wrist-speed heuristics (0.095 → 0.203) and approaches a Gemini-based pipeline (0.227), at roughly $1–3 per video-hour.</p>
             <div class="pub-links">
               <a href="https://www.shuai-zhou.com/egoant-report/?lang=en">report</a>
               <a href="https://github.com/ShuaiZhou302/EgoANT">code</a>
@@ -216,11 +216,10 @@
           <div class="pub-list" id="pub-list">
             <article class="pub" data-selected="true" data-sel-order="1" data-topic="foundation">
               <div class="pub-visual">
-                <a class="pub-media" href="https://uniwam.github.io/">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-1" aria-label="Show authors for UniWAM: Unified World-Action Model">
                 <span class="pub-badge">Robot Foundation Model</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/uniwam.mp4" aria-label="UniWAM teaser"></video>
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-1" aria-label="Show authors for UniWAM: Unified World-Action Model">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-1" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><a href="https://chris1220313648.github.io/">Jiayi Chen</a>*, <a href="https://songwxuan.github.io/">Wenxuan Song</a>*, <a href="https://jbo-wang.github.io/">Jingbo Wang</a>*, <strong>Shuai Zhou</strong>*, <a href="https://github.com/gxccc123">Xicheng Gong</a>*, <a href="https://scholar.google.com/citations?user=du0rNTwAAAAJ&amp;hl=zh-CN">Zehua Fan</a>, <a href="https://github.com/Chowzy069">Ziyang Zhou</a>, <a href="https://scholar.google.com/citations?user=Od0fj2gAAAAJ&amp;hl=zh-CN">Junwu E</a>, <a href="https://haodong-yan.github.io/">Haodong Yan</a>, <a href="https://haofuly.github.io/">Fuhao Li</a>, <a href="https://openreview.net/profile?id=~Qize_Yu1">Qize Yu</a>, <a href="https://openreview.net/profile?id=~Xu_Huang14">Xu Huang</a>, <a href="https://scholar.google.com/citations?user=2xR6P5AAAAAJ&amp;hl=en">Pengwei Wang</a>, <a href="https://openreview.net/profile?id=~Wen_Chen4">Wen Chen</a>, <a href="https://sites.google.com/view/shunbozhou">Shunbo Zhou</a>, <a href="https://sites.google.com/view/haoangli/homepage">Haoang Li</a></p>
@@ -240,11 +239,10 @@
 
             <article class="pub" data-selected="true" data-sel-order="2" data-topic="foundation">
               <div class="pub-visual">
-                <a class="pub-media" href="https://active-scale.github.io/">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-2" aria-label="Show authors for ActiveScale: Scaling Active Perception for Robots across Model, Data, and Hardware">
                 <span class="pub-badge">Robot Foundation Model</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/activeScale.mp4" aria-label="ActiveScale teaser"></video>
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-2" aria-label="Show authors for ActiveScale: Scaling Active Perception for Robots across Model, Data, and Hardware">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-2" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><strong>Shuai Zhou</strong>*, <a href="https://kaishengpang.github.io/">Kaisheng Pang</a>*, <a href="https://songwxuan.github.io/">Wenxuan Song</a>, <a href="https://victor-roboneo.github.io/">Wenjie Zhang</a>, <a href="https://facultyprofiles.hkust-gz.edu.cn/faculty-personal-page?id=168">Xinhu Zheng</a>, <a href="https://sites.google.com/view/haoangli/homepage">Haoang Li</a></p>
@@ -264,11 +262,10 @@
 
             <article class="pub" data-topic="planning">
               <div class="pub-visual">
-                <a class="pub-media" href="https://arxiv.org/abs/2511.21886">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-3" aria-label="Show authors for From Discrete Plans to Real-World Execution: A World-Model-Driven Framework for Execution-Aware Multi-Agent Path Finding">
                 <span class="pub-badge">Learning 4 Planning</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/REMAP.mp4" aria-label="REMAP teaser"></video>
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-3" aria-label="Show authors for From Discrete Plans to Real-World Execution: A World-Model-Driven Framework for Execution-Aware Multi-Agent Path Finding">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-3" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><a href="https://jingtianyan.github.io/">Jingtian Yan</a>, <strong>Shuai Zhou</strong>, <a href="https://github.com/DiligentPanda">He Jiang</a>, <a href="https://www.cs.cmu.edu/~sfs/">Stephen Smith</a>, <a href="https://jiaoyangli.me/">Jiaoyang Li</a></p>
@@ -286,11 +283,10 @@
 
             <article class="pub" data-selected="true" data-sel-order="3" data-topic="manipulation">
               <div class="pub-visual">
-                <a class="pub-media" href="https://egox-dream.github.io/">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-4" aria-label="Show authors for EgoX: Egocentric Cross-Embodiment Manipulation with Embodiment Dreaming">
                 <span class="pub-badge">Humanoid Manipulation</span>
                 <img src="images/egox.gif?v=20261002" alt="EgoX teaser" width="440" height="275">
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-4" aria-label="Show authors for EgoX: Egocentric Cross-Embodiment Manipulation with Embodiment Dreaming">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-4" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><a href="https://yaruniu.com/">Yaru Niu</a>*, <a href="https://wudicbh.github.io/">Binghong Chen</a>*, <a href="https://www.chad-yao.com/">Changwei Yao</a>*, <a href="https://shangtaoli.github.io/">Shangtao Li</a>*, <a href="https://zhenlong0808.github.io/">Zhenlong Fang</a>, <a href="https://revanthsenthil.github.io/">Revanth Krishna Senthilkumaran</a>, <strong>Shuai Zhou</strong>, <a href="https://yueminm.github.io/">Yuemin Mao</a>, <a href="https://kalieching.github.io/">Kalie Ching</a>, Po-Ju Chao, <a href="https://www.linkedin.com/in/yudong-luo/">Yudong Luo</a>, <a href="https://icontrol.ri.cmu.edu/people/peiqi.html">Peiqi Yu</a>, <a href="https://alfredo-pearson.github.io/">Heng Zhang</a>, <a href="https://haozhang-thu.github.io/">Hao Zhang</a>, <a href="https://scholar.google.com/citations?user=LYt_2MgAAAAJ">Bingqing Chen</a>, <a href="https://scholar.google.com/citations?user=uX5Y9XUAAAAJ">Chen Qiu</a>, <a href="https://etaic.github.io/members/">Hongtei (Eric) Tseng</a>, <a href="http://www.cs.cmu.edu/~cliu6/">Changliu Liu</a>, <a href="https://jonfranc.com/">Jonathan Francis</a>, <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a></p>
@@ -309,11 +305,10 @@
 
             <article class="pub" data-selected="true" data-sel-order="5" data-topic="planning">
               <div class="pub-visual">
-                <a class="pub-media" href="https://multi-robot-lamp.github.io/">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-5" aria-label="Show authors for LAMP: Long-Horizon Adaptive Manipulation Planning for Multi-Robot Collaboration in Cluttered Space">
                 <span class="pub-badge">Learning 4 Planning</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/teaser.mp4" aria-label="LAMP teaser"></video>
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-5" aria-label="Show authors for LAMP: Long-Horizon Adaptive Manipulation Planning for Multi-Robot Collaboration in Cluttered Space">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-5" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://yoraish.com/">Yorai Shaoul</a>, <a href="https://jiaoyangli.me/">Jiaoyang Li</a></p>
@@ -334,11 +329,10 @@
 
             <article class="pub" data-selected="true" data-sel-order="4" data-topic="manipulation">
               <div class="pub-visual">
-                <a class="pub-media" href="https://humanoid-touch-dream.github.io/">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-6" aria-label="Show authors for HTD: Learning Versatile Humanoid Manipulation with Touch Dreaming">
                 <span class="pub-badge">Humanoid Manipulation</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/htd.mp4" aria-label="HTD teaser"></video>
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-6" aria-label="Show authors for HTD: Learning Versatile Humanoid Manipulation with Touch Dreaming">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-6" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><a href="https://yaruniu.com/">Yaru Niu</a>, <a href="https://zhenlong0808.github.io/">Zhenlong Fang</a>, <a href="https://wudicbh.github.io/">Binghong Chen</a>, <strong>Shuai Zhou</strong>, <a href="https://revanthsenthil.github.io/">Revanth Krishna Senthilkumaran</a>, <a href="https://haozhang-thu.github.io/">Hao Zhang</a>, <a href="https://scholar.google.com/citations?user=LYt_2MgAAAAJ">Bingqing Chen</a>, <a href="https://scholar.google.com/citations?user=uX5Y9XUAAAAJ">Chen Qiu</a>, <a href="https://etaic.github.io/members/">Hongtei (Eric) Tseng</a>, <a href="https://jonfranc.com/">Jonathan Francis</a>, <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a></p>
@@ -358,11 +352,10 @@
 
             <article class="pub" data-topic="heuristic">
               <div class="pub-visual">
-                <a class="pub-media" href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-7" aria-label="Show authors for LSRP*: Scalable and Anytime Planning for Multi-Agent Path Finding with Asynchronous Actions">
                 <span class="pub-badge">Heuristic Search</span>
                 <img src="images/lsrpstar.png" alt="LSRP* teaser" width="440" height="275">
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-7" aria-label="Show authors for LSRP*: Scalable and Anytime Planning for Multi-Agent Path Finding with Asynchronous Actions">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-7" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://eggeek.github.io/">Shizhe Zhao</a>, <a href="https://rap-lab.github.io/team/zren/">Zhongqiang Ren</a></p>
@@ -381,11 +374,10 @@
 
             <article class="pub" data-topic="heuristic">
               <div class="pub-visual">
-                <a class="pub-media" href="https://doi.org/10.1609/aaai.v39i14.33618">
+                <button type="button" class="pub-media" aria-expanded="false" aria-controls="pub-authors-8" aria-label="Show authors for Loosely Synchronized Rule-Based Planning for Multi-Agent Path Finding with Asynchronous Actions">
                 <span class="pub-badge">Heuristic Search</span>
                 <img src="images/agent_onehundred.gif" alt="LSRP teaser" width="440" height="275">
-              </a>
-                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-8" aria-label="Show authors for Loosely Synchronized Rule-Based Planning for Multi-Agent Path Finding with Asynchronous Actions">Authors</button>
+              </button>
                 <div class="pub-authors-overlay" id="pub-authors-8" hidden>
                   <p class="pub-authors-heading">Authors</p>
                   <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://eggeek.github.io/">Shizhe Zhao</a>, <a href="https://rap-lab.github.io/team/zren/">Zhongqiang Ren</a></p>
@@ -687,7 +679,7 @@
 
       /* Publication author overlays: hover, keyboard, and touch. */
       document.querySelectorAll(".pub-visual").forEach(function (visual) {
-        var button = visual.querySelector(".pub-authors-toggle");
+        var button = visual.querySelector(".pub-media");
         var overlay = visual.querySelector(".pub-authors-overlay");
         var pinned = false;
         function setOpen(open) {
@@ -710,6 +702,12 @@
         button.addEventListener("click", function () {
           pinned = !pinned;
           setOpen(pinned);
+        });
+        overlay.addEventListener("click", function (event) {
+          if (!event.target.closest("a")) {
+            pinned = false;
+            setOpen(false);
+          }
         });
         visual.addEventListener("keydown", function (event) {
           if (event.key === "Escape") {
