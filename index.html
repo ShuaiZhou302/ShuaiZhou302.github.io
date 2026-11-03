@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="stylesheet.css?v=20261103">
+  <link rel="stylesheet" href="stylesheet.css?v=20261103-2">
   <link rel="icon" type="image/png" href="images/ri_logo.png">
   <script type="application/ld+json">
   {
@@ -214,144 +214,192 @@
 
         <div class="pub-panel is-active" id="pub-list-panel">
           <div class="pub-list" id="pub-list">
-            <article class="pub" data-topic="foundation">
-              <a class="pub-media" href="https://uniwam.github.io/">
+            <article class="pub" data-selected="true" data-sel-order="1" data-topic="foundation">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://uniwam.github.io/">
                 <span class="pub-badge">Robot Foundation Model</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/uniwam.mp4" aria-label="UniWAM teaser"></video>
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-1" aria-label="Show authors for UniWAM: Unified World-Action Model">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-1" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><a href="https://chris1220313648.github.io/">Jiayi Chen</a>*, <a href="https://songwxuan.github.io/">Wenxuan Song</a>*, <a href="https://jbo-wang.github.io/">Jingbo Wang</a>*, <strong>Shuai Zhou</strong>*, <a href="https://github.com/gxccc123">Xicheng Gong</a>*, <a href="https://scholar.google.com/citations?user=du0rNTwAAAAJ&amp;hl=zh-CN">Zehua Fan</a>, <a href="https://github.com/Chowzy069">Ziyang Zhou</a>, <a href="https://scholar.google.com/citations?user=Od0fj2gAAAAJ&amp;hl=zh-CN">Junwu E</a>, <a href="https://haodong-yan.github.io/">Haodong Yan</a>, <a href="https://haofuly.github.io/">Fuhao Li</a>, <a href="https://openreview.net/profile?id=~Qize_Yu1">Qize Yu</a>, <a href="https://openreview.net/profile?id=~Xu_Huang14">Xu Huang</a>, <a href="https://scholar.google.com/citations?user=2xR6P5AAAAAJ&amp;hl=en">Pengwei Wang</a>, <a href="https://openreview.net/profile?id=~Wen_Chen4">Wen Chen</a>, <a href="https://sites.google.com/view/shunbozhou">Shunbo Zhou</a>, <a href="https://sites.google.com/view/haoangli/homepage">Haoang Li</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://uniwam.github.io/">UniWAM: Unified World-Action Model</a></h3>
-                <p class="pub-authors"><a href="https://chris1220313648.github.io/">Jiayi Chen</a>*, <a href="https://songwxuan.github.io/">Wenxuan Song</a>*, <a href="https://jbo-wang.github.io/">Jingbo Wang</a>*, <strong>Shuai Zhou</strong>*, <a href="https://github.com/gxccc123">Xicheng Gong</a>*, <a href="https://scholar.google.com/citations?user=du0rNTwAAAAJ&amp;hl=zh-CN">Zehua Fan</a>, <a href="https://github.com/Chowzy069">Ziyang Zhou</a>, <a href="https://scholar.google.com/citations?user=Od0fj2gAAAAJ&amp;hl=zh-CN">Junwu E</a>, <a href="https://haodong-yan.github.io/">Haodong Yan</a>, <a href="https://haofuly.github.io/">Fuhao Li</a>, <a href="https://openreview.net/profile?id=~Qize_Yu1">Qize Yu</a>, <a href="https://openreview.net/profile?id=~Xu_Huang14">Xu Huang</a>, <a href="https://scholar.google.com/citations?user=2xR6P5AAAAAJ&amp;hl=en">Pengwei Wang</a>, <a href="https://openreview.net/profile?id=~Wen_Chen4">Wen Chen</a>, <a href="https://sites.google.com/view/shunbozhou">Shunbo Zhou</a>, <a href="https://sites.google.com/view/haoangli/homepage">Haoang Li</a></p>
                 <p class="pub-venue">Under Review</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> VLAs inherit strong reasoning, but action-only supervision provides limited grounding in world dynamics; world-action models capture dynamics but remain limited in semantic reasoning and generalization. UniWAM unifies a VLM reasoner, a video world model, and an action expert in one model, co-trained on ~10k hours of human and robot data annotated with our EgoANT pipeline. It sets SOTA on LIBERO (99.2%) and LIBERO-Plus (92.6%), and human data keeps paying off as scale grows.</p>
                 <div class="pub-links">
                   <a href="https://arxiv.org/abs/2610.02054">paper</a>
                   <a href="https://uniwam.github.io/">project</a>
                   <a href="https://github.com/UniWAM/UniWAM">code</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> VLAs inherit strong reasoning, but action-only supervision provides limited grounding in world dynamics; world-action models capture dynamics but remain limited in semantic reasoning and generalization. UniWAM unifies a VLM reasoner, a video world model, and an action expert in one model, co-trained on ~10k hours of human and robot data annotated with our EgoANT pipeline. It sets SOTA on LIBERO (99.2%) and LIBERO-Plus (92.6%), and human data keeps paying off as scale grows.</p>
               </div>
             </article>
 
-            <article class="pub" data-selected="true" data-sel-order="1" data-topic="foundation">
-              <a class="pub-media" href="https://active-scale.github.io/">
+            <article class="pub" data-selected="true" data-sel-order="2" data-topic="foundation">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://active-scale.github.io/">
                 <span class="pub-badge">Robot Foundation Model</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/activeScale.mp4" aria-label="ActiveScale teaser"></video>
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-2" aria-label="Show authors for ActiveScale: Scaling Active Perception for Robots across Model, Data, and Hardware">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-2" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><strong>Shuai Zhou</strong>*, <a href="https://kaishengpang.github.io/">Kaisheng Pang</a>*, <a href="https://songwxuan.github.io/">Wenxuan Song</a>, <a href="https://victor-roboneo.github.io/">Wenjie Zhang</a>, <a href="https://facultyprofiles.hkust-gz.edu.cn/faculty-personal-page?id=168">Xinhu Zheng</a>, <a href="https://sites.google.com/view/haoangli/homepage">Haoang Li</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://active-scale.github.io/">ActiveScale: Scaling Active Perception for Robots across Model, Data, and Hardware</a></h3>
-                <p class="pub-authors"><strong>Shuai Zhou</strong>*, <a href="https://kaishengpang.github.io/">Kaisheng Pang</a>*, <a href="https://songwxuan.github.io/">Wenxuan Song</a>, <a href="https://victor-roboneo.github.io/">Wenjie Zhang</a>, <a href="https://facultyprofiles.hkust-gz.edu.cn/faculty-personal-page?id=168">Xinhu Zheng</a>, <a href="https://sites.google.com/view/haoangli/homepage">Haoang Li</a></p>
                 <p class="pub-venue">Under Review<br>ScalingH2R Workshop, CoRL 2026</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> A full-stack recipe for scaling active perception in robot foundation models, spanning model, data, and hardware. ActiveScale pairs a pose-aware VLA with the first 1,000-hour human–robot active-perception training mix (over 5× prior efforts) and AMP, a single-operator mobile platform with an actuated head camera. Robots learn to look for hidden or out-of-view objects, raising real-world success from 30% to 70% over π0.5.</p>
                 <div class="pub-links">
                   <a href="https://arxiv.org/abs/2609.18514">paper</a>
                   <a href="https://active-scale.github.io/">project</a>
                   <a href="https://github.com/ShuaiZhou302/ActiveScale">code</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> A full-stack recipe for scaling active perception in robot foundation models, spanning model, data, and hardware. ActiveScale pairs a pose-aware VLA with the first 1,000-hour human–robot active-perception training mix (over 5× prior efforts) and AMP, a single-operator mobile platform with an actuated head camera. Robots learn to look for hidden or out-of-view objects, raising real-world success from 30% to 70% over π0.5.</p>
               </div>
             </article>
 
             <article class="pub" data-topic="planning">
-              <a class="pub-media" href="https://arxiv.org/abs/2511.21886">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://arxiv.org/abs/2511.21886">
                 <span class="pub-badge">Learning 4 Planning</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/REMAP.mp4" aria-label="REMAP teaser"></video>
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-3" aria-label="Show authors for From Discrete Plans to Real-World Execution: A World-Model-Driven Framework for Execution-Aware Multi-Agent Path Finding">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-3" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><a href="https://jingtianyan.github.io/">Jingtian Yan</a>, <strong>Shuai Zhou</strong>, <a href="https://github.com/DiligentPanda">He Jiang</a>, <a href="https://www.cs.cmu.edu/~sfs/">Stephen Smith</a>, <a href="https://jiaoyangli.me/">Jiaoyang Li</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://arxiv.org/abs/2511.21886">From Discrete Plans to Real-World Execution: A World-Model-Driven Framework for Execution-Aware Multi-Agent Path Finding</a></h3>
-                <p class="pub-authors"><a href="https://jingtianyan.github.io/">Jingtian Yan</a>, <strong>Shuai Zhou</strong>, <a href="https://github.com/DiligentPanda">He Jiang</a>, <a href="https://www.cs.cmu.edu/~sfs/">Stephen Smith</a>, <a href="https://jiaoyangli.me/">Jiaoyang Li</a></p>
                 <p class="pub-venue">Under Review</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> MAPF plans that are optimal under planning assumptions are often far from optimal in real-world execution. We close this planning–execution gap with the first learned world model of MAPF execution, which predicts how a plan will actually unfold and steers both planning and scheduling. It cuts deadline misses by up to 27% in simulation with up to 300 agents and real-robot execution time by 15.3%.</p>
                 <div class="pub-links">
                   <a href="https://arxiv.org/abs/2511.21886">paper</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> MAPF plans that are optimal under planning assumptions are often far from optimal in real-world execution. We close this planning–execution gap with the first learned world model of MAPF execution, which predicts how a plan will actually unfold and steers both planning and scheduling. It cuts deadline misses by up to 27% in simulation with up to 300 agents and real-robot execution time by 15.3%.</p>
               </div>
             </article>
 
-            <article class="pub" data-topic="manipulation">
-              <a class="pub-media" href="https://egox-dream.github.io/">
+            <article class="pub" data-selected="true" data-sel-order="3" data-topic="manipulation">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://egox-dream.github.io/">
                 <span class="pub-badge">Humanoid Manipulation</span>
                 <img src="images/egox.gif?v=20261002" alt="EgoX teaser" width="440" height="275">
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-4" aria-label="Show authors for EgoX: Egocentric Cross-Embodiment Manipulation with Embodiment Dreaming">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-4" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><a href="https://yaruniu.com/">Yaru Niu</a>*, <a href="https://wudicbh.github.io/">Binghong Chen</a>*, <a href="https://www.chad-yao.com/">Changwei Yao</a>*, <a href="https://shangtaoli.github.io/">Shangtao Li</a>*, <a href="https://zhenlong0808.github.io/">Zhenlong Fang</a>, <a href="https://revanthsenthil.github.io/">Revanth Krishna Senthilkumaran</a>, <strong>Shuai Zhou</strong>, <a href="https://yueminm.github.io/">Yuemin Mao</a>, <a href="https://kalieching.github.io/">Kalie Ching</a>, Po-Ju Chao, <a href="https://www.linkedin.com/in/yudong-luo/">Yudong Luo</a>, <a href="https://icontrol.ri.cmu.edu/people/peiqi.html">Peiqi Yu</a>, <a href="https://alfredo-pearson.github.io/">Heng Zhang</a>, <a href="https://haozhang-thu.github.io/">Hao Zhang</a>, <a href="https://scholar.google.com/citations?user=LYt_2MgAAAAJ">Bingqing Chen</a>, <a href="https://scholar.google.com/citations?user=uX5Y9XUAAAAJ">Chen Qiu</a>, <a href="https://etaic.github.io/members/">Hongtei (Eric) Tseng</a>, <a href="http://www.cs.cmu.edu/~cliu6/">Changliu Liu</a>, <a href="https://jonfranc.com/">Jonathan Francis</a>, <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://egox-dream.github.io/">EgoX: Egocentric Cross-Embodiment Manipulation with Embodiment Dreaming</a></h3>
-                <p class="pub-authors"><a href="https://yaruniu.com/">Yaru Niu</a>*, <a href="https://wudicbh.github.io/">Binghong Chen</a>*, <a href="https://www.chad-yao.com/">Changwei Yao</a>*, <a href="https://shangtaoli.github.io/">Shangtao Li</a>*, <a href="https://zhenlong0808.github.io/">Zhenlong Fang</a>, <a href="https://revanthsenthil.github.io/">Revanth Krishna Senthilkumaran</a>, <strong>Shuai Zhou</strong>, <a href="https://yueminm.github.io/">Yuemin Mao</a>, <a href="https://kalieching.github.io/">Kalie Ching</a>, Po-Ju Chao, <a href="https://www.linkedin.com/in/yudong-luo/">Yudong Luo</a>, <a href="https://icontrol.ri.cmu.edu/people/peiqi.html">Peiqi Yu</a>, <a href="https://alfredo-pearson.github.io/">Heng Zhang</a>, <a href="https://haozhang-thu.github.io/">Hao Zhang</a>, <a href="https://scholar.google.com/citations?user=LYt_2MgAAAAJ">Bingqing Chen</a>, <a href="https://scholar.google.com/citations?user=uX5Y9XUAAAAJ">Chen Qiu</a>, <a href="https://etaic.github.io/members/">Hongtei (Eric) Tseng</a>, <a href="http://www.cs.cmu.edu/~cliu6/">Changliu Liu</a>, <a href="https://jonfranc.com/">Jonathan Francis</a>, <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a></p>
                 <p class="pub-venue">Under Review<br>ScalingH2R Workshop, CoRL 2026<br>Dex Workshop, RSS 2026</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> One manipulation policy that learns from humans and very different robots alike. EgoX unifies human, humanoid, wheeled, quadruped, arm, and tool-use demos into one egocentric format and pretrains a modular Transformer that “dreams” each body’s future state. Cross-embodiment pretraining raises task progress from 0.63 to 0.80, with the biggest gains out of distribution.</p>
                 <div class="pub-links">
                   <a href="https://egox-dream.github.io/assets/egox.pdf">paper</a>
                   <a href="https://egox-dream.github.io/">project</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> One manipulation policy that learns from humans and very different robots alike. EgoX unifies human, humanoid, wheeled, quadruped, arm, and tool-use demos into one egocentric format and pretrains a modular Transformer that “dreams” each body’s future state. Cross-embodiment pretraining raises task progress from 0.63 to 0.80, with the biggest gains out of distribution.</p>
               </div>
             </article>
 
-            <article class="pub" data-selected="true" data-sel-order="3" data-topic="planning">
-              <a class="pub-media" href="https://multi-robot-lamp.github.io/">
+            <article class="pub" data-selected="true" data-sel-order="5" data-topic="planning">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://multi-robot-lamp.github.io/">
                 <span class="pub-badge">Learning 4 Planning</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/teaser.mp4" aria-label="LAMP teaser"></video>
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-5" aria-label="Show authors for LAMP: Long-Horizon Adaptive Manipulation Planning for Multi-Robot Collaboration in Cluttered Space">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-5" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://yoraish.com/">Yorai Shaoul</a>, <a href="https://jiaoyangli.me/">Jiaoyang Li</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://multi-robot-lamp.github.io/">LAMP: Long-Horizon Adaptive Manipulation Planning for Multi-Robot Collaboration in Cluttered Space</a></h3>
-                <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://yoraish.com/">Yorai Shaoul</a>, <a href="https://jiaoyangli.me/">Jiaoyang Li</a></p>
                 <p class="pub-venue">IROS 2026</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> In clutter, an object path that looks feasible may leave robots no room to make contact and manipulate it. LAMP plans the object, the robot team, and their contacts together, verifying with a learned manipulation model during search whether each step is actually executable, and replans in seconds when execution drifts. It solves 88–100% of densely cluttered tasks where prior methods mostly fail, including assembling a 9-object “IROS” sequence end to end.</p>
                 <div class="pub-links">
                   <a href="https://arxiv.org/abs/2606.29358">paper</a>
                   <a href="https://multi-robot-lamp.github.io/">project</a>
                   <a href="https://github.com/ShuaiZhou302/LAMP">code</a>
                   <a href="https://www.ri.cmu.edu/lamp-helps-robots-find-a-way-through/">news</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> In clutter, an object path that looks feasible may leave robots no room to make contact and manipulate it. LAMP plans the object, the robot team, and their contacts together, verifying with a learned manipulation model during search whether each step is actually executable, and replans in seconds when execution drifts. It solves 88–100% of densely cluttered tasks where prior methods mostly fail, including assembling a 9-object “IROS” sequence end to end.</p>
               </div>
             </article>
 
-            <article class="pub" data-selected="true" data-sel-order="2" data-topic="manipulation">
-              <a class="pub-media" href="https://humanoid-touch-dream.github.io/">
+            <article class="pub" data-selected="true" data-sel-order="4" data-topic="manipulation">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://humanoid-touch-dream.github.io/">
                 <span class="pub-badge">Humanoid Manipulation</span>
                 <video playsinline autoplay loop muted poster="images/loading-icon.gif" src="images/htd.mp4" aria-label="HTD teaser"></video>
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-6" aria-label="Show authors for HTD: Learning Versatile Humanoid Manipulation with Touch Dreaming">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-6" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><a href="https://yaruniu.com/">Yaru Niu</a>, <a href="https://zhenlong0808.github.io/">Zhenlong Fang</a>, <a href="https://wudicbh.github.io/">Binghong Chen</a>, <strong>Shuai Zhou</strong>, <a href="https://revanthsenthil.github.io/">Revanth Krishna Senthilkumaran</a>, <a href="https://haozhang-thu.github.io/">Hao Zhang</a>, <a href="https://scholar.google.com/citations?user=LYt_2MgAAAAJ">Bingqing Chen</a>, <a href="https://scholar.google.com/citations?user=uX5Y9XUAAAAJ">Chen Qiu</a>, <a href="https://etaic.github.io/members/">Hongtei (Eric) Tseng</a>, <a href="https://jonfranc.com/">Jonathan Francis</a>, <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://humanoid-touch-dream.github.io/">HTD: Learning Versatile Humanoid Manipulation with Touch Dreaming</a></h3>
-                <p class="pub-authors"><a href="https://yaruniu.com/">Yaru Niu</a>, <a href="https://zhenlong0808.github.io/">Zhenlong Fang</a>, <a href="https://wudicbh.github.io/">Binghong Chen</a>, <strong>Shuai Zhou</strong>, <a href="https://revanthsenthil.github.io/">Revanth Krishna Senthilkumaran</a>, <a href="https://haozhang-thu.github.io/">Hao Zhang</a>, <a href="https://scholar.google.com/citations?user=LYt_2MgAAAAJ">Bingqing Chen</a>, <a href="https://scholar.google.com/citations?user=uX5Y9XUAAAAJ">Chen Qiu</a>, <a href="https://etaic.github.io/members/">Hongtei (Eric) Tseng</a>, <a href="https://jonfranc.com/">Jonathan Francis</a>, <a href="https://www.meche.engineering.cmu.edu/directory/bios/zhao-ding.html">Ding Zhao</a></p>
                 <p class="pub-venue">IROS 2026<br>PWMS Workshop, IROS 2026, <span class="pub-award">Best Paper Award</span><br>WCBM Workshop &amp; SemRob Workshop, RSS 2026</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> Humanoids that manipulate by feel, not just sight. HTD treats touch as a core modality and learns JEPA-style, predicting future hand forces and tactile latents alongside actions, on top of a robust whole-body controller and VR teleoperation. It nearly doubles success on five contact-rich real-world tasks (+90.9% relative), from towel folding to tea serving.</p>
                 <div class="pub-links">
                   <a href="https://arxiv.org/abs/2604.13015/">paper</a>
                   <a href="https://humanoid-touch-dream.github.io/">project</a>
                   <a href="https://github.com/chrisyrniu/humanoid-touch-dream">code</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> Humanoids that manipulate by feel, not just sight. HTD treats touch as a core modality and learns JEPA-style, predicting future hand forces and tactile latents alongside actions, on top of a robust whole-body controller and VR teleoperation. It nearly doubles success on five contact-rich real-world tasks (+90.9% relative), from towel folding to tea serving.</p>
               </div>
             </article>
 
             <article class="pub" data-topic="heuristic">
-              <a class="pub-media" href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">
                 <span class="pub-badge">Heuristic Search</span>
                 <img src="images/lsrpstar.png" alt="LSRP* teaser" width="440" height="275">
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-7" aria-label="Show authors for LSRP*: Scalable and Anytime Planning for Multi-Agent Path Finding with Asynchronous Actions">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-7" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://eggeek.github.io/">Shizhe Zhao</a>, <a href="https://rap-lab.github.io/team/zren/">Zhongqiang Ren</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">LSRP*: Scalable and Anytime Planning for Multi-Agent Path Finding with Asynchronous Actions</a></h3>
-                <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://eggeek.github.io/">Shizhe Zhao</a>, <a href="https://rap-lab.github.io/team/zren/">Zhongqiang Ren</a></p>
                 <p class="pub-venue">SoCS 2025</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> Fast asynchronous MAPF solutions shouldn’t have to be poor ones. LSRP* makes LSRP anytime, improving solution quality for as long as the time budget allows. It handles 25% more agents and cuts solution cost by up to 40%, at up to 1,000 agents.</p>
                 <div class="pub-links">
                   <a href="https://ojs.aaai.org/index.php/SOCS/article/view/36016">paper</a>
                   <a href="https://rap-lab.github.io/research/mapfaa">project</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> Fast asynchronous MAPF solutions shouldn’t have to be poor ones. LSRP* makes LSRP anytime, improving solution quality for as long as the time budget allows. It handles 25% more agents and cuts solution cost by up to 40%, at up to 1,000 agents.</p>
               </div>
             </article>
 
             <article class="pub" data-topic="heuristic">
-              <a class="pub-media" href="https://doi.org/10.1609/aaai.v39i14.33618">
+              <div class="pub-visual">
+                <a class="pub-media" href="https://doi.org/10.1609/aaai.v39i14.33618">
                 <span class="pub-badge">Heuristic Search</span>
                 <img src="images/agent_onehundred.gif" alt="LSRP teaser" width="440" height="275">
               </a>
+                <button type="button" class="pub-authors-toggle" aria-expanded="false" aria-controls="pub-authors-8" aria-label="Show authors for Loosely Synchronized Rule-Based Planning for Multi-Agent Path Finding with Asynchronous Actions">Authors</button>
+                <div class="pub-authors-overlay" id="pub-authors-8" hidden>
+                  <p class="pub-authors-heading">Authors</p>
+                  <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://eggeek.github.io/">Shizhe Zhao</a>, <a href="https://rap-lab.github.io/team/zren/">Zhongqiang Ren</a></p>
+                </div>
+              </div>
               <div class="pub-body">
                 <h3 class="pub-title"><a href="https://doi.org/10.1609/aaai.v39i14.33618">Loosely Synchronized Rule-Based Planning for Multi-Agent Path Finding with Asynchronous Actions</a></h3>
-                <p class="pub-authors"><strong>Shuai Zhou</strong>, <a href="https://eggeek.github.io/">Shizhe Zhao</a>, <a href="https://rap-lab.github.io/team/zren/">Zhongqiang Ren</a></p>
                 <p class="pub-venue">AAAI 2025</p>
+                <p class="pub-tldr"><strong>TL;DR:</strong> Real robots don’t move in lockstep, yet most scalable MAPF solvers assume they do. LSRP is the first to scale MAPF with asynchronous actions to hundreds and up to a thousand agents, by loosely synchronizing a fast rule-based planner. Under the same runtime limit it handles an order of magnitude more agents than prior methods, at about 25% longer makespan.</p>
                 <div class="pub-links">
                   <a href="https://doi.org/10.1609/aaai.v39i14.33618">paper</a>
                   <a href="https://rap-lab.github.io/research/mapfaa">project</a>
                   <a href="https://github.com/rap-lab-org/public_LSRP">code</a>
                 </div>
-                <p class="pub-tldr"><strong>TL;DR:</strong> Real robots don’t move in lockstep, yet most scalable MAPF solvers assume they do. LSRP is the first to scale MAPF with asynchronous actions to hundreds and up to a thousand agents, by loosely synchronizing a fast rule-based planner. Under the same runtime limit it handles an order of magnitude more agents than prior methods, at about 25% longer makespan.</p>
               </div>
             </article>
           </div>
@@ -636,6 +684,48 @@
           showPubs("selected");
         }
       }
+
+      /* Publication author overlays: hover, keyboard, and touch. */
+      document.querySelectorAll(".pub-visual").forEach(function (visual) {
+        var button = visual.querySelector(".pub-authors-toggle");
+        var overlay = visual.querySelector(".pub-authors-overlay");
+        var pinned = false;
+        function setOpen(open) {
+          overlay.hidden = !open;
+          button.setAttribute("aria-expanded", open ? "true" : "false");
+        }
+        visual.addEventListener("mouseenter", function () {
+          if (window.matchMedia("(hover: hover)").matches) setOpen(true);
+        });
+        visual.addEventListener("mouseleave", function () {
+          if (!pinned && !visual.contains(document.activeElement)) setOpen(false);
+        });
+        visual.addEventListener("focusin", function () { setOpen(true); });
+        visual.addEventListener("focusout", function (event) {
+          if (!visual.contains(event.relatedTarget)) {
+            pinned = false;
+            setOpen(false);
+          }
+        });
+        button.addEventListener("click", function () {
+          pinned = !pinned;
+          setOpen(pinned);
+        });
+        visual.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            pinned = false;
+            button.focus();
+            setOpen(false);
+            event.preventDefault();
+          }
+        });
+        document.addEventListener("pointerdown", function (event) {
+          if (!visual.contains(event.target)) {
+            pinned = false;
+            setOpen(false);
+          }
+        });
+      });
 
       /* Background */
       function monthIndex(ym) {
