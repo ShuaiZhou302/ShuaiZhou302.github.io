@@ -527,6 +527,15 @@ a:hover { color: var(--warm); }
   font-weight: 500;
 }
 
+.pub-tldr {
+  margin: 0.8rem 0 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.pub-tldr strong { font-weight: 600; }
+
 /* —— Blog / Misc —— */
 .blog-card {
   display: grid;
